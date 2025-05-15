@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<?php
-
-echo "<html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
 <body>
 
-<h1>The server works !</h1>
+    <?php include('../phpTemplates/frontOffice/headerFront.php'); ?>
+
+    <main>
+        <h1>Bienvenue sur notre site</h1>
+        <!-- Contenu de la page -->
+    </main>
 
 </body>
 </html>
-";
-
-?>
