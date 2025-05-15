@@ -1,0 +1,42 @@
+:root{
+    --textColor: #011B43;
+    --blue: #005CE6;
+}
+
+@font-face {
+    font-family: 'lexenDeca';
+    src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
+}
+
+header.frontOffice{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0 5vh;
+}
+
+header.frontOffice > nav > ul{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+}
+
+header.frontOffice > nav > ul > li{
+    padding: 0 10vh;
+    color: var(--textColor);
+    font-size: 40px;
+    font-family: 'lexenDeca', sans-serif;
+}
+
+header.frontOffice > img:first-child{
+    height: 15vh;
+    width: auto;
+}
+
+header.frontOffice > svg{
+    height: 10vh;
+    width: auto;
+    color: var(--blue);
+}
+
