@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<?php
-
-echo "<html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
 <body>
 
-<h1>The server works !</h1>
+<?php
+?>
+
+<h1>Le serveur fonctionne !</h1>
 
 </body>
 </html>
-";
-
-?>
