@@ -8,7 +8,7 @@
         <div>
             <h6>Pages</h6>
             <ul>
-                <li><a href="/">Accueil</a></li>
+                <li><a href="/backOffice/">Accueil</a></li>
                 <li><a href="/contact/">Contact</a></li>
             </ul>
         </div>
