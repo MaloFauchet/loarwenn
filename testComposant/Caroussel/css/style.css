@@ -1,0 +1,145 @@
+body ,html{
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body{
+    font-family: sans-serif;
+    padding: 50px;
+    background: linear-gradient(45deg,#f37646,#f3e946) center center no-repeat;
+    line-height: 1.4;
+}
+
+.title{
+    font-size: 25px;
+    color:#fff;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.item{
+    margin: 40px 10px;
+    background-color: #fff;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    transform: translate3d(0,-1px,0);
+}
+
+.item__image img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.item__body{
+    padding: 25px;
+}
+
+.item__title{
+    font-size: 24px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #232323;
+
+}
+
+.item__description{
+    color: #585858;
+}
+.items{
+    position: relative;
+}
+
+.caroussel{
+    position: relative;
+
+}
+
+.caroussel__container{
+    display: flex;
+    transition: transform 0.3s;
+    transform: translate3d(0,0,0);
+
+}
+
+.caroussel__container::after{
+    content:'';
+    clear: both;
+    display: table;
+
+}
+
+.caroussel__item{
+    float: left;
+    margin: 40px 10px;
+    background-color: #fff;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    transform: translate3d(0,-1px,0);
+}
+
+.caroussel__next, .caroussel__prev{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #fff url(../left.svg) center center no-repeat ;
+    background-size: 32px 32px;
+    border-radius: 50%;
+    top:50%;
+    margin-top: -20px;
+    right: -20px;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    cursor:pointer;
+    transition: transform 0.3s, opacity 0.3s;
+    z-index: 10;
+}
+
+.caroussel__prev{
+    right: auto;
+    left: -20px;
+    background-image:url(../rigth.svg) ;
+}
+
+
+.caroussel__next::hover, .caroussel__prev::hover{
+    transform: scale(1.2);
+}
+
+.caroussel__prev--hidden{
+    opacity: 0;
+}
+.caroussel__next--hidden{
+    opacity: 0;
+}
+
+.caroussel__pagination{
+    position: absolute;
+    bottom:0;
+    left:0;
+    right: 0;
+    text-align: center;
+    display: none;
+}
+
+.caroussel__pagination__button{
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 3px;
+    box-shadow: 0 2px 5px  #3232321a, 0 5px 15px #0000001a;
+    transition:transform 0.3s ;
+    cursor: pointer;
+
+}
+
+.caroussel__pagination__button--active,.caroussel__pagination__button:hover{
+    transform: scale(1.4);
+}
+
+@media screen and (min-width:800px) {
+    .caroussel__pagination{
+        display: block;
+    }
+}
