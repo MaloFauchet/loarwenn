@@ -1,6 +1,6 @@
 <?php
 ?>
-<header id="headerBackOffice">
+<header class="BackOffice">
     <div class="logo">
         <img src="../html/images/logos/logoWhite.png" alt="Logo">
     </div>
@@ -8,12 +8,12 @@
     <h1>Bienvenue sur votre espace Pro !</h1>
 
     <div class="headerRight">
-        <a href="#">
+        <a href="../html/proifile.html">
             <img src="../html/images/icons/person-circle-white.svg">
             <p>Toto Dupont</p>
         </a>
-
-        <a href="#">
+    
+        <a href="../html/deconnexion.html">
             <img src="../html/images/icons/box-arrow-right-white.svg">
         </a>
     </div>
