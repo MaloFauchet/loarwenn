@@ -1,6 +1,155 @@
+
+
+
+
+
+
+/* 
+Organisation :
+    - Definition des variables CSS
+    - Body
+    - Footer
+*/
+
+
+/* Definition des variables CSS */
+:root {
+    --main-color: #005CE6;
+    --main-color-light: #CAE9FF;
+    --main-text-color: #011B43;
+
+    --footer-light-text-color: #b2cef7;
+}
+
+/* Body */
+
 body {
     margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    color: var(--main-text-color);
 }
+
+/* Footer */
+
+footer {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--main-color);
+    color: white;
+
+    padding: 4vh 20vw;
+}
+
+footer.back-office {
+    padding: 4vh 10vw;
+}
+
+footer ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Footer Logo */
+footer img {
+    margin-right: 6vw;
+    width: 200px;
+    height: 200px;
+}
+
+footer h6 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+footer li {
+    margin: 3vw 0;
+}
+
+footer a {
+    text-decoration: none;
+    color: var(--footer-light-text-color);
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+footer > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+footer > div > div {
+    margin-right: 6vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+footer.back-office > div > div {
+    margin-right: 20vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+footer.back-office > div > div:last-child {
+    margin-right: 0;
+}
+
+footer hr {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #4085ec;
+    margin: 2vh 0;
+}
+
+/* Media Queries */
+
+@media (max-width: 768px) {
+    footer {
+        padding: 1vh 5vw;
+    }
+
+    footer > div {
+        justify-content: space-between;
+    }
+
+    footer img {
+        align-self: center;
+        width: 55px;
+        height: 55px;
+    }
+
+    footer h6 {
+        font-size: 16px;
+    }
+
+    footer ul {
+        margin: 0;
+    }
+
+    footer li {
+        margin: 2vw 0;
+    }
+
+    footer a {
+        font-size: 10px;
+    }
+
+    footer hr {
+        margin: 1vh 0;
+    }
+}
+
+
 
 /* desktop */
 header.back-office {
@@ -51,4 +200,3 @@ header.back-office .header-droit img {
     width: 40px;
     height: auto;
 }
-
