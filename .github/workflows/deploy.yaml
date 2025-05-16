@@ -28,12 +28,12 @@ jobs:
     - name: Deploy to appropriate server
       run: |
         if [[ "${{ github.base_ref }}" == "main" ]]; then
-          ssh debian@loarwenn.ventsdouest.dev << 'EOF'
+          ssh debian@loarwenn.ventsdouest.dev << EOF
             cd /docker/sae/data/web/
             sudo git pull origin main
           EOF
         elif [[ "${{ github.base_ref }}" == "test" ]]; then
-          ssh malo@server.malofauchet.fr << 'EOF'
+          ssh malo@server.malofauchet.fr << EOF
             cd ~/loarwenn/data/web/
             git pull origin test
           EOF
