@@ -3,7 +3,7 @@ body {
 }
 
 /* desktop */
-header.BackOffice {
+header.back-office {
     background-color: #005CE6;
     display: flex;
     align-items: center;
@@ -12,34 +12,34 @@ header.BackOffice {
     flex-wrap: wrap;
 }
 
-header.BackOffice .logo img {
+header.back-office .logo img {
     width: 100px;
     height: auto;
 }
 
-header.BackOffice .headerRight a p {
+header.back-office .header-droit a p {
     /*font-family:'roboto';*/
     
 }
-header.BackOffice h1 {
+header.back-office h1 {
     /*font-family:'lexend-deca';*/
     
 }
 
-header.BackOffice h1 {
+header.back-office h1 {
     color: white;
     margin: 0;
     text-align: center;
 }
 
-header.BackOffice .headerRight {
+header.back-office .header-droit {
     display: flex;
     align-items: center;
     gap: 24px;
     margin-left: auto;
 }
 
-header.BackOffice .headerRight a {
+header.back-office .header-droit a {
     color: white;
     display: flex;
     align-items: center;
@@ -47,7 +47,7 @@ header.BackOffice .headerRight a {
     text-decoration: none;
 }
 
-header.BackOffice .headerRight img {
+header.back-office .header-droit img {
     width: 40px;
     height: auto;
 }
