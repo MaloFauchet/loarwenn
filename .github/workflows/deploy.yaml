@@ -1,0 +1,40 @@
+name: Deploy on PR merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - test
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+
+        if [[ "${{ github.base_ref }}" == "main" ]]; then
+          ssh-keyscan loarwenn.ventsdouest.dev >> ~/.ssh/known_hosts
+        elif [[ "${{ github.base_ref }}" == "test" ]]; then
+          ssh-keyscan server.malofauchet.fr >> ~/.ssh/known_hosts
+        fi
+
+    - name: Deploy to appropriate server
+      run: |
+        if [[ "${{ github.base_ref }}" == "main" ]]; then
+          ssh debian@loarwenn.ventsdouest.dev << 'EOF'
+            cd /docker/sae/data/web/
+            sudo git pull origin main
+          EOF
+        elif [[ "${{ github.base_ref }}" == "test" ]]; then
+          ssh malo@server.malofauchet.fr << 'EOF'
+            cd ~/loarwenn/data/web/
+            git pull origin test
+          EOF
+        fi
