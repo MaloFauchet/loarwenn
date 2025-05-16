@@ -9,7 +9,7 @@
 
 <?php
 
-require_once '../phpTemplates/headerBackOffice.php';
+
 ?>
 <h1>Le serveur fonctionne !</h1>
 
