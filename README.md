@@ -8,6 +8,7 @@ Ce projet a pour objectif de [décrire brièvement le but du projet, par exemple
 
 ## Prérequis
 
+- Docker
 - [Listez les prérequis, par exemple : Node.js, Python 3.x, etc.]
 - [Autres dépendances nécessaires]
 
