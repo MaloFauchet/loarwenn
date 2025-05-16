@@ -1,10 +1,11 @@
-name: Deploy on PR merge to main
+name: Deploy on PR merge
 
 on:
   pull_request:
     types: [closed]
     branches:
       - main
+      - test
 
 jobs:
   deploy:
@@ -17,11 +18,23 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
-        ssh-keyscan loarwenn.ventsdouest.dev >> ~/.ssh/known_hosts
 
-    - name: Pull latest code on server
+        if [[ "${{ github.base_ref }}" == "main" ]]; then
+          ssh-keyscan loarwenn.ventsdouest.dev >> ~/.ssh/known_hosts
+        elif [[ "${{ github.base_ref }}" == "test" ]]; then
+          ssh-keyscan server.malofauchet.fr >> ~/.ssh/known_hosts
+        fi
+
+    - name: Deploy to appropriate server
       run: |
-        ssh debian@loarwenn.ventsdouest.dev << 'EOF'
-          cd /docker/sae/data/web/
-          sudo git pull origin main
-        EOF
+        if [[ "${{ github.base_ref }}" == "main" ]]; then
+          ssh debian@loarwenn.ventsdouest.dev << 'EOF'
+            cd /docker/sae/data/web/
+            sudo git pull origin main
+          EOF
+        elif [[ "${{ github.base_ref }}" == "test" ]]; then
+          ssh malo@server.malofauchet.fr << 'EOF'
+            cd ~/loarwenn/data/web/
+            git pull origin test
+          EOF
+        fi
