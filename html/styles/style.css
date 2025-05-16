@@ -1,13 +1,41 @@
-:root{
-    --textColor: #011B43;
-    --blue: #005CE6;
+/* 
+Organisation :
+    - Definition des variables CSS
+    - Définition des polices d'écriture
+    - Body
+    - Header
+    - Footer
+*/
+
+
+/* Definition des variables CSS */
+:root {
+    --main-color: #005CE6;
+    --main-color-light: #CAE9FF;
+    --main-text-color: #011B43;
+
+    --footer-light-text-color: #b2cef7;
 }
 
+
+/* Definition des polices d'ecritures */
 @font-face {
     font-family: 'lexenDeca';
     src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
 }
 
+/* Body */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    color: var(--main-text-color);
+}
+
+
+/* Header */
 header.front-office{
     display: flex;
     align-items: center;
@@ -23,7 +51,7 @@ header.front-office > nav > ul{
 
 header.front-office > nav > ul > li{
     padding: 0 10vh;
-    color: var(--textColor);
+    color: var(--main-text-color);
     font-size: 40px;
     font-family: 'lexenDeca', sans-serif;
 }
@@ -31,7 +59,7 @@ header.front-office > nav > ul > li{
 header.front-office > div > img, header.front-office > a > svg:last-child{
     height: 10vh;
     width: auto;
-    color: var(--blue);
+    color: var(--main-color);
 }
 
 
@@ -41,7 +69,7 @@ header.front-office > div > svg, header.front-office > div > h1{
 
 a{
     text-decoration: none;
-    color: var(--textColor);
+    color: var(--main-text-color);
 }
 
 a:hover{
@@ -57,7 +85,7 @@ a:hover{
 
     header.front-office > div > h1{
         display: contents;
-        color: var(--textColor);
+        color: var(--main-text-color);
         font-family: 'lexenDeca', sans-serif;
         font-weight: normal;
     }
@@ -87,7 +115,7 @@ a:hover{
     header.front-office > nav.active > ul > li{
         padding: 2vh;
         text-align: left;
-        color: var(--textColor);
+        color: var(--main-text-color);
         font-size: 20px;
         font-family: 'lexenDeca', sans-serif;
         border-top: 1px solid lightgray;
@@ -99,7 +127,7 @@ a:hover{
     }
 
     /* le burger */
-    header.front-office > div >svg:first-child {
+    header.front-office > div > svg:first-child {
         display: block;
         height: 3vh;
         width: auto;
@@ -115,6 +143,176 @@ a:hover{
     header.front-office > a > svg:last-child{
         height: 4vh;
         width: auto;
-        color: var(--blue);
+        color: var(--main-color);
     }
+}
+
+/* Footer */
+
+footer {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--main-color);
+    color: white;
+
+    padding: 4vh 20vw;
+}
+
+footer.back-office {
+    padding: 4vh 10vw;
+}
+
+footer ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Footer Logo */
+footer img {
+    margin-right: 6vw;
+    width: 200px;
+    height: 200px;
+}
+
+footer h6 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+footer li {
+    margin: 3vw 0;
+}
+
+footer a {
+    text-decoration: none;
+    color: var(--footer-light-text-color);
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+footer > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+footer > div > div {
+    margin-right: 6vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+footer.back-office > div > div {
+    margin-right: 20vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+footer.back-office > div > div:last-child {
+    margin-right: 0;
+}
+
+footer hr {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #4085ec;
+    margin: 2vh 0;
+}
+
+/* Media Queries */
+
+@media (max-width: 768px) {
+    footer {
+        padding: 1vh 5vw;
+    }
+
+    footer > div {
+        justify-content: space-between;
+    }
+
+    footer img {
+        align-self: center;
+        width: 55px;
+        height: 55px;
+    }
+
+    footer h6 {
+        font-size: 16px;
+    }
+
+    footer ul {
+        margin: 0;
+    }
+
+    footer li {
+        margin: 2vw 0;
+    }
+
+    footer a {
+        font-size: 10px;
+    }
+
+    footer hr {
+        margin: 1vh 0;
+    }
+}
+
+
+
+/* desktop */
+header.back-office {
+    background-color: #005CE6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+header.back-office .logo img {
+    width: 100px;
+    height: auto;
+}
+
+header.back-office .header-droit a p {
+    /*font-family:'roboto';*/
+    
+}
+header.back-office h1 {
+    /*font-family:'lexend-deca';*/
+    
+}
+
+header.back-office h1 {
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+header.back-office .header-droit {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+}
+
+header.back-office .header-droit a {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+header.back-office .header-droit img {
+    width: 40px;
+    height: auto;
 }
