@@ -22,7 +22,7 @@ jobs:
         if [[ "${{ github.base_ref }}" == "main" ]]; then
           ssh-keyscan loarwenn.ventsdouest.dev >> ~/.ssh/known_hosts
         elif [[ "${{ github.base_ref }}" == "test" ]]; then
-          ssh-keyscan server.malofauchet.fr >> ~/.ssh/known_hosts
+          ssh-keyscan -p 63524 server.malofauchet.fr >> ~/.ssh/known_hosts
         fi
 
     - name: Deploy to appropriate server
