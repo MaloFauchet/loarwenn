@@ -22,6 +22,6 @@ jobs:
     - name: Pull latest code on server
       run: |
         ssh debian@loarwenn.ventsdouest.dev << 'EOF'
-          cd /dossier/vers/le/repo
+          cd /docker/sae/data/web/
           sudo git pull origin main
         EOF
