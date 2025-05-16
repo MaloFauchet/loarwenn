@@ -8,35 +8,113 @@
     src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
 }
 
-header.frontOffice{
+header.front-office{
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 0 5vh;
+    padding: 2vh;
 }
 
-header.frontOffice > nav > ul{
+header.front-office > nav > ul{
     display: flex;
     list-style: none;
-    justify-content: space-between;
 }
 
-header.frontOffice > nav > ul > li{
+header.front-office > nav > ul > li{
     padding: 0 10vh;
     color: var(--textColor);
     font-size: 40px;
     font-family: 'lexenDeca', sans-serif;
 }
 
-header.frontOffice > img:first-child{
-    height: 15vh;
-    width: auto;
-}
-
-header.frontOffice > svg{
+header.front-office > div > img, header.front-office > a > svg:last-child{
     height: 10vh;
     width: auto;
     color: var(--blue);
 }
 
+
+header.front-office > div > svg, header.front-office > div > h1{
+    display: none;
+}
+
+a{
+    text-decoration: none;
+    color: var(--textColor);
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+
+@media (max-width: 728px) {
+
+    header.front-office{
+        padding: 2vh ;
+    }
+
+    header.front-office > div > h1{
+        display: contents;
+        color: var(--textColor);
+        font-family: 'lexenDeca', sans-serif;
+        font-weight: normal;
+    }
+
+    header.front-office > nav {
+        display: none;
+    }
+
+    header.front-office > nav.active {
+        display: flex;
+        position: absolute;
+        background-color: white;
+        top: 10vh;
+        left: 0;
+        width: 100%;
+    }
+
+    header.front-office > nav.active > ul{
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    header.front-office > nav.active > ul > li{
+        padding: 2vh;
+        text-align: left;
+        color: var(--textColor);
+        font-size: 20px;
+        font-family: 'lexenDeca', sans-serif;
+        border-top: 1px solid lightgray;
+    }
+
+    header.front-office > div:first-child {
+        display: flex;
+        align-items: center;
+    }
+
+    /* le burger */
+    header.front-office > div >svg:first-child {
+        display: block;
+        height: 3vh;
+        width: auto;
+    }
+
+    /*le logo*/
+    header.front-office > div > img{
+        height: 5vh;
+        width: auto;
+    }
+
+    /*l'icone de profil*/
+    header.front-office > a > svg:last-child{
+        height: 4vh;
+        width: auto;
+        color: var(--blue);
+    }
+}
