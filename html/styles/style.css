@@ -57,6 +57,15 @@ footer img {
     margin-right: 6vw;
     width: 200px;
     height: 200px;
+    
+    border-radius: 50%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-color-light); 
+
+
 }
 
 footer h6 {
@@ -110,6 +119,9 @@ footer hr {
     border-top: 1px solid #4085ec;
     margin: 2vh 0;
 }
+
+
+
 
 /* Media Queries */
 
@@ -188,6 +200,7 @@ footer hr {
     flex: 1;
     color: white;
     padding: 16px 24px;
+    width: 100%; 
 }
 
 .nav-back-office ul li a {
@@ -196,9 +209,11 @@ footer hr {
     text-decoration: none;
     color: white;
     font-size: 16px;
-    font-weight: bold;
-    gap: 10px;                  
-    padding: 10px 20px;
+    gap: 10px;                
+    padding: 5px;
+    border-left: 4px solid transparent; 
+    
+
 }
 
 .nav-back-office ul li a img {
@@ -207,8 +222,12 @@ footer hr {
     flex-shrink: 0;
 }
 
-.nav-back-office a.active p {
-    color: red; 
+.nav-back-office a.active  {
+    border-left: 4px solid white;
+    background-color: var(--main-color);
+    filter: brightness(85%);
+    border-radius: 5px;
+    
 }
 
 .nav-back-office ul li a p {
@@ -218,6 +237,25 @@ footer hr {
     flex: 1;
     padding-left: 22%;
   
+}
+
+.contenu-back-office > .offre {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    margin-right: 5em;
+    display: flex;               
+    flex-direction: row;               
+    gap: 1em;                    
+}
+
+
+
+.contenu-back-office div img {
+    width: 20%;
+    height: auto;
+    border-radius: 5px;
 }
 
 

@@ -10,7 +10,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
         <li>
-            <a href="/backOffice/addOffre.php" class="<?= $currentPage === 'ajouterOffre.php' ? 'active' : '' ?>">
+            <a href="/backOffice/addOffre.php" class="<?= $currentPage === 'addOffre.php' ? 'active' : '' ?>">
                 <img src="/images/icons/plus-lg-white.svg"><p>Ajouter une offre</p>
             </a>
         </li>
