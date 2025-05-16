@@ -1,3 +1,9 @@
+
+
+
+
+
+
 /* 
 Organisation :
     - Definition des variables CSS
@@ -141,4 +147,56 @@ footer hr {
     footer hr {
         margin: 1vh 0;
     }
+}
+
+
+
+/* desktop */
+header.back-office {
+    background-color: #005CE6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+header.back-office .logo img {
+    width: 100px;
+    height: auto;
+}
+
+header.back-office .header-droit a p {
+    /*font-family:'roboto';*/
+    
+}
+header.back-office h1 {
+    /*font-family:'lexend-deca';*/
+    
+}
+
+header.back-office h1 {
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+header.back-office .header-droit {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+}
+
+header.back-office .header-droit a {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+header.back-office .header-droit img {
+    width: 40px;
+    height: auto;
 }

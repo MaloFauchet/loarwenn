@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,5 +11,6 @@
     <?php // Include the footer
     require_once '../phpTemplates/footerFront.php';
     ?>
+
 </body>
 </html>
