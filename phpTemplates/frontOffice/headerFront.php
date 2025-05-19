@@ -3,7 +3,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
         </svg>
-        <img src="images/logos/logoBlue.png" alt="logoBlue">
+        <img src="/images/logos/logoBlue.png" alt="logoBlue">
         <h1>PACT</h1>
     </div>
     <nav >
@@ -20,3 +20,19 @@
         </svg>
     </a>
 </header>
+
+<script>
+    /**
+     * Ajoute un événement au clic sur le burger pour afficher le nav
+    */
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded and parsed');
+        const burger = document.querySelector('svg'); 
+        const nav = document.querySelector('nav'); 
+
+        burger.addEventListener("click", () => {
+            console.log('Burger clicked');
+            nav.classList.toggle('active');
+        });
+    });
+</script>

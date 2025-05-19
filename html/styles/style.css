@@ -66,7 +66,7 @@ header.front-office > nav > ul{
 header.front-office > nav > ul > li{
     padding: 0 10vh;
     color: var(--main-text-color);
-    font-size: 40px;
+    font-size: 25px;
     font-family: 'lexenDeca', sans-serif;
 }
 
@@ -92,6 +92,10 @@ a:hover{
 
 
 @media (max-width: 728px) {
+
+    header.front-office h1{
+        font-size: 20px;
+    }
 
     header.front-office{
         padding: 2vh ;
@@ -130,7 +134,7 @@ a:hover{
         padding: 2vh;
         text-align: left;
         color: var(--main-text-color);
-        font-size: 20px;
+        font-size: 15px;
         font-family: 'lexenDeca', sans-serif;
         border-top: 1px solid lightgray;
     }
