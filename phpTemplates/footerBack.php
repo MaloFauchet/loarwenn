@@ -4,7 +4,7 @@
 
 <footer class="back-office">
     <div>
-        <img src="images/logo.png" alt="Logo">
+        <img src="/images/logo.png" alt="Logo">
         <div>
             <h6>Pages</h6>
             <ul>

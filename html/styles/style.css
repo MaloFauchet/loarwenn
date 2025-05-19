@@ -5,14 +5,22 @@ Organisation :
     - Body
     - Header
     - Footer
+    - Inputs
+
+    - Back-Office
+        - Informations Personnelles
 */
 
 
 /* Definition des variables CSS */
 :root {
+    --backgroud-color: white;
+
     --main-color: #005CE6;
     --main-color-light: #CAE9FF;
     --main-text-color: #011B43;
+
+    --input-color: #A5A3A3;
 
     --footer-light-text-color: #b2cef7;
 }
@@ -315,4 +323,175 @@ header.back-office .header-droit a {
 header.back-office .header-droit img {
     width: 40px;
     height: auto;
+}
+
+
+/* Inputs */
+
+label {
+    font-size: 20px;
+    color: var(--input-color);
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: translate(50px, 24px);
+    background-color: var(--backgroud-color);
+    width: fit-content;
+    padding: 0 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"] {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid var(--input-color);
+    border-radius: 1.8em;
+    font-size: 32px;
+    color: var(--main-text-color);
+    background-color: var(--backgroud-color);
+    outline: none;
+    transition: background-position 0.8s ease-out;
+}
+/* @supports (mix-blend-mode: darken) {
+    .input-group {
+        position: relative;
+        mix-blend-mode: lighten;
+    }
+    .input-group__label {
+        position: absolute;
+        left: 3em;
+        top: -0.28em;
+        /* background: #000; 
+    }
+}
+.input-group-label {
+  padding: 0 0.5em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: #A5A3A3;
+  color: #A5A3A3;
+  background-color: white;
+  cursor: pointer;
+}
+.input-group-input {
+  color: var(--main-text-color);
+  font-size: 32px;
+  border-style: none;
+  outline: none;
+  height: calc(1em + 1.6em + 0.5em);
+  width: 100%;
+  padding: 0.8em 1em;
+  border: 2px solid #A5A3A3;
+  /* background-image: linear-gradient(#000, #000), linear-gradient(120deg, #A5A3A3 100%); 
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 1.8em;
+  background-size: 200% 100%;
+  transition: background-position 0.8s ease-out;
+}
+.input-group-input:hover {
+  background-position: 100% 0;
+} */
+
+/* Back-Office */
+
+/* Informations Personnelles */
+
+main.info-compte {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    padding: 20px;
+}
+
+main.info-compte div.info-compte-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* justify-content: center; */
+    /* margin-bottom: 20px; */
+}
+
+main.info-compte div.info-compte-container > div, div.info-compte-container + div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    margin: 0 3vw;
+}
+
+/* photo de profil */
+main.info-compte img {
+    width : 306px;
+    height : 306px;
+    
+    border-radius: 50%;
+    margin-left: 3vw;
+    /* margin-top: 3vw; */
+}
+
+/* modification du mot de passe */
+a.modification-mdp {
+    text-decoration: underline;
+    color: var(--main-text-color);
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 3vh;
+    width: fit-content;
+}
+
+/* icone de modification du mot de passe */
+a.modification-mdp::after {
+    display: inline-block;
+    content: url('/images/icons/edit.svg');
+    margin-left: 10px;
+    width: 10px;
+    height: 10px;
+    transform: translateY(8px);
+}
+
+/* sauvegarder les modifications */
+div#sauvegarder {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 24px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 3vh;
+
+    padding: 0vh 1vw;
+
+    transition: bottom 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+div#sauvegarder > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+}
+
+div#sauvegarder button {
+    background-color: white;
+    color: var(--main-color);
+    font-size: 20px;
+
+    margin: 0 1vw;
+    border: none;
+    border-radius: 20px;
+    padding: 1vh 2vw;
 }
