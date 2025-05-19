@@ -5,6 +5,7 @@ Organisation :
     - Body
     - Header
     - Footer
+    - OffreDetaillée
 */
 
 
@@ -13,16 +14,81 @@ Organisation :
     --main-color: #005CE6;
     --main-color-light: #CAE9FF;
     --main-text-color: #011B43;
+    --main-text-grey: #A5A3A3;
+    --main-star-yellow: #FFCA43;
 
     --footer-light-text-color: #b2cef7;
+
+    --hr-color: #A5A3A369;
+    
 }
-
-
 /* Definition des polices d'ecritures */
 @font-face {
     font-family: 'lexenDeca';
     src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
 }
+
+
+
+
+/* header desktop */
+header.back-office {
+    background-color: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+header.back-office .logo img {
+    width: 50px;
+    height: auto;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+header.back-office .header-droit a p {
+    /*font-family:'roboto';*/
+    
+}
+header.back-office h1 {
+    /*font-family:'lexend-deca';*/
+    
+}
+
+header.back-office h1 {
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+header.back-office .header-droit {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+}
+
+header.back-office .header-droit a {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+header.back-office .header-droit img {
+    width: 40px;
+    height: auto;
+}
+
 
 /* Body */
 
@@ -34,118 +100,170 @@ body {
     color: var(--main-text-color);
 }
 
-
-/* Header */
-header.front-office{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 2vh;
-}
-
-header.front-office > nav > ul{
-    display: flex;
-    list-style: none;
-}
-
-header.front-office > nav > ul > li{
-    padding: 0 10vh;
-    color: var(--main-text-color);
-    font-size: 40px;
+h1, h2, h3, h4, h5, h6 {
     font-family: 'lexenDeca', sans-serif;
+    font-weight: normal;
 }
 
-header.front-office > div > img, header.front-office > a > svg:last-child{
-    height: 10vh;
-    width: auto;
-    color: var(--main-color);
+hr{
+    color: var(--hr-color);
+}
+
+/* ===========================
+    Page Offre Back Office
+    =========================== */
+
+/* Conteneur principal de la page back office */
+.page-back-office {
+     display: flex;
+     margin-left: 20vw; /* espace laissé pour la nav fixe */
+     min-height: 100vh;
+     flex-direction: column;
+}
+
+/* Conteneur du contenu principal */
+.container-back-office {
+     display: flex;
+     flex: 1;
+     overflow: hidden;
+     flex-direction: column;
+}
+
+/* Navigation latérale fixe */
+.nav-back-office {
+     background-color: var(--main-color);
+     width: 20vw;
+     min-width: 200px;
+     height: 100vh;
+     position: fixed;
+     top: 67px; /* ajuste si tu as un header */
+     left: 0;
+     padding-top: 2em;
+     display: flex;
+     flex-direction: column;
+     z-index: 10; /* au-dessus du contenu */
+}
+
+.nav-back-office ul {
+     padding: 0;
+     margin: 0;
+     list-style: none;
+}
+
+.nav-back-office li {
+     flex: 1;
+     color: white;
+     padding: 16px 24px;
+}
+
+.nav-back-office ul li a {
+     display: flex;
+     align-items: center;
+     text-decoration: none;
+     color: white;
+     font-size: 16px;
+     gap: 10px;
+     padding: 5px;
+     border-left: 4px solid transparent;
+}
+
+.nav-back-office ul li a img {
+     width: 30px;
+     height: 30px;
+     flex-shrink: 0;
+}
+
+/* Lien actif dans la nav */
+.nav-back-office a.active {
+     border-left: 4px solid white;
+     background-color: var(--main-color);
+     filter: brightness(85%);
+     border-radius: 5px;
+}
+
+.nav-back-office ul li a p {
+     margin: 0;
+}
+
+/* Contenu principal à droite de la nav */
+.contenu-back-office {
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     overflow: hidden;
+     padding: 2em;
+     overflow-y: auto;
+}
+
+/* Bloc d'une offre */
+.contenu-back-office > .offre {
+     border: 1px solid black;
+     border-radius: 5px;
+     padding: 10px;
+     margin: 10px;
+     margin-right: 5em;
+     display: flex;
+     flex-direction: row;
+     gap: 1em;
+}
+
+.contenu-back-office > .offre div div {
+     display: flex;
+}
+
+/* Style des étoiles */
+.etoiles img {
+     width: 20px;
+     height: 20px;
+     margin-right: 5px;
+}
+
+/* Alignement des éléments dans les offres */
+.contenu-back-office div div div {
+     display: flex;
+     align-items: center;
+}
+
+.contenu-back-office div div div p:first-child {
+     margin-right: 10px;
+}
+
+.contenu-back-office div div div p:nth-child(3) {
+     margin-right: 100px;
+}
+
+/* Pied de chaque offre */
+.contenu-back-office .bas-offre {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+}
+
+.contenu-back-office .bas-offre div {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+}
+
+.contenu-back-office .bas-offre div p {
+     margin: 0;
+}
+
+/* Icône wifi dans l'offre */
+.contenu-back-office .bas-offre div:first-child img {
+     width: 20px;
+     height: 20px;
+     margin-right: 10px;
+}
+
+/* Badge à droite dans le pied de l'offre */
+.contenu-back-office .bas-offre div:last-child {
+     background-color: var(--main-color-light);
+     padding: 8px;
+     border-radius: 50%;
 }
 
 
-header.front-office > div > svg, header.front-office > div > h1{
-    display: none;
-}
-
-a{
-    text-decoration: none;
-    color: var(--main-text-color);
-}
-
-a:hover{
-    text-decoration: underline;
-}
-
-
-@media (max-width: 728px) {
-
-    header.front-office{
-        padding: 2vh ;
-    }
-
-    header.front-office > div > h1{
-        display: contents;
-        color: var(--main-text-color);
-        font-family: 'lexenDeca', sans-serif;
-        font-weight: normal;
-    }
-
-    header.front-office > nav {
-        display: none;
-    }
-
-    header.front-office > nav.active {
-        display: flex;
-        position: absolute;
-        background-color: white;
-        top: 10vh;
-        left: 0;
-        width: 100%;
-    }
-
-    header.front-office > nav.active > ul{
-        display: flex;
-        flex-direction: column;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-    }
-
-    header.front-office > nav.active > ul > li{
-        padding: 2vh;
-        text-align: left;
-        color: var(--main-text-color);
-        font-size: 20px;
-        font-family: 'lexenDeca', sans-serif;
-        border-top: 1px solid lightgray;
-    }
-
-    header.front-office > div:first-child {
-        display: flex;
-        align-items: center;
-    }
-
-    /* le burger */
-    header.front-office > div > svg:first-child {
-        display: block;
-        height: 3vh;
-        width: auto;
-    }
-
-    /*le logo*/
-    header.front-office > div > img{
-        height: 5vh;
-        width: auto;
-    }
-
-    /*l'icone de profil*/
-    header.front-office > a > svg:last-child{
-        height: 4vh;
-        width: auto;
-        color: var(--main-color);
-    }
-}
 
 /* Footer */
 
@@ -173,6 +291,15 @@ footer img {
     margin-right: 6vw;
     width: 200px;
     height: 200px;
+    
+    border-radius: 50%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-color-light); 
+
+
 }
 
 footer h6 {
@@ -227,6 +354,9 @@ footer hr {
     margin: 2vh 0;
 }
 
+
+
+
 /* Media Queries */
 
 @media (max-width: 768px) {
@@ -267,52 +397,289 @@ footer hr {
 
 
 
-/* desktop */
-header.back-office {
-    background-color: #005CE6;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    flex-wrap: wrap;
-}
 
-header.back-office .logo img {
-    width: 100px;
-    height: auto;
-}
 
-header.back-office .header-droit a p {
-    /*font-family:'roboto';*/
-    
-}
-header.back-office h1 {
-    /*font-family:'lexend-deca';*/
-    
-}
 
-header.back-office h1 {
-    color: white;
-    margin: 0;
-    text-align: center;
-}
 
-header.back-office .header-droit {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-left: auto;
-}
-
-header.back-office .header-droit a {
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-}
 
 header.back-office .header-droit img {
     width: 40px;
     height: auto;
+}
+
+
+
+/* Offre Detaillée */
+
+.offre-detaille-front h4{
+    font-size: 13px;
+}
+
+.offre-detaille-front h3{
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* Fil d'Arianne */
+.offre-detaille-front .breadcrumb-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 5vh;
+}
+
+.offre-detaille-front .breadcrumb-back {
+    height: 2vh;
+    cursor: pointer;
+}
+
+.offre-detaille-front .breadcrumb ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'lexenDeca', sans-serif;
+    font-size: 18px;
+    color: var(--textColor);
+}
+
+.offre-detaille-front .breadcrumb li {
+    display: flex;
+    align-items: center;
+}
+
+.offre-detaille-front .breadcrumb li:not(:last-child)::after {
+    content: "→";
+    margin: 0 0.5rem;
+    color: var(--main-text-grey);
+}
+
+.offre-detaille-front .breadcrumb a {
+    text-decoration: none;
+    color: var(--textColor);
+}
+
+.offre-detaille-front .breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.offre-detaille-front ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.offre-detaille-front section{
+    margin: 20px;
+}
+
+
+.offre-detaille-front h2{
+    margin: 1vh 0 3vh 2vh;
+    font-size: 45px;
+}
+
+.offre-detaille-front h3{
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+.offre-detaille-front h4{
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Offre Image */
+.offre-detaille-front .offre-image-container{
+    display: flex;
+    gap: 1vh;
+    margin: 1vh;
+}
+
+.offre-detaille-front .offre-image {
+    height: 50vh;
+}
+
+.offre-detaille-front .offre-image-container{
+    display: flex;
+    gap: 2vh;
+    margin: 2vh;
+}
+
+.offre-detaille-front .gallery-offre-parent{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
+    gap: 5%;
+}
+
+.offre-detaille-front .gallery-offre-parent img{
+    height: 100%;
+    object-fit: contain; /* préserve le ratio sans crop */
+}
+
+.offre-detaille-front .grid-offre-1,
+.offre-detaille-front .grid-offre-2,
+.offre-detaille-front .grid-offre-3,
+.offre-detaille-front .grid-offre-4{
+    height: 150px
+}
+
+
+/* Profil Pro */
+.offre-detaille-front .pp-pro {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1vh;
+}
+
+.offre-detaille-front #pp-pro{
+    border-radius: 50px;
+    height: 10vh;
+    width: auto;
+}
+
+.offre-detaille-front .pp-pro p{
+    font-size: 13px;
+    color: var(--main-text-grey);
+}
+
+/* Notes */
+.offre-detaille-front .pp-pro + div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1vh;
+}
+
+.offre-detaille-front .star-container > svg{
+    color: var(--main-star-yellow);
+    height: 40px;
+    width: auto;
+}
+
+.offre-detaille-front .info{
+    margin: 5vh;
+}
+
+/* Informations Pratiques */
+.offre-detaille-front .info-pratique{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.offre-detaille-front .info-pratique > img{
+    height: 20px;
+    width: auto;
+}
+
+.offre-detaille-front p{
+    font-size: 20px;
+    color: var(--main-text-color);
+}
+
+.offre-detaille-front .offre{
+    margin: 0;
+}
+
+.offre-detaille-front section > article:nth-of-type(2) {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+@media (max-width: 1450px){
+    .offre-detaille-front .gallery-offre-parent img{
+        height: 15vh;
+        object-fit: contain; /* préserve le ratio sans crop */
+    }
+
+    .offre-detaille-front .gallery-offre-parent img{
+        height: 19vh;
+        object-fit: contain; /* préserve le ratio sans crop */
+    }
+
+}
+
+
+/* Media query Mobile */
+@media (max-width: 800px) {
+    /* Titre */
+    .offre-detaille-front h2{
+        font-size: 25px;
+        margin: 1vh 0 3vh 2vh;
+    }
+
+    .offre-detaille-front h3{
+        font-size: 20px;
+        margin: 10px 0;
+    }
+
+    .offre-detaille-front h4{
+        font-size: 15px;
+        margin: 0;
+    }
+
+
+    /* Offre Image */
+    .offre-detaille-front .offre-image {
+        height: 30vh;
+        width: auto;
+    }
+
+    .offre-detaille-front .offre-image-container{
+        margin: 0;
+    }
+
+    .offre-detaille-front .main-image-container{
+        width: 100%;
+    }
+
+    .offre-detaille-front .gallery-offre-parent{
+        display: none;
+    }
+
+
+    /* Profil Pro */
+    .offre-detaille-front #pp-pro{
+        border-radius: 50px;
+        height: 5vh;
+        width: auto;
+    }
+
+    .offre-detaille-front .pp-pro p{
+        font-size: 13px;
+        color: var(--main-text-grey);
+    }
+
+    /*Notes */
+    .offre-detaille-front .pp-pro + div{
+        display: none;
+    }
+
+    /* Informations Pratiques */
+    .offre-detaille-front .info{
+        margin: 2vh 0;
+    }
+
+    .offre-detaille-front p{
+        font-size: 10px;
+        color: var(--main-text-color);
+    }
+
+    .offre-detaille-front .offre{
+        margin: 0;
+    }
+
+    .offre-detaille-front h2{
+        margin: 2vh 0;
+    }
+
+
 }
