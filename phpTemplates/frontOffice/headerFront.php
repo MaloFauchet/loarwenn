@@ -1,3 +1,8 @@
+<head>
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="headerFront.js"></script>
+</head>
 <header class="front-office">
     <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -20,19 +25,3 @@
         </svg>
     </a>
 </header>
-
-<script>
-    /**
-     * Ajoute un événement au clic sur le burger pour afficher le nav
-    */
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM fully loaded and parsed');
-        const burger = document.querySelector('svg'); 
-        const nav = document.querySelector('nav'); 
-
-        burger.addEventListener("click", () => {
-            console.log('Burger clicked');
-            nav.classList.toggle('active');
-        });
-    });
-</script>
