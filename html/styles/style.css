@@ -1,13 +1,9 @@
-
-
-
-
-
-
 /* 
 Organisation :
     - Definition des variables CSS
+    - Définition des polices d'écriture
     - Body
+    - Header
     - Footer
 */
 
@@ -20,6 +16,13 @@ Organisation :
 
     --footer-light-text-color: #b2cef7;
 }
+/* Definition des polices d'ecritures */
+@font-face {
+    font-family: 'lexenDeca';
+    src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
+}
+
+
 
 
 /* header desktop */
@@ -81,7 +84,6 @@ header.back-office .header-droit img {
 }
 
 
-
 /* Body */
 
 body {
@@ -91,6 +93,7 @@ body {
     font-size: 18px;
     color: var(--main-text-color);
 }
+
 
 /* ===========================
     Page Offre Back Office
