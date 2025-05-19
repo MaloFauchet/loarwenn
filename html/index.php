@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <title>Accueil</title>
     <link rel="stylesheet" href="styles/style.css">
-    <script src="scripts/header.js"></script>
 </head>
 <body>
-
     <?php include('../phpTemplates/frontOffice/headerFront.php'); ?>
 
     <main>
