@@ -1,6 +1,6 @@
 /**
  * Ajoute un événement au clic sur le burger pour afficher le nav
- */
+*/
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
     const burger = document.querySelector('svg'); 

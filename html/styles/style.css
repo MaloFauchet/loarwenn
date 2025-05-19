@@ -256,6 +256,7 @@ hr{
      margin-right: 10px;
 }
 
+
 /* Badge à droite dans le pied de l'offre */
 .contenu-back-office .bas-offre div:last-child {
      background-color: var(--main-color-light);
