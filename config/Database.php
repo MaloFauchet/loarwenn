@@ -10,10 +10,10 @@ class Database {
     public $conn;
 
     public function __construct() {
-        $this->host = 'loarwenn.ventsdouest.dev';
+        $this->host = 'postgresdb';
         $this->db_name = getenv('DB_NAME');
-        $this->username = getenv('DB_USER');
-        $this->password = getenv('PGADMIN_PASSWORD');
+        $this->username = getenv('DB_USER_LOCAL');
+        $this->password = getenv('DB_ROOT_PASSWORD');
     }
 
     public function getConnection() {
