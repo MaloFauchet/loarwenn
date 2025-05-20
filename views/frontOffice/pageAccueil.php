@@ -522,7 +522,7 @@
             ?>
             
             <!-- TO FIX -->
-            <?php // require_once "../../componentsGlobaux/cardRecommendedHorizontal.php" ?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'] . "/../views/componentsGlobaux/cardRecommendedHorizontal.php") ?>
         </div>
     </main>
 
