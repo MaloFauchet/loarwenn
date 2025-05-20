@@ -25,7 +25,8 @@ Expliquez comment lancer ou utiliser le projet :
 
 ```bash
 # Exemple de commande pour démarrer le projet
-npm start
+# Pour lancer Docker
+docker compose up --build -d ; docker compose logs -f
 ```
 
 ## Contribuer

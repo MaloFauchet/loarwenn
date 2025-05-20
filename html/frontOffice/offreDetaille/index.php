@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offre en détail</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body class="offre-detaille-front">
 
@@ -32,20 +32,20 @@
                     <div class="offre-image-container">
                         <!--Image a recup dans la bdd -->
                         <div class="main-image-container">
-                            <img src="../images/offres/canyioning2.png" alt="Image de l'offre" class="offre-image">
+                            <img src="/images/offres/canyioning2.png" alt="Image de l'offre" class="offre-image">
                         </div>
                         <div class="gallery-offre-parent">
                             <div class="grid-offre-1">
-                                <img src="../images/offres/canyioning2.png" alt="">
+                                <img src="/images/offres/canyioning2.png" alt="">
                             </div>
                             <div class="grid-offre-2">
-                                <img src="../images/offres/canyioning.jpg" alt="">
+                                <img src="/images/offres/canyioning.jpg" alt="">
                             </div>
                             <div class="grid-offre-3">
-                                <img src="../images/offres/canyioning.jpg" alt="">
+                                <img src="/images/offres/canyioning.jpg" alt="">
                             </div>
                             <div class="grid-offre-4">
-                                <img src="../images/offres/canyioning2.png" alt="">
+                                <img src="/images/offres/canyioning2.png" alt="">
                             </div>
                         </div>
                     </div>
