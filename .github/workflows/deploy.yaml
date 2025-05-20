@@ -22,19 +22,13 @@ jobs:
         if [[ "${{ github.base_ref }}" == "main" ]]; then
           ssh-keyscan loarwenn.ventsdouest.dev >> ~/.ssh/known_hosts
         elif [[ "${{ github.base_ref }}" == "test" ]]; then
-          ssh-keyscan server.malofauchet.fr >> ~/.ssh/known_hosts
+          ssh-keyscan -p 63524 server.malofauchet.fr >> ~/.ssh/known_hosts
         fi
 
     - name: Deploy to appropriate server
       run: |
         if [[ "${{ github.base_ref }}" == "main" ]]; then
-          ssh debian@loarwenn.ventsdouest.dev << 'EOF'
-            cd /docker/sae/data/web/
-            sudo git pull origin main
-          EOF
+          ssh debian@loarwenn.ventsdouest.dev "cd /docker/sae/data/web/ && sudo git pull origin main"
         elif [[ "${{ github.base_ref }}" == "test" ]]; then
-          ssh malo@server.malofauchet.fr << 'EOF'
-            cd ~/loarwenn/data/web/
-            git pull origin test
-          EOF
+          ssh malo@server.malofauchet.fr -p 63524 "cd ~/loarwenn/data/web/ && git pull origin test"
         fi

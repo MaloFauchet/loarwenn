@@ -1,0 +1,38 @@
+/* Definition des variables CSS */
+:root {
+    --main-color: #005CE6;
+    --main-color-light: #CAE9FF;
+    --main-text-color: #011B43;
+    --main-text-grey: #A5A3A3;
+    --main-star-yellow: #FFCA43;
+
+    --footer-light-text-color: #b2cef7;
+
+    --hr-color: #A5A3A369;
+    
+}
+/* Definition des polices d'ecritures */
+@font-face {
+    font-family: 'lexenDeca';
+    src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
+}
+
+
+/* Body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    color: var(--main-text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'lexenDeca', sans-serif;
+    font-weight: normal;
+}
+
+hr{
+    color: var(--hr-color);
+}
+

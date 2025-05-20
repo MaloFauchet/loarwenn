@@ -1,0 +1,269 @@
+/* Offre Detaillée */
+.offre-detaille-front h4{
+    font-size: 13px;
+}
+
+.offre-detaille-front h3{
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* Fil d'Arianne */
+.offre-detaille-front .breadcrumb-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 5vh;
+}
+
+.offre-detaille-front .breadcrumb-back {
+    height: 2vh;
+    cursor: pointer;
+}
+
+.offre-detaille-front .breadcrumb ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'lexenDeca', sans-serif;
+    font-size: 18px;
+    color: var(--textColor);
+}
+
+.offre-detaille-front .breadcrumb li {
+    display: flex;
+    align-items: center;
+}
+
+.offre-detaille-front .breadcrumb li:not(:last-child)::after {
+    content: "→";
+    margin: 0 0.5rem;
+    color: var(--main-text-grey);
+}
+
+.offre-detaille-front .breadcrumb a {
+    text-decoration: none;
+    color: var(--textColor);
+}
+
+.offre-detaille-front .breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.offre-detaille-front ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.offre-detaille-front section{
+    margin: 20px;
+}
+
+.offre-detaille-front h2{
+    margin: 1vh 0 3vh 2vh;
+    font-size: 45px;
+}
+
+.offre-detaille-front h3{
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+.offre-detaille-front h4{
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Offre Image */
+.offre-detaille-front .offre-image-container{
+    display: flex;
+    gap: 1vh;
+    margin: 1vh;
+}
+
+.offre-detaille-front .offre-image {
+    height: 50vh;
+}
+
+.offre-detaille-front .offre-image-container{
+    display: flex;
+    gap: 2vh;
+    margin: 2vh;
+}
+
+.offre-detaille-front .gallery-offre-parent{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
+    gap: 5%;
+}
+
+.offre-detaille-front .gallery-offre-parent img{
+    height: 100%;
+    object-fit: contain; /* préserve le ratio sans crop */
+}
+
+.offre-detaille-front .grid-offre-1,
+.offre-detaille-front .grid-offre-2,
+.offre-detaille-front .grid-offre-3,
+.offre-detaille-front .grid-offre-4{
+    height: 150px
+}
+
+/* Profil Pro */
+.offre-detaille-front .pp-pro {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1vh;
+}
+
+.offre-detaille-front #pp-pro{
+    border-radius: 50px;
+    height: 10vh;
+    width: auto;
+}
+
+.offre-detaille-front .pp-pro p{
+    font-size: 13px;
+    color: var(--main-text-grey);
+}
+
+/* Notes */
+.offre-detaille-front .pp-pro + div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1vh;
+}
+
+.offre-detaille-front .star-container > svg{
+    color: var(--main-star-yellow);
+    height: 40px;
+    width: auto;
+}
+
+.offre-detaille-front .info{
+    margin: 5vh;
+}
+
+/* Informations Pratiques */
+.offre-detaille-front .info-pratique{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.offre-detaille-front .info-pratique > img{
+    height: 20px;
+    width: auto;
+}
+
+.offre-detaille-front p{
+    font-size: 20px;
+    color: var(--main-text-color);
+}
+
+.offre-detaille-front .offre{
+    margin: 0;
+}
+
+.offre-detaille-front section > article:nth-of-type(2) {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+@media (max-width: 1450px){
+    .offre-detaille-front .gallery-offre-parent img{
+        height: 15vh;
+        object-fit: contain; /* préserve le ratio sans crop */
+    }
+
+    .offre-detaille-front .gallery-offre-parent img{
+        height: 19vh;
+        object-fit: contain; /* préserve le ratio sans crop */
+    }
+
+}
+
+
+/* Media query Mobile */
+@media (max-width: 800px) {
+    /* Titre */
+    .offre-detaille-front h2{
+        font-size: 25px;
+        margin: 1vh 0 3vh 2vh;
+    }
+
+    .offre-detaille-front h3{
+        font-size: 20px;
+        margin: 10px 0;
+    }
+
+    .offre-detaille-front h4{
+        font-size: 15px;
+        margin: 0;
+    }
+
+
+    /* Offre Image */
+    .offre-detaille-front .offre-image {
+        height: 30vh;
+        width: auto;
+    }
+
+    .offre-detaille-front .offre-image-container{
+        margin: 0;
+    }
+
+    .offre-detaille-front .main-image-container{
+        width: 100%;
+    }
+
+    .offre-detaille-front .gallery-offre-parent{
+        display: none;
+    }
+
+
+    /* Profil Pro */
+    .offre-detaille-front #pp-pro{
+        border-radius: 50px;
+        height: 5vh;
+        width: auto;
+    }
+
+    .offre-detaille-front .pp-pro p{
+        font-size: 13px;
+        color: var(--main-text-grey);
+    }
+
+    /*Notes */
+    .offre-detaille-front .pp-pro + div{
+        display: none;
+    }
+
+    /* Informations Pratiques */
+    .offre-detaille-front .info{
+        margin: 2vh 0;
+    }
+
+    .offre-detaille-front p{
+        font-size: 10px;
+        color: var(--main-text-color);
+    }
+
+    .offre-detaille-front .offre{
+        margin: 0;
+    }
+
+    .offre-detaille-front h2{
+        margin: 2vh 0;
+    }
+}
