@@ -1,0 +1,55 @@
+/* Navigation latérale fixe */
+.nav-back-office {
+     background-color: var(--main-color);
+     width: 20vw;
+     min-width: 200px;
+     height: 100vh;
+     position: fixed;
+     top: 67px; /* ajuste si tu as un header */
+     left: 0;
+     padding-top: 2em;
+     display: flex;
+     flex-direction: column;
+     z-index: 10; /* au-dessus du contenu */
+}
+
+.nav-back-office ul {
+     padding: 0;
+     margin: 0;
+     list-style: none;
+}
+
+.nav-back-office li {
+     flex: 1;
+     color: white;
+     padding: 16px 24px;
+}
+
+.nav-back-office ul li a {
+     display: flex;
+     align-items: center;
+     text-decoration: none;
+     color: white;
+     font-size: 16px;
+     gap: 10px;
+     padding: 5px;
+     border-left: 4px solid transparent;
+}
+
+.nav-back-office ul li a img {
+     width: 30px;
+     height: 30px;
+     flex-shrink: 0;
+}
+
+/* Lien actif dans la nav */
+.nav-back-office a.active {
+     border-left: 4px solid white;
+     background-color: var(--main-color);
+     filter: brightness(85%);
+     border-radius: 5px;
+}
+
+.nav-back-office ul li a p {
+     margin: 0;
+}
