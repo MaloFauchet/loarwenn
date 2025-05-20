@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offre en détail</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/offreDetaille.css">
+    <link rel="stylesheet" href="styles/components/headerFrontOffice.css">
 </head>
 <body class="offre-detaille-front">
 
     <!-- Composant Header -->
-    <?php require_once('./components/headerFront.php'); ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/frontOffice/components/header.php'); ?>
     
     <!-- Main-->
     <main>
         <div class="breadcrumb-container">
             <a href="index.php" class="breadcrumb-back-link">
-                <img src="images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
+                <img src="/images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
             </a>
             <nav class="breadcrumb">
                 <ul>
@@ -32,19 +34,19 @@
                     <div class="offre-image-container">
                         <!--Image a recup dans la bdd -->
                         <div class="main-image-container">
-                            <img src="images/offres/canyioning2.png" alt="Image de l'offre" class="offre-image">
+                            <img src="/images/offres/cannyoning2.png" alt="Image de l'offre" class="offre-image">
                         </div>
                         <div class="gallery-offre-parent">
                             <div class="grid-offre-1">
-                                <img src="images/offres/canyioning2.png" alt="">
+                                <img src="/images/offres/cannyoning2.png" alt="">
                             </div>
                             <div class="grid-offre-2">
-                                <img src="images/offres/canyioning.jpg" alt="">
+                                <img src="/images/offres/canyioning.jpg" alt="">
                             <div class="grid-offre-3">
-                                <img src="images/offres/canyioning.jpg" alt="">
+                                <img src="/images/offres/canyioning.jpg" alt="">
                             </div>
                             <div class="grid-offre-4">
-                                <img src="images/offres/canyioning2.png" alt="">
+                                <img src="/images/offres/cannyoning2.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -59,7 +61,7 @@
             <article>
                 <figure class="pp-pro">
                     <!--PP a recup dans la bdd -->
-                    <img src="images/profils/elouan.jpg" alt="Photo de profil pro" id="pp-pro">
+                    <img src="/images/profils/elouan.jpg" alt="Photo de profil pro" id="pp-pro">
                     <figcaption>
                         <h4>Association : Armor Naviguation<!--Denomination a recup dans la bdd--></h4>
                         <?php
@@ -124,7 +126,7 @@
                 <ul>
                     <li>
                         <figure class="info-pratique">
-                            <img src="images/icons/clock.svg" alt="Horaires">
+                            <img src="/images/icons/clock.svg" alt="Horaires">
                             <figcaption>
                                 <h3>3H<!-- Horaires a recup dans la bdd --></h3>
                             </figcaption>
@@ -132,7 +134,7 @@
                     </li>
                     <li>
                         <figure class="info-pratique">
-                            <img src="images/icons/geo-alt-fill.svg" alt="Localisation">
+                            <img src="/images/icons/geo-alt-fill.svg" alt="Localisation">
                             <figcaption>
                                 <h3>Perros-guirec<!-- Localisation a recup dans la bdd --></h3>
                             </figcaption>
@@ -140,7 +142,7 @@
                     </li>
                     <li>
                         <figure class="info-pratique">
-                            <img src="images/icons/cake-fill.svg" alt="Age">
+                            <img src="/images/icons/cake-fill.svg" alt="Age">
                             <figcaption>
                                 <h3>12 ans<!-- Age a recup dans la bdd --></h3>
                             </figcaption>
@@ -148,7 +150,7 @@
                     </li>
                     <li>
                         <figure class="info-pratique">
-                            <img src="images/icons/cash.svg" alt="Prix">
+                            <img src="/images/icons/cash.svg" alt="Prix">
                             <figcaption>
                                 <h3>0€<!-- Prix a recup dans la bdd --></h3>
                             </figcaption>
@@ -167,6 +169,6 @@
             </article>
         </section>
     </main>
-    <?php require_once('./footerFront.php'); ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/components/footer.php'); ?>
 </body>
 </html>

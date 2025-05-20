@@ -12,14 +12,12 @@ $utilisateurs = $controller->afficherUtilisateurs();
     <title>PACT</title>
     <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
     <link rel="stylesheet" href="/styles/styles.css">
-    <link rel="stylesheet" href="/styles/backOffice.css">
+    <link rel="stylesheet" href="/styles/frontOffice.css">
 </head>
 <body>
     <main>
-        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
         <?php 
-            //require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/pageAccueil.php');
-            require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetailleActivite.php');
+            require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/offreDetaille.php');
         ?>
     </main>
 </body>

@@ -10,13 +10,14 @@
 
     --hr-color: #A5A3A369;
     
+    --check-box-checked: #59DD00;
+    --check-box-unchecked: #FF0000;
 }
 /* Definition des polices d'ecritures */
 @font-face {
     font-family: 'lexenDeca';
     src: url('fonts/Lexend_Deca/LexendDeca-VariableFont_wght.ttf') format('truetype');
 }
-
 
 /* Body */
 body {
