@@ -4,34 +4,52 @@
 <head>
     <meta charset="UTF-8" />
     <title>Inscription PACT</title>
-    <link rel="stylesheet" href="styles/components/creationCompteBackOffice.css" />
+    <link rel="stylesheet" href="/styles/components/creationCompteBackOffice.css" />
 </head>
 
 
 <body>
-    <header></header>
     <main>
         <div>
-            <img src="" alt="logo de la PACT" />
+            <img src="/images/logos/logoBlue.png" alt="logo de la PACT" />
             <h2>Inscrivez-vous pour profiter du meilleur de la PACT</h2>
         </div>
 
         <form action="traitement.php" method="POST" class="form-container">
             <div class="grid">
-                <input type="text" name="nom" placeholder="Nom" />
-                <input type="text" name="prenom" placeholder="Prénom" />
+                <div>
+                    <label for="nom">Nom</label>
+                    <input id="nom" type="text" required/>
+                </div>
+                <div>
+                    <label for="prenom">Prenom</label>
+                    <input id="prenom" type="text" required/>
+                </div>
             </div>
 
-            <input type="email" name="email" placeholder="E-mail" />
-            <input type="tel" name="telephone" placeholder="Téléphone" />
+            <label for="email">E-mail</label>
+            <input id="email" type="email" required/>
+
+            <label for="telephone">Téléphone</label>
+            <input type="tel" id="telephone" required/>
 
             <h3>Adresse</h3>
-            <input type="text" name="adresse" placeholder="Adresse postale *" required />
-            <input type="text" name="complement" placeholder="Complément d'adresse *" required />
+
+            <label for="adresse">Téléphone</label>
+            <input type="text" id="adresse" required />
+
+            <label for="complement">Téléphone</label>
+            <input type="text" for="complement" required />
 
             <div class="grid">
-                <input type="text" name="code_postal" placeholder="Code postal *" required />
-                <input type="text" name="ville" placeholder="Ville *" required />
+                <div>
+                    <label for="code_postal">Téléphone</label>
+                    <input type="text" id="code_postal" required />
+                </div>
+                <div>
+                    <label for="ville">Téléphone</label>
+                    <input type="text" id="ville" required />
+                </div>
             </div>
 
 
@@ -42,18 +60,24 @@
             </label>
 
             <div id="entrepriseFields" style="display: none">
-                <input type="text" name="denomination" placeholder="Dénomination" />
-                <input type="text" name="siren" placeholder="Siren" />
-                <input type="text" name="rib" placeholder="RIB" />
+                <label for="denomination">Dénomination</label>
+                <input type="text" id="denomination" required/>
+                <label for="siren">Siren</label>
+                <input type="text" id="siren" required/>
+                <label for="rib">RIB</label>
+                <input type="text" id="rib" required/>
             </div>
 
             <div id="associationField" style="display: block">
-                <input type="text" name="raison_sociale" placeholder="Raison sociale" />
+                <label for="raison_sociale">RIB</label>
+                <input type="text" id="raison_sociale" required/>
             </div>
 
             <h3>Mot de passe</h3>
-            <input type="password" name="mot_de_passe" placeholder="Mot de passe" required />
-            <input type="password" name="confirmation" placeholder="Confirmation mot de passe" required />
+            <label for="mot_de_passe">RIB</label>
+            <input type="password" id="mot_de_passe" required />
+            <label for="confirmation">RIB</label>
+            <input type="password" id="confirmation" required />
 
             <button type="submit">S'inscrire</button>
 
