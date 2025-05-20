@@ -1,0 +1,268 @@
+/* ===========================
+    Page Offre Back Office
+    =========================== */
+
+/* ===================
+    Structure globale
+=================== */
+
+.page-back-office {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20vw;
+    min-height: 100vh;
+}
+
+.page-back-office .container-back-office h2{
+    font-family: 'lexenDeca';
+    font-size: 32px;
+    color: black;
+}
+
+
+.page-back-office .container-back-office {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+ 
+ 
+}
+
+
+
+/* ========================
+    Barre de recherche
+======================== */
+
+.search-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.search-filter-bar form {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 100px;
+    overflow: hidden;
+    width: 100%;
+    padding-right: 1rem;
+}
+
+.search-filter-bar input[type="search"] {
+    border: none;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    flex: 1;
+}
+
+.search-filter-bar form button,
+.search-filter-bar > button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search-filter-bar form div {
+    min-width: 50px;
+    background-color: var(--main-color);
+    border-radius: 50%;
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-filter-bar form div button img,
+.search-filter-bar > button img {
+    width: 75%;
+    height: 75%;
+}
+
+/* Bouton avec l'icône de recherche */
+.search-filter-bar form button {
+    background: none;
+    border: none;
+   
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    
+    
+}
+
+.search-filter-bar > button {
+    width: 5%;
+    height: 5%;
+    border: none;
+    background-color: white;
+   
+}
+.search-filter-bar > button img {
+    width: 100%;
+    height: 100%;
+   
+}
+
+
+/* ========================
+    Navigation latérale
+======================== */
+
+.page-back-office .nav-back-office {
+    background-color: var(--main-color);
+    width: 20vw;
+    min-width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 67px;
+    left: 0;
+    padding-top: 2em;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.page-back-office .nav-back-office ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.page-back-office .nav-back-office li {
+    flex: 1;
+    color: white;
+    padding: 16px 24px;
+}
+
+.page-back-office .nav-back-office ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    gap: 10px;
+    padding: 5px;
+    border-left: 4px solid transparent;
+}
+
+.page-back-office .nav-back-office ul li a img {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.page-back-office .nav-back-office a.active {
+    border-left: 4px solid white;
+    background-color: var(--main-color);
+    filter: brightness(85%);
+    border-radius: 5px;
+}
+
+.page-back-office .nav-back-office ul li a p {
+    margin: 0;
+}
+
+
+/* ========================
+    Bloc Offre
+======================== */
+
+.offre {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 5em;
+    display: flex;
+    gap: 1em;
+    flex-direction: row;
+}
+
+/* Contenu principal à droite de la nav */
+.page-back-office .contenu-back-office {
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     overflow: hidden;
+     padding: 2em;
+     overflow-y: auto;
+}
+
+
+.offre img {
+    border-radius:5px;
+    margin: 10px;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+
+.pastille {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: red;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.avis-offre {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avis-offre p:nth-child(3) {
+    margin-right: 100px;
+}
+
+.etoiles  {
+    display: flex;
+    align-items: center;
+}
+
+
+.etoiles img {
+    width: 30%;
+    height: 30%;
+}
+
+.bas-offre {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bas-offre div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bas-offre div p {
+    margin: 0;
+}
+
+.bas-offre div:first-child img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.bas-offre div:last-child {
+    background-color: var(--main-color-light);
+    padding: 8px;
+    border-radius: 50%;
+}
+

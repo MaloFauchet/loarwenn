@@ -1,1 +1,4 @@
 logs/
+testComposant/
+.env
+config/.env

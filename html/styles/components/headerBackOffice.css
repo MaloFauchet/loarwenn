@@ -1,0 +1,57 @@
+/* header desktop */
+header.back-office {
+    background-color: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+header.back-office .logo img {
+    width: 50px;
+    height: auto;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+header.back-office .header-droit a p {
+    /*font-family:'roboto';*/
+    
+}
+header.back-office h1 {
+    /*font-family:'lexend-deca';*/
+    
+}
+
+header.back-office h1 {
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+header.back-office .header-droit {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+}
+
+header.back-office .header-droit a {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+header.back-office .header-droit img {
+    width: 40px;
+    height: auto;
+}
