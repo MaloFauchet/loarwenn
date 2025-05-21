@@ -11,7 +11,7 @@ class Utilisateur {
 
     public function getAllUtilisateurs() {
         $sql = "
-            SELECT * FROM tripenazor.utilisateur
+            SELECT * FROM tripenazor.utilisateur;
         ";
 
         $stmt = $this->conn->prepare($sql);

@@ -2,7 +2,7 @@
 
 <footer class="front-office">
     <div>
-        <img src="images/logos/logoBlue.png" alt="Logo">
+        <img src="/images/logos/logoBlue.png" alt="Logo">
         <div>
             <h6>Pages</h6>
             <ul>
