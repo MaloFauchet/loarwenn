@@ -62,14 +62,6 @@ CREATE TABLE utilisateur_represente_image (
     PRIMARY KEY (id_utilisateur, id_image)
 );
 
--- Table statut_log
-CREATE TABLE statut_log (
-    id_statut_log SERIAL PRIMARY KEY,
-    id_offre INT NOT NULL offre(id_offre), 
-    date_mise_en_ligne DATE,
-    date_mise_hors_ligne DATE
-);
-
 -- Table type_activite
 CREATE TABLE type_activite (
     id_type_activite SERIAL PRIMARY KEY,
@@ -91,15 +83,21 @@ CREATE TABLE offre (
     adresse_offre VARCHAR(50) NOT NULL
 );
 
+-- Table statut_log
+CREATE TABLE statut_log (
+    id_statut_log SERIAL PRIMARY KEY,
+    id_offre INT NOT NULL REFERENCES offre(id_offre), 
+    date_mise_en_ligne DATE,
+    date_mise_hors_ligne DATE
+);
+
 -- Table avis
 CREATE TABLE avis (
     id_avis SERIAL PRIMARY KEY,
     id_utilisateur INT REFERENCES membre(id_utilisateur),
     id_offre INT NOT NULL REFERENCES offre(id_offre),
     description_avis VARCHAR(255) NOT NULL,
-    note_avis FLOAT NOT NULL,
-    nb_like INT NOT NULL DEFAULT 0,
-    nb_dislike INT NOT NULL DEFAULT 0
+    note_avis FLOAT NOT NULL
 );
 
 -- Table avis_possede_image
@@ -193,15 +191,15 @@ CREATE TABLE offre_spectacle (
 -- Table offre_parc_attraction
 CREATE TABLE offre_parc_attraction (
     id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
-    id_image INT NOT NULL REFERENCES image(id_image)
+    id_image INT NOT NULL REFERENCES image(id_image),
     nb_attraction INT NOT NULL,
-    age_min INT NOT NULL,
+    age_min INT NOT NULL
 );
 
 -- Table offre_restauration
 CREATE TABLE offre_restauration (
     id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
-    id_image INT REFERENCES image(id_image)
+    id_image INT REFERENCES image(id_image),
     gamme_prix FLOAT NOT NULL
 );
 
@@ -266,7 +264,7 @@ CREATE TABLE abonnement (
 
 -- Table pro_public_propose_offre
 CREATE TABLE pro_public_propose_offre (
-    id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
+    id_offre INT REFERENCES offre(id_offre),
     id_utilisateur_public INT NOT NULL REFERENCES professionnel_public(id_utilisateur),
     PRIMARY KEY (id_offre, id_utilisateur_public)
 );
