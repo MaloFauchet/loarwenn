@@ -1,10 +1,10 @@
 <header>
     <a href="index.php">
-        <img src="images/icons/x.svg" alt="Retour">
+        <img src="/images/icons/x.svg" alt="Retour">
     </a>
 </header>
 <main>
-    <img src="images/logos/logoBlue.png" alt="logoBlue">
+    <img src="/images/logos/logoBlue.png" alt="logoBlue">
     <h1>Heureux de vous revoir</h1>
     <form action="" method="post">
         <div>
