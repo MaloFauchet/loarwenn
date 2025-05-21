@@ -1,5 +1,5 @@
 <?php
-require_once('../../config/Database.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../config/Database.php');
 
 class Utilisateur {
     private $conn;
@@ -11,7 +11,7 @@ class Utilisateur {
 
     public function getAllUtilisateurs() {
         $sql = "
-            SELECT * FROM tripenazor.utilisateur
+            SELECT * FROM tripenazor.utilisateur;
         ";
 
         $stmt = $this->conn->prepare($sql);

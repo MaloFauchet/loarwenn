@@ -1,19 +1,37 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'].'/../models/Offre.php'    ;
+require_once($_SERVER['DOCUMENT_ROOT'] .  '/../models/Offre.php');
 
 class OffreController {
-    private $offreModel;
+    private $offre;
 
     public function __construct() {
-        $this->offreModel = new Offre();
+        $this->offre = new Offre();
     }
 
-    public function allOffre() {
-        return $this->offreModel->getAllOffre();
+    // Récupérer toutes les offres d'activités
+    public function getAllOffres() {
+        return $this->offre->getAllOffre();
     }
+
+    // Récupérer une offre activité par ID
+    public function getOffreById($id) {
+        return $this->offre->getOffreById($id);
+    }
+
+    //toString
+    public function __toString() {
+        return $this->offre->__toString();
+    }
+    // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
-        return $this->offreModel->getOffreByIdProfessionnel($id_professionnel);
+        return $this->offre->getOffreByIdProfessionnel($id_professionnel);
     }
+
+
+    public function allOffre() {
+        return $this->offre->getAllOffre();
+    }
+
     public function createOffre(
         $id_ville, 
         $id_statut_log, 
@@ -27,7 +45,7 @@ class OffreController {
         $adresse_offre
         
     ) {
-        return $this->offreModel->createOffre(
+        return $this->offre->createOffre(
             $id_ville, 
             $id_statut_log, 
             $id_type_activite, 
@@ -54,7 +72,7 @@ class OffreController {
         $adresse_offre
         
     ) {
-        return $this->offreModel->editOffre(
+        return $this->offre->editOffre(
             $idOffre,
             $id_ville, 
             $id_statut_log, 
