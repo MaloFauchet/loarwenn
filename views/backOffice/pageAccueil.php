@@ -7,11 +7,11 @@ function afficherEtoile($note)
     $etoiles = '';
     for ($i = 0; $i < 5; $i++) {
         if ($note >= $i + 0.8) {
-            $etoiles .= '<img src="images/icons/star-fill.svg" alt="Étoile remplie">';
+            $etoiles .= '<img src="/images/icons/star-fill.svg" alt="Étoile remplie">';
         } elseif ($note > $i && $note < $i + 1) {
-            $etoiles .= '<img src="images/icons/star-half.svg" alt="Demi étoile">';
+            $etoiles .= '<img src="/images/icons/star-half.svg" alt="Demi étoile">';
         } else {
-            $etoiles .= '<img src="images/icons/star.svg" alt="Étoile vide">';
+            $etoiles .= '<img src="/images/icons/star.svg" alt="Étoile vide">';
         }
     }
     return $etoiles;
@@ -25,16 +25,17 @@ function afficherEtoile($note)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PACT</title>
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/backOffice.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/backOffice.css">
 
 </head>
 
 <body>
-    <?php require_once('../views/backOffice/components/header.php'); ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
 
     <div class="page-back-office">
-        <?php require_once('../views/backOffice/components/nav.php'); ?>
+        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
+        
         <div class="container-back-office">
             <main class="contenu-back-office">
 
@@ -43,20 +44,20 @@ function afficherEtoile($note)
                         <input type="search" placeholder="Rechercher une offre" name="Rechercher">
                         <div>
                             <button type="submit">
-                                <img src="images/icons/search-white.svg" alt="Rechercher">
+                                <img src="/images/icons/search-white.svg" alt="Rechercher">
                             </button>
                         </div>
                     </form>
 
                     <button>
-                        <img src="images/icons/funnel-fill-blue.svg" alt="Filtrer">
+                        <img src="/images/icons/funnel-fill-blue.svg" alt="Filtrer">
                     </button>
 
                 </div>
                 <div class="offre">
                     <div class="image-container">
                         <span class="pastille">Nouveau</span>
-                        <img src="images/offres/imageOffre.png" alt="Image de l'offre">
+                        <img src="/images/offres/imageOffre.png" alt="Image de l'offre">
                     </div>
                     <div>
                         <h2>Archipel de Béhat en kayak</h2>
@@ -78,17 +79,17 @@ function afficherEtoile($note)
                             A partir de 6 ou 7 ans, un enfant à l'aise sur son vélo...</p>
                         <div class="bas-offre">
                             <div>
-                                <img src="images/icons/wifi-on.svg" alt="Wifi on">
+                                <img src="/images/icons/wifi-on.svg" alt="Wifi on">
                                 <p>En ligne</p>
                             </div>
                             <div>
-                                <img src="images/icons/pensil-square.svg" alt="bouton modifier">
+                                <img src="/images/icons/pensil-square.svg" alt="bouton modifier">
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
-            <?php require_once('../views/backOffice/components/footer.php'); ?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/footer.php'); ?>
         </div>
     </div>
 </body>
