@@ -55,7 +55,7 @@
             <h3>Organisation</h3>
             <div class="checkbox-container">
                 <input type="checkbox" id="entrepriseCheckbox" name="entreprise_privee" />
-                <label class="checkbox" for="entrepriseCheckbox"> Entreprise privée ? </label>
+                <label class="checkbox label-input" for="entrepriseCheckbox"> Entreprise privée ? </label>
             </div>
 
 

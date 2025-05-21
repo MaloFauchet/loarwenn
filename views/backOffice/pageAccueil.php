@@ -60,7 +60,7 @@ $nbNouveauxAvis = 5;
                         <input type="search" placeholder="Rechercher une offre" name="Rechercher">
                         <div>
                             <button type="submit">
-                                <img src="/images/icons/search-white.svg" alt="Rechercher">
+                                <img src="/images/icons/search-white.svg" alt="Rechercher"  style="margin-left:6px">
                             </button>
                         </div>
                     </form>
