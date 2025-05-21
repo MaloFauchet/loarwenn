@@ -31,8 +31,6 @@ function afficherEtoile($note)
 </head>
 
 <body>
-    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
-
     <div class="page-back-office">
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
         
