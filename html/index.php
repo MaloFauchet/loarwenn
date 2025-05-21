@@ -1,8 +1,8 @@
 <?php
-require_once('../controllers/UtilisateurController.php');
+/*require_once('../controllers/UtilisateurController.php');
 
 $controller = new UtilisateurController();
-$utilisateurs = $controller->afficherUtilisateurs();
+$utilisateurs = $controller->afficherUtilisateurs();*/
 ?>
 
 <!DOCTYPE html>
@@ -11,15 +11,16 @@ $utilisateurs = $controller->afficherUtilisateurs();
     <meta charset="UTF-8">
     <title>Accueil</title>
     <link rel="stylesheet" href="styles/frontOffice.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    
 </head>
-<body>
-    <main>
+<body class="body-main">
+    
         <!-- Header compris dans le composant pageAccueil -->
         <?php 
             require_once('../views/frontOffice/pageAccueil.php'); 
             // require_once('../views/backOffice/pageAccueil.php');
         ?>
-    </main>
 
     <?php require_once('../views/frontOffice/components/footer.php'); ?>
 
