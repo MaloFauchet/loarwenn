@@ -1,59 +1,83 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8" />
-    <title>Inscription PACT</title>
-    <link rel="stylesheet" href="styles/components/creationCompteBackOffice.css" />
-</head>
-
-
-<body>
-    <header></header>
-    <main>
-        <div>
-            <img src="" alt="logo de la PACT" />
-            <h2>Inscrivez-vous pour profiter du meilleur de la PACT</h2>
-        </div>
-
-        <form action="traitement.php" method="POST" class="form-container">
+<main>
+    <div class="overlay"></div>
+    <div class="container">
+        <nav>
+            <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                </svg></a>
+            <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                </svg></a>
+        </nav>
+        <form action="creationPro.php" method="POST" class="form-container">
+            <br>
+            <div>
+                <img src="/images/logos/logoBlue.png" alt="logo de la PACT" />
+                <h2>Inscrivez-vous pour profiter du meilleur de la PACT</h2>
+            </div>
             <div class="grid">
-                <input type="text" name="nom" placeholder="Nom" />
-                <input type="text" name="prenom" placeholder="Prénom" />
+                <div>
+                    <label for="nom">Nom</label>
+                    <input id="nom" type="text" required />
+                </div>
+                <div>
+                    <label for="prenom">Prenom</label>
+                    <input id="prenom" type="text" required />
+                </div>
             </div>
 
-            <input type="email" name="email" placeholder="E-mail" />
-            <input type="tel" name="telephone" placeholder="Téléphone" />
+            <label for="email">E-mail</label>
+            <input id="email" type="email" required />
+
+            <label for="telephone">Téléphone</label>
+            <input type="tel" id="telephone" required />
 
             <h3>Adresse</h3>
-            <input type="text" name="adresse" placeholder="Adresse postale *" required />
-            <input type="text" name="complement" placeholder="Complément d'adresse *" required />
+
+            <label for="adresse">Adresse</label>
+            <input type="text" id="adresse" required />
+
+            <label for="complement">Complément</label>
+            <input type="text" for="complement" required />
 
             <div class="grid">
-                <input type="text" name="code_postal" placeholder="Code postal *" required />
-                <input type="text" name="ville" placeholder="Ville *" required />
+                <div>
+                    <label for="codePostal">Code Postal</label>
+                    <input type="text" id="codePostal" required />
+                </div>
+                <div>
+                    <label for="ville">Ville</label>
+                    <input type="text" id="ville" required />
+                </div>
             </div>
 
 
             <h3>Organisation</h3>
-            <label class="checkbox">
+            <div class="checkbox-container">
                 <input type="checkbox" id="entrepriseCheckbox" name="entreprise_privee" />
-                Entreprise privée ?
-            </label>
-
-            <div id="entrepriseFields" style="display: none">
-                <input type="text" name="denomination" placeholder="Dénomination" />
-                <input type="text" name="siren" placeholder="Siren" />
-                <input type="text" name="rib" placeholder="RIB" />
+                <label class="checkbox" for="entrepriseCheckbox"> Entreprise privée ? </label>
             </div>
 
-            <div id="associationField" style="display: block">
-                <input type="text" name="raison_sociale" placeholder="Raison sociale" />
+
+            <div class="option" id="entrepriseChamps" style="display: none">
+                <label for="denomination">Dénomination</label>
+                <input type="text" id="denomination" required />
+                <label for="siren">Siren</label>
+                <input type="phptext" id="siren" required />
+                <label for="rib">RIB</label>
+                <input type="text" id="rib" required />
+            </div>
+
+            <div class="option" id="associationChamps" style="display: flex">
+                <label for="raisonSociale">Raison Sociale</label>
+                <input type="text" id="raisonSociale" required />
             </div>
 
             <h3>Mot de passe</h3>
-            <input type="password" name="mot_de_passe" placeholder="Mot de passe" required />
-            <input type="password" name="confirmation" placeholder="Confirmation mot de passe" required />
+            <label for="mot_de_passe">Mot de passe</label>
+            <input type="password" id="mot_de_passe" required />
+            <label for="confirmation">Confirmation</label>
+            <input type="password" id="confirmation" required />
 
             <button type="submit">S'inscrire</button>
 
@@ -63,22 +87,22 @@
                 <a href="#">Politique de confidentialité</a>.
             </p>
         </form>
-    </main>
-</body>
+    </div>
+
+</main>
+
 <script>
     const checkbox = document.getElementById('entrepriseCheckbox');
-    const entrepriseFields = document.getElementById('entrepriseFields');
-    const associationField = document.getElementById('associationField');
+    const entrepriseChamps = document.getElementById('entrepriseChamps');
+    const associationChamps = document.getElementById('associationChamps');
 
-    checkbox.addEventListener('change', function () {
+    checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
-            entrepriseFields.style.display = 'block';
-            associationField.style.display = 'none';
+            entrepriseChamps.style.display = 'flex';
+            associationChamps.style.display = 'none';
         } else {
-            entrepriseFields.style.display = 'none';
-            associationField.style.display = 'block';
+            entrepriseChamps.style.display = 'none';
+            associationChamps.style.display = 'flex';
         }
     });
 </script>
-
-</html>
