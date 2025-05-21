@@ -10,10 +10,6 @@ $id = 4; // Pour le test, on met un ID fixe
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 
-echo '<pre>';
-    print_r($offre);
-echo '</pre>';
-
  /**
   * Affichage des étoiles en fonction de la note
   *La note est une etoile remplie si elle est supérieure ou égale à 0.8
@@ -61,20 +57,20 @@ function afficherEtoile($note){
                 <div class="offre-image-container">
                     <!--Image a recup dans la bdd -->
                     <div class="main-image-container">
-                        <img src="/images/offres/canyioning2.png" alt="Image de l'offre" class="offre-image">
+                        <img src="/images/offres/cannyoning2.png" alt="Image de l'offre" class="offre-image">
                     </div>
                     <div class="gallery-offre-parent">
                         <div class="grid-offre-1">
-                            <img src="/images/offres/canyioning2.png" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-2">
-                            <img src="/images/offres/canyioning.jpg" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-3">
-                            <img src="/images/offres/canyioning.jpg" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-4">
-                            <img src="/images/offres/canyioning2.png" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                     </div>
                 </div>
@@ -137,7 +133,7 @@ function afficherEtoile($note){
                 <?php
                     //En fonction du type d'offre, on affiche les différentes informations
                     switch ($offre->getType()) :
-                    case 'Visite nature': 
+                    case 'Visite guidée': 
                 ?>
                 <li>
                     <figure class="info-pratique">

@@ -14,6 +14,7 @@ class Offre {
     protected $ville;
     protected $noteMoyenne;
     protected $nbAvis;
+    protected $pathImage;
 
     public function __construct() {
         $database = new Database();
@@ -30,18 +31,15 @@ class Offre {
         $sql = "
             SELECT 
             o.id_offre,
-            o.titre_offre,
-            o.resume,
-            o.description,
-            o.date_creation,
-            o.adresse_offre,
             o.id_ville,
-            o.en_ligne,
+            o.titre_offre,
             o.note_moyenne,
             o.nb_avis,
+            o.resume,
+            o.description,
+            o.adresse_offre,
 
             ville.nom as ville,
-            ville.code_postal,
 
             img.chemin,
 
@@ -60,7 +58,7 @@ class Offre {
             os.prix AS spectacle_prix,
 
             opa.nb_attraction AS pa_nb_attraction,
-            opa.age AS pa_age,
+            opa.age_min AS pa_age_min,
 
             orestau.gamme_prix AS restaurant_gamme_prix
 
@@ -89,7 +87,7 @@ class Offre {
 
         if ($result) {
             switch ($result['type_activite']) {
-                case 'Visite nature':
+                case 'Visite guidée':
                     require_once(__DIR__ . '/../models/OffreVisite.php');
                     $offre = new OffreVisite();
                     break;
@@ -131,7 +129,7 @@ class Offre {
                 $offre->setPrix($result['prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
-                $offre->setMinAge($result['pa_age']);
+                $offre->setMinAge($result['pa_age_min']);
             }elseif ($offre instanceof OffreRestaurant) {
                 $offre->setGammePrix($result['restaurant_gamme_prix']);
             }
@@ -145,13 +143,12 @@ class Offre {
             $offre->setTitre($result['titre_offre']);
             $offre->setResume($result['resume']);
             $offre->setDescription($result['description']);
-            $offre->setDateCreation($result['date_creation']);
             $offre->setAdresse($result['adresse_offre']);
-            $offre->setEnLigne($result['en_ligne']);
             $offre->setType($result['type_activite']);
             $offre->setNoteMoyenne($result['note_moyenne']);
             $offre->setNbAvis($result['nb_avis']);
             $offre->setIdVille($result['ville']);
+            $offre->setPathImage($result['chemin']);
 
             return $offre;
         }
@@ -207,6 +204,10 @@ class Offre {
         $this->ville = $v;
     }
 
+    function setPathImage($pi) {
+        $this->pathImage = $pi;
+    }
+
     /**
      * Getters
      */
@@ -253,6 +254,10 @@ class Offre {
 
     function getVille() {
         return $this->ville;
+    }
+
+    function getPathImage() {
+        return $this->pathImage;
     }
 
 }
