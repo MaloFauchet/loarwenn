@@ -19,7 +19,7 @@ class Professionnel extends Model{
 
     public function addProfessionnelPrive($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse) {
         $sql = "
-            INSERT INTO tripenazor.proffessionnel_prive()
+            SELECT inserer_utilisateur_et_professionnel()
         ";
 
         $stmt = $this->conn->prepare($sql);
