@@ -6,7 +6,9 @@ class Professionnel extends Model{
     public function getProfessionnelById($id) {
         $sql = "
             SELECT * FROM tripenazor.proffessionnel
-            INNER JOIN 
+            LEFT JOIN tripenazor.proffessionnel_prive on  tripenazor.proffessionnel.id_utilisateur
+            LEFT JOIN tripenazor.proffessionnel_public on  tripenazor.proffessionnel.id_utilisateur
+            INNER JOIN tripenazor.utilisateur on tripenazor.proffessionnel.id_utilisateur = tripenazor.utilisateur.id_utilisateur WHERE tripenazor.proffessionnel.id_utilisateur=$id;
         ";
 
         $stmt = $this->conn->prepare($sql);
@@ -15,10 +17,9 @@ class Professionnel extends Model{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addProfessionnelPrive($id) {
+    public function addProfessionnelPrive($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse) {
         $sql = "
-            SELECT * FROM tripenazor.proffessionnel
-            INNER JOIN 
+            INSERT INTO tripenazor.proffessionnel_prive()
         ";
 
         $stmt = $this->conn->prepare($sql);
@@ -27,7 +28,7 @@ class Professionnel extends Model{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addProfessionnelPublic($id) {
+    public function addProfessionnelPublic($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse) {
         $sql = "
             SELECT * FROM tripenazor.proffessionnel
             INNER JOIN 

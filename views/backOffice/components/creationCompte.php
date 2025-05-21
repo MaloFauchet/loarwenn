@@ -63,7 +63,7 @@
                 <label for="denomination">Dénomination</label>
                 <input type="text" id="denomination" required />
                 <label for="siren">Siren</label>
-                <input type="phptext" id="siren" required />
+                <input type="text" id="siren" required />
                 <label for="rib">RIB</label>
                 <input type="text" id="rib" required />
             </div>

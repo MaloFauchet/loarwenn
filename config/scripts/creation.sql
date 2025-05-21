@@ -268,3 +268,40 @@ CREATE TABLE pro_public_propose_offre (
     id_utilisateur_public INT NOT NULL REFERENCES professionnel_public(id_utilisateur),
     PRIMARY KEY (id_offre, id_utilisateur_public)
 );
+
+-- Fonctions d'insertion
+
+CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_privee(
+    p_nom TEXT,
+    p_email TEXT,
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+    p_metier TEXT
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_ville INTEGER;
+    v_id_utilisateur INTEGER;
+BEGIN
+    -- Chercher la ville existante
+    SELECT id_ville INTO v_id_ville
+    FROM ville
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    -- Si non trouvée, insérer la ville
+    IF v_id_ville IS NULL THEN
+        INSERT INTO ville (nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    -- Insérer l'utilisateur et récupérer son id
+    INSERT INTO utilisateur (nom, email, id_ville)
+    VALUES (p_nom, p_email, v_id_ville)
+    RETURNING id_utilisateur INTO v_id_utilisateur;
+
+    -- Insérer dans professionnel avec le même id
+    INSERT INTO professionnel (id_utilisateur, metier)
+    VALUES (v_id_utilisateur, p_metier);
+END;
+$$ LANGUAGE plpgsql;
