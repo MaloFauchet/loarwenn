@@ -213,10 +213,7 @@ INSERT INTO souscription (nb_semaine, date_debut) VALUES
 -- 27. Option
 INSERT INTO option (libelle_option, prix_s_HT_option, prix_s_TTC_option) VALUES
 ('Recommandé', 15.0, 18.0),
-('Recommandé', 15.0, 18.0),
-('En relief', 20.0, 24.0),
-('En relief', 20.0, 24.0),
-('Recommandé', 15.0, 18.0);
+('En relief', 20.0, 24.0);
 
 -- 28. Option_payante_offre
 INSERT INTO option_payante_offre (id_offre, id_option, id_souscription) VALUES
