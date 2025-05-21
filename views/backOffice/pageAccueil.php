@@ -72,6 +72,7 @@ $nbNouveauxAvis = 5;
                 </div>
                 <?php
                 foreach ($offres as $offre) {
+                
                     
                 ?>
                     <div class="offre">
@@ -79,8 +80,8 @@ $nbNouveauxAvis = 5;
                             <span class="pastille">
                                 <?php echo $nbNouveauxAvis ?>
                             </span>
-                            
-                            <img src="/images/offres/kayak_brehat.jpg" alt="<?php echo $offre['titre_image']; ?>">
+                        
+                            <img src="<?php echo $offre['image_chemin']; ?>" alt="<?php echo $offre['titre_image']; ?>">
 
                         </div>
                         <div class="offre-content">
