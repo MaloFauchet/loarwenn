@@ -72,9 +72,6 @@ $nbNouveauxAvis = 5;
                 </div>
                 <?php
                 foreach ($offres as $offre) {
-                    echo "<pre>";
-                    print_r($offre);
-                    echo "</pre>";
                 
                     
                 ?>
