@@ -2,7 +2,7 @@
     --input-color: #A5A3A3;
 }
 
-label {
+.label-input {
     font-size: 20px;
     color: var(--input-color);
     margin-bottom: 0.5em;

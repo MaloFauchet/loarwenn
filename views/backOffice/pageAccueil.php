@@ -42,7 +42,7 @@ function afficherEtoile($note)
                         <input type="search" placeholder="Rechercher une offre" name="Rechercher">
                         <div>
                             <button type="submit">
-                                <img src="/images/icons/search-white.svg" alt="Rechercher">
+                                <img src="/images/icons/search-white.svg" alt="Rechercher"  style="margin-left:6px">
                             </button>
                         </div>
                     </form>
@@ -58,7 +58,7 @@ function afficherEtoile($note)
                         <img src="/images/offres/imageOffre.png" alt="Image de l'offre">
                     </div>
                     <div>
-                        <h2>Archipel de Béhat en kayak</h2>
+                        <h2>Archipel de Bréhat en kayak</h2>
                         <div class="avis-offre">
                             <p>3.5</p>
                             <div class="etoiles">

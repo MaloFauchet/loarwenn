@@ -2,8 +2,6 @@
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 
-<link rel="stylesheet" href="/styles/components/navBackOffice.css">
-
 <nav class="nav-back-office">
     <ul>
         <li>
@@ -12,7 +10,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
         <li>
-            <a href="/backOffice/ajouterOffre.php" class="<?= $currentPage === 'ajouterOffre.php' ? 'active' : '' ?>">
+            <a href="/backOffice/ajouterOffre/index.php" class="<?= $currentPage === 'ajouterOffre.php' ? 'active' : '' ?>">
                 <img src="/images/icons/plus-lg-white.svg"><p>Ajouter une offre</p>
             </a>
         </li>
