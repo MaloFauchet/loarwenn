@@ -1,6 +1,6 @@
 <?php
-require_once('../config/getDataEnv.php');
-loadEnv('../config/.env');
+require_once(__DIR__ . '/../config/getDataEnv.php');
+loadEnv(__DIR__ . '/../config/.env');
 
 class Database {
     private $host;
