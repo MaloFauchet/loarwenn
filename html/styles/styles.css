@@ -1,5 +1,7 @@
 /* Definition des variables CSS */
 :root {
+    --backgroud-color: white;
+
     --main-color: #005CE6;
     --main-color-light: #CAE9FF;
     --main-text-color: #011B43;
@@ -9,10 +11,13 @@
     --footer-light-text-color: #b2cef7;
 
     --hr-color: #A5A3A369;
+
     
     --check-box-checked: #59DD00;
     --check-box-unchecked: #FF0000;
 }
+
+
 /* Definition des polices d'ecritures */
 @font-face {
     font-family: 'lexenDeca';
@@ -31,6 +36,19 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'lexenDeca', sans-serif;
     font-weight: normal;
+}
+
+h1 {
+    font-size: 64px;
+    margin: 1vh 0;
+}
+
+h2 {
+    font-size: 48px;
+}
+
+h3 {
+    font-size: 40px;
 }
 
 hr{
