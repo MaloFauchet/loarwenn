@@ -9,12 +9,12 @@
     
 </head>
 <body>
-    <?php require_once('../views/backOffice/components/header.php'); ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/header.php'); ?>
 
     <div class="page-back-office">
         <div class="container-back-office">
             
-            <?php require_once('../views/backOffice/components/nav.php'); ?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/nav.php'); ?>
             
 
             <main class="contenu-back-office">
@@ -29,9 +29,7 @@
             </main>
         </div>
 
-        <footer class="footer-back-office">
-            <?php require_once('../views/backOffice/components/footer.php'); ?>
-        </footer>
+        <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
     </div>
 
     
