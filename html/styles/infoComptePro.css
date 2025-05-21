@@ -85,9 +85,12 @@ div#sauvegarder button {
     background-color: white;
     color: var(--main-color);
     font-size: 20px;
-
     margin: 0 1vw;
     border: none;
     border-radius: 20px;
     padding: 1vh 2vw;
+}
+
+input{
+    width: 100%;
 }

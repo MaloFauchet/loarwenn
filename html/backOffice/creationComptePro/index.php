@@ -1,3 +1,15 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Inscription PACT</title>
+    <link rel="stylesheet" href="/styles/input.css" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/components/creationCompteBackOffice.css" />
+</head>
+<body>
+    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/../views/backOffice/components/header.php"); ?>
+    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/../views/backOffice/components/creationCompte.php"); ?>
+</body>
+</html>
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/../views/backOffice/components/creationCompte.php");
