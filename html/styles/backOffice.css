@@ -50,6 +50,7 @@
     overflow: hidden;
     width: 100%;
     padding-right: 1rem;
+    padding-left: 2rem;
 }
 
 .search-filter-bar input[type="search"] {
@@ -193,7 +194,10 @@
 }
 
 
-.offre img {
+.offre .image-container img {
+    width: 300px;
+    height: 300px;
+
     border-radius:5px;
     margin: 10px;
 }
@@ -208,8 +212,8 @@
     position: absolute;
     top: 8px;
     left: 8px;
-    background-color: red;
-    color: white;
+    background-color: var(--main-star-yellow);
+    color: black;
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 0.75rem;
@@ -233,7 +237,7 @@
 }
 
 
-.etoiles img {
+.etoiles svg {
     width: 30%;
     height: 30%;
 }
@@ -242,6 +246,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex:1;
 }
 
 .bas-offre div {
@@ -264,5 +269,15 @@
     background-color: var(--main-color-light);
     padding: 8px;
     border-radius: 50%;
+    margin-right: 10px;
 }
+
+.offre-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+
 
