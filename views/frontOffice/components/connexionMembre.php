@@ -1,43 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de connexion</title>
-</head>
-<body>
-    <header>
-        <a href="index.php">
-            <img src="images/icons/x.svg" alt="Retour">
-        </a>
-    </header>
-    <main>
-        <img src="images/logos/logoBlue.png" alt="logoBlue">
-        <h1>Heureux de vous revoir</h1>
-        <form action="" method="post">
+<main>
+    <div class="overlay"></div>
+    <div class="container">
+        <nav>
+            <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                </svg></a>
+            <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                </svg></a>
+        </nav>
+        <form action="creationPro.php" method="POST" class="form-container">
+            <br>
             <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <img src="/images/logos/logoBlue.png" alt="logo de la PACT" />
+                <h2>Heureux de vous revoir !</h2>
             </div>
-            <div>
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" required>
+
+            <label for="email">E-mail</label>
+            <input id="email" type="email" required />
+
+            <label for="mot-de-passe">Mot de passe</label>
+            <input type="tel" id="mot-de-passe" required />
+
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="entrepriseCheckbox" name="entreprise_privee" />
+                <label class="checkbox" for="entrepriseCheckbox"> Se souvenir de moi</label>
             </div>
-            <p>Mot de passe oublié ?</p>
-            <div>
-                <input type="checkbox" name="saveme" id="saveme">
-                <label for="saveme">Se souvenir de moi</label>
-            </div>
+
             <button type="submit">Se connecter</button>
+
+            <button type="submit">S'inscrire</button>
+
+            <p>
+                Si vous êtes un proffessionnel, <br>
+                <a href="#">C'est par ici !</a>
+            </p>
+            <p class="conditions">
+                En créant un compte, vous acceptez nos
+                <a href="#">Conditions Générales</a> d’utilisation et notre
+                <a href="#">Politique de confidentialité</a>.
+            </p>
         </form>
-        <p>Inscription pour membre</p>
-        <button>S'inscrire</button>
-        <p>Si vous êtes un professionnel,</p>
-        <p><strong>inscrivez-vous ici</strong></p>
-        <p>
-            En créant ou en vous connectant à un compte,
-            vous acceptez nos Conditions Générales d'Utilisations et nos Conditions Générales de Ventes
-        </p>
-    </main>
-</body>
-</html>
+    </div>
+
+</main>
