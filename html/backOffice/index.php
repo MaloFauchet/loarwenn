@@ -1,10 +1,3 @@
-<?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
-
-$controller = new UtilisateurController();
-$utilisateurs = $controller->afficherUtilisateurs();
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>

@@ -158,6 +158,23 @@ class Offre {
         return null;
     }
 
+    public function getOffreByIdProfessionnel($id_professionnel) {
+        $sql = "
+            SELECT o.*, i.chemin AS image_chemin, i.titre_image
+            FROM tripenazor.offre o
+            JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+            JOIN tripenazor.professionnel p ON p.id_utilisateur = a.id_utilisateur_prive
+            LEFT JOIN tripenazor.image_illustre_offre io ON io.id_offre = o.id_offre
+            LEFT JOIN tripenazor.image i ON i.id_image = io.id_image
+            WHERE p.id_utilisateur = :id_utilisateur;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id_utilisateur' => $id_professionnel]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * Setters
