@@ -1,8 +1,8 @@
-<?php
+<?php /*
 require_once('../controllers/UtilisateurController.php');
 
 $controller = new UtilisateurController();
-$utilisateurs = $controller->afficherUtilisateurs();
+$utilisateurs = $controller->afficherUtilisateurs();*/
 ?>
 
 <!DOCTYPE html>
@@ -10,16 +10,17 @@ $utilisateurs = $controller->afficherUtilisateurs();
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
+    <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/frontOffice.css">
 </head>
-<body>
-    <main>
+<body class="body-main">
+    
         <!-- Header compris dans le composant pageAccueil -->
         <?php 
             require_once('../views/frontOffice/pageAccueil.php'); 
             // require_once('../views/backOffice/pageAccueil.php');
         ?>
-    </main>
+    
 
     <?php require_once('../views/frontOffice/components/footer.php'); ?>
 
@@ -34,7 +35,7 @@ $utilisateurs = $controller->afficherUtilisateurs();
         <th>Nom complet / Dénomination</th>
     </tr>
 
-    <?php foreach ($utilisateurs as $user): ?>
+    <?php /* foreach ($utilisateurs as $user): ?>
         <tr>
             <td><?= htmlspecialchars($user['id_utilisateur']) ?></td>
             <td><?= htmlspecialchars($user['type']) ?></td>
@@ -52,7 +53,9 @@ $utilisateurs = $controller->afficherUtilisateurs();
                 ?>
             </td>
         </tr>
-    <?php endforeach; ?>
+    <?php endforeach; */ ?>
 </table>
+<script src="scripts/caroussel.js"></script>
+<script src="scripts/frontOffice.js"></script>
 </body>
 </html>

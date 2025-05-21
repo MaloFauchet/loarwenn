@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Front-Office - PACT</title>
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/frontOffice.css">
+    
 </head>
 
-<body class="body-main">
+<body >
     <header class="front-office-main">
         <video autoplay muted loop id="myVideo" class="video-header">
             <source src="videos/video_accueil.mp4" type="video/mp4">
@@ -527,11 +526,10 @@
     </main>
 
 
-    <script src="scripts/caroussel.js"></script>
-    <script src="scripts/frontOffice.js"></script>
+    
     
     <!-- TO FIX -->
     <?php //require_once("./components/footer.php") ?>
-</body>
+
 
 </html>
