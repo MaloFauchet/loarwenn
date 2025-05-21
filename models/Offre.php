@@ -15,6 +15,7 @@ class Offre {
     protected $noteMoyenne;
     protected $nbAvis;
     protected $pathImage;
+    protected $tags;
 
     public function __construct() {
         $database = new Database();
@@ -45,6 +46,8 @@ class Offre {
 
             ta.libelle_activite as type_activite,
 
+            t.libelle_tag as tag,
+
             ov.duree AS visite_duree,
             ov.accessibilite AS visite_accessibilite,
 
@@ -68,6 +71,8 @@ class Offre {
             JOIN tripenazor.image_illustre_offre as iio ON o.id_offre = iio.id_offre
             JOIN tripenazor.image as img ON iio.id_image = img.id_image
             JOIN tripenazor.type_activite as ta ON o.id_type_activite = ta.id_type_activite
+            JOIN tripenazor.type_activite_autorise_tag as taot ON ta.id_type_activite = taot.id_type_activite
+            JOIN tripenazor.tag as t ON taot.id_tag = t.id_tag
 
             LEFT JOIN tripenazor.offre_visite as ov ON o.id_offre = ov.id_offre
             LEFT JOIN tripenazor.offre_activite as oa ON o.id_offre = oa.id_offre
@@ -83,10 +88,10 @@ class Offre {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
-        $result =  $stmt->fetch(PDO::FETCH_ASSOC);
+        $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if ($result) {
-            switch ($result['type_activite']) {
+            switch ($result[0]['type_activite']) {
                 case 'Visite guidée':
                     require_once(__DIR__ . '/../models/OffreVisite.php');
                     $offre = new OffreVisite();
@@ -111,7 +116,30 @@ class Offre {
                 default:
                     $offre = new Offre();
             }
-            
+
+            /**
+             * Setters de la classe mère
+             */
+
+            //Recupération des tags
+            foreach ($result as $row) {
+                $offre->setTag($row['tag']);
+            }
+
+            $result = $result[0];
+            //Type
+            $offre->setType($result['type_activite']);
+            $offre->setId($result['id_offre']);
+            $offre->setTitre($result['titre_offre']);
+            $offre->setResume($result['resume']);
+            $offre->setDescription($result['description']);
+            $offre->setAdresse($result['adresse_offre']);
+            $offre->setType($result['type_activite']);
+            $offre->setNoteMoyenne($result['note_moyenne']);
+            $offre->setNbAvis($result['nb_avis']);
+            $offre->setIdVille($result['ville']);
+            $offre->setPathImage($result['chemin']);
+
             /**
              * Setters de la classe spécifique
              */
@@ -134,21 +162,8 @@ class Offre {
                 $offre->setGammePrix($result['restaurant_gamme_prix']);
             }
             
-            /**
-             * Setters de la classe mère
-             */
-            //Type
-            $offre->setType($result['type_activite']);
-            $offre->setId($result['id_offre']);
-            $offre->setTitre($result['titre_offre']);
-            $offre->setResume($result['resume']);
-            $offre->setDescription($result['description']);
-            $offre->setAdresse($result['adresse_offre']);
-            $offre->setType($result['type_activite']);
-            $offre->setNoteMoyenne($result['note_moyenne']);
-            $offre->setNbAvis($result['nb_avis']);
-            $offre->setIdVille($result['ville']);
-            $offre->setPathImage($result['chemin']);
+            
+            
 
             return $offre;
         }
@@ -208,6 +223,10 @@ class Offre {
         $this->pathImage = $pi;
     }
 
+    function setTag($t) {
+        $this->tags[] = $t;
+    }
+
     /**
      * Getters
      */
@@ -258,6 +277,10 @@ class Offre {
 
     function getPathImage() {
         return $this->pathImage;
+    }
+
+    function getTags() {
+        return $this->tags;
     }
 
 }
