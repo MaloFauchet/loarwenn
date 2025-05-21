@@ -14,14 +14,8 @@ $utilisateurs = $controller->afficherUtilisateurs();
     <link rel="stylesheet" href="/styles/backOffice.css">
 </head>
 <body>
-    <main>
-        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
-        <?php 
-            // require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/pageAccueil.php');
-            require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffre.php');
-        ?>
-    </main>
-
+    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffre.php');?>
     <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/footer.php'); ?>
 </body>
 </html>
