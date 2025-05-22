@@ -19,7 +19,7 @@ label + input[type="email"],
 label + input[type="password"],
 label + input[type="number"],
 label + input[type="tel"] {
-    padding: 15px 20px;
+    padding: 5px 10px;
     border: 2px solid var(--input-color);
     border-radius: 1.8em;
     font-size: 32px;
