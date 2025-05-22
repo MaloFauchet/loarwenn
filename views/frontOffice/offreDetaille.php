@@ -57,7 +57,7 @@ function afficherEtoile($note){
                 <div class="offre-image-container">
                     <!--Image a recup dans la bdd -->
                     <div class="main-image-container">
-                        <img src="/images/offres/cannyoning2.png" alt="Image de l'offre" class="offre-image">
+                        <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre" class="offre-image">
                     </div>
                     <div class="gallery-offre-parent">
                         <div class="grid-offre-1">

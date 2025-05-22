@@ -85,7 +85,8 @@
 }
 
 .offre-detaille-front .offre-image {
-    height: 500px;
+    height: 400px;
+    max-width: 600px;
 }
 
 .offre-detaille-front .offre-image-container{
