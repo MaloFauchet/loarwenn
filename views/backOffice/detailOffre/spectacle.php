@@ -5,8 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
 
 // Récupération de l'id de l'offre depuis l'URL
-// $id_offre = $_GET['id_offre'];
-$id_offre = 7;
+$id_offre = $_GET['id_offre'];
 
 // Création des instances des contrôleurs
 $offreController = new OffreController();

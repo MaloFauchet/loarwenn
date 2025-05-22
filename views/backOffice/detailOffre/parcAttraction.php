@@ -5,8 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
 
 // Récupération de l'id de l'offre depuis l'URL
-// $id_offre = $_GET['id_offre'];
-$id_offre = 1;
+$id_offre = $_GET['id_offre'];
 
 // Création des instances des contrôleurs
 $offreController = new OffreController();
@@ -120,11 +119,11 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 </div>
             </div>
             <div class="duree">
-                <img src="/images/icons/clock.svg" alt="Horloge">
+                <img src="/images/icons/manege.svg" alt="Horloge">
                 <div class="input-divers">
-                    <label class="label-input" for="duree">Durée (h)</label>
+                    <label class="label-input" for="duree">Nombre attraction</label>
                     <input id="duree" name="duree" type="text" 
-                    value="<?php echo $currentOffre->getDuree() ?>" required />
+                    value="<?php echo $currentOffre->getNbAttraction() ?>" required />
                 </div>
             </div>
             <div class="age-min">
@@ -132,7 +131,7 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 <div class="input-divers">
                     <label class="label-input" for="age-min">Âge minimal</label>
                     <input id="age-min" name="age_min" type="number" 
-                    value="<?php echo $currentOffre->getAge() ?>" min="0" required />
+                    value="<?php echo $currentOffre->getAgeMin() ?>" min="0" required />
                 </div>
             </div>
         </div>
@@ -175,36 +174,8 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 </div>
             </div>
         </div>
-        
-        <div class="resume">
-            <div class="input-divers">
-                <label class="label-input" for="resume">Résumé</label>
-                <textarea id="resume" name="resume" rows="4" cols="50"><?php echo $currentOffre->getResume() ?>
-                </textarea>
-            </div>
-        </div>
-
-        <div class="description">
-            <div class="input-divers">
-                <label class="label-input" for="description">Description</label>
-                <textarea id="description" name="description" rows="4" cols="50"><?php echo $currentOffre->getDescription() ?>
-                </textarea>
-            </div>
-        </div>
-
-        <div class="accessibilite">
-            <div class="input-divers">
-                <label class="label-input" for="accessibilite">accessibilite</label>
-                <textarea id="accessibilite" name="accessibilite" rows="4" cols="50"><?php echo $currentOffre->getAccessibilite() ?>
-                </textarea>
-            </div>
-        </div>
 
         <div class="choix-divers">
-            <div class="choix-prestation">
-                <?php ajoutMultiple('Prestation incluse', '', 1, $arrayPrestationIncluse); ?>
-                <?php ajoutMultiple('Prestation non incluse', '', 2, $arrayPrestationNonIncluse); ?>
-            </div>
             <?php ajoutMultiple('Tags', '', 3, $tags); ?>
         </div>
     </article>
