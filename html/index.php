@@ -3,7 +3,7 @@
 
 $controller = new UtilisateurController();
 $utilisateurs = $controller->afficherUtilisateurs();*/
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
+    //require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }

@@ -1,5 +1,5 @@
 
-<a style="text-decoration:none;color:#011B43" href="<?php $_SERVER['DOCUMENT_ROOT']. "/frontOffice/index.php?id=" . $valueOfOffre['id_offre'] ?>">
+<a style="text-decoration:none;color:#011B43" href="<?php $_SERVER['DOCUMENT_ROOT']. "/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>">
     <div>
         <div class="recommended">
             <div>

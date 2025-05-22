@@ -251,7 +251,11 @@ main{
     
 }
 .front-office-main > a{
-    margin: 1.10em;
+    /*margin: 1.10em;*/
+    /* juste pour la review*/
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .video-header {
@@ -311,6 +315,7 @@ button.btn-reset {
 
 /* .sample.one input */
 .sample.one input {
+
   border-radius: 15px;
   right: 0;
   transition: all 0.3s ease-in-out;

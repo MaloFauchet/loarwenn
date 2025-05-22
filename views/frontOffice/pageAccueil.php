@@ -52,30 +52,33 @@
         <video autoplay muted loop id="myVideo" class="video-header">
             <source src="videos/video_accueil.mp4" type="video/mp4">
         </video>
-        <div>
-            <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
+        <div >
+            <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px"  >
         </div>
+            
+        <!--
         <nav>
             <ul class="ul-fo">
                 <li><a href="index.php">Accueil</a></li>
                 <li><a href="">Offres</a></li>
                 <li><a href="">Cartographie</a></li>
             </ul>
-        </nav>
-        <a href="">
+        </nav>!-->
+        <a href="" >
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
             </svg>
         </a>
-        <div class="sample one">
+        <!--
+        <div class="sample one" >
             <input type="text" name="search" placeholder="Rechercher...">
-            <button type="submit" class="btn-search">
+            <button type="submit" class="btn-search" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                 </svg>
             </button>
-        </div>
+        </div>!-->
         <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
         <h2 class="discover-text-fo">Découvrez vos vacances</h2>
     </header>
@@ -115,15 +118,10 @@
             foreach ($listeOffre as $offre => $valueOfOffre) {
                 require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');    
                 
-            }
-                
-                
-                
-                
+            }    
             ?>
             
-            <!-- TO FIX -->
-            <?php // require_once "../../componentsGlobaux/cardRecommendedHorizontal.php" ?>
+            
         </div>
     </main>
 
