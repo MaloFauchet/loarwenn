@@ -1,3 +1,4 @@
+
 <main>
     <div class="overlay"></div>
     <div class="container">
@@ -9,7 +10,7 @@
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg></a>
         </nav>
-        <form action="creationPro.php" method="POST" class="form-container">
+        <form action="" method="POST" class="form-container">
             <br>
             <div>
                 <img src="/images/logos/logoBlue.png" alt="logo de la PACT" />
@@ -17,10 +18,10 @@
             </div>
 
             <label class="label-input" for="email">E-mail</label>
-            <input id="email" type="email" required />
+            <input id="email" type="email" name="email" required />
 
             <label class="label-input" for="mot-de-passe">Mot de passe</label>
-            <input type="tel" id="mot-de-passe" required />
+            <input type="password" id="mot-de-passe" name="mot-de-passe" required />
 
 
             <div class="checkbox-container">
@@ -33,15 +34,14 @@
             <button type="submit">S'inscrire</button>
 
             <p>
-                Si vous êtes un proffessionnel, <br>
+                Si vous êtes un professionnel, <br>
                 <a href="#">C'est par ici !</a>
             </p>
             <p class="conditions">
                 En créant un compte, vous acceptez nos
-                <a href="#">Conditions Générales</a> d’utilisation et notre
+                <a href="#">Conditions Générales</a> d'utilisation et notre
                 <a href="#">Politique de confidentialité</a>.
             </p>
         </form>
     </div>
-
 </main>
