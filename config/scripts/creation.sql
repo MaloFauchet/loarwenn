@@ -6,7 +6,7 @@ SET SCHEMA 'tripenazor';
 -- Table ville
 CREATE TABLE ville (
     id_ville SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL,
+    nom_ville VARCHAR(50) NOT NULL,
     code_postal VARCHAR(5) NOT NULL
 );
 
