@@ -69,18 +69,30 @@ INSERT INTO image (titre_image, chemin) VALUES
 ('Village Gaulois', '/images/offres/village-gaulois.png'),
 ('Restaurant Ville Blanche', '/images/offres/restaurant.png'),
 ('Magie des Arbres', '/images/offres/arbres.png'),
-('Centre Lannion', '/images/offres/lannion.png');
+('Centre Lannion', '/images/offres/lannion.png'),
+('Photo de profil', '/images/profils/1.jpg'),
+('Photo de profil', '/images/profils/2.jpg'),
+('Photo de profil', '/images/profils/3.jpg'),
+('Photo de profil', '/images/profils/4.jpg'),
+('Photo de profil', '/images/profils/5.jpg'),
+('Photo de profil', '/images/profils/6.jpg'),
+('Photo de profil', '/images/profils/7.jpg'),
+('Photo de profil', '/images/profils/8.jpg'),
+('Photo de profil', '/images/profils/9.jpg'),
+('Photo de profil', '/images/profils/10.jpg');
 
 -- 8. Utilisateur_represente_image
 INSERT INTO utilisateur_represente_image (id_utilisateur, id_image) VALUES
-(1, 1),
-(2, 2),
-(3, 8),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 3),
-(8, 7);
+(1, 9),
+(2, 10),
+(3, 11),
+(4, 12),
+(5, 13),
+(6, 14),
+(7, 15),
+(8, 16),
+(9, 17),
+(10, 18);
 
 -- 10. Type_activite
 INSERT INTO type_activite (libelle_activite) VALUES
