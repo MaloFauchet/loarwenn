@@ -48,6 +48,8 @@ class Offre {
 
             t.libelle_tag as tag,
 
+            pro.
+
             ov.duree AS visite_duree,
             ov.accessibilite AS visite_accessibilite,
 
@@ -73,12 +75,15 @@ class Offre {
             JOIN tripenazor.type_activite as ta ON o.id_type_activite = ta.id_type_activite
             JOIN tripenazor.type_activite_autorise_tag as taot ON ta.id_type_activite = taot.id_type_activite
             JOIN tripenazor.tag as t ON taot.id_tag = t.id_tag
+            JOIN tripenazor.utilisateur_represente_image as uri ON uri.id_image = img.id_image
+
 
             LEFT JOIN tripenazor.offre_visite as ov ON o.id_offre = ov.id_offre
             LEFT JOIN tripenazor.offre_activite as oa ON o.id_offre = oa.id_offre
             LEFT JOIN tripenazor.offre_spectacle as os ON o.id_offre = os.id_offre
             LEFT JOIN tripenazor.offre_parc_attraction as opa ON o.id_offre = opa.id_offre
             LEFT JOIN tripenazor.offre_restauration as orestau ON o.id_offre = orestau.id_offre
+
 
 
             WHERE o.id_offre = :id
