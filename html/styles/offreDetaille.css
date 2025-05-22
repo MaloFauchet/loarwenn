@@ -85,12 +85,12 @@
 }
 
 .offre-detaille-front .offre-image {
-    height: 500px;
+    max-height: 450px;
 }
 
 .offre-detaille-front .offre-image-container{
     display: flex;
-    gap: 2vh;
+    gap: 10px;
     margin: 2vh;
 }
 
@@ -99,7 +99,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1;
-    gap: 5%;
+    gap: 10px;
 }
 
 .offre-detaille-front .gallery-offre-parent img{

@@ -48,12 +48,14 @@ INSERT INTO professionnel (id_utilisateur) VALUES
 -- 4. Professionnel_prive
 INSERT INTO professionnel_prive (id_utilisateur, denomination, siren, rib) VALUES
 (1, 'Mme Agnès Pinson', 519495882, 'FR7630001007941234567890185'),
-(2, 'Armor Navigation SAS', 398414698, 'FR7630001007949876543210185');
+(2, 'Armor Navigation SAS', 398414698, 'FR7630001007949876543210185'),
+(6, 'Ville Blanche SARL', 975414852, 'FR7630001007949876543210185');
 
 -- 5. Professionnel_public
 INSERT INTO professionnel_public (id_utilisateur, raison_sociale) VALUES
 (3, 'Association Trégor Bicyclette'),
-(4, 'Mairie de Lannion');
+(4, 'Mairie de Lannion'),
+(7, 'Ville de Lannion');
 
 -- 6. Membre
 INSERT INTO membre (id_utilisateur, pseudo) VALUES
