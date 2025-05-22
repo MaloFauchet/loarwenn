@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="item-image">
-            <img src="<?php  $valueOfOffre["chemin"] ?>images/offres/canyioning.jpg" alt="<?php $valueOfOffre["titre_image"] ?>">
+            <img src="<?php  $valueOfOffre["chemin"] ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
         </div>
         <div class="item-body">
             <div class="item-title"><?= $valueOfOffre["titre_offre"]  ?></div>
