@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -93,7 +93,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -130,7 +130,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -167,7 +167,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -204,7 +204,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -241,7 +241,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -284,7 +284,7 @@
             <div id="carousselSelectForYou">
                 <div class="card-vertical">
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -321,7 +321,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -358,7 +358,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -395,7 +395,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -432,7 +432,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -469,7 +469,7 @@
                 </div>
                 <div>
                     <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
+                        <img src="images/offres/canyoning.jpg" alt="image">
                     </div>
                     <div class="item-body">
                         <div class="item-title">Mon titre 1</div>
@@ -521,7 +521,7 @@
             ?>
             
             <!-- TO FIX -->
-            <?php // require_once "../../componentsGlobaux/cardRecommendedHorizontal.php" ?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'] . "/../views/componentsGlobaux/cardRecommendedHorizontal.php") ?>
         </div>
     </main>
 

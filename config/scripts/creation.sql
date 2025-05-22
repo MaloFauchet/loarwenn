@@ -14,7 +14,8 @@ CREATE TABLE ville (
 CREATE TABLE utilisateur (
     id_utilisateur SERIAL PRIMARY KEY,
     id_ville INT NOT NULL REFERENCES ville(id_ville),
-    nom_entreprise VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    nom VARCHAR(50) NOT NULL,
     num_telephone VARCHAR(10) NOT NULL,
     email VARCHAR(50) NOT NULL,
     adresse VARCHAR(100) NOT NULL,
@@ -44,13 +45,6 @@ CREATE TABLE professionnel_public (
 -- Table membre (indépendant de utilisateur)
 CREATE TABLE membre (
     id_utilisateur INT PRIMARY KEY REFERENCES utilisateur(id_utilisateur),
-    nom VARCHAR(50) NOT NULL,
-    prenom VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    num_telephone VARCHAR(10) NOT NULL,
-    adresse VARCHAR(100) NOT NULL,
-    complement_adresse VARCHAR(50) NOT NULL,
-    mot_de_passe VARCHAR(255) NOT NULL,
     pseudo VARCHAR(50) NOT NULL
 );
 
@@ -68,13 +62,6 @@ CREATE TABLE utilisateur_represente_image (
     PRIMARY KEY (id_utilisateur, id_image)
 );
 
--- Table statut_log
-CREATE TABLE statut_log (
-    id_statut_log SERIAL PRIMARY KEY,
-    date_mise_en_ligne DATE,
-    date_mise_hors_ligne DATE
-);
-
 -- Table type_activite
 CREATE TABLE type_activite (
     id_type_activite SERIAL PRIMARY KEY,
@@ -85,7 +72,6 @@ CREATE TABLE type_activite (
 CREATE TABLE offre (
     id_offre SERIAL PRIMARY KEY,
     id_ville INT NOT NULL REFERENCES ville(id_ville),
-    id_statut_log INT NOT NULL REFERENCES statut_log(id_statut_log),
     id_type_activite INT NOT NULL REFERENCES type_activite(id_type_activite),
     titre_offre VARCHAR(50) NOT NULL,
     note_moyenne FLOAT NOT NULL,
@@ -97,12 +83,20 @@ CREATE TABLE offre (
     adresse_offre VARCHAR(50) NOT NULL
 );
 
+-- Table statut_log
+CREATE TABLE statut_log (
+    id_statut_log SERIAL PRIMARY KEY,
+    id_offre INT NOT NULL REFERENCES offre(id_offre), 
+    date_mise_en_ligne DATE,
+    date_mise_hors_ligne DATE
+);
+
 -- Table avis
 CREATE TABLE avis (
     id_avis SERIAL PRIMARY KEY,
-    id_utilisateur INT REFERENCES utilisateur(id_utilisateur),
+    id_utilisateur INT REFERENCES membre(id_utilisateur),
     id_offre INT NOT NULL REFERENCES offre(id_offre),
-    message VARCHAR(255) NOT NULL,
+    description_avis VARCHAR(255) NOT NULL,
     note_avis FLOAT NOT NULL
 );
 
@@ -175,7 +169,7 @@ CREATE TABLE visite_guidee (
 
 -- Table visite_guidee_disponible_en_langue
 CREATE TABLE visite_guidee_disponible_en_langue (
-    id_visite INT NOT NULL REFERENCES offre(id_offre),
+    id_visite INT NOT NULL REFERENCES visite_guidee(id_offre),
     id_langue INT NOT NULL REFERENCES langue(id_langue),
     PRIMARY KEY (id_visite, id_langue)
 );
@@ -197,16 +191,16 @@ CREATE TABLE offre_spectacle (
 -- Table offre_parc_attraction
 CREATE TABLE offre_parc_attraction (
     id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
+    id_image INT NOT NULL REFERENCES image(id_image),
     nb_attraction INT NOT NULL,
-    age INT NOT NULL,
-    id_image INT NOT NULL REFERENCES image(id_image)
+    age_min INT NOT NULL
 );
 
 -- Table offre_restauration
 CREATE TABLE offre_restauration (
     id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
-    gamme_prix FLOAT NOT NULL,
-    id_image INT NOT NULL REFERENCES image(id_image)
+    id_image INT REFERENCES image(id_image),
+    gamme_prix FLOAT NOT NULL
 );
 
 -- Table pro_repond_avis
@@ -234,14 +228,14 @@ CREATE TABLE type_activite_autorise_tag (
 
 -- Table activite_inclus_prestation
 CREATE TABLE activite_inclus_prestation (
-    id_offre INT NOT NULL REFERENCES offre(id_offre),
+    id_offre INT NOT NULL REFERENCES offre_activite(id_offre),
     id_prestation INT NOT NULL REFERENCES prestation(id_prestation),
     PRIMARY KEY (id_offre, id_prestation)
 );
 
 -- Table activite_non_inclus_prestation
 CREATE TABLE activite_non_inclus_prestation (
-    id_offre INT NOT NULL REFERENCES offre(id_offre),
+    id_offre INT NOT NULL REFERENCES offre_activite(id_offre),
     id_prestation INT NOT NULL REFERENCES prestation(id_prestation),
     PRIMARY KEY (id_offre, id_prestation)
 );
@@ -270,6 +264,7 @@ CREATE TABLE abonnement (
 
 -- Table pro_public_propose_offre
 CREATE TABLE pro_public_propose_offre (
-    id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
-    id_utilisateur_public INT NOT NULL REFERENCES professionnel_public(id_utilisateur)
+    id_offre INT REFERENCES offre(id_offre),
+    id_utilisateur_public INT NOT NULL REFERENCES professionnel_public(id_utilisateur),
+    PRIMARY KEY (id_offre, id_utilisateur_public)
 );

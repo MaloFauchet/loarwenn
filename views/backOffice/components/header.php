@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="styles/components/headerBackOffice.css">
+<link rel="stylesheet" href="/styles/components/headerBackOffice.css">
 
 <header class="back-office">
     <div class="logo">

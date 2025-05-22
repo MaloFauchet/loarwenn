@@ -1,130 +1,312 @@
 <?php
-require_once('../config/Database.php');
+require_once($_SERVER['DOCUMENT_ROOT'] .  '/../config/Database.php');
 
 class Offre {
-    private $conn;
+    protected $conn;
+    protected $id;
+    protected $titre;
+    protected $resume;
+    protected $description;
+    protected $dateCreation;
+    protected $adresse;
+    protected $enLigne;
+    protected $type;
+    protected $ville;
+    protected $noteMoyenne;
+    protected $nbAvis;
 
     public function __construct() {
         $database = new Database();
         $this->conn = $database->getConnection();
     }
 
-    public function getAllOffre() {
+
+    /**
+     * @id : id de l'offre
+     * Récupère une offre  par son id
+     * @return offre
+     */
+    public function getOffreById($id) {
         $sql = "
-            SELECT * FROM tripenazor.offre
+            SELECT 
+            o.id_offre,
+            o.titre_offre,
+            o.resume,
+            o.description,
+            o.date_creation,
+            o.adresse_offre,
+            o.id_ville,
+            o.en_ligne,
+            o.note_moyenne,
+            o.nb_avis,
+
+            ville.nom as ville,
+            ville.code_postal,
+
+            img.chemin,
+
+            ta.libelle_activite as type_activite,
+
+            ov.duree AS visite_duree,
+            ov.accessibilite AS visite_accessibilite,
+
+            oa.duree AS activite_duree,
+            oa.age AS activite_age,
+            oa.accessibilite AS activite_accessibilite,
+
+            os.duree AS spectacle_duree,
+            os.accessibilite AS spectacle_accessibilite,
+            os.capacite_accueil AS spectacle_capacite,
+            os.prix AS spectacle_prix,
+
+            opa.nb_attraction AS pa_nb_attraction,
+            opa.age AS pa_age,
+
+            orestau.gamme_prix AS restaurant_gamme_prix
+
+            FROM tripenazor.offre as o
+
+            JOIN tripenazor.ville as ville ON o.id_ville = ville.id_ville
+            JOIN tripenazor.image_illustre_offre as iio ON o.id_offre = iio.id_offre
+            JOIN tripenazor.image as img ON iio.id_image = img.id_image
+            JOIN tripenazor.type_activite as ta ON o.id_type_activite = ta.id_type_activite
+
+            LEFT JOIN tripenazor.offre_visite as ov ON o.id_offre = ov.id_offre
+            LEFT JOIN tripenazor.offre_activite as oa ON o.id_offre = oa.id_offre
+            LEFT JOIN tripenazor.offre_spectacle as os ON o.id_offre = os.id_offre
+            LEFT JOIN tripenazor.offre_parc_attraction as opa ON o.id_offre = opa.id_offre
+            LEFT JOIN tripenazor.offre_restauration as orestau ON o.id_offre = orestau.id_offre
+
+
+            WHERE o.id_offre = :id
+        ";    
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        $result =  $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            switch ($result['type_activite']) {
+                case 'Visite nature':
+                    require_once(__DIR__ . '/../models/OffreVisite.php');
+                    $offre = new OffreVisite();
+                    break;
+                case 'Activité':
+                    require_once(__DIR__ . '/../models/OffreActivite.php');
+                    $offre = new OffreActivite();
+                    break;
+                case 'Spectacle':
+                    require_once(__DIR__ . '/../models/OffreSpectacle.php');
+                    $offre = new OffreSpectacle();
+                    break;
+                case 'Parc d\'attraction':
+                    require_once(__DIR__ . '/../models/OffreParcAttraction.php');
+                    $offre = new OffreParcAttraction();
+                    break;
+                case 'Restaurant':
+                    require_once(__DIR__ . '/../models/OffreRestaurant.php');
+                    $offre = new OffreRestaurant();
+                    break;
+
+                default:
+                    $offre = new Offre();
+            }
+            
+            /**
+             * Setters de la classe spécifique
+             */
+            if ($offre instanceof OffreVisite) {
+                $offre->setDuree($result['visite_duree']);
+                $offre->setAccessibilite($result['visite_accessibilite']);
+            }elseif ($offre instanceof OffreActivite) {
+                $offre->setDuree($result['activite_duree']);
+                $offre->setAgeMin($result['activite_age']);
+                $offre->setAccessibilite($result['activite_accessibilite']);
+            }elseif ($offre instanceof OffreSpectacle) {
+                $offre->setDuree($result['spectacle_duree']);
+                $offre->setAccessibilite($result['spectacle_accessibilite']);
+                $offre->setCapacite($result['capacite']);
+                $offre->setPrix($result['prix']);
+            }else if($offre instanceof OffreParcAttraction) {
+                $offre->setNbAttraction($result['pa_nb_attraction']);
+                $offre->setMinAge($result['pa_age']);
+            }elseif ($offre instanceof OffreRestaurant) {
+                $offre->setGammePrix($result['restaurant_gamme_prix']);
+            }
+            
+            /**
+             * Setters de la classe mère
+             */
+            //Type
+            $offre->setType($result['type_activite']);
+            $offre->setId($result['id_offre']);
+            $offre->setTitre($result['titre_offre']);
+            $offre->setResume($result['resume']);
+            $offre->setDescription($result['description']);
+            $offre->setDateCreation($result['date_creation']);
+            $offre->setAdresse($result['adresse_offre']);
+            $offre->setEnLigne($result['en_ligne']);
+            $offre->setType($result['type_activite']);
+            $offre->setNoteMoyenne($result['note_moyenne']);
+            $offre->setNbAvis($result['nb_avis']);
+            $offre->setIdVille($result['ville']);
+
+            return $offre;
+        }
+        return null;
+    }
+
+    public function getOffreByIdProfessionnel($id_professionnel) {
+        $sql = "
+            SELECT o.*, i.chemin AS image_chemin, i.titre_image
+            FROM tripenazor.offre o
+            JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+            JOIN tripenazor.professionnel p ON p.id_utilisateur = a.id_utilisateur_prive
+            LEFT JOIN tripenazor.image_illustre_offre io ON io.id_offre = o.id_offre
+            LEFT JOIN tripenazor.image i ON i.id_image = io.id_image
+            WHERE p.id_utilisateur = :id_utilisateur;
         ";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([':id_utilisateur' => $id_professionnel]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    //TODO changer camelCase
-    public function createOffre(
-        $id_ville, 
-        $id_statut_log, 
-        $id_type_activite, 
-        $titre_offre, 
-        $note_moyenne, 
-        $nb_avis, 
-        $en_ligne, 
-        $resume, 
-        $description, 
-        $adresse_offre
-    ) {
-        $sql = "
-            INSERT INTO tripenazor.offre (
-                id_ville,
-                id_statut_log,
-                id_type_activite,
-                titre_offre,
-                note_moyenne,
-                nb_avis,
-                en_ligne,
-                resume,
-                description,
-                adresse_offre
-            ) VALUES (
-                :id_ville,
-                :id_statut_log,
-                :id_type_activite,
-                :titre_offre,
-                :note_moyenne,
-                :nb_avis,
-                :en_ligne,
-                :resume,
-                :description,
-                :adresse_offre
-            )
-            
-            ;
-        ";
 
-        $stmt = $this->conn->prepare($sql);
+    public function insertOffre($data)
+    {
+        try {
+            // Préparer l'appel à la fonction SQL
+            $sql = "SELECT tripenazor.inserer_utilisateur_et_professionnel_prive(
+                :nom, :prenom, :email, :telephone, :adresse, :complement,
+                :code_postal, :nom_ville, :denomination, :siren, :rib, :mot_de_passe
+            );";
 
-        $stmt->execute([
-            ':id_ville' => $id_ville,
-            ':id_statut_log' => $id_statut_log,
-            ':id_type_activite' => $id_type_activite,
-            ':titre_offre' => $titre_offre,
-            ':note_moyenne' => $note_moyenne,
-            ':nb_avis' => $nb_avis,
-            ':en_ligne' => $en_ligne,
-            ':resume' => $resume,
-            ':description' => $description,
-            ':adresse_offre' => $adresse_offre,
-        ]);
+           $stmt = $this->conn->prepare($sql);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+            // Lier les paramètres
+            $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':telephone', $telephone, PDO::PARAM_STR);
+            $stmt->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+            $stmt->bindParam(':complement', $complement, PDO::PARAM_STR);
+            $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
+            $stmt->bindParam(':nom_ville', $nom_ville, PDO::PARAM_STR);
+            $stmt->bindParam(':denomination', $denomination, PDO::PARAM_STR);
+            $stmt->bindParam(':siren', $siren, PDO::PARAM_INT);
+            $stmt->bindParam(':rib', $rib, PDO::PARAM_STR);
+            $stmt->bindParam(':mot_de_passe', $mot_de_passe, PDO::PARAM_STR);
+
+            // Exécuter
+            $stmt->execute();
+
+            echo "Utilisateur professionnel privé inséré avec succès.";
+
+        } catch (PDOException $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+        }
     }
-    //TODO changer camelCase
-    public function editOffre(
-        $id_offre,
-        $id_ville, 
-        $id_statut_log, 
-        $id_type_activite, 
-        $titre_offre, 
-        $note_moyenne, 
-        $nb_avis, 
-        $en_ligne, 
-        $resume, 
-        $description, 
-        $adresse_offre
-    ) {
-        $sql = "
-           UPDATE tripenazor.offre SET
-                id_ville = :id_ville,
-                id_statut_log = :id_statut_log,
-                id_type_activite = :id_type_activite,
-                titre_offre = :titre_offre,
-                note_moyenne = :note_moyenne,
-                nb_avis = :nb_avis,
-                en_ligne = :en_ligne,
-                resume = :resume,
-                description = :description,
-                adresse_offre = :adresse_offre
-            WHERE id_offre = :id_offre
-            ;
-        ";
 
-        $stmt = $this->conn->prepare($sql);
 
-        $stmt->execute([
-            ':id_offre' => $id_offre,
-            ':id_ville' => $id_ville,
-            ':id_statut_log' => $id_statut_log,
-            ':id_type_activite' => $id_type_activite,
-            ':titre_offre' => $titre_offre,
-            ':note_moyenne' => $note_moyenne,
-            ':nb_avis' => $nb_avis,
-            ':en_ligne' => $en_ligne,
-            ':resume' => $resume,
-            ':description' => $description,
-            ':adresse_offre' => $adresse_offre,
-        ]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    /**
+     * Setters
+     */
+
+    function setId($id) {
+        $this->id = $id;
     }
-    
+
+    function setTitre($t) {
+        $this->titre = $t;
+    }
+
+    function setResume($r) {
+        $this->resume = $r;
+    }
+
+    function setDescription($d) {
+        $this->description = $d;
+    }
+
+    function setDateCreation($dc) {
+        $this->dateCreation = $dc;
+    }
+
+    function setAdresse($ad) {
+        $this->adresse = $ad;
+    }
+
+    function setEnLigne($el) {
+        $this->enLigne = $el;
+    }
+
+    function setType($t) {
+        $this->type = $t;
+    }
+
+    function setNoteMoyenne($nm) {
+        $this->noteMoyenne = $nm;
+    }
+
+    function setNbAvis($na) {
+        $this->nbAvis = $na;
+    }
+
+    function setIdVille($v) {
+        $this->ville = $v;
+    }
+
+    /**
+     * Getters
+     */
+
+    function getId() {
+        return $this->id;
+    }
+
+    function getTitre() {
+        return $this->titre;
+    }
+
+    function getResume() {
+        return $this->resume;
+    }
+
+    function getDescription() {
+        return $this->description;
+    }
+
+    function getDateCreation() {
+        return $this->dateCreation;
+    }
+
+    function getAdresse() {
+        return $this->adresse;
+    }
+
+    function getEnLigne() {
+        return $this->enLigne;
+    }
+
+    function getType() {
+        return $this->type;
+    }
+
+    function getNoteMoyenne() {
+        return $this->noteMoyenne;
+    }
+
+    function getNbAvis() {
+        return $this->nbAvis;
+    }
+
+    function getVille() {
+        return $this->ville;
+    }
 
 }
