@@ -5,14 +5,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php')
 $offreController = new OffreController();
 // On récupère l'ID de l'offre à afficher
 //$id = $_GET['id'] ?? null;
-$id = 4; // Pour le test, on met un ID fixe
-
+$id = 4; // A remplacer par la valeur dynamique de l'ID de l'offre
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
+$pro = $offreController->getProfessionnelByIdOffre($offre->getId());
 
-echo '<pre>';
-print_r($offre);
-echo '</pre>';
  /**
   * Affichage des étoiles en fonction de la note
   *La note est une etoile remplie si elle est supérieure ou égale à 0.8
@@ -58,13 +55,12 @@ function afficherEtoile($note){
         <article>
             <figure class="offre">
                 <div class="offre-image-container">
-                    <!--Image a recup dans la bdd -->
                     <div class="main-image-container">
                         <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre" class="offre-image">
                     </div>
                     <div class="gallery-offre-parent">
                         <div class="grid-offre-1">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                            <img src="<?= $offre->getPathImage()?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-2">
                             <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
@@ -88,9 +84,9 @@ function afficherEtoile($note){
         <article>
             <figure class="pp-pro">
                 <!--PP a recup dans la bdd -->
-                <img src="/images/profils/elouan.jpg" alt="Photo de profil pro" id="pp-pro">
+                <img src="/images/profils/default_profil.png" alt="Photo de profil pro" id="pp-pro">
                 <figcaption>
-                    <h4>Association : Armor Naviguation<!--Denomination a recup dans la bdd--></h4>
+                    <h4>Organisation : <?=$pro?> </h4>
                     <?php
                         // Si pro est SUPER ASSO | ORGANISATION
                         echo '<p>Super Association</p>';

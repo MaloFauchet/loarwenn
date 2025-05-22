@@ -27,6 +27,11 @@ class OffreController {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);
     }
 
+    //Retourne le nom de l'entreprise de l'offre
+    public function getProfessionnelByIdOffre($id_offre){
+        return $this->offre->getProfessionnelByIdOffre($id_offre);
+    }
+
 
     public function allOffre() {
         return $this->offre->getAllOffre();

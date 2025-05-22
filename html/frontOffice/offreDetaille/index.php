@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,7 +10,6 @@
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/headerFrontOffice.css">
     <link rel="stylesheet" href="/styles/components/footerFrontOffice.css">
-    <link rel="stylesheet" href="/styles/header.css">
 </head>
 <body class="offre-detaille-front">
 

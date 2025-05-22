@@ -46,9 +46,7 @@ class Offre {
 
             ta.libelle_activite as type_activite,
 
-            t.libelle_tag as tag,
-
-            pro.
+            tag_agg.libelle_tag,
 
             ov.duree AS visite_duree,
             ov.accessibilite AS visite_accessibilite,
@@ -73,10 +71,12 @@ class Offre {
             JOIN tripenazor.image_illustre_offre as iio ON o.id_offre = iio.id_offre
             JOIN tripenazor.image as img ON iio.id_image = img.id_image
             JOIN tripenazor.type_activite as ta ON o.id_type_activite = ta.id_type_activite
-            JOIN tripenazor.type_activite_autorise_tag as taot ON ta.id_type_activite = taot.id_type_activite
-            JOIN tripenazor.tag as t ON taot.id_tag = t.id_tag
-            JOIN tripenazor.utilisateur_represente_image as uri ON uri.id_image = img.id_image
-
+            JOIN LATERAL (
+                SELECT string_agg(t.libelle_tag, ', ') AS libelle_tag
+                FROM tripenazor.type_activite_autorise_tag taot
+                JOIN tripenazor.tag t ON taot.id_tag = t.id_tag
+                WHERE taot.id_type_activite = o.id_type_activite
+            ) AS tag_agg ON TRUE
 
             LEFT JOIN tripenazor.offre_visite as ov ON o.id_offre = ov.id_offre
             LEFT JOIN tripenazor.offre_activite as oa ON o.id_offre = oa.id_offre
@@ -84,37 +84,40 @@ class Offre {
             LEFT JOIN tripenazor.offre_parc_attraction as opa ON o.id_offre = opa.id_offre
             LEFT JOIN tripenazor.offre_restauration as orestau ON o.id_offre = orestau.id_offre
 
+            WHERE o.id_offre = :id;
 
-
-            WHERE o.id_offre = :id
         ";    
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
-        $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result =  $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
-            switch ($result[0]['type_activite']) {
+            switch ($result['type_activite']) {
                 case 'Visite guidée':
-                    require_once(__DIR__ . '/../models/OffreVisite.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
+                    $offre = new OffreVisite();
+                    break;
+                case 'Visite non guidée':
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
                     $offre = new OffreVisite();
                     break;
                 case 'Activité':
-                    require_once(__DIR__ . '/../models/OffreActivite.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreActivite.php');
                     $offre = new OffreActivite();
                     break;
                 case 'Spectacle':
-                    require_once(__DIR__ . '/../models/OffreSpectacle.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreSpectacle.php');
                     $offre = new OffreSpectacle();
                     break;
                 case 'Parc d\'attraction':
-                    require_once(__DIR__ . '/../models/OffreParcAttraction.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreParcAttraction.php');
                     $offre = new OffreParcAttraction();
                     break;
                 case 'Restaurant':
-                    require_once(__DIR__ . '/../models/OffreRestaurant.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreRestaurant.php');
                     $offre = new OffreRestaurant();
                     break;
 
@@ -127,11 +130,9 @@ class Offre {
              */
 
             //Recupération des tags
-            foreach ($result as $row) {
-                $offre->setTag($row['tag']);
+            foreach (explode(',', $result['libelle_tag']) as $tag) {
+                $offre->setTag($tag);
             }
-
-            $result = $result[0];
             //Type
             $offre->setType($result['type_activite']);
             $offre->setId($result['id_offre']);
@@ -158,8 +159,8 @@ class Offre {
             }elseif ($offre instanceof OffreSpectacle) {
                 $offre->setDuree($result['spectacle_duree']);
                 $offre->setAccessibilite($result['spectacle_accessibilite']);
-                $offre->setCapacite($result['capacite']);
-                $offre->setPrix($result['prix']);
+                $offre->setCapaciteAccueil($result['spectacle_capacite']);
+                $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
                 $offre->setMinAge($result['pa_age_min']);
@@ -173,6 +174,25 @@ class Offre {
             return $offre;
         }
         return null;
+    }
+
+    public function getProByOffre($idOffre){
+        $sql = "
+            SELECT
+			p.id_utilisateur,
+			i.chemin
+
+			FROM tripenazor.professionnel p
+			JOIN tripenazor.utilisateur_represente_image uimg ON uimg.id_utilisateur = p.id_utilisateur
+			JOIN tripenazor.image i ON i.id_image = uimg.id_image
+			
+			WHERE p.id_utilisateur;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id_offre' => $this->id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getOffreByIdProfessionnel($id_professionnel) {
@@ -191,6 +211,38 @@ class Offre {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    public function getProfessionnelByIdOffre($id_offre) {
+        $sql = "
+                SELECT 
+                pu.raison_sociale,
+                pp.denomination
+
+                FROM tripenazor.professionnel p
+                LEFT JOIN tripenazor.abonnement a ON p.id_utilisateur = a.id_utilisateur_prive
+                LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_utilisateur_public = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+
+                WHERE a.id_offre = :id_offre OR pppo.id_offre = :id_offre
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_offre', $id_offre);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($result['raison_sociale'] != null){
+            return $result['raison_sociale'];
+        }else if($result['denomination'] != null){
+            return $result['denomination'];
+        }else{
+            return false;
+        }
+    }
+
 
 
     /**
