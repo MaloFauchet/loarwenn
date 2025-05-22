@@ -36,39 +36,71 @@ class Professionnel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function insertProfessionnelPrive($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse)
-    {
+    public function insertProfessionnelPrive(
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $adresse,
+        $complement,
+        $codePostal,
+        $ville,
+        $denomination,
+        $siren,
+        $rib,
+        $motDePasse
+    ) {
         $sql = "
-            SELECT inserer_utilisateur_et_professionnel_prive($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse)
-        ";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function insertProfessionnelPublic($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse)
-    {
-        $sql = "
-        SELECT inserer_utilisateur_et_professionnel_public(
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        SELECT * FROM inserer_utilisateur_et_professionnel_prive(
+            :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :adresse::TEXT, :complement::TEXT, :codePostal::TEXT, :ville::TEXT,
+            :denomination::TEXT, :siren::INT, :rib::TEXT, :motDePasse::TEXT
         )
     ";
 
         $stmt = $this->conn->prepare($sql);
 
-        // Liaison des paramètres dans l'ordre
-        $stmt->bindParam(1, $nom);
-        $stmt->bindParam(2, $prenom);
-        $stmt->bindParam(3, $email);
-        $stmt->bindParam(4, $telephone);
-        $stmt->bindParam(5, $adresse);
-        $stmt->bindParam(6, $complement);
-        $stmt->bindParam(7, $codePostal);
-        $stmt->bindParam(8, $ville);
-        $stmt->bindParam(9, $raisonSociale);
-        $stmt->bindParam(10, $motDePasse);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':complement', $complement);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':denomination', $denomination);
+        $stmt->bindParam(':siren', $siren);
+        $stmt->bindParam(':rib', $rib);
+        $stmt->bindParam(':motDePasse', $motDePasse);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function insertProfessionnelPublic($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse)
+    {
+        $sql = "
+        SELECT * FROM tripenazor.inserer_utilisateur_et_professionnel_public(
+            :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :adresse::TEXT, :complement::TEXT, :codePostal::TEXT,
+            :ville::TEXT, :raisonSociale::TEXT, :motDePasse::TEXT)";
+
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Liaison des paramètres
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':complement', $complement);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':raisonSociale', $raisonSociale);
+        $stmt->bindParam(':motDePasse', $motDePasse);
 
         $stmt->execute();
 

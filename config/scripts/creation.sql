@@ -358,11 +358,11 @@ BEGIN
     -- 3. Insérer dans professionnel
 	INSERT INTO tripenazor.professionnel (id_utilisateur)
 	VALUES (v_id_utilisateur);
-    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, raison_sociale)
+    INSERT INTO tripenazor.professionnel_public (id_utilisateur, raison_sociale)
     VALUES (v_id_utilisateur, p_raison_sociale);
 END;
 $$ LANGUAGE plpgsql;
-REATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
+CREATE OR REPLACE FUNCTION inserer_utilisateur_et_membre(
     p_nom TEXT,
     p_prenom TEXT,
     p_email TEXT,
@@ -403,3 +403,4 @@ BEGIN
 	INSERT INTO tripenazor.membre (id_utilisateur, p_pseudo)
 	VALUES (v_id_utilisateur, p_pseudo);
 END;
+$$ LANGUAGE plpgsql;
