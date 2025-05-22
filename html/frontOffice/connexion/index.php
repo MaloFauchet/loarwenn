@@ -32,7 +32,7 @@
     <title>Formulaire de connexion</title>
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/input.css">
-    <link rel="stylesheet" href="/styles/components/creationCompteBackOffice.css">
+    <link rel="stylesheet" href="/styles/components/formulaire.css">
 </head>
 <body>
     <!-- Vue de connexion -->

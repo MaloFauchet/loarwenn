@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles/components/formulaire.css" />
 </head>
 <body>
-    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/../views/backOffice/components/creationCompte.php"); ?>
+    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/../views/frontOffice/components/creationCompte.php"); ?>
 </body>
 </html>
 
