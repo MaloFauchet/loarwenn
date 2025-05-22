@@ -4,9 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php')
 // On instancie le controller
 $offreController = new OffreController();
 // On récupère l'ID de l'offre à afficher
-//$id = $_GET['id'] ?? null;
-$id = 4; // Pour le test, on met un ID fixe
-
+$id = $_GET['id'] ?? null;
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 
