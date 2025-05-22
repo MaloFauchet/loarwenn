@@ -22,6 +22,22 @@ class Offre {
         $this->conn = $database->getConnection();
     }
 
+    public function getOffreByIdAccueil($idOffre) {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            WHERE offre.id_offre = :idOffre;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':idOffre' => $idOffre]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * @id : id de l'offre
@@ -149,7 +165,7 @@ class Offre {
             /**
              * Setters de la classe spécifique
              */
-            if ($offre instanceof OffreVisite) {
+            /*if ($offre instanceof OffreVisite) {
                 $offre->setDuree($result['visite_duree']);
                 $offre->setAccessibilite($result['visite_accessibilite']);
             }elseif ($offre instanceof OffreActivite) {
@@ -173,7 +189,7 @@ class Offre {
 
             return $offre;
         }
-        return null;
+        return null;*/
     }
 
     public function getProByOffre($idOffre){
@@ -212,6 +228,89 @@ class Offre {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllOffreByLatest() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            ORDER BY date_creation DESC;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllOffre() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllOffreRecommande() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            JOIN tripenazor.option_payante_offre ON offre.id_offre = option_payante_offre.id_offre
+            JOIN tripenazor.option ON option_payante_offre.id_offre = option.id_option
+            JOIN tripenazor.souscription ON option_payante_offre.id_souscription = souscription.id_souscription
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllOffreTag() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            JOIN tripenazor.option_payante_offre ON offre.id_offre = option_payante_offre.id_offre
+            JOIN tripenazor.option ON option_payante_offre.id_offre = option.id_option
+            JOIN tripenazor.souscription ON option_payante_offre.id_souscription = souscription.id_souscription
+            JOIN tripenazor.offre_possede_tags ON offre.id_offre = offre_possede_tags.id_offre 
+            JOIN tripenazor.tag ON offre_possede_tags.id_tag = tag.id_tag
+            
+
+
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getViewOffreAccueil() {
+        $sql = "
+            SELECT * FROM tripenazor.infos_offre_page_accueil
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getProfessionnelByIdOffre($id_offre) {
         $sql = "
