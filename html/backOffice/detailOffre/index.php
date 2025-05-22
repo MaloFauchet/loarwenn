@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php')
+?>
+
 <head>
     <meta charset="UTF-8">
     <title>PACT</title>
@@ -11,6 +15,8 @@
     <link rel="stylesheet" href="/styles/components/footerBackOffice.css">
     <link rel="stylesheet" href="/styles/components/navBackOffice.css">
     <link rel="stylesheet" href="/styles/offreDetailleBack.css">
+    <link rel="stylesheet" href="/styles/components/ajoutMultiple.css">
+    <link rel="stylesheet" href="/styles/components/input.css">
 </head>
 
 <body>

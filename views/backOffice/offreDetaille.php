@@ -76,44 +76,84 @@
         <div class="info-divers">
             <div class="telephone">
                 <img src="/images/icons/telephone.svg" alt="Téléphone">
-                <label class="label-input" for="telephone">Téléphone</label>
-                <input id="telephone" name="telephone" type="tel" required />
+                <div class="input-divers">
+                    <label class="label-input" for="telephone">Téléphone</label>
+                    <input id="telephone" name="telephone" type="tel" required />
+                </div>
             </div>
             <div class="duree">
                 <img src="/images/icons/clock.svg" alt="Horloge">
-                <label class="label-input" for="duree">Durée</label>
-                <input id="duree" name="duree" type="text" required />
+                <div class="input-divers">
+                    <label class="label-input" for="duree">Durée</label>
+                    <input id="duree" name="duree" type="text" required />
+                </div>
             </div>
             <div class="age-min">
                 <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
-                <label class="label-input" for="age-min">Âge minimal</label>
-                <input id="age-min" name="age_min" type="number" min="0" required />
+                <div class="input-divers">
+                    <label class="label-input" for="age-min">Âge minimal</label>
+                    <input id="age-min" name="age_min" type="number" min="0" required />
+                </div>
             </div>
             <div class="prix">
                 <img src="/images/icons/currency-euro.svg" alt="Euro">
-                <label class="label-input" for="prix">Prix</label>
-                <input id="prix" name="prix" type="number" step="0.01" min="0" required />
+                <div class="input-divers">
+                    <label class="label-input" for="prix">Prix</label>
+                    <input id="prix" name="prix" type="number" step="0.01" min="0" required />
+                </div>
             </div>
         </div>
 
         <div class="lieux">
             <img src="/images/icons/geo-alt.svg" alt="Point GPS">
-            <label class="label-input" for="lieu">Lieu</label>
-            <input id="lieu" name="lieu" type="text" required />
+            <div class="input-lieux">
+                <label class="label-input" for="lieu">Lieu</label>
+                <input id="lieu" name="lieu" type="text" required />
+            </div>
         </div>
 
         <div class="choix-options">
             <h3>Voulez-vous prendre un option ?</h3>
 
             <div class="checkbox-cont">
-                <p>À la une : </p>
-                <input id="lieu" name="lieu" type="checkbox" />
-                <label class="label-input" for="lieu">(+xx€/mois)</label>
-
-                <p>En relief :</p>
-                <input id="lieu" name="lieu" type="checkbox" />
-                <label class="label-input" for="lieu">(+xx€/mois)</label>
+                <div>
+                    <p>À la une : </p>
+                    <div class=".checkbox-option">
+                        <input id="a-la-une" name="a-la-une" type="checkbox" />
+                        <label class="label-input" for="a-la-une">(+xx€/mois)</label>
+                    </div>
+                </div>
+                <div>
+                    <p>En relief :</p>
+                    <div class=".checkbox-option">
+                        <input id="relief" name="relief" type="checkbox" />
+                        <label class="label-input" for="relief">(+xx€/mois)</label>
+                    </div>
+                </div>
             </div>
         </div>
+        
+        <div class="resume">
+            <div class="input-divers">
+                <label class="label-input" for="resume">Résumé</label>
+                <textarea id="resume" name="resume" rows="4" cols="50">Amet aliquip sint enim ex aliquip sit. Nulla veniam mollit velit aliqua magna aliqua ut aliquip do elit elit. Laboris officia dolor anim eiusmod tempor dolore nisi ipsum eu adipisicing excepteur irure ut incididunt.</textarea>
+            </div>
+        </div>
+
+        <div class="description">
+            <div class="input-divers">
+                <label class="label-input" for="description">Description</label>
+                <textarea id="description" name="description" rows="4" cols="50">Amet aliquip sint enim ex aliquip sit. Nulla veniam mollit velit aliqua magna aliqua ut aliquip do elit elit. Laboris officia dolor anim eiusmod tempor dolore nisi ipsum eu adipisicing excepteur irure ut incididunt.</textarea>
+            </div>
+        </div>
+
+        <div class="accessibilite">
+            <div class="input-divers">
+                <label class="label-input" for="accessibilite">accessibilite</label>
+                <textarea id="accessibilite" name="accessibilite" rows="4" cols="50">Amet aliquip sint enim ex aliquip sit. Nulla veniam mollit velit aliqua magna aliqua ut aliquip do elit elit. Laboris officia dolor anim eiusmod tempor dolore nisi ipsum eu adipisicing excepteur irure ut incididunt.</textarea>
+            </div>
+        </div>
+
+        <?php ajoutMultiple('Prestation incluse', 'Prestation incluse', 1); ?>
     </article>
 </main>

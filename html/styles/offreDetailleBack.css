@@ -8,6 +8,17 @@
     margin-right: 5%;
 }
 
+textarea {
+    padding: 15px 20px;
+    border: 2px solid var(--input-color);
+    border-radius: 1.8em;
+    font-size: 1em;
+    color: var(--main-text-color);
+    background-color: var(--backgroud-color);
+    outline: none;
+    transition: background-position 0.8s ease-out;
+}
+
 .black-separator {
     border: none;
     height: 2px;
@@ -15,12 +26,25 @@
     margin: 20px 0;
 }
 
-.input-titre {
+p {
+    font-size: 1.5em;
+    margin-right: 20px;
+}
+
+input:not(.checkbox-cont input) {
+    height: 25px!important;
+}
+
+.input-titre, .info-divers {
     display: flex;
+    flex-direction: column;
+}
+
+.input-titre {
     margin-left: 10%;
-    margin-top: -6%;
+    margin-top: -5%;
     margin-bottom: 1%;
-    width: 70%;
+    width: 80%;
 }
 
 /* CHECK BOX */
@@ -167,19 +191,24 @@
 
 
 /* Info divers */
+.input-divers {
+    display: flex;
+    flex-direction: column;
+}
+
 .info-divers {
     display: flex;
     flex-direction: row;
     gap: 20px;
     flex-wrap: wrap; 
+    width: 100%;
 }
 
-.info-divers > div,
-.lieux {
+.info-divers > div, .lieux {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: 15px;
 }
 
 .info-divers img,
@@ -189,28 +218,33 @@
     object-fit: contain;
 }
 
-.telephone {
-    
-    
+.telephone img, .duree img, .age-min img, .prix img, .lieux img {
+    margin-top: 30px;
 }
-.duree {
-    
-    
-}
-.age-min {
-    
-    
-}
-.prix {
-    
-    
-}
-.lieu {
-    
-    
+.input-lieux {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
 }
 
+/* OPTION */
 .checkbox-cont {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    margin-left: 60px;
+}
+
+.checkbox-cont > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.choix-options {
+    margin-top: 100px;
+}
+
+.resume {
+    margin-top: 50px;
 }
