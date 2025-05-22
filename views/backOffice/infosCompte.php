@@ -70,7 +70,7 @@ $ribEntreprise = "FR7612345678901234567890123";
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/backOffice.css">
     <link rel="stylesheet" href="/styles/infoComptePro.css">
-    <link rel="stylesheet" href="/styles/input.css">
+    <link rel="stylesheet" href="/styles/components/input.css">
 </head>
 <body>
     
@@ -92,47 +92,47 @@ $ribEntreprise = "FR7612345678901234567890123";
                 <input type="file" src="<?= $profilePicturePath ?>" alt="Photo de profil" id="photo-profil-input" accept="image/*" width="306px" height="306px">
 
                 <div>
-                    <label for="denominationEntreprise">NOM DE L'ENTREPRISE</label>
+                    <label class="label-input" for="denominationEntreprise">NOM DE L'ENTREPRISE</label>
                     <input type="text" name="denominationEntreprise" id="denominationEntreprise" value="<?= $denominationEntreprise ?>" required>
                     <div class="input-row">
                         <div class="input">    
-                            <label for="nomEntreprise">NOM</label>
+                            <label class="label-input" for="nomEntreprise">NOM</label>
                             <input type="text" name="nomEntreprise" id="nomEntreprise" value="<?= $nomEntreprise ?>" required>
                         </div>
                         <div class="input">
-                            <label for="prenomEntreprise">PRÉNOM</label>
+                            <label class="label-input" for="prenomEntreprise">PRÉNOM</label>
                             <input type="text" name="prenomEntreprise" id="prenomEntreprise" value="<?= $prenomEntreprise ?>" required>
                         </div>
                     </div>
-                    <label for="telephoneEntreprise">NUMÉRO DE TÉLÉPHONE</label>
+                    <label class="label-input" for="telephoneEntreprise">NUMÉRO DE TÉLÉPHONE</label>
                     <input type="tel" name="telephoneEntreprise" id="telephoneEntreprise" value="<?= $telephoneEntreprise ?>" required>
-                    <label for="emailEntreprise">E-MAIL</label>
+                    <label class="label-input" for="emailEntreprise">E-MAIL</label>
                     <input type="email" name="emailEntreprise" id="emailEntreprise" value="<?= $emailEntreprise ?>" required>
                 </div>
             </div>
             <div>
 
                 <h3>Adresse Postale</h3>
-                <label for="adresseEntreprise">ADRESSE</label>
+                <label class="label-input" for="adresseEntreprise">ADRESSE</label>
                 <input type="text" name="adresseEntreprise" id="adresseEntreprise" value="<?= $adresseEntreprise ?>" required>
                 <div class="input-row">
                     <div class="input">
-                        <label for="villeEntreprise">VILLE</label>
+                        <label class="label-input" for="villeEntreprise">VILLE</label>
                         <input type="text" name="villeEntreprise" id="villeEntreprise" value="<?= $villeEntreprise ?>" required>
                     </div>
-                    <div class="input-row">
-                        <label for="codePostalEntreprise">CODE POSTAL</label>
+                    <div class="input">
+                        <label class="label-input" for="codePostalEntreprise">CODE POSTAL</label>
                         <input type="text" name="codePostalEntreprise" id="codePostalEntreprise" value="<?= $codePostalEntreprise ?>" required>
                     </div>
                 </div>
-                <label for="complementAdresseEntreprise">COMPLÉMENT D'ADRESSE</label>
+                <label class="label-input" for="complementAdresseEntreprise">COMPLÉMENT D'ADRESSE</label>
                 <input type="text" name="complementAdresseEntreprise" id="complementAdresseEntreprise" value="<?= $complementAdresseEntreprise ?>" required>
 
                 <?php if ($isEntreprisePrivee) { ?>
                 <h3>Entreprise Privé</h3>
-                <label for="sirenEntreprise">NUMÉRO SIREN</label>
+                <label class="label-input" for="sirenEntreprise">NUMÉRO SIREN</label>
                 <input type="text" name="sirenEntreprise" id="sirenEntreprise" value="<?= $sirenEntreprise ?>" required>
-                <label for="ribEntreprise">RIB</label>
+                <label class="label-input" for="ribEntreprise">RIB</label>
                 <input type="text" name="ribEntreprise" id="ribEntreprise" value="<?= $ribEntreprise ?>" required>
                 <?php } ?>
                 

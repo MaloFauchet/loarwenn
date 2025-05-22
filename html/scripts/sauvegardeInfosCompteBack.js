@@ -14,6 +14,16 @@ window.onload = () => {
     // recupere les données de base de chaque input
     // et les stockes dans une variable.
     const inputs = document.querySelectorAll("input");
+    setupInputs(inputs, estModifie, sauvegardeDiv);
+
+    let photoInput = document.getElementById("photo-profil-input");
+    let photoDeProfil = document.getElementById("photo-profil");
+    let photoDeProfilOriginale = photoDeProfil.getAttribute("src");
+    setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale);
+}
+
+
+function setupInputs(inputs, estModifie, sauvegardeDiv) {
     inputs.forEach(input => {
         // recupere la valeur de chaque input
         const valeurOriginale = input.value;
@@ -34,10 +44,9 @@ window.onload = () => {
             updateAffichageDivSauvegarde(sauvegardeDiv, estModifie);
         };
     });
+}
 
-    let photoInput = document.getElementById("photo-profil-input");
-    let photoDeProfil = document.getElementById("photo-profil");
-    let photoDeProfilOriginale = photoDeProfil.getAttribute("src");
+function setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale) {
     photoDeProfil.onmouseenter = () => {
         photoDeProfil.style.cursor = "pointer";
         photoDeProfil.setAttribute("src", "/images/profils/changerPhotoProfil.png")
@@ -69,6 +78,7 @@ window.onload = () => {
       }
     });
 }
+
 
 /**
  * Affiche ou cache la div des boutons de sauvegarde et d'annulation
