@@ -1,3 +1,15 @@
+<?php 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TagController.php';
+
+// $id_offre = $_GET['id_offre'];
+$id_offre = 1;
+$id_type_activite = 1;
+
+$tagController = new TagController();
+$tagsAutorise = $tagController->getAllTagByIdTagActivite($id_type_activite);
+
+?>
+
 <main class="contenu-back-office">
     <div class="status-offre">
         <label class="switch">
@@ -8,7 +20,7 @@
     </div>
     <div class="grid-images">
         <img src="/images/offres/canyoning.jpg" alt="Canyoning">
-        <img src="/images/offres/imageOffre.png" alt="Fleurs paysage">
+        <img src="/images/offres/paysage.png" alt="Fleurs paysage">
         <img src="/images/offres/phare.png" alt="Phare">
         <img src="/images/offres/paysage.png" alt="Paysage">
         <img src="/images/offres/velo.png" alt="Vélo">
@@ -19,7 +31,7 @@
     </div>
 
     <article>
-        <hr class="black-separator">
+        <hr class="black-separator"> 
         <div class="profil-note">
             <figure class="pp-pro">
                 <!--PP a recup dans la bdd -->
@@ -154,6 +166,12 @@
             </div>
         </div>
 
-        <?php ajoutMultiple('Prestation incluse', 'Prestation incluse', 1); ?>
+        <div class="choix-divers">
+            <div class="choix-prestation">
+                <?php ajoutMultiple('Prestation incluse', '', 1); ?>
+                <?php ajoutMultiple('Prestation non incluse', '', 2); ?>
+            </div>
+            <?php ajoutMultiple('Tags', '', 3, $tagsAutorise); ?>
+        </div>
     </article>
 </main>

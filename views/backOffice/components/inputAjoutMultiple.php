@@ -1,7 +1,7 @@
 <?php
 
 // Fonction pour afficher un champ d'ajout multiple avec un label et un identifiant unique
-function ajoutMultiple($label, $label2, $id) {
+function ajoutMultiple($label, $label2, $id, $donnee = []) {
     ?>
     <!-- Titre du champ -->
     <h3><?php echo htmlspecialchars($label2) ?></h3>
@@ -10,9 +10,20 @@ function ajoutMultiple($label, $label2, $id) {
             <!-- Champ de saisie et bouton d'ajout -->
             <input type="text" id="ajoutMultipleInput_<?php echo $id ?>" placeholder="<?php echo htmlspecialchars($label) ?>" />
             <button onclick="ajouterajoutMultiple('<?php echo $id ?>')">Ajouter</button>
-        </div>
+        </div>  
         <!-- Liste des éléments ajoutés -->
         <ul class="ajoutMultiple-list" id="ajoutMultipleList_<?php echo $id ?>">
+            <?php 
+                if(count($donnee) > 0) {
+                    foreach ($donnee as $element) {
+                        ?>
+                        <li>
+                            <?php echo htmlspecialchars($element['libelle_tag']) ?> 
+                            <button onclick="supprimerajoutMultiple(this)">✖</button>
+                        <?php
+                    }
+                }
+            ?>
         </ul>
     </div>
 

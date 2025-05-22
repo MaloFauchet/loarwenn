@@ -8,10 +8,6 @@ $offreController = new OffreController();
 $offres = $offreController->getOffreByIdProfessionnel(1);
 
 
-
-
-
-
 $note = 3.5;
 $nbNouveauxAvis = 5;
 ?>

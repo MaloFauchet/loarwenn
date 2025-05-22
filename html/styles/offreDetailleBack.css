@@ -9,6 +9,7 @@
 }
 
 textarea {
+    font-family: 'Roboto', sans-serif;
     padding: 15px 20px;
     border: 2px solid var(--input-color);
     border-radius: 1.8em;
@@ -247,4 +248,22 @@ input:not(.checkbox-cont input) {
 
 .resume {
     margin-top: 50px;
+}
+
+.ajoutMultiple-container {
+    width: 85%;
+}
+
+.choix-divers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.choix-prestation {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    gap: 2%;
 }
