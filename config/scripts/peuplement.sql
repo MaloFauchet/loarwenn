@@ -1,7 +1,7 @@
 SET SCHEMA 'tripenazor';
 
 -- 1. Ville (doit être insérée en premier car référencée par d'autres tables)
-INSERT INTO ville (nom, code_postal) VALUES
+INSERT INTO ville (nom_ville, code_postal) VALUES
 ('Lannion', '22300'),
 ('Perros-Guirec', '22700'),
 ('Pleumeur-Bodou', '22560'),

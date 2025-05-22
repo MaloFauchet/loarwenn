@@ -5,6 +5,5 @@
             <h2>Offre 1</h2>
         </div>
         <p>Description de l'offre 1</p>
-
     </div>
 </main>
