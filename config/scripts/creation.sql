@@ -269,6 +269,51 @@ CREATE TABLE pro_public_propose_offre (
     PRIMARY KEY (id_offre, id_utilisateur_public)
 );
 
+
+-- Vues de données
+
+CREATE VIEW infos_offre_page_accueil AS
+SELECT 
+    o.titre_offre,
+    o.note_moyenne,
+    o.nb_avis,
+    o.resume,
+    o.description,
+    o.adresse_offre,
+	image.titre_image,
+	image.chemin,
+
+    MAX(CASE WHEN op.libelle_option = 'Recommandé' THEN 1 ELSE 0 END)::BOOLEAN AS "Recommandé",
+    MAX(CASE WHEN op.libelle_option = 'En relief' THEN 1 ELSE 0 END)::BOOLEAN AS "En relief"
+
+FROM offre o
+
+LEFT JOIN option_payante_offre opo ON o.id_offre = opo.id_offre
+LEFT JOIN option op ON opo.id_option = op.id_option
+LEFT JOIN (
+    SELECT id_offre, id_image
+    FROM (
+        SELECT 
+            id_offre,
+            id_image,
+            ROW_NUMBER() OVER (PARTITION BY id_offre ORDER BY id_image ASC) AS rn
+        FROM image_illustre_offre
+    ) AS sub
+    WHERE rn = 1
+) AS banniere_img ON o.id_offre = banniere_img.id_offre
+LEFT JOIN image ON banniere_img.id_image= image.id_image
+
+GROUP BY 
+    o.titre_offre,
+    o.note_moyenne,
+    o.nb_avis,
+    o.resume,
+    o.description,
+    o.adresse_offre,
+	image.titre_image,
+	image.chemin;
+
+
 -- Fonctions d'insertion
 
 CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_prive(
