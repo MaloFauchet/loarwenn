@@ -96,6 +96,10 @@ class Offre {
                     require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
                     $offre = new OffreVisite();
                     break;
+                case 'Visite non guidée':
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
+                    $offre = new OffreVisite();
+                    break;
                 case 'Activité':
                     require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreActivite.php');
                     $offre = new OffreActivite();
@@ -153,8 +157,9 @@ class Offre {
             }elseif ($offre instanceof OffreSpectacle) {
                 $offre->setDuree($result['spectacle_duree']);
                 $offre->setAccessibilite($result['spectacle_accessibilite']);
-                $offre->setCapacite($result['capacite']);
-                $offre->setPrix($result['prix']);
+                print($result['spectacle_capaciteAccueil']);
+                $offre->setCapaciteAccueil($result['spectacle_capaciteAccueil']);
+                $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
                 $offre->setMinAge($result['pa_age_min']);

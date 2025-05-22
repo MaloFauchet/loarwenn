@@ -20,6 +20,10 @@ textarea {
     transition: background-position 0.8s ease-out;
 }
 
+input{
+    font-size: 1.3em!important;
+}
+
 .black-separator {
     border: none;
     height: 2px;
@@ -267,6 +271,11 @@ input:not(.checkbox-cont input, .choix-divers input) {
     flex-direction: row;
     width: 80%;
     gap: 2%;
+}
+
+.choix-visite {
+    margin-left: 14.7%;
+    width: 100%;
 }
 
 .choix-divers input {

@@ -3,18 +3,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TagController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/LangueController.php';
 
 // Récupération de l'id de l'offre depuis l'URL
 // $id_offre = $_GET['id_offre'];
-$id_offre = 1;
+$id_offre = 3;
 
 // Création des instances des contrôleurs
 $offreController = new OffreController();
 $tagController = new TagController();
 $typeActiviteController = new TypeActiviteController();
 $prestationController = new PrestationController();
+$langueController = new LangueController();
 
 $currentOffre = $offreController->getOffreById($id_offre);
+$langues = $langueController->getAllLangueForVisiteGuidee($currentOffre->getId());
+$langues = array_column($langues, 'libelle_langue');
 
 // Récupération du type, des tags et de l'id du type d'activité
 $type_activite = $currentOffre->getType();
@@ -31,7 +35,6 @@ $arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation')
 
 $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
 $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
-
 ?>
 
 <main class="contenu-back-office">
@@ -127,14 +130,6 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                     value="<?php echo $currentOffre->getDuree() ?>" required />
                 </div>
             </div>
-            <div class="age-min">
-                <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
-                <div class="input-divers">
-                    <label class="label-input" for="age-min">Âge minimal</label>
-                    <input id="age-min" name="age_min" type="number" 
-                    value="<?php echo $currentOffre->getAge() ?>" min="0" required />
-                </div>
-            </div>
         </div>
 
         <div class="lieux">
@@ -201,9 +196,8 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
         </div>
 
         <div class="choix-divers">
-            <div class="choix-prestation">
-                <?php ajoutMultiple('Prestation incluse', '', 1, $arrayPrestationIncluse); ?>
-                <?php ajoutMultiple('Prestation non incluse', '', 2, $arrayPrestationNonIncluse); ?>
+            <div class="choix-visite">
+                <?php ajoutMultiple('Langues', '', 1, $langues); ?>
             </div>
             <?php ajoutMultiple('Tags', '', 3, $tags); ?>
         </div>

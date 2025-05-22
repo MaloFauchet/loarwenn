@@ -107,12 +107,12 @@ INSERT INTO type_activite (libelle_activite) VALUES
 -- 14. Offre (table parent)
 INSERT INTO offre (id_ville, id_type_activite, titre_offre, note_moyenne, nb_avis, en_ligne, resume, description, adresse_offre) VALUES
 (1, 1, 'Archipel de Bréhat en kayak', 4.7, 42, TRUE, 'Découverte des îles en kayak de mer', 'Excursion guidée autour des îles de l''archipel de Bréhat avec un guide diplômé.', 'Port de Ploumanach'),
-(1, 6, 'Balade familiale à vélo', 4.5, 35, TRUE, 'Balade à vélo dans le Trégor', 'Sortie familiale sur petites routes tranquilles adaptée aux enfants.', '3 Allée des Soupirs'),
+(1, 1, 'Balade familiale à vélo', 4.5, 35, TRUE, 'Balade à vélo dans le Trégor', 'Sortie familiale sur petites routes tranquilles adaptée aux enfants.', '3 Allée des Soupirs'),
 (1, 3, 'Centre-ville historique de Lannion', 4.3, 28, TRUE, 'Découverte du patrimoine', 'Visite des monuments historiques du centre-ville médiéval.', 'Place du Centre'),
 (2, 3, 'Excursion vers les 7 Îles', 4.8, 56, TRUE, 'Réserve ornithologique', 'Découverte de la plus grande réserve d''oiseaux marins de France.', 'Port de Perros-Guirec'),
-(3, 4, 'Le Village Gaulois', 4.6, 31, TRUE, 'Parc à thème gaulois', 'Découverte interactive de la vie des Gaulois avec animations.', 'Route du Radôme'),
+(3, 3, 'Le Village Gaulois', 4.6, 31, TRUE, 'Parc à thème gaulois', 'Découverte interactive de la vie des Gaulois avec animations.', 'Route du Radôme'),
 (4, 5, 'La Ville Blanche', 4.9, 78, TRUE, 'Gastronomie bretonne', 'Cuisine traditionnelle revisitée avec produits locaux.', 'La Ville Blanche'),
-(2, 3, 'La Magie des arbres', 4.4, 25, TRUE, 'Festival son et lumière', 'Spectacle nocturne dans les arbres avec effets pyrotechniques.', 'Plage de Tourony'),
+(2, 2, 'La Magie des arbres', 4.4, 25, TRUE, 'Festival son et lumière', 'Spectacle nocturne dans les arbres avec effets pyrotechniques.', 'Plage de Tourony'),
 (1, 4, 'Parc et Château de la Roche Jagu', 4.7, 48, TRUE, 'Domaine historique', 'Château médiéval et jardins remarquables sur les bords du Trieux.', 'La Roche Jagu'),
 (3, 1, 'Croisière au coucher du soleil', 4.6, 39, FALSE, 'Balade en mer romantique', 'Naviguez le long de la côte bretonne à bord d''un voilier au coucher du soleil, avec dégustation de produits locaux à bord.', 'Port de Trégastel'),
 (2, 1, 'Atelier fabrication de menhirs en argile', 4.2, 18, FALSE, 'Activité artisanale familiale', 'Atelier ludique pour petits et grands autour de la fabrication de menhirs miniatures en argile, avec explications historiques.', 'Maison des Mégalithes – Pleumeur-Bodou');
@@ -161,13 +161,15 @@ INSERT INTO langue (libelle_langue) VALUES
 -- 15. Offre_activite
 INSERT INTO offre_activite (id_offre, duree, age, accessibilite) VALUES
 (1, 4.5, 12, 'Accessible avec certaines limitations'),
-(2, 6.0, 7, 'Accessible aux personnes à mobilité réduite');
+(2, 6.0, 7, 'Accessible aux personnes à mobilité réduite'),
+(9, 6.0, 7, 'Accessible aux personnes à mobilité réduite'),
+(10, 6.0, 7, 'Accessible aux personnes à mobilité réduite');
 
 -- 16. Offre_visite
 INSERT INTO offre_visite (id_offre, duree, accessibilite) VALUES
 (3, 2.0, 'Accessible en fauteuil roulant'),
 (4, 3.0, 'Accessible avec fauteuil roulant manuel'),
-(8, 2.5, 'Partiellement accessible');
+(5, 2.5, 'Partiellement accessible');
 
 -- 17. Visite_guidee
 INSERT INTO visite_guidee (id_offre) VALUES
@@ -175,7 +177,7 @@ INSERT INTO visite_guidee (id_offre) VALUES
 
 -- 18. Visite_non_guidee
 INSERT INTO visite_non_guidee (id_offre) VALUES
-(8);
+(5);
 
 -- 19. Offre_spectacle
 INSERT INTO offre_spectacle (id_offre, duree, accessibilite, capacite_accueil, prix) VALUES
@@ -183,11 +185,11 @@ INSERT INTO offre_spectacle (id_offre, duree, accessibilite, capacite_accueil, p
 
 -- 20. Offre_parc_attraction
 INSERT INTO offre_parc_attraction (id_offre, nb_attraction, age_min, id_image) VALUES
-(9, 15, 3, 5);
+(8, 15, 3, 5);
 
 -- 21. Offre_restauration
 INSERT INTO offre_restauration (id_offre, gamme_prix, id_image) VALUES
-(10, 35.0, 6);
+(6, 35.0, 6);
 
 -- 22. Visite_guidee_disponible_en_langue
 INSERT INTO visite_guidee_disponible_en_langue (id_visite, id_langue) VALUES
