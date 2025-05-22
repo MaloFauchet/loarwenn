@@ -12,8 +12,16 @@ class ProfessionnelController {
         return $this->professionnelModel->getProfessionnelParEmailMotDePasse($email, $motDePasse);
     }
 
-    
     public function seConnecter($email, $motDePasse) {
-        return $this->professionnelModel->getProfessionnelByEmailMotDePasse($email, $motDePasse);
+        return $this->professionnelModel->getProfessionnelParEmailMotDePasse($email, $motDePasse);
+    }
+
+    public function getProfessionnelById($id) {
+        return $this->professionnelModel->getProfessionnelParId($id);
+    }
+
+    public function estEntreprisePrivee($id) {
+        $data = $this->getProfessionnelById($id)[0];
+        return $data['denomination'] !== null;
     }
 }
