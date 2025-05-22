@@ -179,7 +179,7 @@ class Offre {
                 $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
-                $offre->setMinAge($result['pa_age_min']);
+                $offre->setAgeMin($result['pa_age_min']);
             }elseif ($offre instanceof OffreRestaurant) {
                 $offre->setGammePrix($result['restaurant_gamme_prix']);
             }

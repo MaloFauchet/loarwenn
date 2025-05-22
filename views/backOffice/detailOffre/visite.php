@@ -6,8 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.p
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/LangueController.php';
 
 // Récupération de l'id de l'offre depuis l'URL
-// $id_offre = $_GET['id_offre'];
-$id_offre = 3;
+$id_offre = $_GET['id_offre'];
 
 // Création des instances des contrôleurs
 $offreController = new OffreController();

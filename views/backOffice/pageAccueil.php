@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <main class="contenu-back-office">
 
-    <div class="search-filter-bar">
+    <div class="search-filter-bar" style="display: none;">
         <form>
-            <input type="search" placeholder="Rechercher une offre" name="Rechercher">
+            <input type="search" placeholder="Rechercher une offre" name="Rechercher" disabled>
             <div>
                 <button type="submit">
                     <img src="/images/icons/search-white.svg" alt="Rechercher" style="margin-left:6px">
@@ -46,53 +46,55 @@ document.addEventListener('DOMContentLoaded', function() {
         </button>
 
     </div>
-    <?php
+    <div class="liste-offres">
+        <?php
                 foreach ($offres as $offre) {
                 
                     
                 ?>
-    <div class="offre">
-        <div class="image-container">
-            <span class="pastille">
-                <?php echo $nbNouveauxAvis ?>
-            </span>
+        <div class="offre">
+            <div class="image-container">
+                <span class="pastille" style="display:none">
+                    <?php echo $nbNouveauxAvis ?>
+                </span>
 
-            <img src="<?php echo $offre['image_chemin']; ?>" alt="<?php echo $offre['titre_image']; ?>">
+                <img src="<?php echo $offre['image_chemin']; ?>" alt="<?php echo $offre['titre_image']; ?>">
 
-        </div>
-        <div class="offre-content">
-            <h2><?php echo $offre['titre_offre']; ?></h2>
-            <div class="avis-offre">
-                <p><?php echo $offre['note_moyenne'] ?></p>
-                <div class="etoiles">
-                    <?php
+            </div>
+            <div class="offre-content">
+                <h2><?php echo $offre['titre_offre']; ?></h2>
+                <div class="avis-offre">
+                    <p><?php echo $offre['note_moyenne'] ?></p>
+                    <div class="etoiles">
+                        <?php
                                     
                                         echo afficherEtoile($offre['note_moyenne']);
                                     ?>
+                    </div>
+
+                    <p>(<?php echo $offre['nb_avis']; ?> avis)</p>
+
                 </div>
-
-                <p>(<?php echo $offre['nb_avis']; ?> avis)</p>
-
-            </div>
-            <p><?php echo $offre['resume']; ?></p>
-            <div class="bas-offre">
-                <div>
-                    <img src="/images/icons/<?php echo ($offre['en_ligne'] == 1) ? 'wifi-on' : 'wifi-off'; ?>.svg"
-                        alt="Statut en ligne">
-                    <p><?php echo ($offre['en_ligne'] == 1) ? 'En ligne' : 'Hors ligne'; ?></p>
-                </div>
+                <p><?php echo $offre['resume']; ?></p>
+                <div class="bas-offre">
+                    <div>
+                        <img src="/images/icons/<?php echo ($offre['en_ligne'] == 1) ? 'wifi-on' : 'wifi-off'; ?>.svg"
+                            alt="Statut en ligne">
+                        <p><?php echo ($offre['en_ligne'] == 1) ? 'En ligne' : 'Hors ligne'; ?></p>
+                    </div>
 
 
-                <div>
-                    <a href="/backOffice/detailOffre?id_offre=<?php echo $offre['id_offre']; ?>">
-                        <img src="/images/icons/pensil-square.svg" alt="bouton modifier">
-                    </a>
+                    <div>
+                        <a href="/backOffice/detailOffre?id_offre=<?php echo $offre['id_offre']; ?>">
+                            <img src="/images/icons/pensil-square.svg" alt="bouton modifier">
+                        </a>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <?php
+        <?php
                 }
                 ?>
+    </div>
 </main>
