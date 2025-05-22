@@ -19,7 +19,7 @@ class OffreSpectacle extends Offre {
      * @return offreSpectacle (array d'offreSpectacle)
      * Récupère toutes les offres de spectacle
      */
-    public function getAllOffreVisite() {
+    public function getAllOffreSpectacle() {
         $sql = "
             SELECT * FROM tripenazor.offre_spectacle as spectacle
             JOIN tripenazor.offre as offre 
@@ -31,35 +31,35 @@ class OffreSpectacle extends Offre {
 
         $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $offresVisite = [];
+        $offresSpectacle = [];
         foreach ($result as $value) {
-            $visite = new self();
+            $spectacle = new self();
             
             /**
              * Setters de la classe même
              */
-            $visite->setDuree($value['duree']);
-            $visite->setAccessibilite($value['accessibilite']);
+            $spectacle->setDuree($value['duree']);
+            $spectacle->setAccessibilite($value['accessibilite']);
+            $spectacle->setCapaciteAccueil($value['capaciteAccueil']);
+            $spectacle->setPrix($value['prix']);
 
             /**
              * Setters de la classe mère
              */
-            $visite->setId($value['id']);
-            $visite->setTitre($value['titre']);
-            $visite->setResume($value['resume']);
-            $visite->setDescription($value['description']);
-            $visite->setDateCreation($value['dateCreation']);
-            $visite->setAdresse($value['adresse']);
-            $visite->setEnLigne($value['enLigne']);
-            $visite->setType($value['type']);
-            $visite->setNoteMoyenne($value['noteMoyenne']);
-            $visite->setNbAvis($value['nbAvis']);
+            $spectacle->setId($value['id']);
+            $spectacle->setTitre($value['titre']);
+            $spectacle->setResume($value['resume']);
+            $spectacle->setDescription($value['description']);
+            $spectacle->setDateCreation($value['dateCreation']);
+            $spectacle->setAdresse($value['adresse']);
+            $spectacle->setEnLigne($value['enLigne']);
+            $spectacle->setType($value['type']);
+            $spectacle->setNoteMoyenne($value['noteMoyenne']);
+            $spectacle->setNbAvis($value['nbAvis']);
 
-            $offresVisite[] = $visite;
-
-            
+            $offresSpectacle[] = $spectacle;
         }
-        return $offresVisite;
+        return $offresSpectacle;
     }
 
 
@@ -91,7 +91,7 @@ class OffreSpectacle extends Offre {
     }
 
     function setDuree($d) {
-        $this->capaciteAccueil = $d;
+        $this->duree = $d;
     }
 
     /**

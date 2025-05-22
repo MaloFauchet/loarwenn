@@ -6,7 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.p
 
 // Récupération de l'id de l'offre depuis l'URL
 // $id_offre = $_GET['id_offre'];
-$id_offre = 1;
+$id_offre = 6;
 
 // Création des instances des contrôleurs
 $offreController = new OffreController();
@@ -32,6 +32,9 @@ $arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation')
 $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
 $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
 
+?><pre><?php
+print_r($currentOffre);
+?></pre><?php
 ?>
 
 <main class="contenu-back-office">
@@ -119,20 +122,12 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                     value="<?php echo "02 96 53 24 89" ?>" required />
                 </div>
             </div>
-            <div class="duree">
-                <img src="/images/icons/clock.svg" alt="Horloge">
+            <div class="prix">
+                <img src="/images/icons/currency-euro.svg" alt="Prix">
                 <div class="input-divers">
-                    <label class="label-input" for="duree">Durée (h)</label>
-                    <input id="duree" name="duree" type="text" 
-                    value="<?php echo $currentOffre->getDuree() ?>" required />
-                </div>
-            </div>
-            <div class="age-min">
-                <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
-                <div class="input-divers">
-                    <label class="label-input" for="age-min">Âge minimal</label>
-                    <input id="age-min" name="age_min" type="number" 
-                    value="<?php echo $currentOffre->getAge() ?>" min="0" required />
+                    <label class="label-input" for="capacite">Prix</label>
+                    <input id="capacite" name="capacite" type="number" 
+                    value="<?php echo $currentOffre->getGammePrix() ?>" min="0" required />
                 </div>
             </div>
         </div>
@@ -192,19 +187,11 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
             </div>
         </div>
 
-        <div class="accessibilite">
-            <div class="input-divers">
-                <label class="label-input" for="accessibilite">accessibilite</label>
-                <textarea id="accessibilite" name="accessibilite" rows="4" cols="50"><?php echo $currentOffre->getAccessibilite() ?>
-                </textarea>
-            </div>
+        <div class="repas">
+            <img src="<?php echo $currentOffre->getPathImage() ?>" alt="Carte restaurant">
         </div>
 
         <div class="choix-divers">
-            <div class="choix-prestation">
-                <?php ajoutMultiple('Prestation incluse', '', 1, $arrayPrestationIncluse); ?>
-                <?php ajoutMultiple('Prestation non incluse', '', 2, $arrayPrestationNonIncluse); ?>
-            </div>
             <?php ajoutMultiple('Tags', '', 3, $tags); ?>
         </div>
     </article>

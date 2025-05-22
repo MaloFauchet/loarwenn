@@ -157,8 +157,7 @@ class Offre {
             }elseif ($offre instanceof OffreSpectacle) {
                 $offre->setDuree($result['spectacle_duree']);
                 $offre->setAccessibilite($result['spectacle_accessibilite']);
-                print($result['spectacle_capaciteAccueil']);
-                $offre->setCapaciteAccueil($result['spectacle_capaciteAccueil']);
+                $offre->setCapaciteAccueil($result['spectacle_capacite']);
                 $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);

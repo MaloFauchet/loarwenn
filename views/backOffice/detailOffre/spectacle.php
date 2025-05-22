@@ -31,11 +31,6 @@ $arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation')
 
 $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
 $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
-
-
-?><pre><?php
-print_r($currentOffre);
-?></pre><?php
 ?>
 
 <main class="contenu-back-office">
@@ -131,12 +126,20 @@ print_r($currentOffre);
                     value="<?php echo $currentOffre->getDuree() ?>" required />
                 </div>
             </div>
-            <div class="age-min">
-                <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
+            <div class="capactie-accueil">
+                <img src="/images/icons/personnes.svg" alt="Capacité d'accueil">
                 <div class="input-divers">
-                    <label class="label-input" for="age-min">Âge minimal</label>
-                    <input id="age-min" name="age_min" type="number" 
-                    value="<?php echo $currentOffre->getAge() ?>" min="0" required />
+                    <label class="label-input" for="capacite">Capacité d'accueil</label>
+                    <input id="capacite" name="capacite" type="number" 
+                    value="<?php echo $currentOffre->getCapaciteAccueil() ?>" min="0" required />
+                </div>
+            </div>
+            <div class="prix">
+                <img src="/images/icons/currency-euro.svg" alt="Prix">
+                <div class="input-divers">
+                    <label class="label-input" for="capacite">Prix</label>
+                    <input id="capacite" name="capacite" type="number" 
+                    value="<?php echo $currentOffre->getPrix() ?>" min="0" required />
                 </div>
             </div>
         </div>
@@ -205,10 +208,6 @@ print_r($currentOffre);
         </div>
 
         <div class="choix-divers">
-            <div class="choix-prestation">
-                <?php ajoutMultiple('Prestation incluse', '', 1, $arrayPrestationIncluse); ?>
-                <?php ajoutMultiple('Prestation non incluse', '', 2, $arrayPrestationNonIncluse); ?>
-            </div>
             <?php ajoutMultiple('Tags', '', 3, $tags); ?>
         </div>
     </article>

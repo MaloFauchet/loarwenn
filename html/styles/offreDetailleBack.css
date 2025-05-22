@@ -224,7 +224,7 @@ input:not(.checkbox-cont input, .choix-divers input) {
     object-fit: contain;
 }
 
-.telephone img, .duree img, .age-min img, .prix img, .lieux img {
+.telephone img, .duree img, .capactie-accueil img, .age-min img, .prix img, .lieux img {
     margin-top: 30px;
 }
 .input-lieux {
@@ -286,4 +286,13 @@ input:not(.checkbox-cont input, .choix-divers input) {
 }
 .ajoutMultiple-header button {
     height: 25px;
+}
+
+.repas {
+    margin: 100px 0 0 430px;
+}
+
+.repas img {
+    width: 70%;
+    height: auto;
 }

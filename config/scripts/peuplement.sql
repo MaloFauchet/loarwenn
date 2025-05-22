@@ -281,9 +281,15 @@ INSERT INTO membre_aime_avis (id_utilisateur, id_avis, aime) VALUES
 -- 35. Abonnement
 INSERT INTO abonnement (id_offre, id_utilisateur_prive, prix) VALUES
 (1, 1, 120.0),
-(6, 2, 200.0);
+(2, 2, 200.0),
+(3, 1, 180.0),
+(4, 2, 160.0),
+(5, 1, 140.0),
+(6, 2, 130.0);
 
 -- 36. Pro_public_propose_offre
 INSERT INTO pro_public_propose_offre (id_offre, id_utilisateur_public) VALUES
-(2, 3),
-(3, 4);
+(7, 3),
+(8, 4),
+(9, 3),
+(10, 4);

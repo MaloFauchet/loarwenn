@@ -27,8 +27,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjo
             <?php // require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/activite.php');?>
             <?php // require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/visite.php');?>
             <?php // require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/parc-attraction.php');?>
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/spectacle.php');?>
-            <?php // require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/restaurant.php');?>
+            <?php // require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/spectacle.php');?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/restaurant.php');?>
         </div>
         <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
     </div>
