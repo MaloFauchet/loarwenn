@@ -22,6 +22,20 @@ main.info-compte div.info-compte-container > div, div.info-compte-container + di
     margin: 0 3vw;
 }
 
+div.input-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+div.input {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
 /* photo de profil */
 main.info-compte img {
     width : 306px;
@@ -30,6 +44,10 @@ main.info-compte img {
     border-radius: 50%;
     margin-left: 3vw;
     /* margin-top: 3vw; */
+}
+
+main.info-compte input[type="file"] {
+    display: none;
 }
 
 /* modification du mot de passe */
