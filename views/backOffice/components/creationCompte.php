@@ -61,14 +61,14 @@
                 <label class="label-input"  for="denomination">Dénomination</label>
                 <input type="text" id="denomination" name="denomination"  />
                 <label class="label-input"  for="siren">Siren</label>
-                <input type="text" id="siren" name="siren"  />
+                <input type="number" id="siren" name="siren"  />
                 <label class="label-input"  for="rib">RIB</label>
                 <input type="text" id="rib" name="rib"  />
             </div>
 
             <div class="option" id="associationChamps" style="display: flex">
                 <label class="label-input"  for="raisonSociale">Raison Sociale</label>
-                <input type="text" id="raisonSociale" name="raisonSociale"  />
+                <input type="text" id="raisonSociale" name="raisonSociale" required />
             </div>
 
             <h3>Mot de passe</h3>
@@ -77,7 +77,7 @@
             <label class="label-input"  for="confirmation">Confirmation</label>
             <input type="password" id="confirmation" name="confirmation" required />
 
-            <button type="submit" id="inscrire">S'inscrire</button>
+            <button type="submit" id="inscrire" class="disabled">S'inscrire</button>
 
             <p class="conditions">
                 En créant un compte, vous acceptez nos
@@ -93,28 +93,37 @@
     const entrepriseChamps = document.getElementById('entrepriseChamps');
     const associationChamps = document.getElementById('associationChamps');
 
+    
+
     checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
             entrepriseChamps.style.display = 'flex';
+            entrepriseChamps.querySelectorAll('input').forEach( input => {input.required = true;});
             associationChamps.style.display = 'none';
+            associationChamps.querySelectorAll('input').forEach( input => {input.required = false;});
         } else {
             entrepriseChamps.style.display = 'none';
+            entrepriseChamps.querySelectorAll('input').forEach( input => {input.required = false;});
             associationChamps.style.display = 'flex';
+            associationChamps.querySelectorAll('input').forEach( input => {input.required = true;});
+
         }
     });
 
     const motDePasse = document.getElementById('mot_de_passe');
     const confirmation = document.getElementById('confirmation');
     const submitBtn = document.getElementById('inscrire');
-
+    
     function checkInputs() {
+    console.log("Oups");
       if (motDePasse.value === confirmation.value && motDePasse.value.trim() !== '') {
-        submitBtn.disabled = false;
+        submitBtn.classList.remove('disabled');
       } else {
-        submitBtn.disabled = true;
+        submitBtn.classList.add('disabled');
       }
     }
 
     motDePasse.oninput = checkInputs;
     confirmation.oninput = checkInputs;
+
 </script>
