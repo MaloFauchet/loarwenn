@@ -85,7 +85,12 @@
 }
 
 .offre-detaille-front .offre-image {
+<<<<<<< HEAD
+    height: 400px;
+    max-width: 600px;
+=======
     max-height: 450px;
+>>>>>>> 4fb95b73b8c7187cd87631d92dc677d601ae0287
 }
 
 .offre-detaille-front .offre-image-container{

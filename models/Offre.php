@@ -213,6 +213,38 @@ class Offre {
     }
 
 
+    public function getProfessionnelByIdOffre($id_offre) {
+        $sql = "
+                SELECT 
+                pu.raison_sociale,
+                pp.denomination
+
+                FROM tripenazor.professionnel p
+                LEFT JOIN tripenazor.abonnement a ON p.id_utilisateur = a.id_utilisateur_prive
+                LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_utilisateur_public = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+
+                WHERE a.id_offre = :id_offre OR pppo.id_offre = :id_offre
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_offre', $id_offre);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($result['raison_sociale'] != null){
+            return $result['raison_sociale'];
+        }else if($result['denomination'] != null){
+            return $result['denomination'];
+        }else{
+            return false;
+        }
+    }
+
+
+
     /**
      * Setters
      */
