@@ -1,30 +1,45 @@
 <?php
-require_once('../models/Offre.php');
+require_once($_SERVER['DOCUMENT_ROOT'] .  '/../models/Offre.php');
 
 class OffreController {
-    private $offreModel;
+    private $offre;
 
     public function __construct() {
-        $this->offreModel = new Offre();
+        $this->offre = new Offre();
+    }
+
+    // Récupérer toutes les offres d'activités
+    public function getAllOffres() {
+        return $this->offre->getAllOffre();
+    }
+
+    // Récupérer une offre activité par ID
+    public function getOffreById($id) {
+        return $this->offre->getOffreById($id);
+    }
+
+    //toString
+    public function __toString() {
+        return $this->offre->__toString();
+    }
+    // Récupérer toutes les offres d'activités par ID professionnel
+    public function getOffreByIdProfessionnel($id_professionnel) {
+        return $this->offre->getOffreByIdProfessionnel($id_professionnel);
+    }
+    public function AllOffreByLatest()  {
+        return $this->offre->getAllOffreByLatest();
+    }
+    public function getAllOffreRecommande()  {
+        return $this->offre->getAllOffreRecommande();
+    }
+    public function getAllOffreTag()  {
+        return $this->offre->getAllOffreTag();
     }
 
     public function allOffre() {
-        return $this->offreModel->getAllOffre();
+        return $this->offre->getAllOffre();
     }
 
-    public function AllOffreByLatest()  {
-        return $this->offreModel->getAllOffreByLatest();
-    }
-    public function getOffreById($id)  {
-        return $this->offreModel->getOffreById($id);
-    }
-    public function getAllOffreRecommande()  {
-        return $this->offreModel->getAllOffreRecommande();
-    }
-    public function getAllOffreTag()  {
-        return $this->offreModel->getAllOffreTag();
-    }
-    
     public function createOffre(
         $id_ville, 
         $id_statut_log, 
@@ -38,7 +53,7 @@ class OffreController {
         $adresse_offre
         
     ) {
-        return $this->offreModel->createOffre(
+        return $this->offre->createOffre(
             $id_ville, 
             $id_statut_log, 
             $id_type_activite, 
@@ -65,7 +80,7 @@ class OffreController {
         $adresse_offre
         
     ) {
-        return $this->offreModel->editOffre(
+        return $this->offre->editOffre(
             $idOffre,
             $id_ville, 
             $id_statut_log, 

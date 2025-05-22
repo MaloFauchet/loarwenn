@@ -1,5 +1,5 @@
 <?php
-require_once('../models/Utilisateur.php');
+require_once $_SERVER['DOCUMENT_ROOT'] .'/../models/Utilisateur.php';
 
 class UtilisateurController {
     private $utilisateurModel;
