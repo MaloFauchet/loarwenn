@@ -16,16 +16,16 @@
                 <h2>Heureux de vous revoir !</h2>
             </div>
 
-            <label for="email">E-mail</label>
+            <label class="label-input" for="email">E-mail</label>
             <input id="email" type="email" required />
 
-            <label for="mot-de-passe">Mot de passe</label>
+            <label class="label-input" for="mot-de-passe">Mot de passe</label>
             <input type="tel" id="mot-de-passe" required />
 
 
             <div class="checkbox-container">
                 <input type="checkbox" id="entrepriseCheckbox" name="entreprise_privee" />
-                <label class="checkbox" for="entrepriseCheckbox"> Se souvenir de moi</label>
+                <label class="label-input" class="checkbox" for="entrepriseCheckbox"> Se souvenir de moi</label>
             </div>
 
             <button type="submit">Se connecter</button>
