@@ -271,17 +271,17 @@ CREATE TABLE pro_public_propose_offre (
 
 -- Fonctions d'insertion
 
-CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_privee(
+CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_prive(
     p_nom TEXT,
     p_prenom TEXT,
     p_email TEXT,
-    p_num_telephone TEXT,
+    p_telephone TEXT,
     p_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
     p_denomination TEXT,
-    p_siren TEXT,
+    p_siren INT,
     p_rib TEXT,
     p_mot_de_passe TEXT
 )
@@ -303,16 +303,16 @@ BEGIN
 
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
-        nom, prenom, email, num_telephone, adresse, complement, mot_de_passe, id_ville
+        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
     )
     VALUES (
-        p_nom, p_prenom, p_email, p_num_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
     -- 3. Insérer dans professionnel
-    INSERT INTO tripenazor.professionnel (id_utilisateur)
-    VALUES (v_id_utilisateur);
+	INSERT INTO tripenazor.professionnel (id_utilisateur)
+	VALUES (v_id_utilisateur);
     INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, rib)
     VALUES (v_id_utilisateur, p_denomination, p_siren, p_rib);
 END;
@@ -322,12 +322,12 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
     p_nom TEXT,
     p_prenom TEXT,
     p_email TEXT,
-    p_num_telephone TEXT,
+    p_telephone TEXT,
     p_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
-    p_raison_social TEXT,
+    p_raison_sociale TEXT,
     p_mot_de_passe TEXT
 )
 RETURNS VOID AS $$
@@ -348,26 +348,25 @@ BEGIN
 
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
-        nom, prenom, email, num_telephone, adresse, complement, mot_de_passe, id_ville
+        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
     )
     VALUES (
-        p_nom, p_prenom, p_email, p_num_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
     -- 3. Insérer dans professionnel
-    INSERT INTO tripenazor.professionnel (id_utilisateur)
-    VALUES (v_id_util);
-    INSERT INTO tripenazor.professionnel (id_utilisateur, p_raison_social)
-    VALUES (v_id_utilisateur, p_raison_social);
+	INSERT INTO tripenazor.professionnel (id_utilisateur)
+	VALUES (v_id_utilisateur);
+    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, raison_sociale)
+    VALUES (v_id_utilisateur, p_raison_sociale);
 END;
 $$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION inserer_utilisateur_et_membre(
+REATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
     p_nom TEXT,
     p_prenom TEXT,
     p_email TEXT,
-    p_num_telephone TEXT,
+    p_telephone TEXT,
     p_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
@@ -393,15 +392,14 @@ BEGIN
 
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
-        nom, prenom, email, num_telephone, adresse, complement, mot_de_passe, id_ville
+        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
     )
     VALUES (
-        p_nom, p_prenom, p_email, p_num_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
     -- 3. Insérer dans professionnel
-    INSERT INTO tripenazor.membre (id_utilisateur, p_pseudo)
-    VALUES (v_id_utilisateur, p_pseudo);
+	INSERT INTO tripenazor.membre (id_utilisateur, p_pseudo)
+	VALUES (v_id_utilisateur, p_pseudo);
 END;
-$$ LANGUAGE plpgsql;

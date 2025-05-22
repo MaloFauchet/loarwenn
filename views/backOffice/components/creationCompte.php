@@ -9,7 +9,7 @@
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg></a>
         </nav>
-        <form action="creationPro.php" method="POST" class="form-container">
+        <form action="/scriptPHP/creationPro.php" method="POST" class="form-container">
             <br>
             <div>
                 <img src="/images/logos/logoBlue.png" alt="logo de la PACT" />
@@ -18,66 +18,64 @@
             <div class="grid">
                 <div>
                     <label for="nom">Nom</label>
-                    <input id="nom" type="text" required />
+                    <input id="nom" name="nom" type="text" required />
                 </div>
                 <div>
                     <label for="prenom">Prenom</label>
-                    <input id="prenom" type="text" required />
+                    <input id="prenom" name="prenom" type="text" required />
                 </div>
             </div>
 
             <label for="email">E-mail</label>
-            <input id="email" type="email" required />
+            <input id="email" name="email" type="email" required />
 
             <label for="telephone">Téléphone</label>
-            <input type="tel" id="telephone" required />
+            <input type="tel" id="telephone" name="telephone" required />
 
             <h3>Adresse</h3>
 
             <label for="adresse">Adresse</label>
-            <input type="text" id="adresse" required />
+            <input type="text" id="adresse" name="adresse" required />
 
             <label for="complement">Complément</label>
-            <input type="text" for="complement" required />
+            <input type="text" id="complement" name="complement" required />
 
             <div class="grid">
                 <div>
                     <label for="codePostal">Code Postal</label>
-                    <input type="text" id="codePostal" required />
+                    <input type="text" id="codePostal" name="codePostal" required />
                 </div>
                 <div>
                     <label for="ville">Ville</label>
-                    <input type="text" id="ville" required />
+                    <input type="text" id="ville" name="ville" required />
                 </div>
             </div>
 
-
             <h3>Organisation</h3>
             <div class="checkbox-container">
-                <input type="checkbox" id="entrepriseCheckbox" name="entreprise_privee" />
+                <input type="checkbox" id="entrepriseCheckbox" name="entrepriseCheckbox" />
                 <label class="checkbox label-input" for="entrepriseCheckbox"> Entreprise privée ? </label>
             </div>
 
-
             <div class="option" id="entrepriseChamps" style="display: none">
                 <label for="denomination">Dénomination</label>
-                <input type="text" id="denomination" required />
+                <input type="text" id="denomination" name="denomination"  />
                 <label for="siren">Siren</label>
-                <input type="text" id="siren" required />
+                <input type="text" id="siren" name="siren"  />
                 <label for="rib">RIB</label>
-                <input type="text" id="rib" required />
+                <input type="text" id="rib" name="rib"  />
             </div>
 
             <div class="option" id="associationChamps" style="display: flex">
                 <label for="raisonSociale">Raison Sociale</label>
-                <input type="text" id="raisonSociale" required />
+                <input type="text" id="raisonSociale" name="raisonSociale"  />
             </div>
 
             <h3>Mot de passe</h3>
             <label for="mot_de_passe">Mot de passe</label>
-            <input type="password" id="mot_de_passe" required />
+            <input type="password" id="mot_de_passe" name="mot_de_passe" required />
             <label for="confirmation">Confirmation</label>
-            <input type="password" id="confirmation" required />
+            <input type="password" id="confirmation" name="confirmation" required />
 
             <button type="submit">S'inscrire</button>
 
@@ -88,7 +86,6 @@
             </p>
         </form>
     </div>
-
 </main>
 
 <script>
