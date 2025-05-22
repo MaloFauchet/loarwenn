@@ -6,7 +6,7 @@ SET SCHEMA 'tripenazor';
 -- Table ville
 CREATE TABLE ville (
     id_ville SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL,
+    nom_ville VARCHAR(50) NOT NULL,
     code_postal VARCHAR(5) NOT NULL
 );
 
@@ -268,3 +268,184 @@ CREATE TABLE pro_public_propose_offre (
     id_utilisateur_public INT NOT NULL REFERENCES professionnel_public(id_utilisateur),
     PRIMARY KEY (id_offre, id_utilisateur_public)
 );
+
+
+-- Vues de données
+
+CREATE VIEW infos_offre_page_accueil AS
+SELECT 
+    o.titre_offre,
+    o.note_moyenne,
+    o.nb_avis,
+    o.resume,
+    o.description,
+    o.adresse_offre,
+	image.titre_image,
+	image.chemin,
+
+    MAX(CASE WHEN op.libelle_option = 'Recommandé' THEN 1 ELSE 0 END)::BOOLEAN AS "Recommandé",
+    MAX(CASE WHEN op.libelle_option = 'En relief' THEN 1 ELSE 0 END)::BOOLEAN AS "En relief"
+
+FROM offre o
+
+LEFT JOIN option_payante_offre opo ON o.id_offre = opo.id_offre
+LEFT JOIN option op ON opo.id_option = op.id_option
+LEFT JOIN (
+    SELECT id_offre, id_image
+    FROM (
+        SELECT 
+            id_offre,
+            id_image,
+            ROW_NUMBER() OVER (PARTITION BY id_offre ORDER BY id_image ASC) AS rn
+        FROM image_illustre_offre
+    ) AS sub
+    WHERE rn = 1
+) AS banniere_img ON o.id_offre = banniere_img.id_offre
+LEFT JOIN image ON banniere_img.id_image= image.id_image
+
+GROUP BY 
+    o.titre_offre,
+    o.note_moyenne,
+    o.nb_avis,
+    o.resume,
+    o.description,
+    o.adresse_offre,
+	image.titre_image,
+	image.chemin;
+
+
+-- Fonctions d'insertion
+
+CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_prive(
+    p_nom TEXT,
+    p_prenom TEXT,
+    p_email TEXT,
+    p_telephone TEXT,
+    p_adresse TEXT,
+    p_complement TEXT,
+    p_code_postal TEXT,
+    p_nom_ville TEXT,
+    p_denomination TEXT,
+    p_siren INT,
+    p_rib TEXT,
+    p_mot_de_passe TEXT
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_ville INTEGER;
+    v_id_utilisateur INTEGER;
+BEGIN
+    -- 1. Chercher ou insérer la ville
+    SELECT id_ville INTO v_id_ville
+    FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        INSERT INTO tripenazor.ville (nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    -- 2. Insérer l'utilisateur
+    INSERT INTO tripenazor.utilisateur (
+        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
+    )
+    VALUES (
+        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+    )
+    RETURNING id_utilisateur INTO v_id_utilisateur;
+
+    -- 3. Insérer dans professionnel
+	INSERT INTO tripenazor.professionnel (id_utilisateur)
+	VALUES (v_id_utilisateur);
+    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, rib)
+    VALUES (v_id_utilisateur, p_denomination, p_siren, p_rib);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
+    p_nom TEXT,
+    p_prenom TEXT,
+    p_email TEXT,
+    p_telephone TEXT,
+    p_adresse TEXT,
+    p_complement TEXT,
+    p_code_postal TEXT,
+    p_nom_ville TEXT,
+    p_raison_sociale TEXT,
+    p_mot_de_passe TEXT
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_ville INTEGER;
+    v_id_utilisateur INTEGER;
+BEGIN
+    -- 1. Chercher ou insérer la ville
+    SELECT id_ville INTO v_id_ville
+    FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        INSERT INTO tripenazor.ville (nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    -- 2. Insérer l'utilisateur
+    INSERT INTO tripenazor.utilisateur (
+        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
+    )
+    VALUES (
+        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+    )
+    RETURNING id_utilisateur INTO v_id_utilisateur;
+
+    -- 3. Insérer dans professionnel
+	INSERT INTO tripenazor.professionnel (id_utilisateur)
+	VALUES (v_id_utilisateur);
+    INSERT INTO tripenazor.professionnel_public (id_utilisateur, raison_sociale)
+    VALUES (v_id_utilisateur, p_raison_sociale);
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION inserer_utilisateur_et_membre(
+    p_nom TEXT,
+    p_prenom TEXT,
+    p_email TEXT,
+    p_telephone TEXT,
+    p_adresse TEXT,
+    p_complement TEXT,
+    p_code_postal TEXT,
+    p_nom_ville TEXT,
+    p_pseudo TEXT,
+    p_mot_de_passe TEXT
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_ville INTEGER;
+    v_id_utilisateur INTEGER;
+BEGIN
+    -- 1. Chercher ou insérer la ville
+    SELECT id_ville INTO v_id_ville
+    FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        INSERT INTO tripenazor.ville (nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    -- 2. Insérer l'utilisateur
+    INSERT INTO tripenazor.utilisateur (
+        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
+    )
+    VALUES (
+        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+    )
+    RETURNING id_utilisateur INTO v_id_utilisateur;
+
+    -- 3. Insérer dans professionnel
+	INSERT INTO tripenazor.membre (id_utilisateur, p_pseudo)
+	VALUES (v_id_utilisateur, p_pseudo);
+END;
+$$ LANGUAGE plpgsql;

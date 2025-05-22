@@ -19,15 +19,31 @@ header.front-office > nav > ul > li{
     font-family: 'lexenDeca', sans-serif;
 }
 
-header.front-office > div > img, header.front-office > a > svg:last-child{
-    height: 10vh;
+header.front-office > a > svg:last-child{
+    height: 50px;
     width: auto;
     color: var(--main-color);
 }
 
+header.front-office > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 
-header.front-office > div > svg, header.front-office > div > h1{
+header.front-office > div > svg:first-child{
     display: none;
+}
+
+header.front-office > div img{
+    border-radius: 50px;
+    height: 50px;
+}
+
+header.front-office > div > a > svg{
+    height: 20px;
+    width: auto;
 }
 
 a{
@@ -38,6 +54,16 @@ a{
 a:hover{
     text-decoration: underline;
 }
+
+
+header.front-office > nav{
+    display: none;
+}
+
+header.front-office > div > h1{
+    display: none;
+}
+
 
 
 @media (max-width: 728px) {
@@ -68,6 +94,7 @@ a:hover{
         top: 10vh;
         left: 0;
         width: 100%;
+        z-index: 2;
     }
 
     header.front-office > nav.active > ul{
@@ -85,7 +112,7 @@ a:hover{
         color: var(--main-text-color);
         font-size: 15px;
         font-family: 'lexenDeca', sans-serif;
-        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
     }
 
     header.front-office > div:first-child {

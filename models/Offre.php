@@ -14,6 +14,8 @@ class Offre {
     protected $ville;
     protected $noteMoyenne;
     protected $nbAvis;
+    protected $pathImage;
+    protected $tags;
 
     public function __construct() {
         $database = new Database();
@@ -30,22 +32,21 @@ class Offre {
         $sql = "
             SELECT 
             o.id_offre,
-            o.titre_offre,
-            o.resume,
-            o.description,
-            o.date_creation,
-            o.adresse_offre,
             o.id_ville,
-            o.en_ligne,
+            o.titre_offre,
             o.note_moyenne,
             o.nb_avis,
+            o.resume,
+            o.description,
+            o.adresse_offre,
 
-            ville.nom as ville,
-            ville.code_postal,
+            ville.nom_ville as ville,
 
             img.chemin,
 
             ta.libelle_activite as type_activite,
+
+            tag_agg.libelle_tag,
 
             ov.duree AS visite_duree,
             ov.accessibilite AS visite_accessibilite,
@@ -60,7 +61,7 @@ class Offre {
             os.prix AS spectacle_prix,
 
             opa.nb_attraction AS pa_nb_attraction,
-            opa.age AS pa_age,
+            opa.age_min AS pa_age_min,
 
             orestau.gamme_prix AS restaurant_gamme_prix
 
@@ -70,6 +71,12 @@ class Offre {
             JOIN tripenazor.image_illustre_offre as iio ON o.id_offre = iio.id_offre
             JOIN tripenazor.image as img ON iio.id_image = img.id_image
             JOIN tripenazor.type_activite as ta ON o.id_type_activite = ta.id_type_activite
+            JOIN LATERAL (
+                SELECT string_agg(t.libelle_tag, ', ') AS libelle_tag
+                FROM tripenazor.type_activite_autorise_tag taot
+                JOIN tripenazor.tag t ON taot.id_tag = t.id_tag
+                WHERE taot.id_type_activite = o.id_type_activite
+            ) AS tag_agg ON TRUE
 
             LEFT JOIN tripenazor.offre_visite as ov ON o.id_offre = ov.id_offre
             LEFT JOIN tripenazor.offre_activite as oa ON o.id_offre = oa.id_offre
@@ -77,8 +84,8 @@ class Offre {
             LEFT JOIN tripenazor.offre_parc_attraction as opa ON o.id_offre = opa.id_offre
             LEFT JOIN tripenazor.offre_restauration as orestau ON o.id_offre = orestau.id_offre
 
+            WHERE o.id_offre = :id;
 
-            WHERE o.id_offre = :id
         ";    
 
         $stmt = $this->conn->prepare($sql);
@@ -89,31 +96,56 @@ class Offre {
 
         if ($result) {
             switch ($result['type_activite']) {
-                case 'Visite nature':
-                    require_once(__DIR__ . '/../models/OffreVisite.php');
+                case 'Visite guidée':
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
+                    $offre = new OffreVisite();
+                    break;
+                case 'Visite non guidée':
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
                     $offre = new OffreVisite();
                     break;
                 case 'Activité':
-                    require_once(__DIR__ . '/../models/OffreActivite.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreActivite.php');
                     $offre = new OffreActivite();
                     break;
                 case 'Spectacle':
-                    require_once(__DIR__ . '/../models/OffreSpectacle.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreSpectacle.php');
                     $offre = new OffreSpectacle();
                     break;
                 case 'Parc d\'attraction':
-                    require_once(__DIR__ . '/../models/OffreParcAttraction.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreParcAttraction.php');
                     $offre = new OffreParcAttraction();
                     break;
                 case 'Restaurant':
-                    require_once(__DIR__ . '/../models/OffreRestaurant.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreRestaurant.php');
                     $offre = new OffreRestaurant();
                     break;
 
                 default:
                     $offre = new Offre();
             }
-            
+
+            /**
+             * Setters de la classe mère
+             */
+
+            //Recupération des tags
+            foreach (explode(',', $result['libelle_tag']) as $tag) {
+                $offre->setTag($tag);
+            }
+            //Type
+            $offre->setType($result['type_activite']);
+            $offre->setId($result['id_offre']);
+            $offre->setTitre($result['titre_offre']);
+            $offre->setResume($result['resume']);
+            $offre->setDescription($result['description']);
+            $offre->setAdresse($result['adresse_offre']);
+            $offre->setType($result['type_activite']);
+            $offre->setNoteMoyenne($result['note_moyenne']);
+            $offre->setNbAvis($result['nb_avis']);
+            $offre->setIdVille($result['ville']);
+            $offre->setPathImage($result['chemin']);
+
             /**
              * Setters de la classe spécifique
              */
@@ -127,35 +159,40 @@ class Offre {
             }elseif ($offre instanceof OffreSpectacle) {
                 $offre->setDuree($result['spectacle_duree']);
                 $offre->setAccessibilite($result['spectacle_accessibilite']);
-                $offre->setCapacite($result['capacite']);
-                $offre->setPrix($result['prix']);
+                $offre->setCapaciteAccueil($result['spectacle_capacite']);
+                $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
-                $offre->setMinAge($result['pa_age']);
+                $offre->setMinAge($result['pa_age_min']);
             }elseif ($offre instanceof OffreRestaurant) {
                 $offre->setGammePrix($result['restaurant_gamme_prix']);
             }
             
-            /**
-             * Setters de la classe mère
-             */
-            //Type
-            $offre->setType($result['type_activite']);
-            $offre->setId($result['id_offre']);
-            $offre->setTitre($result['titre_offre']);
-            $offre->setResume($result['resume']);
-            $offre->setDescription($result['description']);
-            $offre->setDateCreation($result['date_creation']);
-            $offre->setAdresse($result['adresse_offre']);
-            $offre->setEnLigne($result['en_ligne']);
-            $offre->setType($result['type_activite']);
-            $offre->setNoteMoyenne($result['note_moyenne']);
-            $offre->setNbAvis($result['nb_avis']);
-            $offre->setIdVille($result['ville']);
+            
+            
 
             return $offre;
         }
         return null;
+    }
+
+    public function getProByOffre($idOffre){
+        $sql = "
+            SELECT
+			p.id_utilisateur,
+			i.chemin
+
+			FROM tripenazor.professionnel p
+			JOIN tripenazor.utilisateur_represente_image uimg ON uimg.id_utilisateur = p.id_utilisateur
+			JOIN tripenazor.image i ON i.id_image = uimg.id_image
+			
+			WHERE p.id_utilisateur;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id_offre' => $this->id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getOffreByIdProfessionnel($id_professionnel) {
@@ -261,6 +298,14 @@ class Offre {
         $this->ville = $v;
     }
 
+    function setPathImage($pi) {
+        $this->pathImage = $pi;
+    }
+
+    function setTag($t) {
+        $this->tags[] = $t;
+    }
+
     /**
      * Getters
      */
@@ -307,6 +352,14 @@ class Offre {
 
     function getVille() {
         return $this->ville;
+    }
+
+    function getPathImage() {
+        return $this->pathImage;
+    }
+
+    function getTags() {
+        return $this->tags;
     }
 
 }

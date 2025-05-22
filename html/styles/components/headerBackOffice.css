@@ -21,11 +21,11 @@ header.back-office .logo img {
 }
 
 header.back-office .header-droit a p {
-    /*font-family:'roboto';*/
+    font-family:'roboto', sans-serif;
     
 }
 header.back-office h1 {
-    /*font-family:'lexend-deca';*/
+    font-family: 'lexenDeca', sans-serif;
     
 }
 
@@ -53,4 +53,5 @@ header.back-office .header-droit a {
 header.back-office .header-droit img {
     width: 40px;
     height: auto;
+    border-radius: 20px;
 }

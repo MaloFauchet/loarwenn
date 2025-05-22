@@ -30,7 +30,6 @@ function ajoutMultiple($label, $label2, $id, $donnee = []) {
     </div>
 
     <script>
-        console.log("ajoutMultiple loaded");
         // Fonction pour ajouter un élément à la liste
         function ajouterajoutMultiple(id) {
             const input = document.getElementById('ajoutMultipleInput_' + id);
