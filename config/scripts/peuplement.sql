@@ -69,18 +69,30 @@ INSERT INTO image (titre_image, chemin) VALUES
 ('Village Gaulois', '/images/offres/village-gaulois.png'),
 ('Restaurant Ville Blanche', '/images/offres/restaurant.png'),
 ('Magie des Arbres', '/images/offres/arbres.png'),
-('Centre Lannion', '/images/offres/lannion.png');
+('Centre Lannion', '/images/offres/lannion.png'),
+('Photo de profil', '/images/profils/1.jpg'),
+('Photo de profil', '/images/profils/2.jpg'),
+('Photo de profil', '/images/profils/3.jpg'),
+('Photo de profil', '/images/profils/4.jpg'),
+('Photo de profil', '/images/profils/5.jpg'),
+('Photo de profil', '/images/profils/6.jpg'),
+('Photo de profil', '/images/profils/7.jpg'),
+('Photo de profil', '/images/profils/8.jpg'),
+('Photo de profil', '/images/profils/9.jpg'),
+('Photo de profil', '/images/profils/10.jpg');
 
 -- 8. Utilisateur_represente_image
 INSERT INTO utilisateur_represente_image (id_utilisateur, id_image) VALUES
-(1, 1),
-(2, 2),
-(3, 8),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 3),
-(8, 7);
+(1, 9),
+(2, 10),
+(3, 11),
+(4, 12),
+(5, 13),
+(6, 14),
+(7, 15),
+(8, 16),
+(9, 17),
+(10, 18);
 
 -- 10. Type_activite
 INSERT INTO type_activite (libelle_activite) VALUES
@@ -218,9 +230,9 @@ INSERT INTO option (libelle_option, prix_s_HT_option, prix_s_TTC_option) VALUES
 -- 28. Option_payante_offre
 INSERT INTO option_payante_offre (id_offre, id_option, id_souscription) VALUES
 (1, 2, 1),
-(1, 3, 1),
+(1, 1, 1),
 (2, 1, 2),
-(4, 4, 3);
+(4, 2, 3);
 
 -- 29. Offre_possede_tags
 INSERT INTO offre_possede_tags (id_offre, id_tag) VALUES

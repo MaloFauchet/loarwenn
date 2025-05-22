@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Inscription PACT</title>
-    <link rel="stylesheet" href="/styles/input.css" />
+    <link rel="stylesheet" href="/styles/components/input.css" />
     <link rel="stylesheet" href="/styles/styles.css" />
     <link rel="stylesheet" href="/styles/components/creationCompteBackOffice.css" />
 </head>

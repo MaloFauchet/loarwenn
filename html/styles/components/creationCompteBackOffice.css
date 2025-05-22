@@ -109,7 +109,7 @@ input{
 
 nav{
     width: 100%;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #00000059;
     color: #000;
     display: flex;
     justify-content: space-between;

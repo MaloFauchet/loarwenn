@@ -4,9 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php')
 // On instancie le controller
 $offreController = new OffreController();
 // On récupère l'ID de l'offre à afficher
-//$id = $_GET['id'] ?? null;
-$id = 4; // Pour le test, on met un ID fixe
-
+$id = $_GET['id'] ?? null;
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 
@@ -57,20 +55,20 @@ function afficherEtoile($note){
                 <div class="offre-image-container">
                     <!--Image a recup dans la bdd -->
                     <div class="main-image-container">
-                        <img src="/images/offres/canyioning2.png" alt="Image de l'offre" class="offre-image">
+                        <img src="/images/offres/cannyoning2.png" alt="Image de l'offre" class="offre-image">
                     </div>
                     <div class="gallery-offre-parent">
                         <div class="grid-offre-1">
-                            <img src="/images/offres/canyioning2.png" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-2">
-                            <img src="/images/offres/canyioning.jpg" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-3">
-                            <img src="/images/offres/canyioning.jpg" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-4">
-                            <img src="/images/offres/canyioning2.png" alt="">
+                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                         </div>
                     </div>
                 </div>
@@ -133,7 +131,7 @@ function afficherEtoile($note){
                 <?php
                     //En fonction du type d'offre, on affiche les différentes informations
                     switch ($offre->getType()) :
-                    case 'Visite nature': 
+                    case 'Visite guidée': 
                 ?>
                 <li>
                     <figure class="info-pratique">
@@ -253,11 +251,23 @@ function afficherEtoile($note){
                 ?>
             </ul>
         </article>
-        <article>
-            <ul>
+        <article class="tags">
+            <ul class="tag-list">
                 <?php
-                    //On affiche le nb de tag
-                    
+                    //On affiche le nb de tag récuperé
+                    foreach ($offre->getTags() as $tags):
+                ?>
+                <li>
+                    <div class="tag-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tag" viewBox="0 0 16 16">
+                            <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0"/>
+                            <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1m0 5.586 7 7L13.586 9l-7-7H2z"/>
+                        </svg>
+                        <h3> <?= $tags ?> </h3>
+                    </div>
+                </li>
+                <?php
+                    endforeach;
                 ?>
             </ul>
         </article>
