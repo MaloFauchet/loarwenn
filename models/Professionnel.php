@@ -4,8 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Model.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Model.php');
 
 
-class Professionnel extends Model
-{
+class Professionnel extends Model{ 
 
     public function getProfessionnelParId($id)
     {

@@ -23,19 +23,13 @@
             <label class="label-input" for="mot-de-passe">Mot de passe</label>
             <input type="password" id="mot-de-passe" name="mot-de-passe" required />
 
-
-            <div class="checkbox-container">
-                <input type="checkbox" id="entrepriseCheckbox" name="entreprise_privee" />
-                <label class="label-input" class="checkbox" for="entrepriseCheckbox"> Se souvenir de moi</label>
-            </div>
-
             <button type="submit">Se connecter</button>
 
             <button type="submit">S'inscrire</button>
 
             <p>
                 Si vous êtes un professionnel, <br>
-                <a href="#">C'est par ici !</a>
+                <a href="connexionPro.php">C'est par ici !</a>
             </p>
             <p class="conditions">
                 En créant un compte, vous acceptez nos

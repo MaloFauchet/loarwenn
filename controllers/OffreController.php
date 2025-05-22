@@ -33,6 +33,15 @@ class OffreController {
     public function AllOffreByLatest()  {
         return $this->offre->getAllOffreByLatest();
     }
+    //Retourne le nom de l'entreprise de l'offre
+    public function getProfessionnelByIdOffre($id_offre){
+        return $this->offre->getProfessionnelByIdOffre($id_offre);
+    }
+
+
+    public function allOffre() {
+        return $this->offre->getAllOffre();
+    }
     public function getAllOffreRecommande()  {
         return $this->offre->getAllOffreRecommande();
     }

@@ -3,16 +3,16 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
 
     /**
-     * Récupère les informations du Membre
+     * Récupère les informations du professionnel
      * Et les creer les variables de session
      */
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['mot-de-passe'])) {
         $utilisateurController = new UtilisateurController();
-        $membre = $utilisateurController->connexionMembre($_POST['email'], $_POST['mot-de-passe']);
-    
-        if ($membre) {
-            // Redirection ou message de succès
-            header('Location: /index.php');
+        $pro = $utilisateurController->connexionPro($_POST['email'], $_POST['mot-de-passe']);
+
+        if ($pro) {
+            //Redirection ou message de succès
+            header('Location: /backOffice/index.php');
             exit;
         } else {
         ?>
@@ -31,10 +31,10 @@
     <title>Formulaire de connexion</title>
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/input.css">
-    <link rel="stylesheet" href="/styles/components/formulaire.css">
+    <link rel="stylesheet" href="/styles/components/creationCompteBackOffice.css">
 </head>
 <body>
     <!-- Vue de connexion -->
-    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/components/connexionMembre.php'); ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/components/connexionProfessionnel.php'); ?>
 </body>
 </html>
