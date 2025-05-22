@@ -232,7 +232,8 @@ INSERT INTO option_payante_offre (id_offre, id_option, id_souscription) VALUES
 (1, 2, 1),
 (1, 1, 1),
 (2, 1, 2),
-(4, 2, 3);
+(4, 2, 3),
+(5, 1, 3);
 
 -- 29. Offre_possede_tags
 INSERT INTO offre_possede_tags (id_offre, id_tag) VALUES

@@ -1,7 +1,7 @@
 function changeClassOfCard() {
     const isSmall = window.innerWidth <= 860;
 
-    document.querySelectorAll(".container-nouveautes .card-horizontal, .container-nouveautes .card-vertical-item").forEach(element => {
+    document.querySelectorAll(".container-nouveautes .card-horizontal, .container-nouveautes .card-vertical-item,.container-nouveautes .card-vertical-item ").forEach(element => {
         const recommended = element.querySelector(".recommended-horizontal, .recommended");
 
         if (isSmall) {
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () =>{
         
     })*/
     new Caroussel(document.querySelector('#carousselSelectForYou'),{
-        slidesToScroll:1,
-        slidesVisible: 1,
+        slidesToScroll:2,
+        slidesVisible: 2,
         pagination:true,
         infinite:true,
         /*loop:true,*/

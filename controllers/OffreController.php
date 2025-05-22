@@ -21,12 +21,11 @@ class OffreController {
     public function getOffreByIdAccueil($id) {
         return $this->offre->getOffreByIdAccueil($id);
     }
-
+    public function getViewOffreAccueil() {
+        return $this->offre->getViewOffreAccueil();
+    }
     //toString
-    /*
-    public function __toString() {
-        return $this->offre->__toString();
-    }*/
+    
     // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);

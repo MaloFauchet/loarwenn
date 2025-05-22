@@ -275,6 +275,18 @@ class Offre {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getViewOffreAccueil() {
+        $sql = "
+            SELECT * FROM tripenazor.infos_offre_page_accueil
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Setters
      */

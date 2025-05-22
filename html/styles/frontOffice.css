@@ -100,6 +100,14 @@ main{
     border-radius: 1em;
 }
 
+.card-horizontal-item{
+    margin: 40px 10px;
+    background-color: #fff;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    transform: translate3d(0,-1px,0);
+    border-radius: 1em;
+}
+
 .caroussel-next, .caroussel-prev{
     position: absolute;
     width: 40px;
@@ -425,8 +433,8 @@ button.btn-reset {
     border-radius: 1em 1em 0 0;
     bottom: 95%;
     left: 5%;
-    width: 60%;
-    padding: 5px 1em 1.5em 1em;
+    width: fit-content;
+    padding: 5px 1em 1em 1em;
     font-size: 1.10em;
     
 }
@@ -451,15 +459,14 @@ button.btn-reset {
     background-color: #005CE6;
   color: #fff;
   border-radius: 1em 1em 0 0;
-  font-size: 1.1em;
 
   position: absolute;
   
-  z-index: -1; /* En arrière-plan */
-  width: 20%;
-  height: 40px; /* Ajuste à ton besoin */
+  z-index: -1; 
+  width: fit-content;
+  height: 40px; 
   transform: translateY(-30px);
-  padding: 0 1.10em 1.10em 1.10em;
+  padding: 0 0.2em 1.10em 1.10em;
 }
 
 .recommended-horizontal >div{

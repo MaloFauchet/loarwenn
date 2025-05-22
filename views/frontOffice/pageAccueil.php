@@ -23,8 +23,6 @@
 
     $offreTag = $offreController->getAllOffreTag();
 
-    
-
     $tabTag = [];
 
     foreach ($offreTag as $offreValue => $valueOfOffre) {
@@ -35,19 +33,10 @@
         $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
 
     }
-    dump("-------Consulte----------");
-    dump($listeOffreConsultes);
-    dump("--------Tag---------");
-    dump($offreTag);
-    dump("-------All offre----------");
-    dump($listeOffre);
-    dump("-----------------");
-
+    $listeOffreView = $offreController->getViewOffreAccueil();
+    
     $i=0;
 
-
-    
-    
     function dump($dataDump) {
         echo "<pre>";
         var_dump($dataDump);
@@ -119,8 +108,12 @@
         <div class="container-caroussel">
             <div id="carousselSelectForYou">
 
-                <?php foreach ($offreRecommandes as $offreRecommande => $valueOfOffre) {
-                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedVerticalCarousselle.php'); 
+                <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
+                    if ($valueOfOffre['Recommandé']) {
+                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedVerticalCarousselle.php'); 
+                    }elseif ($valueOfOffre['En relief']) {
+                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+                    }
                 }?>
 
             </div>
@@ -130,8 +123,14 @@
         <div class="container-nouveautes">
             <?php
 
-            foreach ($listeOffre as $offre => $valueOfOffre) {
-                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');    
+            foreach ($listeOffreView as $offre => $valueOfOffre) {
+                if ($valueOfOffre['Recommandé']) {
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedHorizontal.php'); 
+                }else{
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');
+                    
+                }
+                
                 
             }    
             ?>
