@@ -56,7 +56,7 @@ class Offre {
             o.description,
             o.adresse_offre,
 
-            ville.nom as ville,
+            ville.nom_ville as ville,
 
             img.chemin,
 

@@ -26,12 +26,14 @@ main img {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .form-container > div > div{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .grid {
@@ -109,12 +111,19 @@ input{
 
 nav{
     width: 100%;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #00000059;
     color: #000;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
+.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
 
 nav a {
     margin: 10px;
