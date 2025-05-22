@@ -18,10 +18,15 @@ class OffreController {
         return $this->offre->getOffreById($id);
     }
 
+    public function getOffreByIdAccueil($id) {
+        return $this->offre->getOffreByIdAccueil($id);
+    }
+
     //toString
+    /*
     public function __toString() {
         return $this->offre->__toString();
-    }
+    }*/
     // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);
@@ -35,11 +40,7 @@ class OffreController {
     public function getAllOffreTag()  {
         return $this->offre->getAllOffreTag();
     }
-
-    public function allOffre() {
-        return $this->offre->getAllOffre();
-    }
-
+    /*
     public function createOffre(
         $id_ville, 
         $id_statut_log, 
@@ -93,5 +94,5 @@ class OffreController {
             $description, 
             $adresse_offre
         );
-    }
+    }*/
 }

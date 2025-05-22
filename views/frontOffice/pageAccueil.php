@@ -13,7 +13,7 @@
     if (isset($_COOKIE['consulte'])) {
         $tabConsulte = json_decode($_COOKIE['consulte']);
         foreach ($tabConsulte as $id) {
-            $offreConsulte = $offreController->getOffreById($id);
+            $offreConsulte = $offreController->getOffreByIdAccueil($id);
             $listeOffreConsultes[] = $offreConsulte;
         }
     }
@@ -35,6 +35,16 @@
         $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
 
     }
+    dump("-------Consulte----------");
+    dump($listeOffreConsultes);
+    dump("--------Tag---------");
+    dump($offreTag);
+    dump("-------All offre----------");
+    dump($listeOffre);
+    dump("-----------------");
+
+    $i=0;
+
 
     
     
@@ -64,12 +74,17 @@
                 <li><a href="">Cartographie</a></li>
             </ul>
         </nav>!-->
+        <?php if (isset($_SESSION['id_utilisateur'])) { ?>
+            <img src="<?= $_SESSION['id_utilisateur']?>.png" alt="">
+        <?php } else{?>
         <a href="" >
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
             </svg>
         </a>
+        <?php } ?>
+
         <!--
         <div class="sample one" >
             <input type="text" name="search" placeholder="Rechercher...">
@@ -82,7 +97,7 @@
         <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
         <h2 class="discover-text-fo">Découvrez vos vacances</h2>
     </header>
-    <main>
+    <main><!--
         <h1>Récemment consultés</h1>
         <hr>
         <?php //  FAIRE CONNEXION     if ($connected) { ?>
@@ -90,18 +105,18 @@
             <div class="container-caroussel">
                 <div id="carousselAlreadySee">
                     
-                    <?php foreach ($listeOffreConsultes as $listeOffreRecementConsultes =>$offreRecementConsultes ) { 
+                    <?php /*foreach ($listeOffreConsultes as $listeOffreRecementConsultes =>$offreRecementConsultes ) { 
                         
                         foreach ($offreRecementConsultes as $offreRecementConsulte =>$valueOfOffre) {
                             require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php');  
                         }
-                    } ?>
+                    }*/ ?>
             </div>
-        </div>
+        </div>!-->
         <?php //} ?>
         <h1>Sélectionnés pour vous</h1>
         <hr>
-        <div class="container">
+        <div class="container-caroussel">
             <div id="carousselSelectForYou">
 
                 <?php foreach ($offreRecommandes as $offreRecommande => $valueOfOffre) {

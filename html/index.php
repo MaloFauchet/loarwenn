@@ -3,7 +3,7 @@
 
 $controller = new UtilisateurController();
 $utilisateurs = $controller->afficherUtilisateurs();*/
-    //require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -12,8 +12,8 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     $tabConsulteRecement[] = 2;
     // Définir les cookies avant tout output
     setcookie('consulte',json_encode($tabConsulteRecement) ,time()+ 60 * 60 * 24 * 7, "/");
-    $tabConsulteRecement[] = 8;
-    setcookie('consulte',json_encode($tabConsulteRecement) , time() + 60 * 60 * 24 * 7, "/");
+    /*$tabConsulteRecement[] = 8;
+    setcookie('consulte',json_encode($tabConsulteRecement) , time() + 60 * 60 * 24 * 7, "/");*/
 ?>
 
 <!DOCTYPE html>

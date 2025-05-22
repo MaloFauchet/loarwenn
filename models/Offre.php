@@ -22,6 +22,22 @@ class Offre {
         $this->conn = $database->getConnection();
     }
 
+    public function getOffreByIdAccueil($idOffre) {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            WHERE offre.id_offre = :idOffre;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':idOffre' => $idOffre]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * @id : id de l'offre
@@ -90,7 +106,7 @@ class Offre {
 
         $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result) {
+        /*if ($result) {
             switch ($result[0]['type_activite']) {
                 case 'Visite guidée':
                     require_once(__DIR__ . '/../models/OffreVisite.php');
@@ -122,7 +138,7 @@ class Offre {
              */
 
             //Recupération des tags
-            foreach ($result as $row) {
+            /*foreach ($result as $row) {
                 $offre->setTag($row['tag']);
             }
 
@@ -143,7 +159,7 @@ class Offre {
             /**
              * Setters de la classe spécifique
              */
-            if ($offre instanceof OffreVisite) {
+            /*if ($offre instanceof OffreVisite) {
                 $offre->setDuree($result['visite_duree']);
                 $offre->setAccessibilite($result['visite_accessibilite']);
             }elseif ($offre instanceof OffreActivite) {
@@ -167,7 +183,7 @@ class Offre {
 
             return $offre;
         }
-        return null;
+        return null;*/
     }
 
     public function getOffreByIdProfessionnel($id_professionnel) {
@@ -202,6 +218,23 @@ class Offre {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getAllOffre() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getAllOffreRecommande() {
         $sql = "
             SELECT * FROM tripenazor.offre 
