@@ -8,7 +8,12 @@ class ProfessionnelController {
         $this->professionnelModel = new Professionnel();
     }
 
-    public function afficherUtilisateurs() {
-        return $this->professionnelModel->getAllUtilisateurs();
+    public function seConnecterProfessionnel($email, $motDePasse) {
+        return $this->professionnelModel->getProfessionnelParEmailMotDePasse($email, $motDePasse);
+    }
+
+    
+    public function seConnecter($email, $motDePasse) {
+        return $this->professionnelModel->getProfessionnelByEmailMotDePasse($email, $motDePasse);
     }
 }

@@ -10,6 +10,9 @@ $id = 4; // Pour le test, on met un ID fixe
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 
+echo '<pre>';
+print_r($offre);
+echo '</pre>';
  /**
   * Affichage des étoiles en fonction de la note
   *La note est une etoile remplie si elle est supérieure ou égale à 0.8
