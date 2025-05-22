@@ -19,16 +19,29 @@ header.front-office > nav > ul > li{
     font-family: 'lexenDeca', sans-serif;
 }
 
-header.front-office > div > img, header.front-office > a > svg:last-child{
+header.front-office > a > svg:last-child{
     height: 10vh;
     width: auto;
     color: var(--main-color);
 }
 
-
-header.front-office > div > svg, header.front-office > div > h1{
-    display: none;
+header.front-office > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
+
+header.front-office > div img{
+    border-radius: 50px;
+    height: 10px;
+}
+
+header.front-office > div > a > svg{
+    height: 20px;
+    width: auto;
+}
+
 
 a{
     text-decoration: none;

@@ -1,14 +1,19 @@
 <?php
     session_start();
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
-    
+
+    /**
+     * Récupère les informations du Membre
+     * Et les creer les variables de session
+     */
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['mot-de-passe'])) {
         $utilisateurController = new UtilisateurController();
         $membre = $utilisateurController->connexionMembre($_POST['email'], $_POST['mot-de-passe']);
     
         if ($membre) {
             // Redirection ou message de succès
-            header('Location: /index.php');
+            header('Location: /frontOffice/offreDetaille/index.php');
+            //header('Location: /index.php');
             exit;
         } else {
         ?>
@@ -30,7 +35,6 @@
     <link rel="stylesheet" href="/styles/components/creationCompteBackOffice.css">
 </head>
 <body>
-
     <!-- Vue de connexion -->
     <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/components/connexionMembre.php'); ?>
 </body>
