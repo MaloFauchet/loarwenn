@@ -218,9 +218,9 @@ INSERT INTO option (libelle_option, prix_s_HT_option, prix_s_TTC_option) VALUES
 -- 28. Option_payante_offre
 INSERT INTO option_payante_offre (id_offre, id_option, id_souscription) VALUES
 (1, 2, 1),
-(1, 3, 1),
+(1, 1, 1),
 (2, 1, 2),
-(4, 4, 3);
+(4, 2, 3);
 
 -- 29. Offre_possede_tags
 INSERT INTO offre_possede_tags (id_offre, id_tag) VALUES
