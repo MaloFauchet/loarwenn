@@ -1,4 +1,3 @@
-<script src="scripts/headerFront.js"></script>
 <header class="front-office">
     <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -17,15 +16,11 @@
         ?>
         <h1>PACT</h1>
     </div>
-<!-- Nav Cache car les pages ne sont pas encore créées
     <nav>
         <ul>
             <li><a href="/index.php">Accueil</a></li>
-            <li><a href="">Offres</a></li>
-            <li>Cartographie</li>
         </ul>
     </nav>
--->
     <a href="/frontOffice/connexion/index.php">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
@@ -33,3 +28,4 @@
         </svg>
     </a>
 </header>
+<script src="/scripts/headerFront.js"></script>

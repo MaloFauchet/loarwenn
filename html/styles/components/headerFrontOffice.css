@@ -40,6 +40,12 @@ a:hover{
 }
 
 
+header.front-office > nav{
+    display: none;
+}
+
+
+
 @media (max-width: 728px) {
 
     header.front-office h1{
@@ -68,6 +74,7 @@ a:hover{
         top: 10vh;
         left: 0;
         width: 100%;
+        z-index: 2;
     }
 
     header.front-office > nav.active > ul{
@@ -85,7 +92,7 @@ a:hover{
         color: var(--main-text-color);
         font-size: 15px;
         font-family: 'lexenDeca', sans-serif;
-        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
     }
 
     header.front-office > div:first-child {
