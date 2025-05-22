@@ -4,7 +4,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php')
 // On instancie le controller
 $offreController = new OffreController();
 // On récupère l'ID de l'offre à afficher
-$id = $_GET['id'] ?? null;
+//$id = $_GET['id'] ?? null;
+$id = 4; // A remplacer par la valeur dynamique de l'ID de l'offre
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 
@@ -53,13 +54,12 @@ function afficherEtoile($note){
         <article>
             <figure class="offre">
                 <div class="offre-image-container">
-                    <!--Image a recup dans la bdd -->
                     <div class="main-image-container">
-                        <img src="/images/offres/cannyoning2.png" alt="Image de l'offre" class="offre-image">
+                        <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre" class="offre-image">
                     </div>
                     <div class="gallery-offre-parent">
                         <div class="grid-offre-1">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                            <img src="<?= $offre->getPathImage()?>" alt="Image de l'offre">
                         </div>
                         <div class="grid-offre-2">
                             <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">

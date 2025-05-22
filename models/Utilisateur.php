@@ -1,6 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../config/Database.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Membre.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Professionnel.php');
 
 class Utilisateur {
     private $conn;
@@ -57,6 +58,52 @@ class Utilisateur {
         }else{
             return false;
         }
+    }
+
+
+    public function connexionPro($email, $mdp) {
+        $sql = "
+            SELECT
+
+            u.id_utilisateur,
+            u.email,
+            u.mot_de_passe,
+            u.nom,
+            u.prenom,
+
+            pprive.denomination,
+            ppublic.raison_sociale,
+
+            img.chemin
+            
+            FROM tripenazor.professionnel as p
+            
+            JOIN tripenazor.utilisateur as u
+            ON p.id_utilisateur = u.id_utilisateur
+            JOIN tripenazor.utilisateur_represente_image as uri
+            ON uri.id_utilisateur = u.id_utilisateur
+            JOIN tripenazor.image as img
+            ON img.id_image = uri.id_image
+
+            LEFT JOIN tripenazor.professionnel_prive as pprive
+            ON p.id_utilisateur = pprive.id_utilisateur
+
+            LEFT JOIN tripenazor.professionnel_public as ppublic
+            ON p.id_utilisateur = ppublic.id_utilisateur
+
+            WHERE u.email = :email
+        ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Vérification du mot de passe
+        if (password_verify($mdp, $result[0]['mot_de_passe'])) {
+            return $result[0];
+        }
+        return false;
     }
 
 
