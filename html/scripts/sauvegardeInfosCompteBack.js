@@ -46,14 +46,18 @@ function setupInputs(inputs, estModifie, sauvegardeDiv) {
     });
 }
 
+function photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfilOriginale) {
+    photoDeProfil.style.cursor = "default";
+    photoDeProfil.setAttribute("src", photoDeProfilOriginale);
+}
+
 function setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale) {
     photoDeProfil.onmouseenter = () => {
+        photoDeProfil.onmouseleave = () => {
+            photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfilOriginale);
+        }
         photoDeProfil.style.cursor = "pointer";
-        photoDeProfil.setAttribute("src", "/images/profils/changerPhotoProfil.png")
-    }
-    photoDeProfil.onmouseleave = () => {
-        photoDeProfil.style.cursor = "default";
-        photoDeProfil.setAttribute("src", photoDeProfilOriginale);
+        photoDeProfil.setAttribute("src", "/images/profils/changerPhotoDeProfil.png")
     }
     photoDeProfil.onclick = () => {
         photoInput.click();
@@ -73,6 +77,9 @@ function setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale) {
         const reader = new FileReader();
         reader.onload = function(e) {
           photoDeProfil.src = e.target.result;
+          photoDeProfil.onmouseleave = () => {
+              photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfil.src);
+          }
         };
         reader.readAsDataURL(file);
       }
@@ -109,24 +116,7 @@ function updateAffichageDivSauvegarde(sauvegardeDiv, estModifie) {
 }
 
 function getValuesInputs() {
-    let denomination = document.getElementById("denominationEntreprise").value;
-    let nom = document.getElementById("nomEntreprise").value;
-    let prenom = document.getElementById("prenomEntreprise").value;
-
-    let telephone = document.getElementById("telephoneEntreprise").value;
-    let email = document.getElementById("emailEntreprise").value;
-
-    let adresse = document.getElementById("adresseEntreprise").value;
-    let codePostal = document.getElementById("codePostalEntreprise").value;
-    let ville = document.getElementById("villeEntreprise").value;
-    let complementAdresse = document.getElementById("complementAdresseEntreprise").value;
-}
-
-/**
- * Fonction qui est appelée lorsque le bouton de sauvegarde est cliqué
- */
-async function sauvegarderClique() {
-    let data = {
+    let result = {
         denominationEntreprise: document.getElementById("denominationEntreprise").value,
         nomEntreprise: document.getElementById("nomEntreprise").value,
         prenomEntreprise: document.getElementById("prenomEntreprise").value,
@@ -137,6 +127,20 @@ async function sauvegarderClique() {
         villeEntreprise: document.getElementById("villeEntreprise").value,
         complementAdresseEntreprise: document.getElementById("complementAdresseEntreprise").value
     };
+
+    // si l'utilisateur est une entreprise privée
+    if (document.getElementById("ribEntreprise") !== null) {
+        result.ribEntreprise = document.getElementById("ribEntreprise").value;
+        result.sirenEntreprise = document.getElementById("sirenEntreprise").value;
+    }
+    return result;
+}
+
+/**
+ * Fonction qui est appelée lorsque le bouton de sauvegarde est cliqué
+ */
+async function sauvegarderClique() {
+    let data = getValuesInputs();
 
     const photoFile = document.getElementById("photo-profil-input").files[0];
 
