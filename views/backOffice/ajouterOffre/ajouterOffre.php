@@ -139,13 +139,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     </style>
+    
 </head>
 <body>
+    <script>
+        function ajouterajoutMultiple(id) {
+            const input = document.getElementById('ajoutMultipleInput_' + id);
+            const list = document.getElementById('ajoutMultipleList_' + id);
+            const value = input.value.trim();
+
+            if (value !== '') {
+                const li = document.createElement('li');
+                li.innerHTML = `${value} <button onclick="supprimerajoutMultiple(this)">✖</button>`;
+                list.appendChild(li);
+                input.value = '';
+            }
+        }
+
+        function supprimerajoutMultiple(btn) {
+            btn.parentElement.remove();
+        }
+    </script>
     
     <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/header.php'); 
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEtoile.php');
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../controllers/TypeActiviteController.php'); 
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../controllers/OffreController.php'); 
+   
+   
+    
     
     
     
@@ -186,6 +208,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     select.addEventListener('change', function () {
                         const selectedLibelle = this.value;
 
+                        document.cookie = `selectedLibelle=${encodeURIComponent(selectedLibelle)}; path=/`;
+                       
+                        
+                        
                         if (!selectedLibelle) {
                             detailsDiv.innerHTML = '';
                             return;
@@ -214,15 +240,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             });
                     });
                 </script>
+                 
 
             </main>
-            <?php
-                $id_tags = $typeActiviteController->getTagIdByTypeActivite($type_activite);
-                $arrayIdTags = array_column($id_tags, 'id_tag');
-                $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
-                $tags = array_column($tags, 'libelle_tag');
-                print_r($tags);
-            ?>
+            
             <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/footer.php'); ?>
         </div>
     </div>

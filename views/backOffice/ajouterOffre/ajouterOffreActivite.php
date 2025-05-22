@@ -6,9 +6,7 @@
     </ul>
 <?php endif; ?>
 
-<?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputAjoutMultiple.php');
-?>
+
 <form action="/backOffice/ajouterOffreTraitement.php" method="POST" enctype="multipart/form-data">
     <div class="formulaire">
         <div class="champ-type-offre">
@@ -53,10 +51,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputA
             <label class="label-input" for="description">Description</label>
             <input id="description" name="description" type="text" required />
         </div>
-
+        <?php
+            require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php')
+        ?>
         <?php 
             ajoutMultiple('Prestation','Prestation incluse',1);  
-            ajoutMultiple('Prestation','Prestation non incluse',2);
+            ajoutMultiple('Prestation','Prestation non incluse',2); 
         ?>
 
         <div class="champ-type-offre">
@@ -65,9 +65,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputA
             <input id="accessibilite" name="accessibilite" type="text" required />
         </div>
 
-        <?php 
-            ajoutMultiple('Tags','Tags',3); 
-        ?>
+       
 
         <div class="options-payantes">
             <p>Voulez-vous prendre une option :</p>
@@ -81,7 +79,45 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputA
                 <input type="checkbox" name="en_relief" value="1" checked>
                 En relief : (+xx€/mois)
             </label><br>
+
+            
+
         </div>
+
+        <?php
+        function afficherTag($tags, $libelle) {
+            echo "<h4>Tags liés à l'activité : " . htmlspecialchars($libelle) . "</h4>";
+            echo "<div style='display: flex; flex-wrap: wrap; gap: 0.5em;'>";
+            foreach ($tags as $index => $tag) {
+                $tagId = 'tag_' . $index;
+                echo "<label for='$tagId' style='border: 1px solid #ccc; border-radius: 5px; padding: 0.3em 0.6em; background: #f4f4f4; cursor: pointer;'>";
+                echo "<input type='checkbox' id='$tagId' name='tags[]' value='" . htmlspecialchars($tag) . "' style='margin-right: 0.3em;'>";
+                echo htmlspecialchars($tag);
+                echo "</label>";
+            }
+            echo "</div>";
+
+        }
+            
+            $name= $_COOKIE['selectedLibelle'];
+            echo $name;
+
+            $id_tags = $typeActiviteController->getTagIdByTypeActivite($name);
+            $arrayIdTags = array_column($id_tags, 'id_tag');
+            $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
+            $tags = array_column($tags, 'libelle_tag');
+
+            
+
+            afficherTag($tags, $name);
+
+
+        ?>
+   
+    
+        
+       
+        
     </div>
     <button type="submit">Enregistrer l’offre</button>
 </form>
