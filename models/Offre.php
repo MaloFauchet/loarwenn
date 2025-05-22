@@ -93,23 +93,27 @@ class Offre {
         if ($result) {
             switch ($result[0]['type_activite']) {
                 case 'Visite guidée':
-                    require_once(__DIR__ . '/../models/OffreVisite.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
+                    $offre = new OffreVisite();
+                    break;
+                case 'Visite non guidée':
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
                     $offre = new OffreVisite();
                     break;
                 case 'Activité':
-                    require_once(__DIR__ . '/../models/OffreActivite.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreActivite.php');
                     $offre = new OffreActivite();
                     break;
                 case 'Spectacle':
-                    require_once(__DIR__ . '/../models/OffreSpectacle.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreSpectacle.php');
                     $offre = new OffreSpectacle();
                     break;
                 case 'Parc d\'attraction':
-                    require_once(__DIR__ . '/../models/OffreParcAttraction.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreParcAttraction.php');
                     $offre = new OffreParcAttraction();
                     break;
                 case 'Restaurant':
-                    require_once(__DIR__ . '/../models/OffreRestaurant.php');
+                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreRestaurant.php');
                     $offre = new OffreRestaurant();
                     break;
 
@@ -153,8 +157,8 @@ class Offre {
             }elseif ($offre instanceof OffreSpectacle) {
                 $offre->setDuree($result['spectacle_duree']);
                 $offre->setAccessibilite($result['spectacle_accessibilite']);
-                $offre->setCapacite($result['capacite']);
-                $offre->setPrix($result['prix']);
+                $offre->setCapaciteAccueil($result['spectacle_capacite']);
+                $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
                 $offre->setMinAge($result['pa_age_min']);
