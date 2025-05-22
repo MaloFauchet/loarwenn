@@ -165,7 +165,7 @@ class Offre {
             /**
              * Setters de la classe spécifique
              */
-            /*if ($offre instanceof OffreVisite) {
+            if ($offre instanceof OffreVisite) {
                 $offre->setDuree($result['visite_duree']);
                 $offre->setAccessibilite($result['visite_accessibilite']);
             }elseif ($offre instanceof OffreActivite) {
@@ -189,7 +189,7 @@ class Offre {
 
             return $offre;
         }
-        return null;*/
+        return null;
     }
 
     public function getProByOffre($idOffre){
