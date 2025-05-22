@@ -12,7 +12,7 @@ class Database {
     public function __construct() {
         $this->host = 'postgresdb';
         $this->db_name = getenv('DB_NAME');
-        $this->username = getenv('DB_USER_LOCAL');
+        $this->username = getenv('DB_USER');
         $this->password = getenv('DB_ROOT_PASSWORD');
     }
 

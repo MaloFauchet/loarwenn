@@ -3,6 +3,17 @@
 
 $controller = new UtilisateurController();
 $utilisateurs = $controller->afficherUtilisateurs();*/
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    /*  POUR SLOAN POUR SAVOIR COMMENT RECUP UNE OFFRE RECEMMENT CONSULTE*/
+    $tabConsulteRecement[] = 1;
+    $tabConsulteRecement[] = 2;
+    // Définir les cookies avant tout output
+    setcookie('consulte',json_encode($tabConsulteRecement) ,time()+ 60 * 60 * 24 * 7, "/");
+    $tabConsulteRecement[] = 8;
+    setcookie('consulte',json_encode($tabConsulteRecement) , time() + 60 * 60 * 24 * 7, "/");
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +21,8 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
-    <link rel="stylesheet" href="styles/frontOffice.css">
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/frontOffice.css">
     
 </head>
 <body class="body-main">
@@ -24,36 +35,5 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
 
     <?php require_once('../views/frontOffice/components/footer.php'); ?>
 
-    <h1>Liste des utilisateurs</h1>
-
-<table border="1" cellpadding="10" style="margin-top: 100px;">
-    <tr>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Email</th>
-        <th>Téléphone</th>
-        <th>Nom complet / Dénomination</th>
-    </tr>
-
-    <?php foreach ($utilisateurs as $user): ?>
-        <tr>
-            <td><?= htmlspecialchars($user['id_utilisateur']) ?></td>
-            <td><?= htmlspecialchars($user['type']) ?></td>
-            <td><?= htmlspecialchars($user['email']) ?></td>
-            <td><?= htmlspecialchars($user['num_telephone']) ?></td>
-            <td>
-                <?php
-                    if ($user['type'] === 'membre') {
-                        echo htmlspecialchars($user['prenom'] . ' ' . $user['nom'] . ' (' . $user['pseudo'] . ')');
-                    } elseif ($user['type'] === 'prive') {
-                        echo htmlspecialchars($user['denomination']);
-                    } elseif ($user['type'] === 'public') {
-                        echo htmlspecialchars($user['raison_sociale']);
-                    }
-                ?>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-</table>
 </body>
 </html>

@@ -1,4 +1,53 @@
+<?php 
+     
+    /*          FAIRE LA CONNEXION     +        modifier le code juste en dessous    */ 
 
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
+
+    $offreController = new OffreController();
+    $lastId = -1;
+    $listeOffre = array_slice($offreController->AllOffreByLatest(),0,10);
+    $listeOffreConsultes = [];
+
+
+    if (isset($_COOKIE['consulte'])) {
+        $tabConsulte = json_decode($_COOKIE['consulte']);
+        foreach ($tabConsulte as $id) {
+            $offreConsulte = $offreController->getOffreById($id);
+            $listeOffreConsultes[] = $offreConsulte;
+        }
+    }
+
+    $offreRecommandes = $offreController->getAllOffreRecommande();
+
+
+    $offreTag = $offreController->getAllOffreTag();
+
+    
+
+    $tabTag = [];
+
+    foreach ($offreTag as $offreValue => $valueOfOffre) {
+        if($lastId != $valueOfOffre['id_offre']){
+
+            $lastId = $valueOfOffre['id_offre'];
+        }
+        $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
+
+    }
+
+    
+    
+    function dump($dataDump) {
+        echo "<pre>";
+        var_dump($dataDump);
+        echo "</pre>";
+    }
+    
+
+?>
+    
+    
     <header class="front-office-main">
         <video autoplay muted loop id="myVideo" class="video-header">
             <source src="videos/video_accueil.mp4" type="video/mp4">
@@ -33,467 +82,29 @@
     <main>
         <h1>Récemment consultés</h1>
         <hr>
-        <div class="container-caroussel">
-            <div id="carousselAlreadySee">
-                <div>
-                    <div class="recommended">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
-                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708" />
-                            </svg>
-                            <p>Recommandé</p>
-                        </div>
-                    </div>
-
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+        <?php //  FAIRE CONNEXION     if ($connected) { ?>
+            
+            <div class="container-caroussel">
+                <div id="carousselAlreadySee">
+                    
+                    <?php foreach ($listeOffreConsultes as $listeOffreRecementConsultes =>$offreRecementConsultes ) { 
+                        
+                        foreach ($offreRecementConsultes as $offreRecementConsulte =>$valueOfOffre) {
+                            require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php');  
+                        }
+                    } ?>
             </div>
         </div>
+        <?php //} ?>
         <h1>Sélectionnés pour vous</h1>
         <hr>
         <div class="container">
             <div id="carousselSelectForYou">
-                <div class="card-vertical">
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="item-image">
-                        <img src="images/offres/canyioning.jpg" alt="image">
-                    </div>
-                    <div class="item-body">
-                        <div class="item-title">Mon titre 1</div>
-                        <div class="item-location">
-                            <img src="images/icons/geo-alt-fill.svg" alt="">
-                            <p>Lannion</p>
-                            <img src="images/icons/telephone.svg" alt="">
-                            <p>06 54 69 52 33</p>
-                            <p>100-300 €</p>
-                        </div>
-                        <div class="item-avis">
-                            <p>3,7</p>
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <img src="images/icons/star-fill.svg" alt="">
-                            <p>(300 Avis)</p>
-                        </div>
-                        <div class="item-description"> Ullamco exercitation aute sit dolore consequat elit occaecat ut
-                            consequat ex id tempor magna.
-                        </div>
-                        <div class="item-tag">
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                            <span>
-                                <img src="images/icons/tags-fill.svg" alt="">
-                                <p>Aquatique</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+
+                <?php foreach ($offreRecommandes as $offreRecommande => $valueOfOffre) {
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedVerticalCarousselle.php'); 
+                }?>
+
             </div>
         </div>
         <h1>Les nouveautés</h1>
@@ -501,13 +112,14 @@
         <div class="container-nouveautes">
             <?php
 
-            /*foreach ($data as $dataOffre => $value) {
-                # code...
-                }
+            foreach ($listeOffre as $offre => $valueOfOffre) {
+                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');    
                 
-                HEIN IGOR J'ATTENDS LA BDD !!!!!
+            }
                 
-                */
+                
+                
+                
             ?>
             
             <!-- TO FIX -->

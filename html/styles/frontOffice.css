@@ -6,7 +6,7 @@
 }
 
 .body-main{
-    margin: -30px;
+    
     font-family: sans-serif;
     line-height: 1.4;
 }
@@ -170,16 +170,16 @@ main{
     display: inline-flex;
 }
 .item-avis > p{
-    margin: 1vh;
+    margin: 2vh;
 }
 
-.item-tag{
-    display: inline-flex;
-    
+.item-tag  svg{
+    margin-left: 2vh;
 }
 
 .item-tag > span{
     display: inline-flex;
+    align-items: center;
     margin: 1vh;
     background-color:#CAE9FF ;
     border: solid white 1px ;
@@ -191,6 +191,21 @@ main{
 }
 .item-tag > span > p{
     margin:  1vh;
+}
+
+.tel-card{
+    display: inline-flex;
+    align-items: center;
+    margin: 1vh;
+
+}
+
+.tel-card p{
+    margin-left:1vh ;
+    margin-right:1vh ;
+    margin-top:0 ;
+    margin-bottom:0 ;
+    
 }
 
 .front-office-main {
@@ -386,11 +401,11 @@ button.btn-reset {
 }
 
 .recommended p{
-    margin: 0 1.10em 1.10em 0 ;
+    margin: 0 1.10em 0.5em 0 ;
     
 }
 .recommended svg{
-    margin: 0 1.10em 1.10em 1.10em ;
+    margin: 0 1.10em 0.5em 1.10em ;
     
 }
 
