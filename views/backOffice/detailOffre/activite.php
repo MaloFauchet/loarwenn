@@ -1,13 +1,32 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TagController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
 
+// Récupération de l'id de l'offre depuis l'URL
 // $id_offre = $_GET['id_offre'];
 $id_offre = 1;
-$id_type_activite = 1;
 
+// Création des instances des contrôleurs
+$offreController = new OffreController();
 $tagController = new TagController();
-$tagsAutorise = $tagController->getAllTagByIdTagActivite($id_type_activite);
+$typeActiviteController = new TypeActiviteController();
+$prestationController = new PrestationController();
 
+$currentOffre = $offreController->getOffreById($id_offre);
+
+// Récupération du type, des tags et de l'id du type d'activité
+$type_activite = $currentOffre->getType();
+$id_tags = $typeActiviteController->getTagIdByTypeActivite($type_activite);
+
+// Array_column permet de mettre tous les tags dans un tableau simple sans 2 profondeur.
+$arrayIdTags = array_column($id_tags, 'id_tag');
+$tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
+
+// Prestation incluse ou non
+$prestationIncluse = $prestationController->getAllPrestationIncluse($id_offre);
+$prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
 ?>
 
 <main class="contenu-back-office">
@@ -26,8 +45,8 @@ $tagsAutorise = $tagController->getAllTagByIdTagActivite($id_type_activite);
         <img src="/images/offres/velo.png" alt="Vélo">
     </div>
     <div class="input-titre">
-        <label class="label-input" for="email">Titre</label>
-        <input id="email" type="email" required />
+        <label class="label-input" for="titre">Titre</label>
+        <input id="titre" type="text" required />
     </div>
 
     <article>
@@ -35,7 +54,7 @@ $tagsAutorise = $tagController->getAllTagByIdTagActivite($id_type_activite);
         <div class="profil-note">
             <figure class="pp-pro">
                 <!--PP a recup dans la bdd -->
-                <img src="/images/profils/elouan.jpg" alt="Photo de profil pro" id="pp-pro">
+                <img src="/images/profils/1.jpg" alt="Photo de profil pro" id="pp-pro">
                 <figcaption>
                     <h4>Association : Armor Naviguation
                         <!--Denomination a recup dans la bdd-->
@@ -171,7 +190,7 @@ $tagsAutorise = $tagController->getAllTagByIdTagActivite($id_type_activite);
                 <?php ajoutMultiple('Prestation incluse', '', 1); ?>
                 <?php ajoutMultiple('Prestation non incluse', '', 2); ?>
             </div>
-            <?php ajoutMultiple('Tags', '', 3, $tagsAutorise); ?>
+            <?php ajoutMultiple('Tags', '', 3, $tags); ?>
         </div>
     </article>
 </main>

@@ -23,8 +23,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjo
     <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
     <div class="page-back-office">
         <div class="container-back-office">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/nav.php'); ?>
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetaille.php');?>
+        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/activite.php');?>
         </div>
         <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
     </div>

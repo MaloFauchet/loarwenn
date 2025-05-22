@@ -32,8 +32,8 @@ p {
     margin-right: 20px;
 }
 
-input:not(.checkbox-cont input) {
-    height: 25px!important;
+input:not(.checkbox-cont input, .choix-divers input) {
+    height: 50px!important;
 }
 
 .input-titre, .info-divers {
@@ -201,6 +201,7 @@ input:not(.checkbox-cont input) {
     display: flex;
     flex-direction: row;
     gap: 20px;
+    column-gap: 100px;
     flex-wrap: wrap; 
     width: 100%;
 }
@@ -266,4 +267,14 @@ input:not(.checkbox-cont input) {
     flex-direction: row;
     width: 80%;
     gap: 2%;
+}
+
+.choix-divers input {
+    height: 50px;
+}
+.ajoutMultiple-header input {
+    height: 25px;
+}
+.ajoutMultiple-header button {
+    height: 25px;
 }

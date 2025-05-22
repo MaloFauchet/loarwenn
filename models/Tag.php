@@ -9,14 +9,27 @@ class Tag {
         $this->conn = $database->getConnection();
     }
 
-    public function getAllTagByIdTagActivite($id_type_activite) {
-        $sql = "
-            SELECT * FROM tripenazor.tag;
-        ";
+    /**
+     * @return tag (array de tags)
+     * Récupère tous les tags
+     */
+    public function getAllTagByIdTagActivite($id_tags) {
+        $result = [];
+        if (empty($id_tags)) {
+            return $result;
+        }
+        foreach ($id_tags as $id_tag) {
+            $sql = "
+                SELECT * FROM tripenazor.tag as t
+                WHERE t.id_tag = :id_tag
+            ";
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_tag', $id_tag);
+            $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return $result;
     }
 }
