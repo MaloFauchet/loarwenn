@@ -5,8 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
 
 // Récupération de l'id de l'offre depuis l'URL
-// $id_offre = $_GET['id_offre'];
-$id_offre = 6;
+$id_offre = $_GET['id_offre'];
 
 // Création des instances des contrôleurs
 $offreController = new OffreController();
@@ -32,9 +31,6 @@ $arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation')
 $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
 $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
 
-?><pre><?php
-print_r($currentOffre);
-?></pre><?php
 ?>
 
 <main class="contenu-back-office">

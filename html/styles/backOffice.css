@@ -25,11 +25,14 @@
     flex-direction: column;
     flex: 1;
     overflow: hidden;
- 
- 
 }
 
-
+.page-back-office .liste-offres {
+    display: flex!important;
+    flex-direction: column!important;
+    gap: 2em!important;
+    padding: 2em!important;
+}
 
 /* ========================
     Barre de recherche
@@ -192,7 +195,6 @@
      padding: 2em;
      overflow-y: auto;
 }
-
 
 .offre .image-container img {
     width: 300px;
