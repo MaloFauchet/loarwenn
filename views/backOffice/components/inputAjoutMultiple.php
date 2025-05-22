@@ -1,5 +1,7 @@
 <?php
 
+// Le paramètre donnée est un tableau de strings
+// Utiliser array_column pour récupérer les libellés, voir doc comment elle fonctionne
 // Fonction pour afficher un champ d'ajout multiple avec un label et un identifiant unique
 function ajoutMultiple($label, $label2, $id, $donnee = []) {
     ?>
@@ -18,7 +20,7 @@ function ajoutMultiple($label, $label2, $id, $donnee = []) {
                     foreach ($donnee as $element) {
                         ?>
                         <li>
-                            <?php echo htmlspecialchars($element['libelle_tag']) ?> 
+                            <?php echo htmlspecialchars($element) ?> 
                             <button onclick="supprimerajoutMultiple(this)">✖</button>
                         <?php
                     }

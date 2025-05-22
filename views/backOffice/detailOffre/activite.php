@@ -23,10 +23,18 @@ $id_tags = $typeActiviteController->getTagIdByTypeActivite($type_activite);
 // Array_column permet de mettre tous les tags dans un tableau simple sans 2 profondeur.
 $arrayIdTags = array_column($id_tags, 'id_tag');
 $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
+$tags = array_column($tags, 'libelle_tag');
 
 // Prestation incluse ou non
 $prestationIncluse = $prestationController->getAllPrestationIncluse($id_offre);
+$arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation');
+
 $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
+$arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
+
+?><pre><?php
+print_r($currentOffre);
+?></pre><?php
 ?>
 
 <main class="contenu-back-office">
@@ -46,7 +54,8 @@ $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_of
     </div>
     <div class="input-titre">
         <label class="label-input" for="titre">Titre</label>
-        <input id="titre" type="text" required />
+        <input id="titre" type="text" 
+        value="<?php echo $currentOffre->getTitre() ?>" required />
     </div>
 
     <article>
@@ -109,28 +118,24 @@ $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_of
                 <img src="/images/icons/telephone.svg" alt="Téléphone">
                 <div class="input-divers">
                     <label class="label-input" for="telephone">Téléphone</label>
-                    <input id="telephone" name="telephone" type="tel" required />
+                    <input id="telephone" name="telephone" type="tel" 
+                    value="<?php echo "02 96 53 24 89" ?>" required />
                 </div>
             </div>
             <div class="duree">
                 <img src="/images/icons/clock.svg" alt="Horloge">
                 <div class="input-divers">
-                    <label class="label-input" for="duree">Durée</label>
-                    <input id="duree" name="duree" type="text" required />
+                    <label class="label-input" for="duree">Durée (h)</label>
+                    <input id="duree" name="duree" type="text" 
+                    value="<?php echo $currentOffre->getDuree() ?>" required />
                 </div>
             </div>
             <div class="age-min">
                 <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
                 <div class="input-divers">
                     <label class="label-input" for="age-min">Âge minimal</label>
-                    <input id="age-min" name="age_min" type="number" min="0" required />
-                </div>
-            </div>
-            <div class="prix">
-                <img src="/images/icons/currency-euro.svg" alt="Euro">
-                <div class="input-divers">
-                    <label class="label-input" for="prix">Prix</label>
-                    <input id="prix" name="prix" type="number" step="0.01" min="0" required />
+                    <input id="age-min" name="age_min" type="number" 
+                    value="<?php echo $currentOffre->getAge() ?>" min="0" required />
                 </div>
             </div>
         </div>
@@ -139,7 +144,17 @@ $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_of
             <img src="/images/icons/geo-alt.svg" alt="Point GPS">
             <div class="input-lieux">
                 <label class="label-input" for="lieu">Lieu</label>
-                <input id="lieu" name="lieu" type="text" required />
+                <input id="lieu" name="lieu" type="text" 
+                value="<?php echo $currentOffre->getAdresse() ?>" required />
+            </div>
+        </div>
+
+        <div class="lieux">
+            <img src="/images/icons/geo-alt.svg" alt="Point GPS">
+            <div class="input-lieux">
+                <label class="label-input" for="ville">Ville</label>
+                <input id="ville" name="ville" type="text" 
+                value="<?php echo $currentOffre->getVille() ?>" required />
             </div>
         </div>
 
@@ -167,28 +182,31 @@ $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_of
         <div class="resume">
             <div class="input-divers">
                 <label class="label-input" for="resume">Résumé</label>
-                <textarea id="resume" name="resume" rows="4" cols="50">Amet aliquip sint enim ex aliquip sit. Nulla veniam mollit velit aliqua magna aliqua ut aliquip do elit elit. Laboris officia dolor anim eiusmod tempor dolore nisi ipsum eu adipisicing excepteur irure ut incididunt.</textarea>
+                <textarea id="resume" name="resume" rows="4" cols="50"><?php echo $currentOffre->getResume() ?>
+                </textarea>
             </div>
         </div>
 
         <div class="description">
             <div class="input-divers">
                 <label class="label-input" for="description">Description</label>
-                <textarea id="description" name="description" rows="4" cols="50">Amet aliquip sint enim ex aliquip sit. Nulla veniam mollit velit aliqua magna aliqua ut aliquip do elit elit. Laboris officia dolor anim eiusmod tempor dolore nisi ipsum eu adipisicing excepteur irure ut incididunt.</textarea>
+                <textarea id="description" name="description" rows="4" cols="50"><?php echo $currentOffre->getDescription() ?>
+                </textarea>
             </div>
         </div>
 
         <div class="accessibilite">
             <div class="input-divers">
                 <label class="label-input" for="accessibilite">accessibilite</label>
-                <textarea id="accessibilite" name="accessibilite" rows="4" cols="50">Amet aliquip sint enim ex aliquip sit. Nulla veniam mollit velit aliqua magna aliqua ut aliquip do elit elit. Laboris officia dolor anim eiusmod tempor dolore nisi ipsum eu adipisicing excepteur irure ut incididunt.</textarea>
+                <textarea id="accessibilite" name="accessibilite" rows="4" cols="50"><?php echo $currentOffre->getAccessibilite() ?>
+                </textarea>
             </div>
         </div>
 
         <div class="choix-divers">
             <div class="choix-prestation">
-                <?php ajoutMultiple('Prestation incluse', '', 1); ?>
-                <?php ajoutMultiple('Prestation non incluse', '', 2); ?>
+                <?php ajoutMultiple('Prestation incluse', '', 1, $arrayPrestationIncluse); ?>
+                <?php ajoutMultiple('Prestation non incluse', '', 2, $arrayPrestationNonIncluse); ?>
             </div>
             <?php ajoutMultiple('Tags', '', 3, $tags); ?>
         </div>
