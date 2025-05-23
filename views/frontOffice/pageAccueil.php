@@ -34,7 +34,6 @@
 
     }
     $listeOffreView = $offreController->getViewOffreAccueil();
-    
     $i=0;
 
     function dump($dataDump) {
@@ -63,7 +62,7 @@
                 <li><a href="">Cartographie</a></li>
             </ul>
         </nav>!-->
-        <?php if (isset($_SESSION['id_utilisateur'])) { ?>
+        <?php if (isset($_SESSION['id_utilisateur']) && isset($_SESSION['pseuddo'])) { ?>
             <a href="">
                 <img src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
             </a>

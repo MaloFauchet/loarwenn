@@ -355,14 +355,7 @@ class Offre {
 
     public function getAllOffreTag() {
         $sql = "
-            SELECT * FROM tripenazor.offre 
-            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
-            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
-            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
-            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
-            JOIN tripenazor.option_payante_offre ON offre.id_offre = option_payante_offre.id_offre
-            JOIN tripenazor.option ON option_payante_offre.id_offre = option.id_option
-            JOIN tripenazor.souscription ON option_payante_offre.id_souscription = souscription.id_souscription
+            SELECT offre.id_offre,libelle_tag FROM tripenazor.offre 
             JOIN tripenazor.offre_possede_tags ON offre.id_offre = offre_possede_tags.id_offre 
             JOIN tripenazor.tag ON offre_possede_tags.id_tag = tag.id_tag
             
