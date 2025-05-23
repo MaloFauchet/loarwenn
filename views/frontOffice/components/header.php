@@ -1,18 +1,16 @@
-<script src="scripts/headerFront.js"></script>
 <header class="front-office">
     <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2 3.5A.5.5 0 0 1 2.5 3h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0 4A.5.5 0 0 1 2.5 7h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0 4A.5.5 0 0 1 2.5 11h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+        </svg>
         <img src="/images/logos/logoBlue.png" alt="logoBlue">
         <h1>PACT</h1>
     </div>
-<!-- Nav caché car les pages ne sont pas encore créées
     <nav>
         <ul>
             <li><a href="/index.php">Accueil</a></li>
-            <li><a href="">Offres</a></li>
-            <li>Cartographie</li>
         </ul>
     </nav>
--->
     <?php if (isset($_SESSION['id_utilisateur'])): ?>
         <!-- Utilisateur connecté : photo + bouton déconnexion -->
         <div>
@@ -34,3 +32,4 @@
         </a>
     <?php endif; ?>
 </header>
+<script src="/scripts/headerFront.js"></script>
