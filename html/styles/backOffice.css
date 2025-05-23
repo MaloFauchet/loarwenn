@@ -194,6 +194,7 @@
      overflow: hidden;
      padding: 2em;
      overflow-y: auto;
+     padding-top: 10em;
 }
 
 .offre .image-container img {
