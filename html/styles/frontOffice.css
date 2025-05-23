@@ -308,7 +308,9 @@ main{
   object-fit: cover;
   z-index: 1;
 }
-
+header a img{
+    border-radius: 50%;
+}
 * {
   box-sizing: border-box;
 }
