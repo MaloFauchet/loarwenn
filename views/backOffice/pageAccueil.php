@@ -62,7 +62,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
     <div class="offre" style="margin-bottom: 20px;">
         <div class="image-container">
             <!-- Pastille affichant le nombre de nouveaux avis -->
-            <span class="pastille">
+            <span class="pastille" style="display: none;">
                 <?php echo $nbNouveauxAvis ?>
             </span>
 
