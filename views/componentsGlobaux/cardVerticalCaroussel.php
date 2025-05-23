@@ -1,4 +1,5 @@
-<a style="text-decoration:none;color:#011B43" href="<?= $_SERVER['DOCUMENT_ROOT']. "/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>">
+<div>
+<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
     <div>
         <div class="item-image">
             <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
@@ -57,3 +58,4 @@
         </div>
     </div>
 </a>
+</div>

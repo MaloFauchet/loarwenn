@@ -35,5 +35,8 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     
 
     <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/components/footer.php'); ?>
+
+    <script src="<?='/scripts/caroussel.js'?>"></script>
+    <script src="<?='/scripts/frontOffice.js'?>"></script>
 </body>
 </html>
