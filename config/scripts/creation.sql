@@ -336,6 +336,7 @@ RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
     v_id_utilisateur INTEGER;
+	v_id_image INTEGER;
 BEGIN
     -- 1. Chercher ou insérer la ville
     SELECT id_ville INTO v_id_ville
@@ -362,6 +363,17 @@ BEGIN
 	VALUES (v_id_utilisateur);
     INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, rib)
     VALUES (v_id_utilisateur, p_denomination, p_siren, p_rib);
+
+    -- 4. Insérer dans image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES ('Photo de profil', '/images/profils/default_profil.png')
+    RETURNING id_image INTO v_id_image;
+
+    --5 Liaison image
+
+    INSERT INTO tripenazor.utilisateur_represente_image (id_utilisateur, id_image)
+    VALUES (v_id_utilisateur, v_id_image);
+
 END;
 $$ LANGUAGE plpgsql;
 
@@ -381,6 +393,7 @@ RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
     v_id_utilisateur INTEGER;
+	v_id_image INTEGER;
 BEGIN
     -- 1. Chercher ou insérer la ville
     SELECT id_ville INTO v_id_ville
@@ -407,9 +420,21 @@ BEGIN
 	VALUES (v_id_utilisateur);
     INSERT INTO tripenazor.professionnel_public (id_utilisateur, raison_sociale)
     VALUES (v_id_utilisateur, p_raison_sociale);
+
+    -- 4. Insérer dans image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES ('Photo de profil', '/images/profils/default_profil.png')
+    RETURNING id_image INTO v_id_image;
+
+    --5 Liaison image
+
+    INSERT INTO tripenazor.utilisateur_represente_image (id_utilisateur, id_image)
+    VALUES (v_id_utilisateur, v_id_image);
 END;
 $$ LANGUAGE plpgsql;
-CREATE OR REPLACE FUNCTION inserer_utilisateur_et_membre(
+
+
+CREATE OR REPLACE FUNCTION tripenazor.inserer_utilisateur_et_membre(
     p_nom TEXT,
     p_prenom TEXT,
     p_email TEXT,
@@ -425,6 +450,7 @@ RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
     v_id_utilisateur INTEGER;
+	v_id_image INTEGER;
 BEGIN
     -- 1. Chercher ou insérer la ville
     SELECT id_ville INTO v_id_ville
@@ -446,8 +472,19 @@ BEGIN
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
-    -- 3. Insérer dans professionnel
+    -- 3. Insérer dans membre
 	INSERT INTO tripenazor.membre (id_utilisateur, pseudo)
 	VALUES (v_id_utilisateur, p_pseudo);
+
+    -- 4. Insérer dans image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES ('Photo de profil', '/images/profils/default_profil.png')
+    RETURNING id_image INTO v_id_image;
+
+    --5 Liaison image
+
+    INSERT INTO tripenazor.utilisateur_represente_image (id_utilisateur, id_image)
+    VALUES (v_id_utilisateur, v_id_image);
+
 END;
 $$ LANGUAGE plpgsql;
