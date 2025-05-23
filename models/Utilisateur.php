@@ -106,6 +106,34 @@ class Utilisateur {
         return false;
     }
 
+        public function insertMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse)
+    {
+        $sql = "
+        SELECT * FROM tripenazor.inserer_utilisateur_et_membre(
+            :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :adresse::TEXT, :complement::TEXT, :codePostal::TEXT,
+            :ville::TEXT, :pseudo::TEXT, :motDePasse::TEXT)";
+
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Liaison des paramètres
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':complement', $complement);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':pseudo', $pseudo);
+        $stmt->bindParam(':motDePasse', $motDePasse);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getInfoUtilisateur($id_utilisateur) {
         $sql = "
             SELECT * FROM tripenazor.utilisateur as u WHERE u.id_utilisateur = :id_utilisateur;
