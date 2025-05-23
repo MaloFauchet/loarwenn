@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
                     <div>
-                        <a href="/backOffice/detailOffre?id_offre=<?php echo $offre['id_offre']; ?>">
+                        <a href="/backOffice/offreDetaille?id_offre=<?php echo $offre['id_offre']; ?>">
                             <img src="/images/icons/pensil-square.svg" alt="bouton modifier">
                         </a>
 

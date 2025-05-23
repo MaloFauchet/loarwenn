@@ -19,9 +19,9 @@ class OffreRestaurant extends Offre {
      */
     public function getAllOffreRestaurant() {
         $sql = "
-            SELECT * FROM tripenazor.offre_spectacle as spectacle
+            SELECT * FROM tripenazor.offre_restaurant as restaurant
             JOIN tripenazor.offre as offre 
-            ON spectacle.id_offre = offre.id_offre
+            ON restaurant.id_offre = offre.id_offre
         ";
 
         $stmt = $this->conn->prepare($sql);
@@ -36,7 +36,6 @@ class OffreRestaurant extends Offre {
             /**
              * Setters de la classe même
              */
-            echo $value['pathImage'];
             $restaurant->setPrix($value['prix']);
             $restaurant->setPathImage($value['pathImage']);
 
@@ -77,11 +76,11 @@ class OffreRestaurant extends Offre {
     /**
      * Setters
      */
-    function setGammePrix($p) {
+    public function setGammePrix($p) {
         $this->prix = $p;
     }
 
-    function setPathImage($path) {
+    public function setPathImage($path) {
         $this->pathImage = $path;
     }
 
@@ -89,11 +88,11 @@ class OffreRestaurant extends Offre {
      * Getters
      */
 
-    function getGammePrix() {
+    public function getGammePrix() {
         return $this->prix;
     }
 
-    function getPathImage() {
+    public function getPathImage() {
         return $this->pathImage;
     }
 }

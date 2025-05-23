@@ -45,15 +45,15 @@ $type_activite = $currentOffre->getType();
             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); 
 
             if($type_activite == 'Activité') {
-                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/activite.php');
+                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetaille/activite.php');
             } elseif($type_activite == 'Visite guidée') {
-                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/visite.php');
+                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetaille/visite.php');
             } elseif($type_activite == 'Parc d\'attraction') {
-                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/parcAttraction.php');
+                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetaille/parcAttraction.php');
             } elseif($type_activite == 'Spectacle') {
-                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/spectacle.php');
+                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetaille/spectacle.php');
             } elseif($type_activite == 'Restaurant') {
-                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/restaurant.php');
+                require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/offreDetaille/restaurant.php');
             }
             ?>
         </div>

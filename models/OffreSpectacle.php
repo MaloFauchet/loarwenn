@@ -71,26 +71,28 @@ class OffreSpectacle extends Offre {
      * @return string
      */
     public function __toString() {
-        return "Offre Spectacle : " . $this->getTitre() . ", Prix : ". ", Accessibilité : " . $this->accessibilite;
+        return "Offre Spectacle : " . $this->getTitre() . 
+       ", Prix : " . $this->getPrix() . 
+       ", Accessibilité : " . $this->getAccessibilite();
     }
 
 
     /**
      * Setters
      */
-    function setPrix($p) {
+    public function setPrix($p) {
         $this->prix = $p;
     } 
 
-    function setAccessibilite($ac) {
+    public function setAccessibilite($ac) {
         $this->accessibilite = $ac;
     }
 
-    function setCapaciteAccueil($ca) {
+    public function setCapaciteAccueil($ca) {
         $this->capaciteAccueil = $ca;
     }
 
-    function setDuree($d) {
+    public function setDuree($d) {
         $this->duree = $d;
     }
 
@@ -98,19 +100,19 @@ class OffreSpectacle extends Offre {
      * Getters
      */
 
-    function getPrix() {
+    public function getPrix() {
         return $this->prix;
     }
 
-    function getAccessibilite() {
+    public function getAccessibilite() {
         return $this->accessibilite;
     }
 
-    function getCapaciteAccueil() {
+    public function getCapaciteAccueil() {
         return $this->capaciteAccueil;
     }
 
-    function getDuree() {
+    public function getDuree() {
         return $this->duree;
     }
 }

@@ -22,7 +22,7 @@ class OffreActivite extends Offre {
         $sql = "
             SELECT * FROM tripenazor.offre_activite as activite
             JOIN tripenazor.offre as offre 
-            ON visite.id_offre = offre.id_offre
+            ON activite.id_offre = offre.id_offre
         ";
 
         $stmt = $this->conn->prepare($sql);
@@ -71,22 +71,22 @@ class OffreActivite extends Offre {
      * @return string
      */
     public function __toString() {
-        return "Offre Visite : " . $this->getTitre() . ", Durée : ". ", Accessibilité : " . $this->accessibilite;
+        return "Offre Activité : " . $this->getTitre() . ", Durée : " . $this->getDuree() . ", Accessibilité : " . $this->accessibilite;
     }
 
 
     /**
      * Setters
      */
-    function setDuree($d) {
+    public function setDuree($d) {
         $this->duree = $d;
     } 
 
-    function setAccessibilite($ac) {
+    public function setAccessibilite($ac) {
         $this->accessibilite = $ac;
     }
 
-    function setAgeMin($age) {
+    public function setAgeMin($age) {
         $this->age = $age;
     }
 
@@ -94,15 +94,15 @@ class OffreActivite extends Offre {
      * Getters
      */
 
-    function getDuree() {
+    public function getDuree() {
         return $this->duree;
     }
 
-    function getAccessibilite() {
+    public function getAccessibilite() {
         return $this->accessibilite;
     }
     
-    function getAge() {
+    public function getAge() {
         return $this->age;
     }
 }

@@ -69,18 +69,20 @@ class OffreVisite extends Offre {
      * @return string
      */
     public function __toString() {
-        return "Offre Visite : " . $this->getTitre() . ", Durée : ". ", Accessibilité : " . $this->accessibilite;
+        return "Offre Visite : " . $this->getTitre() . 
+       ", Durée : " . $this->getDuree() . 
+       ", Accessibilité : " . $this->getAccessibilite();
     }
 
 
     /**
      * Setters
      */
-    function setDuree($d) {
+    public function setDuree($d) {
         $this->duree = $d;
     } 
 
-    function setAccessibilite($ac) {
+    public function setAccessibilite($ac) {
         $this->accessibilite = $ac;
     }
 
@@ -88,11 +90,11 @@ class OffreVisite extends Offre {
      * Getters
      */
 
-    function getDuree() {
+    public function getDuree() {
         return $this->duree;
     }
 
-    function getAccessibilite() {
+    public function getAccessibilite() {
         return $this->accessibilite;
     }
 }
