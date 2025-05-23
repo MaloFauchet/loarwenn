@@ -3,8 +3,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../config/Database.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Offre.php');
 
 class OffreParcAttraction extends Offre {
-    protected $nb_attraction;
-    protected $age_min;
+    private $nbAttractions;
+    private $ageMinimum;
 
     public function __construct() {
         $database = new Database();
@@ -14,14 +14,14 @@ class OffreParcAttraction extends Offre {
     }
 
     /**
-     * @return array d'OffreParcAttraction
-     * Récupère toutes les offres de parc d'attraction
+     * @return offreActivite (array d'OffreActivite)
+     * Récupère toutes les offres d'activités
      */
-    public function getAllOffreParcAttraction() {
+    public function getAllOffreActivite() {
         $sql = "
-            SELECT * FROM tripenazor.offre_parc_attraction as parc
+            SELECT * FROM tripenazor.offre_activite as activite
             JOIN tripenazor.offre as offre 
-            ON parc.id_offre = offre.id_offre
+            ON visite.id_offre = offre.id_offre
         ";
 
         $stmt = $this->conn->prepare($sql);
@@ -29,60 +29,61 @@ class OffreParcAttraction extends Offre {
 
         $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $offresParc = [];
+        $offresActivite = [];
         foreach ($result as $value) {
-            $parc = new self();
+            $parcAttraction = new self();
+            
+            /**
+             * Setters de la classe même
+             */
+            $parcAttraction->setNbAttraction($value['nb_attractions']);
+            
+            $parcAttraction->setAgeMin($value['age']);
 
-            // Setters de la classe même
-            $parc->setNbAttraction($value['nb_attraction']);
-            $parc->setAgeMin($value['age_min']);
+            /**
+             * Setters de la classe mère
+             */
+            $parcAttraction->setId($value['id']);
+            $parcAttraction->setTitre($value['titre']);
+            $parcAttraction->setResume($value['resume']);
+            $parcAttraction->setDescription($value['description']);
+            $parcAttraction->setDateCreation($value['dateCreation']);
+            $parcAttraction->setAdresse($value['adresse']);
+            $parcAttraction->setEnLigne($value['enLigne']);
+            $parcAttraction->setType($value['type']);
+            $parcAttraction->setNoteMoyenne($value['noteMoyenne']);
+            $parcAttraction->setNbAvis($value['nbAvis']);
 
-            // Setters de la classe mère
-            $parc->setId($value['id_offre']);
-            $parc->setTitre($value['titre']);
-            $parc->setResume($value['resume']);
-            $parc->setDescription($value['description']);
-            $parc->setDateCreation($value['dateCreation']);
-            $parc->setAdresse($value['adresse']);
-            $parc->setEnLigne($value['enLigne']);
-            $parc->setType($value['type']);
-            $parc->setNoteMoyenne($value['noteMoyenne']);
-            $parc->setNbAvis($value['nbAvis']);
+            $offresActivite[] = $parcAttraction;
 
-            $offresParc[] = $parc;
+            
         }
-
-        return $offresParc;
-    }
-
-    /**
-     * ToString
-     */
-    public function __toString() {
-        return "Offre Parc Attraction : " . $this->getTitre() . 
-               ", Nb attractions : " . $this->getNbAttraction() . 
-               ", Âge minimum : " . $this->getAgeMin();
+        return $offresActivite;
     }
 
     /**
      * Setters
      */
-    public function setNbAttraction($nb) {
-        $this->nb_attraction = $nb;
-    }
+    function setNbAttraction($nbAttractions) {
+        $this->nbAttractions = $nbAttractions;
+    } 
+    
 
-    public function setAgeMin($age) {
-        $this->age_min = $age;
+    function setAgeMin($age) {
+        $this->ageMinimum = $age;
     }
 
     /**
      * Getters
      */
-    public function getNbAttraction() {
-        return $this->nb_attraction;
+
+    function getNbAttraction() {
+        return $this->nbAttractions;
     }
 
-    public function getAgeMin() {
-        return $this->age_min;
+    
+    
+    function getAge() {
+        return $this->ageMinimum;
     }
 }

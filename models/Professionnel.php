@@ -113,4 +113,32 @@ class Professionnel extends Model{
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function addOffreByIdd($id_offre) {
+        try {
+            session_start();
+
+            // Vérifie que l'utilisateur est connecté et est professionnel public
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception("Utilisateur non connecté.");
+            }
+
+            $id_utilisateur_public = $_SESSION['user_id'];
+
+            $sql = "INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+                    VALUES (:id_offre, :id_utilisateur_public)";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_offre', $id_offre, PDO::PARAM_INT);
+            $stmt->bindParam(':id_utilisateur_public', $id_utilisateur_public, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            return ['success' => true];
+        } catch (PDOException $e) {
+            return ['success' => false, 'error' => "Erreur SQL : " . $e->getMessage()];
+        } catch (Exception $e) {
+            return ['success' => false, 'error' => "Erreur : " . $e->getMessage()];
+        }
+    }
 }
