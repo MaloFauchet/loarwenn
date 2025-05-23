@@ -53,8 +53,8 @@
 
             <h3>Organisation</h3>
             <div class="checkbox-container">
-                <input type="checkbox" id="entrepriseCheckbox" name="entrepriseCheckbox" />
-                <label class="label-input"  class="checkbox label-input" for="entrepriseCheckbox"> Entreprise privée ? </label>
+                <input type="checkbox" id="est_entreprise" name="est_entreprise" />
+                <label class="label-input"  class="checkbox label-input" for="est_entreprise"> Entreprise privée ? </label>
             </div>
 
             <div class="option" id="entrepriseChamps" style="display: none">
@@ -89,7 +89,7 @@
 </main>
 
 <script>
-    const checkbox = document.getElementById('entrepriseCheckbox');
+    const checkbox = document.getElementById('est_entreprise');
     const entrepriseChamps = document.getElementById('entrepriseChamps');
     const associationChamps = document.getElementById('associationChamps');
 

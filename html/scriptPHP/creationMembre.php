@@ -13,11 +13,9 @@ $complement = $_POST['complement'];
 $codePostal = $_POST['codePostal'];
 $ville = $_POST['ville'];
 
-$estEntreprise = isset($_POST['entreprise_privee']); // true si coché
-
 $motDePasse = $_POST['mot_de_passe'];
 $confirmation = $_POST['confirmation'];
-$raisonSociale = $_POST['raisonSociale']; // si besoin
+$raisonSociale = $_POST['pseudo']; // si besoin
 
 // $membre->nouveauCompteMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
 
