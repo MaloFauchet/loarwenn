@@ -1,22 +1,11 @@
 <?php 
 
-// Vérifie si l'utilisateur est connecté
-// TODO : Vérifier si l'utilisateur est un professionnel et est connecté
-// session_start();
-// if (!isset($_SESSION['id_utilisateur'])) {
-//     header('Location: /connexion');
-//     exit();
-// }
-// ca marcherais ?
-
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/ProfessionnelController.php');
 
 $controller = new ProfessionnelController();
 
 // Récupère l'id de l'utilisateur connecté
-// $id = $_SESSION['id_utilisateur'];
-$id = 3;
+$id = $_SESSION['id_utilisateur'];
 
 // Récupère les informations de l'utilisateur
 $data = $controller->getProfessionnelById($id)[0];
@@ -30,7 +19,6 @@ if ($data['raison_sociale'] !== null) {
 
 
 // Image
-// $profilePicturePath = $data['chemin'];
 $profilePicturePath = $data['chemin'] ?? "/images/default_profil.png";
 
 $denominationEntreprise;
