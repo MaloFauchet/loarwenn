@@ -71,13 +71,13 @@
             <p>Voulez-vous prendre une option :</p>
 
             <label>
-                <input type="checkbox" name="a_la_une" value="1" checked>
-                A la une : (+xx€/mois)
+                <input type="checkbox" name="a_la_une" value="1" >
+                A la une : (+20€/mois)
             </label><br>
 
             <label>
-                <input type="checkbox" name="en_relief" value="1" checked>
-                En relief : (+xx€/mois)
+                <input type="checkbox" name="en_relief" value="1" >
+                En relief : (+10€/mois)
             </label><br>
 
             

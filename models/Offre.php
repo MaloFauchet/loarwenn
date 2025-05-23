@@ -228,7 +228,7 @@ class Offre {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function insertOffre($data)
+    public function insertOffreActivite($data)
     {
         try {
             // 1. Récupérer ou insérer la ville
@@ -302,6 +302,212 @@ class Offre {
             echo "Erreur SQL : " . $e->getMessage();
         }
     }
+
+
+    public function insertOffreSpectacle($data)
+    {
+        try {
+            // 1. Récupérer ou insérer la ville
+            $nomVille = trim($data['lieu']); // Ex : "Paris"
+
+            $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
+
+
+            // Chercher ville existante
+            $sqlVille = "SELECT id_ville FROM tripenazor.ville WHERE nom_ville = :nomVille";
+            $stmtVille = $this->conn->prepare($sqlVille);
+            $stmtVille->bindParam(':nomVille', $nomVille);
+            $stmtVille->execute();
+
+            $ville = $stmtVille->fetch(PDO::FETCH_ASSOC);
+
+            if ($ville) {
+                $idVille = $ville['id_ville'];
+            } else {
+                // Insérer nouvelle ville
+                $sqlInsertVille = "INSERT INTO tripenazor.ville (nom_ville, code_postal) VALUES (:nomVille, :codePostal)";
+                $stmtInsertVille = $this->conn->prepare($sqlInsertVille);
+                $stmtInsertVille->bindParam(':nomVille', $nomVille);
+                $stmtInsertVille->bindParam(':codePostal', $codePostal);
+                $stmtInsertVille->execute();
+                $idVille = $this->conn->lastInsertId();
+            }
+
+            // 2. Insérer l'offre avec id_ville obtenu
+            $sql = "INSERT INTO tripenazor.offre (
+                        id_ville,
+                        id_type_activite,
+                        titre_offre,
+                        note_moyenne,
+                        nb_avis,
+                        en_ligne,
+                        resume,
+                        description,
+                        adresse_offre
+                    ) VALUES (
+                        :id_ville,
+                        :id_type_activite,
+                        :titre_offre,
+                        :note_moyenne,
+                        :nb_avis,
+                        :en_ligne,
+                        :resume,
+                        :description,
+                        :adresse_offre
+                    )";
+
+            $stmt = $this->conn->prepare($sql);
+
+            // Lier les paramètres
+            $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
+            $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
+            $stmt->bindParam(':titre_offre', $data['titre']);
+            $stmt->bindValue(':note_moyenne', 3.5);
+            $stmt->bindValue(':nb_avis', 30, PDO::PARAM_INT);
+            $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
+            $stmt->bindParam(':resume', $data['description']);
+            $stmt->bindParam(':description', $data['description']);
+            $adresseAleatoire = "123 Rue de la Paix, 75002 Paris";
+            $stmt->bindParam(':adresse_offre', $adresseAleatoire);
+
+            $stmt->execute();
+
+            $idOffre = $this->conn->lastInsertId();
+
+            // 3. Insérer dans offre_spectacle
+            $sqlSpectacle = "INSERT INTO tripenazor.offre_spectacle (
+                                id_offre,
+                                duree,
+                                accessibilite,
+                                capacite_accueil,
+                                prix
+                            ) VALUES (
+                                :id_offre,
+                                :duree,
+                                :accessibilite,
+                                :capacite_accueil,
+                                :prix
+                            )";
+
+            $stmtSpectacle = $this->conn->prepare($sqlSpectacle);
+            $stmtSpectacle->bindParam(':id_offre', $idOffre, PDO::PARAM_INT);
+            $stmtSpectacle->bindParam(':duree', $data['duree']);
+            $stmtSpectacle->bindParam(':accessibilite', $data['accessibilite']);
+            $stmtSpectacle->bindParam(':capacite_accueil', $data['capacite']);
+            $stmtSpectacle->bindParam(':prix', $data['prix']);
+            $stmtSpectacle->execute();
+
+            echo "Offre et offre_spectacle insérées avec succès.";
+
+        } catch (PDOException $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+        }
+    }
+
+
+    
+    public function insertOffreRestaurant($data)
+    {
+        try {
+            // 1. Récupérer ou insérer la ville
+            $nomVille = trim($data['lieu']); // Ex : "Paris"
+
+            $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
+
+
+            // Chercher ville existante
+            $sqlVille = "SELECT id_ville FROM tripenazor.ville WHERE nom_ville = :nomVille";
+            $stmtVille = $this->conn->prepare($sqlVille);
+            $stmtVille->bindParam(':nomVille', $nomVille);
+            $stmtVille->execute();
+
+            $ville = $stmtVille->fetch(PDO::FETCH_ASSOC);
+
+            if ($ville) {
+                $idVille = $ville['id_ville'];
+            } else {
+                // Insérer nouvelle ville
+                $sqlInsertVille = "INSERT INTO tripenazor.ville (nom_ville, code_postal) VALUES (:nomVille, :codePostal)";
+                $stmtInsertVille = $this->conn->prepare($sqlInsertVille);
+                $stmtInsertVille->bindParam(':nomVille', $nomVille);
+                $stmtInsertVille->bindParam(':codePostal', $codePostal);
+                $stmtInsertVille->execute();
+                $idVille = $this->conn->lastInsertId();
+            }
+
+            // 2. Insérer l'offre avec id_ville obtenu
+            $sql = "INSERT INTO tripenazor.offre (
+                        id_ville,
+                        id_type_activite,
+                        titre_offre,
+                        note_moyenne,
+                        nb_avis,
+                        en_ligne,
+                        resume,
+                        description,
+                        adresse_offre
+                    ) VALUES (
+                        :id_ville,
+                        :id_type_activite,
+                        :titre_offre,
+                        :note_moyenne,
+                        :nb_avis,
+                        :en_ligne,
+                        :resume,
+                        :description,
+                        :adresse_offre
+                    )";
+
+            $stmt = $this->conn->prepare($sql);
+
+            // Lier les paramètres
+            $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
+            $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
+            $stmt->bindParam(':titre_offre', $data['titre']);
+            $stmt->bindValue(':note_moyenne', 3.5);
+            $stmt->bindValue(':nb_avis', 30, PDO::PARAM_INT);
+            $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
+            $stmt->bindParam(':resume', $data['description']);
+            $stmt->bindParam(':description', $data['description']);
+            $adresseAleatoire = "123 Rue de la Paix, 75002 Paris";
+            $stmt->bindParam(':adresse_offre', $adresseAleatoire);
+
+            $stmt->execute();
+
+            $idOffre = $this->conn->lastInsertId();
+
+            // 3. Insérer dans offre_spectacle
+            $sqlRestauration = "INSERT INTO tripenazor.offre_restauration (
+                            id_offre,
+                            id_image,
+                            gamme_prix
+                        ) VALUES (
+                            :id_offre,
+                            :id_image,
+                            :gamme_prix
+                        )";
+
+            $stmtRestauration = $this->conn->prepare($sqlRestauration);
+            $stmtRestauration->bindParam(':id_offre', $idOffre, PDO::PARAM_INT);
+
+            // Si aucune image n'est fournie, on passe NULL
+            if (!empty($data['id_image'])) {
+                $stmtRestauration->bindParam(':id_image', $data['id_image'], PDO::PARAM_INT);
+            } else {
+                $stmtRestauration->bindValue(':id_image', null, PDO::PARAM_NULL);
+            }
+
+            $stmtRestauration->bindParam(':gamme_prix', $data['gamme_prix']);
+
+            $stmtRestauration->execute();
+
+            echo "Offre et offre_restauration insérées avec succès.";
+
+        } catch (PDOException $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+        }
+    }
+
     
     public function getAllOffreByLatest() {
         $sql = "
