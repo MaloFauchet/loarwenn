@@ -17,7 +17,6 @@ $estEntreprise = isset($_POST['entreprise_privee']); // true si coché
 
 $motDePasse = $_POST['mot_de_passe'];
 $confirmation = $_POST['confirmation'];
-$raisonSociale = $_POST['raisonSociale']; // si besoin
 
 if ($estEntreprise) {
     $denomination = $_POST['denomination'];
