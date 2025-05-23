@@ -118,7 +118,7 @@
             </div>
         </div>!-->
     <?php //} ?>
-    <h1>Sélectionnés pour vous</h1>
+    <h1>Sélectionnées pour vous</h1>
     <hr>
     <div class="container-caroussel">
         <div id="carousselSelectForYou">
