@@ -140,8 +140,7 @@
     </main>
 
 
-    <script src="scripts/caroussel.js"></script>
-    <script src="scripts/frontOffice.js"></script>
+    
     
     <!-- TO FIX -->
     <?php //require_once("./components/footer.php") ?>

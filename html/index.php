@@ -32,6 +32,7 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/pageAccueil.php');
             // require_once('../views/backOffice/pageAccueil.php');
         ?>
+    
 
     <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/components/footer.php'); ?>
 </body>
