@@ -105,6 +105,7 @@ class Caroussel {
         this.moveCallbacks = []
         this.offset = 0
         this.element.appendChild(this.root)
+
         this.items = this.children.map(child => {
             let item = this.createDivWithClass('caroussel-item')
             item.appendChild(child)
