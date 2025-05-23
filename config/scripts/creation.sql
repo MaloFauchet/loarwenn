@@ -447,7 +447,7 @@ BEGIN
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
     -- 3. Insérer dans professionnel
-	INSERT INTO tripenazor.membre (id_utilisateur, p_pseudo)
+	INSERT INTO tripenazor.membre (id_utilisateur, pseudo)
 	VALUES (v_id_utilisateur, p_pseudo);
 END;
 $$ LANGUAGE plpgsql;
