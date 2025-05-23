@@ -1,7 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../config/Database.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Model.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/Model.php');
 
 
 class Professionnel extends Model{ 
