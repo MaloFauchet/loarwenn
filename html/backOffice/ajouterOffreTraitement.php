@@ -17,6 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pas de sortie avant ce require pour afficher la vue avec erreurs
         $errors = $result['errors'];
         require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffreActivite.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffreParcDattraction.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffreRestaurant.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffreSpectacle.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffrevisteGuidee.php');
     }
 } else {
     // Pas de sortie avant ce require

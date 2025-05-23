@@ -11,7 +11,7 @@ function ajoutMultiple($label, $label2, $id, $donnee = []) {
         <div class="ajoutMultiple-header">
             <!-- Champ de saisie et bouton d'ajout -->
             <input type="text" id="ajoutMultipleInput_<?php echo $id ?>" placeholder="<?php echo htmlspecialchars($label) ?>" />
-            <button onclick="ajouterajoutMultiple('<?php echo $id ?>')">Ajouter</button>
+            <button type="button" onclick="ajouterajoutMultiple('<?php echo $id ?>')">Ajouter</button>
         </div>  
         <!-- Liste des éléments ajoutés -->
         <ul class="ajoutMultiple-list" id="ajoutMultipleList_<?php echo $id ?>">

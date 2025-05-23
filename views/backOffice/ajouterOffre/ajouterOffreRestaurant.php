@@ -21,9 +21,25 @@
         </div>
 
         <div class="champ-type-offre">
+            <h3>Carte du restaurant</h3>  
+            <input id="carteRestaurant" name="carteRestaurant" type="file" accept="image/*" required />
+        </div>
+
+        <div class="champ-type-offre">
+            <h3>Lieu</h3>
+            <label class="label-input" for="lieu">Lieu</label>
+            <input id="lieu" name="lieu" type="text" required />
+        </div>
+        <div class="champ-type-offre">
+            <h3>Adresse offre</h3>
+            <label class="label-input" for="adresse">Adresse</label>
+            <input id="adresse" name="adresse" type="text" required />
+        </div>
+
+        <div class="champ-type-offre">
             <h3>Gamme de prix </h3>
             <label class="label-input" for="prix">Prix</label>
-            <input id="prix" name="prix" type="text" required />
+            <input id="prix" name="prix" type="number" required />
         </div>
 
          <div class="champ-type-offre">
@@ -55,13 +71,13 @@
             <p>Voulez-vous prendre une option :</p>
 
             <label>
-                <input type="checkbox" name="a_la_une" value="1" checked>
-                A la une : (+xx€/mois)
+                <input type="checkbox" name="a_la_une" value="1" >
+                A la une : (+20€/mois)
             </label><br>
 
             <label>
-                <input type="checkbox" name="en_relief" value="1" checked>
-                En relief : (+xx€/mois)
+                <input type="checkbox" name="en_relief" value="1" >
+                En relief : (+10€/mois)
             </label><br>
 
             
@@ -92,6 +108,7 @@
             $name= $_COOKIE['selectedLibelle'];
             $selectedActiviteId= $_COOKIE['selectedActiviteId'];
             $idSession = session_id();
+
 
             $userId = $_SESSION['id_utilisateur'] ?? null;
             
