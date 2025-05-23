@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/LangueController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php';
 
 // Récupération de l'id de l'offre depuis l'URL
 $id_offre = $_GET['id_offre'];
@@ -14,6 +15,9 @@ $tagController = new TagController();
 $typeActiviteController = new TypeActiviteController();
 $prestationController = new PrestationController();
 $langueController = new LangueController();
+
+$utilisateurController = new UtilisateurController();
+$infoPro = $utilisateurController->getInfoUtilisateur($_SESSION['id_utilisateur']);
 
 $currentOffre = $offreController->getOffreById($id_offre);
 $langues = $langueController->getAllLangueForVisiteGuidee($currentOffre->getId());
@@ -74,7 +78,7 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 </figcaption>
             </figure>
 
-            <div class="note">
+            <div class="note" style="display:none;">
                 <h2>3.7
                     <!--Note a recup dans la bdd-->
                 </h2>
@@ -118,7 +122,7 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 <div class="input-divers">
                     <label class="label-input" for="telephone">Téléphone</label>
                     <input id="telephone" name="telephone" type="tel" 
-                    value="<?php echo "02 96 53 24 89" ?>" required />
+                    value="<?php echo $infoPro['num_telephone'] ?>" required />
                 </div>
             </div>
             <div class="duree">
