@@ -41,7 +41,7 @@
             </div>
 
             <div class="champ-type-offre">
-                <h3>Capacité d'acceuil</h3>
+                <h3>Capacité d'accueil</h3>
                 <label class="label-input" for="capacite">Capacité</label>
                 <input id="capacite" name="capacite" type="number" required />
             </div>
