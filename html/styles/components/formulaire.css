@@ -18,7 +18,7 @@ main img {
 
 .form-container {
     background: #fff;
-    padding: 0 40px 30px 40px;
+    padding: 0 40px 10px 40px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     max-width: 500px;
     width: 100%;
@@ -56,7 +56,7 @@ main img {
     margin: 10px 0;
 }
 
-button {
+button  {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -66,6 +66,15 @@ button {
     font-size: 16px;
     margin-top: 15px;
     cursor: pointer;
+}
+
+.button-link > button{
+    margin-top: 0px;
+}
+
+.button-link{
+    width: 100%;
+    margin-top: 15px;
 }
 
 button:hover {
