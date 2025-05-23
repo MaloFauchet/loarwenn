@@ -39,4 +39,8 @@ class UtilisateurController {
         }
         return $pro;
     }
+
+    public function nouveauCompteMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse) {
+        return $this->utilisateurModel->insertMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
+    }
 }
