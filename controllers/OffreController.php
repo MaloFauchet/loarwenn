@@ -18,21 +18,38 @@ class OffreController {
         return $this->offre->getOffreById($id);
     }
 
-    //toString
-    public function __toString() {
-        return $this->offre->__toString();
+    public function getOffreByIdAccueil($id) {
+        return $this->offre->getOffreByIdAccueil($id);
     }
+    public function getViewOffreAccueil() {
+        return $this->offre->getViewOffreAccueil();
+    }
+    //toString
+    
     // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);
+    }
+    public function AllOffreByLatest()  {
+        return $this->offre->getAllOffreByLatest();
+    }
+    //Retourne le nom de l'entreprise de l'offre
+    public function getProfessionnelByIdOffre($id_offre){
+        return $this->offre->getProfessionnelByIdOffre($id_offre);
     }
 
 
     public function allOffre() {
         return $this->offre->getAllOffre();
     }
+    public function getAllOffreRecommande()  {
+        return $this->offre->getAllOffreRecommande();
+    }
+    public function getAllOffreTag()  {
+        return $this->offre->getAllOffreTag();
+    }
 
-    public function ajouterOffre($post, $files) {
+     public function ajouterOffre($post, $files) {
         // Validation simple
         $errors = [];
         $titre = trim($post['titre'] ?? '');
@@ -74,6 +91,33 @@ class OffreController {
 
         return ['success' => true];
     }
+    /*
+    public function createOffre(
+        $id_ville, 
+        $id_statut_log, 
+        $id_type_activite, 
+        $titre_offre, 
+        $note_moyenne, 
+        $nb_avis, 
+        $en_ligne, 
+        $resume, 
+        $description, 
+        $adresse_offre
+        
+    ) {
+        return $this->offre->createOffre(
+            $id_ville, 
+            $id_statut_log, 
+            $id_type_activite, 
+            $titre_offre, 
+            $note_moyenne, 
+            $nb_avis, 
+            $en_ligne, 
+            $resume, 
+            $description, 
+            $adresse_offre
+        );
+    }
 
     public function editOffre(
         $idOffre,
@@ -102,5 +146,5 @@ class OffreController {
             $description, 
             $adresse_offre
         );
-    }
+    }*/
 }

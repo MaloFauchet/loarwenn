@@ -22,6 +22,22 @@ class Offre {
         $this->conn = $database->getConnection();
     }
 
+    public function getOffreByIdAccueil($idOffre) {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            WHERE offre.id_offre = :idOffre;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':idOffre' => $idOffre]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * @id : id de l'offre
@@ -163,7 +179,7 @@ class Offre {
                 $offre->setPrix($result['spectacle_prix']);
             }else if($offre instanceof OffreParcAttraction) {
                 $offre->setNbAttraction($result['pa_nb_attraction']);
-                $offre->setMinAge($result['pa_age_min']);
+                $offre->setAgeMin($result['pa_age_min']);
             }elseif ($offre instanceof OffreRestaurant) {
                 $offre->setGammePrix($result['restaurant_gamme_prix']);
             }
@@ -286,7 +302,120 @@ class Offre {
             echo "Erreur SQL : " . $e->getMessage();
         }
     }
+    
+    public function getAllOffreByLatest() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            ORDER BY date_creation DESC;
+        ";
 
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllOffre() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllOffreRecommande() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            JOIN tripenazor.option_payante_offre ON offre.id_offre = option_payante_offre.id_offre
+            JOIN tripenazor.option ON option_payante_offre.id_offre = option.id_option
+            JOIN tripenazor.souscription ON option_payante_offre.id_souscription = souscription.id_souscription
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllOffreTag() {
+        $sql = "
+            SELECT * FROM tripenazor.offre 
+            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
+            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
+            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
+            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
+            JOIN tripenazor.option_payante_offre ON offre.id_offre = option_payante_offre.id_offre
+            JOIN tripenazor.option ON option_payante_offre.id_offre = option.id_option
+            JOIN tripenazor.souscription ON option_payante_offre.id_souscription = souscription.id_souscription
+            JOIN tripenazor.offre_possede_tags ON offre.id_offre = offre_possede_tags.id_offre 
+            JOIN tripenazor.tag ON offre_possede_tags.id_tag = tag.id_tag
+            
+
+
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getViewOffreAccueil() {
+        $sql = "
+            SELECT * FROM tripenazor.infos_offre_page_accueil
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getProfessionnelByIdOffre($id_offre) {
+        $sql = "
+                SELECT 
+                pu.raison_sociale,
+                pp.denomination
+
+                FROM tripenazor.professionnel p
+                LEFT JOIN tripenazor.abonnement a ON p.id_utilisateur = a.id_utilisateur_prive
+                LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_utilisateur_public = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+
+                WHERE a.id_offre = :id_offre OR pppo.id_offre = :id_offre
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_offre', $id_offre);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($result['raison_sociale'] != null){
+            return $result['raison_sociale'];
+        }else if($result['denomination'] != null){
+            return $result['denomination'];
+        }else{
+            return false;
+        }
+    }
 
 
 

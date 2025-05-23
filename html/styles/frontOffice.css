@@ -6,9 +6,8 @@
 }
 
 .body-main{
-    margin: -30px;
+    
     font-family: sans-serif;
-    line-height: 1.4;
 }
 
 main{
@@ -29,15 +28,22 @@ main{
     transform: translate3d(0,-1px,0);
 }
 
-.item-image img{
+
+.item-image {
+    height: 200px; /* ou 250px selon ton design */
+    overflow: hidden;
     display: flex;
-    width: 100%;
-    height: auto;
-    height: 80%;
     align-items: center;
     justify-content: center;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 1em 1em 0 0;
 }
+
 
 .item-body{
     padding: 15px 25px 25px 25px;
@@ -79,6 +85,22 @@ main{
 
 .caroussel-item{
     float: left;
+    margin: 40px 10px;
+    background-color: #fff;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    transform: translate3d(0,-1px,0);
+    border-radius: 1em;
+}
+
+.card-vertical-item{
+    margin: 40px 10px;
+    background-color: #fff;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    transform: translate3d(0,-1px,0);
+    border-radius: 1em;
+}
+
+.card-horizontal-item{
     margin: 40px 10px;
     background-color: #fff;
     box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
@@ -153,6 +175,7 @@ main{
 }
 
 
+
 .card-horizontal{
     display: flex;
     flex-direction: row;
@@ -168,29 +191,62 @@ main{
 }
 .item-avis{
     display: inline-flex;
+    align-items: center;
 }
 .item-avis > p{
-    margin: 1vh;
+    margin: 4px;
 }
 
-.item-tag{
-    display: inline-flex;
-    
+.item-tag  svg{
+    margin-left: 2vh;
 }
-
+/*
 .item-tag > span{
     display: inline-flex;
-    margin: 1vh;
+    align-items: center;
+    margin: 4px;
     background-color:#CAE9FF ;
     border: solid white 1px ;
     border-radius: 2em;
     
+}*/
+
+.item-tag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.item-tag > span {
+  display: inline-flex;
+  align-items: center;
+  background-color: #CAE9FF;
+  border: solid white 1px;
+  border-radius: 2em;
+  padding: 0.3em 1em;
+  font-size: clamp(0.7rem, 1vw, 1rem); /* 👈 S'adapte à la taille écran */
+  max-width: 200px;
 }
 .item-tag > span > img{
     margin:  1vh;
 }
 .item-tag > span > p{
     margin:  1vh;
+}
+
+.tel-card{
+    display: inline-flex;
+    align-items: center;
+    margin: 1vh;
+
+}
+
+.tel-card p{
+    margin-left:1vh ;
+    margin-right:1vh ;
+    margin-top:0 ;
+    margin-bottom:0 ;
+    
 }
 
 .front-office-main {
@@ -236,7 +292,11 @@ main{
     
 }
 .front-office-main > a{
-    margin: 1.10em;
+    /*margin: 1.10em;*/
+    /* juste pour la review*/
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .video-header {
@@ -296,6 +356,7 @@ button.btn-reset {
 
 /* .sample.one input */
 .sample.one input {
+
   border-radius: 15px;
   right: 0;
   transition: all 0.3s ease-in-out;
@@ -372,7 +433,7 @@ button.btn-reset {
     border-radius: 1em 1em 0 0;
     bottom: 95%;
     left: 5%;
-    width: 60%;
+    width: fit-content;
     padding: 5px 1em 1em 1em;
     font-size: 1.10em;
     
@@ -386,11 +447,11 @@ button.btn-reset {
 }
 
 .recommended p{
-    margin: 0 1.10em 1.10em 0 ;
+    margin: 0 1.10em 0.5em 0 ;
     
 }
 .recommended svg{
-    margin: 0 1.10em 1.10em 1.10em ;
+    margin: 0 1.10em 0.5em 1.10em ;
     
 }
 
@@ -398,15 +459,14 @@ button.btn-reset {
     background-color: #005CE6;
   color: #fff;
   border-radius: 1em 1em 0 0;
-  font-size: 1.1em;
 
   position: absolute;
   
-  z-index: -1; /* En arrière-plan */
-  width: 20%;
-  height: 40px; /* Ajuste à ton besoin */
+  z-index: -1; 
+  width: fit-content;
+  height: 40px; 
   transform: translateY(-30px);
-  padding: 0 1.10em 1.10em 1.10em;
+  padding: 0 0.2em 1.10em 1.10em;
 }
 
 .recommended-horizontal >div{
@@ -418,6 +478,13 @@ button.btn-reset {
 
 .recommended-horizontal p{
     margin: 0 1.10em 0 1.10em;
+}
+
+.container-caroussel{
+    max-width: 100%;
+}
+.a-card{
+    width: 80%;
 }
 
 @media screen and (min-width:800px) {

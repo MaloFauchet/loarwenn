@@ -8,6 +8,7 @@ $offreController = new OffreController();
 $id = 4; // A remplacer par la valeur dynamique de l'ID de l'offre
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
+$pro = $offreController->getProfessionnelByIdOffre($offre->getId());
 
  /**
   * Affichage des étoiles en fonction de la note
@@ -83,9 +84,9 @@ function afficherEtoile($note){
         <article>
             <figure class="pp-pro">
                 <!--PP a recup dans la bdd -->
-                <img src="/images/profils/elouan.jpg" alt="Photo de profil pro" id="pp-pro">
+                <img src="/images/profils/default_profil.png" alt="Photo de profil pro" id="pp-pro">
                 <figcaption>
-                    <h4>Association : Armor Naviguation<!--Denomination a recup dans la bdd--></h4>
+                    <h4>Organisation : <?=$pro?> </h4>
                     <?php
                         // Si pro est SUPER ASSO | ORGANISATION
                         echo '<p>Super Association</p>';

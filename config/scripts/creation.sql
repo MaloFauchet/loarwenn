@@ -274,6 +274,7 @@ CREATE TABLE pro_public_propose_offre (
 
 CREATE VIEW infos_offre_page_accueil AS
 SELECT 
+    o.id_offre,
     o.titre_offre,
     o.note_moyenne,
     o.nb_avis,
@@ -302,8 +303,9 @@ LEFT JOIN (
     WHERE rn = 1
 ) AS banniere_img ON o.id_offre = banniere_img.id_offre
 LEFT JOIN image ON banniere_img.id_image= image.id_image
-
+WHERE en_ligne is TRUE
 GROUP BY 
+    o.id_offre,
     o.titre_offre,
     o.note_moyenne,
     o.nb_avis,
