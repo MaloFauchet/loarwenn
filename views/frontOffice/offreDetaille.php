@@ -4,8 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php')
 // On instancie le controller
 $offreController = new OffreController();
 // On récupère l'ID de l'offre à afficher
-//$id = $_GET['id'] ?? null;
-$id = 4; // A remplacer par la valeur dynamique de l'ID de l'offre
+$id = $_GET['id'] ?? null;
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 $pro = $offreController->getProfessionnelByIdOffre($offre->getId());
@@ -39,7 +38,7 @@ function afficherEtoile($note){
 <!-- Main-->
 <main>
     <div class="breadcrumb-container">
-        <a href="index.php" class="breadcrumb-back-link">
+        <a href="/index.php" class="breadcrumb-back-link">
             <img src="/images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
         </a>
         <nav class="breadcrumb">
