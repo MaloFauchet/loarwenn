@@ -58,10 +58,10 @@ class Professionnel extends Model{
         $motDePasse
     ) {
         $sql = "
-        SELECT * FROM inserer_utilisateur_et_professionnel_prive(
+        SELECT * FROM tripenazor.inserer_utilisateur_et_professionnel_prive(
             :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
             :adresse::TEXT, :complement::TEXT, :codePostal::TEXT, :ville::TEXT,
-            :denomination::TEXT, :siren::INT, :rib::TEXT, :motDePasse::TEXT
+            :denomination::TEXT, :siren::INTEGER, :rib::TEXT, :motDePasse::TEXT
         )
     ";
 
