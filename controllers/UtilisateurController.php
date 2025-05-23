@@ -22,6 +22,10 @@ class UtilisateurController {
         return $membre;
     }
 
+    public function getInfoUtilisateur($id_utilisateur) {
+        return $this->utilisateurModel->getInfoUtilisateur($id_utilisateur);
+    }
+
 
     public function connexionPro($email, $mdp) {
         $pro = $this->utilisateurModel->connexionPro($email, $mdp);
