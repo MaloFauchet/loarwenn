@@ -293,3 +293,42 @@ input:not(.checkbox-cont input, .choix-divers input) {
     width: 70%;
     height: auto;
 }
+
+/* sauvegarder les modifications */
+div#sauvegarder {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 24px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 3vh;
+
+    padding: 0vh 1vw;
+
+    transition: bottom 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+div#sauvegarder > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+}
+
+div#sauvegarder button {
+    background-color: white;
+    color: var(--main-color);
+    font-size: 20px;
+    margin: 0 1vw;
+    border: none;
+    border-radius: 20px;
+    padding: 1vh 2vw;
+}

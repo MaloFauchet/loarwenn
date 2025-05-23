@@ -1,8 +1,8 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/ProfessionnelController.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
 
-// $membre = new MembreController();
+$membre = new UtilisateurController();
 
 $nom = $_POST['nom'];
 $prenom = $_POST['prenom'];
@@ -13,13 +13,11 @@ $complement = $_POST['complement'];
 $codePostal = $_POST['codePostal'];
 $ville = $_POST['ville'];
 
-$estEntreprise = isset($_POST['entreprise_privee']); // true si coché
-
-$motDePasse = $_POST['mot_de_passe'];
+$motDePasse = password_hash($_POST['mot_de_passe'], PASSWORD_BCRYPT);
 $confirmation = $_POST['confirmation'];
-$raisonSociale = $_POST['raisonSociale']; // si besoin
+$pseudo = $_POST['pseudo']; // si besoin
 
-// $membre->nouveauCompteMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
+$membre->nouveauCompteMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
 
 header('Location: /');
 exit;

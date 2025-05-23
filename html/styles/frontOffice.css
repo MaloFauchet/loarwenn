@@ -487,6 +487,23 @@ button.btn-reset {
     width: 80%;
 }
 
+.profil {
+    margin: 5px;
+    width: 100%;
+    height: 70px;
+    gap: 10px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+}
+
+.profil svg {
+    width: 40px;
+    height: 40px;
+}
+
 @media screen and (min-width:800px) {
     .caroussel-pagination{
         display: block;
