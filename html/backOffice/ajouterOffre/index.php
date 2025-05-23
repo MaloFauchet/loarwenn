@@ -1,5 +1,10 @@
 <?php 
-            session_start();
+session_start();
+// Vérification de la session
+if (!isset($_SESSION['id_utilisateur'])) {
+    header('Location: /backOffice/connexion/connexionPro.php');
+    exit();
+}
 
 ?>
 
