@@ -58,32 +58,22 @@ class OffreController {
             
             $titre = trim($post['titre'] ?? '');
             $lieu = trim($post['lieu'] ?? '');
-            $image = $files['image'] ?? null;
+         
 
             if ($titre === '') $errors[] = "Le titre est obligatoire.";
             if ($lieu === '') $errors[] = "Le lieu est obligatoire.";
-            if (!$image || $image['error'] !== UPLOAD_ERR_OK) $errors[] = "Une image valide est requise.";
+           
 
             if (!empty($errors)) {
                 return ['success' => false, 'errors' => $errors];
             }
 
-            // Upload image
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-            $imageName = basename($image['name']);
-            $uploadPath = $uploadDir . $imageName;
-            if (!move_uploaded_file($image['tmp_name'], $uploadPath)) {
-                return ['success' => false, 'errors' => ['Erreur lors de l\'upload de l\'image.']];
-            }
+            
             
             // Insertion en BDD via le modèle
             $this->offre->insertOffreActivite([
                 'titre' => $titre,
                 'lieu' => $lieu,
-                'image' => $imageName,
                 'duree' => $post['duree'] ?? '',
                 'age' => $post['age'] ?? '',
                 'prix' => $post['prix'] ?? '',
@@ -99,7 +89,6 @@ class OffreController {
         else if($post['id_activite'] == 2) {
             
             $titre = trim($post['titre'] ?? '');
-            $image = $files['image'] ?? null;
             $lieu = trim($post['lieu'] ?? '');
 
             if ($titre === '') $errors[] = "Le titre est obligatoire.";
@@ -108,16 +97,7 @@ class OffreController {
                 return ['success' => false, 'errors' => $errors];
             }
 
-            // Upload image
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-            $imageName = basename($image['name']);
-            $uploadPath = $uploadDir . $imageName;
-            if (!move_uploaded_file($image['tmp_name'], $uploadPath)) {
-                return ['success' => false, 'errors' => ['Erreur lors de l\'upload de l\'image.']];
-            }
+           
 
 
             
@@ -142,7 +122,7 @@ class OffreController {
         else if($post['id_activite'] == 5) {
             
             $titre = trim($post['titre'] ?? '');
-            $image = $files['image'] ?? null;
+           
             $lieu = trim($post['lieu'] ?? '');
 
             if ($titre === '') $errors[] = "Le titre est obligatoire.";
@@ -151,17 +131,7 @@ class OffreController {
                 return ['success' => false, 'errors' => $errors];
             }
 
-            // Upload image
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-            $imageName = basename($image['name']);
-            $uploadPath = $uploadDir . $imageName;
-            if (!move_uploaded_file($image['tmp_name'], $uploadPath)) {
-                return ['success' => false, 'errors' => ['Erreur lors de l\'upload de l\'image.']];
-            }
-
+           
             
             
             // Insertion en BDD via le modèle
