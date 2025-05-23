@@ -45,17 +45,17 @@
     
 
 ?>
-    
-    
-    <header class="front-office-main">
-        <video autoplay muted loop id="myVideo" class="video-header">
-            <source src="videos/video_accueil.mp4" type="video/mp4">
-        </video>
-        <div >
-            <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px"  >
-        </div>
-            
-        <!--
+
+
+<header class="front-office-main">
+    <video autoplay muted loop id="myVideo" class="video-header">
+        <source src="videos/video_accueil.mp4" type="video/mp4">
+    </video>
+    <div>
+        <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
+    </div>
+
+    <!--
         <nav>
             <ul class="ul-fo">
                 <li><a href="index.php">Accueil</a></li>
@@ -63,20 +63,23 @@
                 <li><a href="">Cartographie</a></li>
             </ul>
         </nav>!-->
-        <?php if (isset($_SESSION['id_utilisateur']) && isset($_SESSION['pseuddo'])) { ?>
-            <a href="">
-                <img src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
-            </a>
-        <?php } else{?>
-        <a href="/frontOffice/connexion/index.php" >
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-            </svg>
-        </a>
-        <?php } ?>
+    <?php if (isset($_SESSION['id_utilisateur']) && isset($_SESSION['pseudo'])) { ?>
+    <a href="">
+        <img src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
+    </a>
+    <?php } else {?>
+    <a href="/frontOffice/connexion/index.php">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle"
+            viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+        </svg>
+    </a>
+    <?php } ?>
+    </div>
 
-        <!--
+    <!--
         <div class="sample one" >
             <input type="text" name="search" placeholder="Rechercher...">
             <button type="submit" class="btn-search" >
@@ -85,10 +88,11 @@
                 </svg>
             </button>
         </div>!-->
-        <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
-        <h2 class="discover-text-fo">Découvrez vos vacances</h2>
-    </header>
-    <main><!--
+    <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
+    <h2 class="discover-text-fo">Découvrez vos vacances</h2>
+</header>
+<main>
+    <!--
         <h1>Récemment consultés</h1>
         <hr>
         <?php //  FAIRE CONNEXION     if ($connected) { ?>
@@ -104,13 +108,13 @@
                     }*/ ?>
             </div>
         </div>!-->
-        <?php //} ?>
-        <h1>Sélectionnés pour vous</h1>
-        <hr>
-        <div class="container-caroussel">
-            <div id="carousselSelectForYou">
+    <?php //} ?>
+    <h1>Sélectionnés pour vous</h1>
+    <hr>
+    <div class="container-caroussel">
+        <div id="carousselSelectForYou">
 
-                <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
+            <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
                     if ($valueOfOffre['Recommandé']) {
                         require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedVerticalCarousselle.php'); 
                     }elseif ($valueOfOffre['En relief']) {
@@ -118,12 +122,12 @@
                     }
                 }?>
 
-            </div>
         </div>
-        <h1>Les nouveautés</h1>
-        <hr>
-        <div class="container-nouveautes">
-            <?php
+    </div>
+    <h1>Les nouveautés</h1>
+    <hr>
+    <div class="container-nouveautes">
+        <?php
 
             foreach ($listeOffreView as $offre => $valueOfOffre) {
                 if ($valueOfOffre['Recommandé']) {
@@ -136,16 +140,16 @@
                 
             }    
             ?>
-            
-            
-        </div>
-    </main>
 
 
-    
-    
-    <!-- TO FIX -->
-    <?php //require_once("./components/footer.php") ?>
+    </div>
+</main>
+
+
+
+
+<!-- TO FIX -->
+<?php //require_once("./components/footer.php") ?>
 
 
 </html>
