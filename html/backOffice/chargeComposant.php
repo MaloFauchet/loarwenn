@@ -11,12 +11,11 @@ $sanitized = $_GET['sanitized'] ?? '';
 
 // Nettoyage pour correspondance whitelist
 $cleaned = preg_replace('/[^a-zA-Z]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $libelle));
-
 $whitelist = [
     'Activite',
     'Spectacle',
-    'VisiteGuidee',
-    'ParcDattraction',
+    'Visiteguidee',
+    'Parcdattraction',
     'Restaurant'
 ];
 
@@ -32,6 +31,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/TagController.php');
 
 $typeActiviteController = new TypeActiviteController();
 $tagController = new TagController();
+
 
 // Charger le fichier de composant
 $filePath = $_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffre/ajouterOffre' . $cleaned . '.php';

@@ -21,49 +21,33 @@
         </div>
 
         <div class="champ-type-offre">
-            <h3>Lieu</h3>
-            <label class="label-input" for="lieu">Lieu</label>
-            <input id="lieu" name="lieu" type="text" required />
+            <h3>Gamme de prix </h3>
+            <label class="label-input" for="prix">Prix</label>
+            <input id="prix" name="prix" type="text" required />
         </div>
 
-        <div class="champ-type-offre-row">
-            <div class="champ-type-offre">
-                <h3>Durée</h3>
-                <label class="label-input" for="duree">Durée</label>
-                <input id="duree" name="duree" type="number" required />
-            </div>
-
-            <div class="champ-type-offre">
-                <h3>Âge</h3>
-                <label class="label-input" for="age">Âge</label>
-                <input id="age" name="age" type="number" required />
-            </div>
-
-            <div class="champ-type-offre">
-                <h3>Gamme de prix</h3>
-                <label class="label-input" for="prix">Prix</label>
-                <input id="prix" name="prix" type="number" required />
-            </div>
-        </div>
-
-        <div class="champ-type-offre">
-            <h3>Description détaillée</h3>
+         <div class="champ-type-offre">
+            <h3>Description</h3>
             <label class="label-input" for="description">Description</label>
             <input id="description" name="description" type="text" required />
         </div>
+
+         <div class="champ-type-offre">
+            <h3>Resume</h3>
+            <label class="label-input" for="resume">Resume</label>
+            <input id="resume" name="resume" type="text" required />
+        </div>
+
+
+
+    
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php')
         ?>
         <?php 
-            ajoutMultiple('Prestation','Prestation incluse',1);  
-            ajoutMultiple('Prestation','Prestation non incluse',2); 
+            ajoutMultiple('Repas','Repas',1);  
         ?>
 
-        <div class="champ-type-offre">
-            <h3>Accessibilité</h3>
-            <label class="label-input" for="accessibilite">Accessibilité</label>
-            <input id="accessibilite" name="accessibilite" type="text" required />
-        </div>
 
        
 

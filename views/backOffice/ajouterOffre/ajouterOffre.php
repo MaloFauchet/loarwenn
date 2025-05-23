@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <script>
-        function ajouterajoutMultiple(id) {
+        function ajouterajoutMultiple(id) { 
             const input = document.getElementById('ajoutMultipleInput_' + id);
             const list = document.getElementById('ajoutMultipleList_' + id);
             const value = input.value.trim();
@@ -159,15 +159,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         function supprimerajoutMultiple(btn) {
             btn.parentElement.remove();
         }
-    </script>
+    </script>   
     
     <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/header.php'); 
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEtoile.php');
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../controllers/TypeActiviteController.php'); 
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../controllers/OffreController.php'); 
-   
-   
-    
+ 
     
     
     
@@ -192,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <select id="type-select">
                         <option value="">-- Sélectionner --</option>
                         <?php foreach ($typeActivites as $index => $type): ?>
-                            <option value="<?= htmlspecialchars($type['libelle_activite']) ?>">
+                            <option value="<?= $type['id_type_activite'] . '|' . $type['libelle_activite'] ?>">
                                 <?= htmlspecialchars($type['libelle_activite']) ?>
                             </option>
                         <?php endforeach; ?>
@@ -200,15 +198,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <div id="activite-details" style="margin-top: 1em;"></div>
                 </div>
-
+                        
+                
                 <script>
                     const select = document.getElementById('type-select');
                     const detailsDiv = document.getElementById('activite-details');
 
                     select.addEventListener('change', function () {
-                        const selectedLibelle = this.value;
+                        // Récupérer les deux valeurs séparées par |
+                        const [selectedId, selectedLibelle] = this.value.split('|');
 
+                        // Stocker dans les cookies
+                        document.cookie = `selectedActiviteId=${encodeURIComponent(selectedId)}; path=/`;
                         document.cookie = `selectedLibelle=${encodeURIComponent(selectedLibelle)}; path=/`;
+                        console.log(selectedId);
                        
                         
                         

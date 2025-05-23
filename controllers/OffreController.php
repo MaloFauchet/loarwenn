@@ -33,71 +33,46 @@ class OffreController {
     }
 
     public function ajouterOffre($post, $files) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupérer les données du formulaire
-            $titre = $_POST['titre'] ?? '';
-            $lieu = $_POST['lieu'] ?? '';
-            $duree = $_POST['duree'] ?? '';
-            $age = $_POST['age'] ?? '';
-            $prix = $_POST['prix'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $accessibilite = $_POST['accessibilite'] ?? '';
-            $a_la_une = isset($_POST['a_la_une']) ? 1 : 0;
-            $en_relief = isset($_POST['en_relief']) ? 1 : 0;
+        // Validation simple
+        $errors = [];
+        $titre = trim($post['titre'] ?? '');
+        $lieu = trim($post['lieu'] ?? '');
+        $image = $files['image'] ?? null;
 
-            // Pour les champs multiples (Prestation incluse, non incluse, tags)
-            // supposons que la fonction ajoutMultiple crée des inputs de type "name='prestation_incluse[]'"
-            $prestation_incluse = $_POST['prestation_incluse'] ?? [];
-            $prestation_non_incluse = $_POST['prestation_non_incluse'] ?? [];
-            $tags = $_POST['tags'] ?? [];
+        if ($titre === '') $errors[] = "Le titre est obligatoire.";
+        if ($lieu === '') $errors[] = "Le lieu est obligatoire.";
+        if (!$image || $image['error'] !== UPLOAD_ERR_OK) $errors[] = "Une image valide est requise.";
 
-            // Afficher les infos (à adapter pour un rendu ou retour JSON)
-            echo "<h2>Données reçues :</h2>";
-            echo "Titre : " . htmlspecialchars($titre) . "<br>";
-            echo "Lieu : " . htmlspecialchars($lieu) . "<br>";
-            echo "Durée : " . htmlspecialchars($duree) . "<br>";
-            echo "Âge : " . htmlspecialchars($age) . "<br>";
-            echo "Prix : " . htmlspecialchars($prix) . "<br>";
-            echo "Description : " . htmlspecialchars($description) . "<br>";
-            echo "Accessibilité : " . htmlspecialchars($accessibilite) . "<br>";
-            echo "À la une : " . ($a_la_une ? "Oui" : "Non") . "<br>";
-            echo "En relief : " . ($en_relief ? "Oui" : "Non") . "<br>";
-
-            echo "<h3>Prestations incluses :</h3>";
-            if (!empty($prestation_incluse)) {
-                echo "<ul>";
-                foreach ($prestation_incluse as $p) {
-                    echo "<li>" . htmlspecialchars($p) . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "Aucune prestation incluse.<br>";
-            }
-
-            echo "<h3>Prestations non incluses :</h3>";
-            if (!empty($prestation_non_incluse)) {
-                echo "<ul>";
-                foreach ($prestation_non_incluse as $p) {
-                    echo "<li>" . htmlspecialchars($p) . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "Aucune prestation non incluse.<br>";
-            }
-
-            echo "<h3>Tags :</h3>";
-            if (!empty($tags)) {
-                echo "<ul>";
-                foreach ($tags as $tag) {
-                    echo "<li>" . htmlspecialchars($tag) . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "Aucun tag.<br>";
-            }
-        } else {
-            echo "Aucune donnée reçue.";
+        if (!empty($errors)) {
+            return ['success' => false, 'errors' => $errors];
         }
+
+        // Upload image
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $imageName = basename($image['name']);
+        $uploadPath = $uploadDir . $imageName;
+        if (!move_uploaded_file($image['tmp_name'], $uploadPath)) {
+            return ['success' => false, 'errors' => ['Erreur lors de l\'upload de l\'image.']];
+        }
+
+        // Insertion en BDD via le modèle
+        $this->offre->insertOffre([
+            'titre' => $titre,
+            'lieu' => $lieu,
+            'image' => $imageName,
+            'duree' => $post['duree'] ?? '',
+            'age' => $post['age'] ?? '',
+            'prix' => $post['prix'] ?? '',
+            'description' => $post['description'] ?? '',
+            'accessibilite' => $post['accessibilite'] ?? '',
+            'id_activite' => $post['id_activite'] ?? '',
+            'user_id' => $post['user_id'] ?? '',
+        ]);
+
+        return ['success' => true];
     }
 
     public function editOffre(

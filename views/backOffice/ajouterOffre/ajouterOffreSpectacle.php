@@ -6,64 +6,57 @@
     </ul>
 <?php endif; ?>
 
-<?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputAjoutMultiple.php');
-?>
+
 <form action="/backOffice/ajouterOffreTraitement.php" method="POST" enctype="multipart/form-data">
     <div class="formulaire">
+       
         <div class="champ-type-offre">
             <h3>Titre</h3>
             <label class="label-input" for="titre">Titre</label>
             <input id="titre" name="titre" type="text" required />
         </div>
+            
 
         <div class="champ-type-offre">
             <h3>Photo</h3>  
             <input id="image" name="image" type="file" accept="image/*" required />
         </div>
 
-        <div class="champ-type-offre">
-            <h3>Lieu</h3>
-            <label class="label-input" for="lieu">Lieu</label>
-            <input id="lieu" name="lieu" type="text" required />
-        </div>
 
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Durée</h3>
                 <label class="label-input" for="duree">Durée</label>
-                <input id="duree" name="duree" type="text" required />
+                <input id="duree" name="duree" type="number" required />
             </div>
 
             <div class="champ-type-offre">
-                <h3>Âge</h3>
-                <label class="label-input" for="age">Âge</label>
-                <input id="age" name="age" type="text" required />
+                <h3>Capacité d'acceuil</h3>
+                <label class="label-input" for="capacite">Capacité</label>
+                <input id="capacite" name="capacite" type="number" required />
             </div>
 
             <div class="champ-type-offre">
-                <h3>Gamme de prix</h3>
+                <h3>Prix</h3>
                 <label class="label-input" for="prix">Prix</label>
-                <input id="prix" name="prix" type="text" required />
+                <input id="prix" name="prix" type="number" required />
             </div>
         </div>
 
+
+
         <div class="champ-type-offre">
-            <h3>Description détaillée</h3>
+            <h3>Resumé</h3>
+            <label class="label-input" for="resume">Resumé</label>
+            <input id="resume" name="resume" type="text" required />
+        </div>
+
+        <div class="champ-type-offre">
+            <h3>Description</h3>
             <label class="label-input" for="description">Description</label>
             <input id="description" name="description" type="text" required />
         </div>
 
-        <?php 
-            ajoutMultiple('Prestation','Prestation incluse',1);  
-            ajoutMultiple('Prestation','Prestation non incluse',2);
-        ?>
-
-        <div class="champ-type-offre">
-            <h3>Accessibilité</h3>
-            <label class="label-input" for="accessibilite">Accessibilité</label>
-            <input id="accessibilite" name="accessibilite" type="text" required />
-        </div>
 
        
 
@@ -85,8 +78,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputA
         </div>
 
         <?php
-        function afficherTag($tags, $libelle) {
+        function afficherTag($tags, $libelle, $id_activite) {
             echo "<h4>Tags liés à l'activité : " . htmlspecialchars($libelle) . "</h4>";
+
+            echo "<input type='hidden' name='id_activite' value='" . htmlspecialchars($id_activite) . "'>";
+
+            
+
             echo "<div style='display: flex; flex-wrap: wrap; gap: 0.5em;'>";
             foreach ($tags as $index => $tag) {
                 $tagId = 'tag_' . $index;
@@ -98,18 +96,24 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/inputA
             echo "</div>";
 
         }
+        
             
             $name= $_COOKIE['selectedLibelle'];
-            echo $name;
+            $selectedActiviteId= $_COOKIE['selectedActiviteId'];
+            $idSession = session_id();
+
+            $userId = $_SESSION['id_utilisateur'] ?? null;
+            
+            echo "<input type='hidden' name='id_utilisatuer' value='" .$userId . "'>";
 
             $id_tags = $typeActiviteController->getTagIdByTypeActivite($name);
-            $arrayIdTags = array_column($id_tags, 'id_tag');
+            $arrayIdTags = array_column($id_tags, 'id_tag');    
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
 
             
 
-            afficherTag($tags, $name);
+            afficherTag($tags, $name,$selectedActiviteId);
 
 
         ?>

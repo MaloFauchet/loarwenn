@@ -215,32 +215,72 @@ class Offre {
     public function insertOffre($data)
     {
         try {
-            // Préparer l'appel à la fonction SQL
-            $sql = "SELECT tripenazor.inserer_utilisateur_et_professionnel_prive(
-                :nom, :prenom, :email, :telephone, :adresse, :complement,
-                :code_postal, :nom_ville, :denomination, :siren, :rib, :mot_de_passe
-            );";
+            // 1. Récupérer ou insérer la ville
+            $nomVille = trim($data['lieu']); // Ex : "Paris"
 
-           $stmt = $this->conn->prepare($sql);
+            $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
+
+
+            // Chercher ville existante
+            $sqlVille = "SELECT id_ville FROM tripenazor.ville WHERE nom_ville = :nomVille";
+            $stmtVille = $this->conn->prepare($sqlVille);
+            $stmtVille->bindParam(':nomVille', $nomVille);
+            $stmtVille->execute();
+
+            $ville = $stmtVille->fetch(PDO::FETCH_ASSOC);
+
+            if ($ville) {
+                $idVille = $ville['id_ville'];
+            } else {
+                // Insérer nouvelle ville
+                $sqlInsertVille = "INSERT INTO tripenazor.ville (nom_ville, code_postal) VALUES (:nomVille, :codePostal)";
+                $stmtInsertVille = $this->conn->prepare($sqlInsertVille);
+                $stmtInsertVille->bindParam(':nomVille', $nomVille);
+                $stmtInsertVille->bindParam(':codePostal', $codePostal);
+                $stmtInsertVille->execute();
+                $idVille = $this->conn->lastInsertId();
+            }
+
+            // 2. Insérer l'offre avec id_ville obtenu
+            $sql = "INSERT INTO tripenazor.offre (
+                        id_ville,
+                        id_type_activite,
+                        titre_offre,
+                        note_moyenne,
+                        nb_avis,
+                        en_ligne,
+                        resume,
+                        description,
+                        adresse_offre
+                    ) VALUES (
+                        :id_ville,
+                        :id_type_activite,
+                        :titre_offre,
+                        :note_moyenne,
+                        :nb_avis,
+                        :en_ligne,
+                        :resume,
+                        :description,
+                        :adresse_offre
+                    )";
+
+            $stmt = $this->conn->prepare($sql);
 
             // Lier les paramètres
-            $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
-            $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':telephone', $telephone, PDO::PARAM_STR);
-            $stmt->bindParam(':adresse', $adresse, PDO::PARAM_STR);
-            $stmt->bindParam(':complement', $complement, PDO::PARAM_STR);
-            $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
-            $stmt->bindParam(':nom_ville', $nom_ville, PDO::PARAM_STR);
-            $stmt->bindParam(':denomination', $denomination, PDO::PARAM_STR);
-            $stmt->bindParam(':siren', $siren, PDO::PARAM_INT);
-            $stmt->bindParam(':rib', $rib, PDO::PARAM_STR);
-            $stmt->bindParam(':mot_de_passe', $mot_de_passe, PDO::PARAM_STR);
+            $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
+            $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
+            $stmt->bindParam(':titre_offre', $data['titre']);
+            $stmt->bindValue(':note_moyenne', 3.5);
+            $stmt->bindValue(':nb_avis', 30, PDO::PARAM_INT);
+            $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
+            $stmt->bindParam(':resume', $data['description']);
+            $stmt->bindParam(':description', $data['description']);
+            $adresseAleatoire = "123 Rue de la Paix, 75002 Paris";
+            $stmt->bindParam(':adresse_offre', $adresseAleatoire);
 
-            // Exécuter
             $stmt->execute();
 
-            echo "Utilisateur professionnel privé inséré avec succès.";
+            echo "Offre insérée avec succès.";
 
         } catch (PDOException $e) {
             echo "Erreur SQL : " . $e->getMessage();
