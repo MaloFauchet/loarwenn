@@ -39,7 +39,7 @@ class OffreActivite extends Offre {
              */
             $activite->setDuree($value['duree']);
             $activite->setAccessibilite($value['accessibilite']);
-            $activite->setAge($value['age']);
+            $activite->setAgeMin($value['age']);
 
             /**
              * Setters de la classe mère
@@ -55,7 +55,7 @@ class OffreActivite extends Offre {
             $activite->setNoteMoyenne($value['noteMoyenne']);
             $activite->setNbAvis($value['nbAvis']);
 
-            $offresActivite[] = $visite;
+            $offresActivite[] = $activite;
 
             
         }

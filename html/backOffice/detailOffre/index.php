@@ -1,10 +1,11 @@
 <?php
 session_start();
-?>
-<!DOCTYPE html>
-<html lang="fr">
+// Vérification de la session
+if (!isset($_SESSION['id_utilisateur'])) {
+    header('Location: /frontOffice/connexion/connexionPro.php');
+    exit();
+}
 
-<?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php');
 if(isset($_GET['id_offre'])) {
     $id_offre = $_GET['id_offre'];
@@ -21,8 +22,12 @@ $currentOffre = $offreController->getOffreById($id_offre);
 
 // Récupération du type, des tags et de l'id du type d'activité
 $type_activite = $currentOffre->getType();
+
+
 ?>
 
+<!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>PACT</title>

@@ -13,7 +13,7 @@ $complement = $_POST['complement'];
 $codePostal = $_POST['codePostal'];
 $ville = $_POST['ville'];
 
-$estEntreprise = isset($_POST['entreprise_privee']); // true si coché
+$estEntreprise = isset($_POST['est_entreprise']); // true si coché
 
 $motDePasse = $_POST['mot_de_passe'];
 $confirmation = $_POST['confirmation'];

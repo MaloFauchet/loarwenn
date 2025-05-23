@@ -29,7 +29,7 @@
 
             <p>
                 Si vous êtes un professionnel, <br>
-                <a href="connexionPro.php">C'est par ici !</a>
+                <a href="/frontOffice/connexion/connexionPro.php">C'est par ici !</a>
             </p>
             <p class="conditions">
                 En créant un compte, vous acceptez nos
