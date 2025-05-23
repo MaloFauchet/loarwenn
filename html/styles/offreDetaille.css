@@ -196,8 +196,6 @@
     margin: 0;
     justify-content: space-between;
     gap: 20px;
-    flex-wrap: wrap;
-    width: min-content;
 }
 
 .offre-detaille-front .tag-container{
@@ -306,5 +304,10 @@
 
     .offre-detaille-front h2{
         margin: 2vh 0;
+    }
+
+    .offre-detaille-front .tag-list {
+        flex-wrap: wrap;
+        width: min-content;
     }
 }
