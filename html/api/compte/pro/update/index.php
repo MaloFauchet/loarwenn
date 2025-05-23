@@ -6,10 +6,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/ProfessionnelControlle
 // TODO : Vérifier si l'utilisateur est un professionnel
 
 // suffisant ???
-// if (!isset($_SESSION['id_utilisateur'])) {
-//     header('Location: /login');
-//     exit();
-// }
+session_start();
+if (!isset($_SESSION['id_utilisateur'])) {
+    header('Location: /frontOffice/connexionPro.php');
+    exit();
+}
 
 // Vérifie les données envoyées
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -115,5 +116,8 @@ $extention = explode('/', explode(';', $photoProfil)[0])[1];
 $cheminImage = "/images/profils/" . $denominationEntreprise . "." . $extention;
 echo $_POST['photoProfil'];
 file_put_contents($_SERVER['DOCUMENT_ROOT'] . $cheminImage, base64_decode(explode(',', $photoProfil)[1]));
+// TODO : enregistrer l'image dans la base de données
 
 
+// redirectionne vers la page de modification
+header('Location: /backOffice/profil/');
