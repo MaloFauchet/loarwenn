@@ -174,14 +174,14 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                     <p>À la une : </p>
                     <div class=".checkbox-option">
                         <input id="a-la-une" name="a-la-une" type="checkbox" />
-                        <label class="label-input" for="a-la-une">(+xx€/mois)</label>
+                        <label class="label-input" for="a-la-une">(+20€/mois)</label>
                     </div>
                 </div>
                 <div>
                     <p>En relief :</p>
                     <div class=".checkbox-option">
                         <input id="relief" name="relief" type="checkbox" />
-                        <label class="label-input" for="relief">(+xx€/mois)</label>
+                        <label class="label-input" for="relief">(+10€/mois)</label>
                     </div>
                 </div>
             </div>

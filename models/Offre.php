@@ -286,8 +286,8 @@ class Offre {
             $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
             $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
             $stmt->bindParam(':titre_offre', $data['titre']);
-            $stmt->bindValue(':note_moyenne', 3.5);
-            $stmt->bindValue(':nb_avis', 30, PDO::PARAM_INT);
+            $stmt->bindValue(':note_moyenne', 0);
+            $stmt->bindValue(':nb_avis', 0, PDO::PARAM_INT);
             $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
             $stmt->bindParam(':resume', $data['description']);
             $stmt->bindParam(':description', $data['description']);
@@ -362,8 +362,8 @@ class Offre {
             $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
             $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
             $stmt->bindParam(':titre_offre', $data['titre']);
-            $stmt->bindValue(':note_moyenne', 3.5);
-            $stmt->bindValue(':nb_avis', 30, PDO::PARAM_INT);
+            $stmt->bindValue(':note_moyenne', 0);
+            $stmt->bindValue(':nb_avis', 0, PDO::PARAM_INT);
             $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
             $stmt->bindParam(':resume', $data['description']);
             $stmt->bindParam(':description', $data['description']);
@@ -464,8 +464,8 @@ class Offre {
             $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
             $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
             $stmt->bindParam(':titre_offre', $data['titre']);
-            $stmt->bindValue(':note_moyenne', 3.5);
-            $stmt->bindValue(':nb_avis', 30, PDO::PARAM_INT);
+            $stmt->bindValue(':note_moyenne', 0);
+            $stmt->bindValue(':nb_avis', 0, PDO::PARAM_INT);
             $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
             $stmt->bindParam(':resume', $data['description']);
             $stmt->bindParam(':description', $data['description']);
