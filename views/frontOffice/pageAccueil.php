@@ -34,7 +34,6 @@
 
     }
     $listeOffreView = $offreController->getViewOffreAccueil();
-    
     $i=0;
 
     function dump($dataDump) {
