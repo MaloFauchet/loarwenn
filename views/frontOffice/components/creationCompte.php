@@ -9,11 +9,11 @@
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg></a>
         </nav>
-        <form action="/scriptPHP/creationPro.php" method="POST" class="form-container">
+        <form action="/scriptPHP/creationMembre.php" method="POST" class="form-container">
             <br>
             <div>
                 <img src="/images/logos/logoBlue.png" alt="logo de la PACT" />
-                <h2>Inscrivez-vous en tant que professionnel</h2>
+                <h2>Inscrivez-vous pour profiter du meilleur de la PACT</h2>
             </div>
             <div class="grid">
                 <div>
@@ -25,6 +25,9 @@
                     <input id="prenom" name="prenom" type="text" required />
                 </div>
             </div>
+
+            <label class="label-input"  for="pseudo">Pseudo</label>
+            <input id="pseudo" name="pseudo" type="text" required />
 
             <label class="label-input"  for="email">E-mail</label>
             <input id="email" name="email" type="email" required />
@@ -51,26 +54,6 @@
                 </div>
             </div>
 
-            <h3>Organisation</h3>
-            <div class="checkbox-container">
-                <input type="checkbox" id="entrepriseCheckbox" name="entrepriseCheckbox" />
-                <label class="label-input"  class="checkbox label-input" for="entrepriseCheckbox"> Entreprise privée ? </label>
-            </div>
-
-            <div class="option" id="entrepriseChamps" style="display: none">
-                <label class="label-input"  for="denomination">Dénomination</label>
-                <input type="text" id="denomination" name="denomination"  />
-                <label class="label-input"  for="siren">Siren</label>
-                <input type="number" id="siren" name="siren"  />
-                <label class="label-input"  for="rib">RIB</label>
-                <input type="text" id="rib" name="rib"  />
-            </div>
-
-            <div class="option" id="associationChamps" style="display: flex">
-                <label class="label-input"  for="raisonSociale">Raison Sociale</label>
-                <input type="text" id="raisonSociale" name="raisonSociale" required />
-            </div>
-
             <h3>Mot de passe</h3>
             <label class="label-input"  for="mot_de_passe">Mot de passe</label>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required />
@@ -89,26 +72,6 @@
 </main>
 
 <script>
-    const checkbox = document.getElementById('entrepriseCheckbox');
-    const entrepriseChamps = document.getElementById('entrepriseChamps');
-    const associationChamps = document.getElementById('associationChamps');
-
-    
-
-    checkbox.addEventListener('change', function() {
-        if (checkbox.checked) {
-            entrepriseChamps.style.display = 'flex';
-            entrepriseChamps.querySelectorAll('input').forEach( input => {input.required = true;});
-            associationChamps.style.display = 'none';
-            associationChamps.querySelectorAll('input').forEach( input => {input.required = false;});
-        } else {
-            entrepriseChamps.style.display = 'none';
-            entrepriseChamps.querySelectorAll('input').forEach( input => {input.required = false;});
-            associationChamps.style.display = 'flex';
-            associationChamps.querySelectorAll('input').forEach( input => {input.required = true;});
-
-        }
-    });
 
     const motDePasse = document.getElementById('mot_de_passe');
     const confirmation = document.getElementById('confirmation');
