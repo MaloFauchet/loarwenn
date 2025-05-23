@@ -17,7 +17,7 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     /*$tabConsulteRecement[] = 8;
     setcookie('consulte',json_encode($tabConsulteRecement) , time() + 60 * 60 * 24 * 7, "/");*/
 
-    if (isset($_SESSION['id_utilisateur']) && !isset($_SESSION['pseuddo'])) {
+    if (isset($_SESSION['id_utilisateur']) && !isset($_SESSION['pseudo'])) {
         header("Location: /backOffice/");
     }
     
