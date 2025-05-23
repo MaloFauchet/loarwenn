@@ -106,6 +106,18 @@ class Utilisateur {
         return false;
     }
 
+    public function getInfoUtilisateur($id_utilisateur) {
+        $sql = "
+            SELECT * FROM tripenazor.utilisateur as u WHERE u.id_utilisateur = :id_utilisateur;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_utilisateur', $id_utilisateur);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * Setters

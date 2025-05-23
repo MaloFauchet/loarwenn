@@ -62,3 +62,20 @@ $type_activite = $currentOffre->getType();
 </body>
 
 </html>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const checkbox = document.querySelector('.slider-etat');
+    const statusText = document.querySelector('.status-text');
+
+    // Fonction pour mettre à jour le texte
+    function updateStatus() {
+        statusText.textContent = checkbox.checked ? "En ligne" : "Hors ligne";
+    }
+
+    // Met à jour au changement
+    checkbox.addEventListener('change', updateStatus);
+
+    // Initialise au cas où
+    updateStatus();
+});
+</script>
