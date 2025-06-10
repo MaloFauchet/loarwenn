@@ -49,15 +49,20 @@ class Utilisateur {
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
        
-        if (password_verify($mdp, $result['mot_de_passe'])) {
-            // Connexion réussie
-            $membre = new Membre();
-            $membre->setIdUtilisateur($result['id_utilisateur']);
-            $membre->setPseudo($result['pseudo']);
-            return $membre;
+        if ($result) {
+            if (password_verify($mdp, $result['mot_de_passe'])) {
+                // Connexion réussie
+                $membre = new Membre();
+                $membre->setIdUtilisateur($result['id_utilisateur']);
+                $membre->setPseudo($result['pseudo']);
+                return $membre;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
+        
     }
 
 

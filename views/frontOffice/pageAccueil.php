@@ -63,7 +63,7 @@
                 <li><a href="">Cartographie</a></li>
             </ul>
         </nav>!-->
-        <?php if (isset($_SESSION['id_utilisateur']) && isset($_SESSION['pseuddo'])) { ?>
+        <?php if (isset($_SESSION['id_utilisateur']) && isset($_SESSION['pseudo'])) { ?>
             <a href="">
                 <img src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
             </a>
