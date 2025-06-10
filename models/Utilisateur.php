@@ -48,7 +48,11 @@ class Utilisateur {
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> b85262a854f2b4c11c93bd20cb76c60b886d7a26
         if ($result) {
             if (password_verify($mdp, $result['mot_de_passe'])) {
                 // Connexion réussie
@@ -59,7 +63,11 @@ class Utilisateur {
             }else{
                 return false;
             }
+<<<<<<< HEAD
         }else{
+=======
+        }else {
+>>>>>>> b85262a854f2b4c11c93bd20cb76c60b886d7a26
             return false;
         }
         
@@ -104,11 +112,16 @@ class Utilisateur {
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Vérification du mot de passe
-        if (password_verify($mdp, $result[0]['mot_de_passe'])) {
-            return $result[0];
+        if($result){
+            // Vérification du mot de passe
+            if (password_verify($mdp, $result[0]['mot_de_passe'])) {
+                return $result[0];
+            }
+            return false;
+        }else{
+            return false;
         }
-        return false;
+        
     }
 
         public function insertMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse)
