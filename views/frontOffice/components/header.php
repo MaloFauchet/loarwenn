@@ -14,8 +14,9 @@
         <?php
             endif;
         ?>
-        <h1>PACT</h1>
+        
     </div>
+    <h1>PACT</h1>
     <nav>
         <ul>
             <li><a href="/index.php">Accueil</a></li>
