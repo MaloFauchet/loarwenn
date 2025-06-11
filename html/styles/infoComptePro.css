@@ -40,6 +40,23 @@ div.input {
     width: 85%;
 }
 
+#ville-code-postal-row {
+    justify-content: flex-start;
+}
+
+#ville-input-container {
+    width: 45%;
+    margin-right: 3%;
+}
+
+#codePostalEntreprise {
+    width: 155%;
+}
+
+#nom {
+    width: 90%;
+}
+
 /* photo de profil */
 main.info-compte img {
     width : 306px;

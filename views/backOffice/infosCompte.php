@@ -22,20 +22,23 @@ if ($data['raison_sociale'] !== null) {
 $profilePicturePath = $data['chemin'] ?? "/images/default_profil.png";
 
 $denominationEntreprise;
+$denominationLabel;
 // $ribEntreprise = "";
 // $sirenEntreprise = "";
 
 if ($isEntreprisePrivee) {
     $denominationEntreprise = $data['denomination'];
+    $denominationLabel = "Dénomination Sociale";
     $ribEntreprise = $data['rib'];
     $sirenEntreprise = $data['siren'];
 } else {
     $denominationEntreprise = $data['raison_sociale'];
+    $denominationLabel = "Raison Sociale";
 }
 
 // input data
-$nomEntreprise = $data['nom'];
-$prenomEntreprise = $data['prenom'];
+$nom = $data['nom'];
+$prenom = $data['prenom'];
 
 $telephoneEntreprise = $data['num_telephone'];
 $emailEntreprise = $data['email'];
@@ -66,74 +69,75 @@ $villeEntreprise = $data['nom_ville'];
 
     <div class="page-back-office">
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
-        <form action="/api/compte/pro/update/" method="post">
+        <form onsubmit="return sauvegarderClique()" method="post">
+        <!-- <form onsubmit="" action="/api/compte/pro/update/" method="post"> -->
 
             <div class="container-back-office">
                 <main class="contenu-back-office info-compte">
 
                     
-                <h1>Compte</h1>
-                
-                <h2>Informations personnelles</h2>
-                
-                <div class="info-compte-container">
-                    <img src="<?= $profilePicturePath ?>" alt="Photo de profil de <?= $denominationEntreprise ?>" id="photo-profil">
-                    <input type="file" src="<?= $profilePicturePath ?>" alt="Photo de profil" id="photo-profil-input" accept="image/*" width="306px" height="306px">
+                    <h1>Compte</h1>
+                    
+                    <h2>Informations personnelles</h2>
+                    
+                    <div class="info-compte-container">
+                        <img src="<?= $profilePicturePath ?>" alt="Photo de profil de <?= $denominationEntreprise ?>" id="photo-profil">
+                        <input type="file" src="<?= $profilePicturePath ?>" alt="Photo de profil" id="photo-profil-input" accept="image/*" width="306px" height="306px">
 
+                        <div>
+                            <label class="label-input" for="denominationEntreprise"><?= $denominationLabel ?> *</label>
+                            <input type="text" name="denominationEntreprise" id="denominationEntreprise" value="<?= $denominationEntreprise ?>" required>
+                            <div class="input-row">
+                                <div class="input">    
+                                    <label class="label-input" for="nom">NOM *</label>
+                                    <input type="text" name="nom" id="nom" value="<?= $nom ?>" required>
+                                </div>
+                                <div class="input">
+                                    <label class="label-input" for="prenom">PRÉNOM *</label>
+                                    <input type="text" name="prenom" id="prenom" value="<?= $prenom ?>" required>
+                                </div>
+                            </div>
+                            <label class="label-input" for="telephoneEntreprise">NUMÉRO DE TÉLÉPHONE *</label>
+                            <input type="tel" name="telephoneEntreprise" id="telephoneEntreprise" value="<?= $telephoneEntreprise ?>" required>
+                            <label class="label-input" for="emailEntreprise">E-MAIL *</label>
+                            <input type="email" name="emailEntreprise" id="emailEntreprise" value="<?= $emailEntreprise ?>" required>
+                        </div>
+                    </div>
                     <div>
-                        <label class="label-input" for="denominationEntreprise">NOM DE L'ENTREPRISE *</label>
-                        <input type="text" name="denominationEntreprise" id="denominationEntreprise" value="<?= $denominationEntreprise ?>" required>
-                        <div class="input-row">
-                            <div class="input">    
-                                <label class="label-input" for="nomEntreprise">NOM *</label>
-                                <input type="text" name="nomEntreprise" id="nomEntreprise" value="<?= $nomEntreprise ?>" required>
+
+                        <h3>Adresse Postale</h3>
+                        <label class="label-input" for="adresseEntreprise">ADRESSE *</label>
+                        <input type="text" name="adresseEntreprise" id="adresseEntreprise" value="<?= $adresseEntreprise ?>" required>
+                        <div class="input-row" id="ville-code-postal-row">
+                            <div class="input" id="ville-input-container">
+                                <label class="label-input" for="villeEntreprise">VILLE *</label>
+                                <input type="text" name="villeEntreprise" id="villeEntreprise" value="<?= $villeEntreprise ?>" required>
                             </div>
                             <div class="input">
-                                <label class="label-input" for="prenomEntreprise">PRÉNOM *</label>
-                                <input type="text" name="prenomEntreprise" id="prenomEntreprise" value="<?= $prenomEntreprise ?>" required>
+                                <label class="label-input" for="codePostalEntreprise">CODE POSTAL *</label>
+                                <input type="text" name="codePostalEntreprise" id="codePostalEntreprise" value="<?= $codePostalEntreprise ?>" required>
                             </div>
                         </div>
-                        <label class="label-input" for="telephoneEntreprise">NUMÉRO DE TÉLÉPHONE *</label>
-                        <input type="tel" name="telephoneEntreprise" id="telephoneEntreprise" value="<?= $telephoneEntreprise ?>" required>
-                        <label class="label-input" for="emailEntreprise">E-MAIL *</label>
-                        <input type="email" name="emailEntreprise" id="emailEntreprise" value="<?= $emailEntreprise ?>" required>
-                    </div>
-                </div>
-                <div>
+                        <label class="label-input" for="complementAdresseEntreprise">COMPLÉMENT D'ADRESSE</label>
+                        <input type="text" name="complementAdresseEntreprise" id="complementAdresseEntreprise" value="<?= $complementAdresseEntreprise ?>">
 
-                    <h3>Adresse Postale</h3>
-                    <label class="label-input" for="adresseEntreprise">ADRESSE *</label>
-                    <input type="text" name="adresseEntreprise" id="adresseEntreprise" value="<?= $adresseEntreprise ?>" required>
-                    <div class="input-row">
-                        <div class="input">
-                            <label class="label-input" for="villeEntreprise">VILLE *</label>
-                            <input type="text" name="villeEntreprise" id="villeEntreprise" value="<?= $villeEntreprise ?>" required>
-                        </div>
-                        <div class="input">
-                            <label class="label-input" for="codePostalEntreprise">CODE POSTAL *</label>
-                            <input type="text" name="codePostalEntreprise" id="codePostalEntreprise" value="<?= $codePostalEntreprise ?>" required>
-                        </div>
+                        <?php if ($isEntreprisePrivee) { ?>
+                        <h3>Entreprise Privé</h3>
+                        <label class="label-input" for="sirenEntreprise">NUMÉRO SIREN *</label>
+                        <input type="text" name="sirenEntreprise" id="sirenEntreprise" value="<?= $sirenEntreprise ?>" required>
+                        <label class="label-input" for="ribEntreprise">IBAN *</label>
+                        <input type="text" name="ribEntreprise" id="ribEntreprise" value="<?= $ribEntreprise ?>" required>
+                        <?php } ?>
+                        
+                        <a href="/changerMotDePasse" class="modification-mdp">Modifier mon mot de passe</a>
                     </div>
-                    <label class="label-input" for="complementAdresseEntreprise">COMPLÉMENT D'ADRESSE</label>
-                    <input type="text" name="complementAdresseEntreprise" id="complementAdresseEntreprise" value="<?= $complementAdresseEntreprise ?>">
-
-                    <?php if ($isEntreprisePrivee) { ?>
-                    <h3>Entreprise Privé</h3>
-                    <label class="label-input" for="sirenEntreprise">NUMÉRO SIREN *</label>
-                    <input type="text" name="sirenEntreprise" id="sirenEntreprise" value="<?= $sirenEntreprise ?>" required>
-                    <label class="label-input" for="ribEntreprise">RIB *</label>
-                    <input type="text" name="ribEntreprise" id="ribEntreprise" value="<?= $ribEntreprise ?>" required>
-                    <?php } ?>
-                    
-                    <a href="/changerMotDePasse" class="modification-mdp">Modifier mon mot de passe</a>
-                </div>
                 </main>
 
                 <div id="sauvegarder">
                     <p>Voulez-vous appliquer les modifications ?</p>
                     <div>
                         <button type="button" id="annuler-btn">Annuler</button>
-                        <button type="submit" id="sauvegarder-btn">Appliquer</button>
+                        <button type="button" id="sauvegarder-btn">Appliquer</button>
                     </div>
                 </div>
 

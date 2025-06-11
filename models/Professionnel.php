@@ -140,4 +140,91 @@ class Professionnel extends Model{
             return ['success' => false, 'error' => "Erreur : " . $e->getMessage()];
         }
     }
+
+    public function updateProfessionnelPrive(
+        $id,
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $adresse,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $denomination,
+        $siren,
+        $rib,
+        $cheminImage
+    ) {
+        // TODO : requete avec nouvelles fonctions
+        $sql = "";
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':complementAdresse', $complementAdresse);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':denomination', $denomination);
+        $stmt->bindParam(':siren', $siren);
+        $stmt->bindParam(':rib', $rib);
+        $stmt->bindParam(':cheminImage', $cheminImage);
+
+        // Exécution de la requête
+        return ($stmt->execute()) ? true : false;
+    }
+
+    public function updateProfessionnelPublic(
+        $id,
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $adresse,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $raisonSociale,
+        $cheminImage
+    ) {
+        // TODO : requete avec nouvelles fonctions
+        $sql = "";
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':complementAdresse', $complementAdresse);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':raisonSociale', $raisonSociale);
+        $stmt->bindParam(':cheminImage', $cheminImage);
+
+        // Exécution de la requête
+        return ($stmt->execute()) ? true : false;
+    }
+
+    public function updateImage($id, $cheminImage) {
+        // TODO : requete avec nouvelles fonctions
+        $sql = "";
+
+        $stmt = $this->conn->prepare($sql);
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':cheminImage', $cheminImage);
+
+        // Exécution de la requête
+        return ($stmt->execute()) ? true : false;
+    }
 }
