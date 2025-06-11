@@ -13,9 +13,9 @@ $complement = $_POST['complement'];
 $codePostal = $_POST['codePostal'];
 $ville = $_POST['ville'];
 
-$estEntreprise = isset($_POST['entreprise_privee']); // true si coché
+$estEntreprise = isset($_POST['est_entreprise']); // true si coché
 
-$motDePasse = $_POST['mot_de_passe'];
+$motDePasse = password_hash($_POST['mot_de_passe'], PASSWORD_BCRYPT);
 $confirmation = $_POST['confirmation'];
 
 if ($estEntreprise) {

@@ -285,4 +285,9 @@
     .offre-detaille-front h2{
         margin: 2vh 0;
     }
+
+    .offre-detaille-front .tag-list {
+        flex-wrap: wrap;
+        width: min-content;
+    }
 }

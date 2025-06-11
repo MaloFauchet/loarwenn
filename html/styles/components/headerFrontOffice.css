@@ -7,6 +7,12 @@ header.front-office{
     padding: 2vh;
 }
 
+
+header.front-office > nav{
+    display: none;
+}
+
+
 header.front-office > nav > ul{
     display: flex;
     list-style: none;
@@ -25,12 +31,6 @@ header.front-office > a > svg:last-child{
     color: var(--main-color);
 }
 
-header.front-office > div{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
 
 header.front-office > div > svg:first-child{
     display: none;

@@ -22,6 +22,16 @@
             <input id="image" name="image" type="file" accept="image/*" required />
         </div>
 
+        <div class="champ-type-offre">
+            <h3>Lieu</h3>
+            <label class="label-input" for="lieu">Lieu</label>
+            <input id="lieu" name="lieu" type="text" required />
+        </div>
+        <div class="champ-type-offre">
+            <h3>Adresse offre</h3>
+            <label class="label-input" for="adresse">Adresse</label>
+            <input id="adresse" name="adresse" type="text" required />
+        </div>
 
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
@@ -31,7 +41,7 @@
             </div>
 
             <div class="champ-type-offre">
-                <h3>Capacité d'acceuil</h3>
+                <h3>Capacité d'accueil</h3>
                 <label class="label-input" for="capacite">Capacité</label>
                 <input id="capacite" name="capacite" type="number" required />
             </div>
@@ -64,13 +74,13 @@
             <p>Voulez-vous prendre une option :</p>
 
             <label>
-                <input type="checkbox" name="a_la_une" value="1" checked>
-                A la une : (+xx€/mois)
+                <input type="checkbox" name="a_la_une" value="1" >
+                A la une : (+20€/mois)
             </label><br>
 
             <label>
-                <input type="checkbox" name="en_relief" value="1" checked>
-                En relief : (+xx€/mois)
+                <input type="checkbox" name="en_relief" value="1" >
+                En relief : (+10€/mois)
             </label><br>
 
             

@@ -50,46 +50,104 @@ class OffreController {
     }
 
      public function ajouterOffre($post, $files) {
+        print_r($post);
         // Validation simple
         $errors = [];
-        $titre = trim($post['titre'] ?? '');
-        $lieu = trim($post['lieu'] ?? '');
-        $image = $files['image'] ?? null;
 
-        if ($titre === '') $errors[] = "Le titre est obligatoire.";
-        if ($lieu === '') $errors[] = "Le lieu est obligatoire.";
-        if (!$image || $image['error'] !== UPLOAD_ERR_OK) $errors[] = "Une image valide est requise.";
+        if($post['id_activite'] == 1) {
+            
+            $titre = trim($post['titre'] ?? '');
+            $lieu = trim($post['lieu'] ?? '');
+         
 
-        if (!empty($errors)) {
-            return ['success' => false, 'errors' => $errors];
+            if ($titre === '') $errors[] = "Le titre est obligatoire.";
+            if ($lieu === '') $errors[] = "Le lieu est obligatoire.";
+           
+
+            if (!empty($errors)) {
+                return ['success' => false, 'errors' => $errors];
+            }
+
+            
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre' => $titre,
+                'lieu' => $lieu,
+                'duree' => $post['duree'] ?? '',
+                'age' => $post['age'] ?? '',
+                'prix' => $post['prix'] ?? '',
+                'description' => $post['description'] ?? '',
+                'accessibilite' => $post['accessibilite'] ?? '',
+                'id_activite' => $post['id_activite'] ?? '',
+                'user_id' => $post['user_id'] ?? '',
+            ]);
+
+            return ['success' => true];
         }
 
-        // Upload image
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        $imageName = basename($image['name']);
-        $uploadPath = $uploadDir . $imageName;
-        if (!move_uploaded_file($image['tmp_name'], $uploadPath)) {
-            return ['success' => false, 'errors' => ['Erreur lors de l\'upload de l\'image.']];
+        else if($post['id_activite'] == 2) {
+            
+            $titre = trim($post['titre'] ?? '');
+            $lieu = trim($post['lieu'] ?? '');
+
+            if ($titre === '') $errors[] = "Le titre est obligatoire.";
+
+            if (!empty($errors)) {
+                return ['success' => false, 'errors' => $errors];
+            }
+
+           
+
+
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreSpectacle([
+                'titre' => $titre,
+                'lieu' => $lieu,
+                'adresse' => $post['adresse'] ?? '',
+                'duree' => $post['duree'] ?? '',
+                'capacite' => $post['capacite'] ?? '',
+                'prix' => $post['prix'] ?? '',
+                'resume' => $post['resume'] ?? '',
+                'description' => $post['description'] ?? '',
+                'id_activite' => $post['id_activite'] ?? '',
+                'accessibilite' => $post['accessibilite'] ?? '',
+                'user_id' => $post['user_id'] ?? '',
+            ]);
+
+            return ['success' => true];
         }
 
-        // Insertion en BDD via le modèle
-        $this->offre->insertOffre([
-            'titre' => $titre,
-            'lieu' => $lieu,
-            'image' => $imageName,
-            'duree' => $post['duree'] ?? '',
-            'age' => $post['age'] ?? '',
-            'prix' => $post['prix'] ?? '',
-            'description' => $post['description'] ?? '',
-            'accessibilite' => $post['accessibilite'] ?? '',
-            'id_activite' => $post['id_activite'] ?? '',
-            'user_id' => $post['user_id'] ?? '',
-        ]);
+        else if($post['id_activite'] == 5) {
+            
+            $titre = trim($post['titre'] ?? '');
+           
+            $lieu = trim($post['lieu'] ?? '');
 
-        return ['success' => true];
+            if ($titre === '') $errors[] = "Le titre est obligatoire.";
+
+            if (!empty($errors)) {
+                return ['success' => false, 'errors' => $errors];
+            }
+
+           
+            
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreRestaurant([
+                'titre' => $titre,
+                'lieu' => $lieu,
+                'adresse' => $post['adresse'] ?? '',
+                'prix' => $post['prix'] ?? '',
+                'resume' => $post['resume'] ?? '',
+                'description' => $post['description'] ?? '',
+                'id_activite' => $post['id_activite'] ?? '',
+                'user_id' => $post['user_id'] ?? '',
+            ]);
+
+            return ['success' => true];
+        }
     }
     /*
     public function createOffre(

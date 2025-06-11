@@ -1,9 +1,9 @@
-
 <main>
     <div class="overlay"></div>
     <div class="container">
         <nav>
-            <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <a href="#" onclick="window.history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
                 </svg></a>
             <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -24,18 +24,20 @@
             <input type="password" id="mot-de-passe" name="mot-de-passe" required />
 
             <button type="submit">Se connecter</button>
-
-            <button type="submit">S'inscrire</button>
+        </form>
+        <div class="form-container">
+            <a href="/creationCompteMembre" class="button-link"><button>S'inscrire</button></a>
 
             <p>
                 Si vous êtes un professionnel, <br>
-                <a href="connexionPro.php">C'est par ici !</a>
+                <a href="/frontOffice/connexion/connexionPro.php">C'est par ici !</a>
             </p>
             <p class="conditions">
                 En créant un compte, vous acceptez nos
                 <a href="#">Conditions Générales</a> d'utilisation et notre
                 <a href="#">Politique de confidentialité</a>.
             </p>
-        </form>
+        </div>
+
     </div>
 </main>

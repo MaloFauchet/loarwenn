@@ -22,6 +22,10 @@ class UtilisateurController {
         return $membre;
     }
 
+    public function getInfoUtilisateur($id_utilisateur) {
+        return $this->utilisateurModel->getInfoUtilisateur($id_utilisateur);
+    }
+
 
     public function connexionPro($email, $mdp) {
         $pro = $this->utilisateurModel->connexionPro($email, $mdp);
@@ -38,5 +42,9 @@ class UtilisateurController {
             return $pro;
         }
         return $pro;
+    }
+
+    public function nouveauCompteMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse) {
+        return $this->utilisateurModel->insertMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
     }
 }

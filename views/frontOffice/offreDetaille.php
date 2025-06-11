@@ -43,7 +43,7 @@ function afficherEtoile($note){
         </a>
         <nav class="breadcrumb">
             <ul>
-                <li><a href="index.php">Accueil</a></li>
+                <li><a href="/index.php">Accueil</a></li>
                 <li>Offre détaillée</li>
             </ul>
         </nav>
