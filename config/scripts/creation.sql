@@ -10,22 +10,31 @@ CREATE TABLE ville (
     code_postal VARCHAR(5) NOT NULL
 );
 
+CREATE TABLE adresse (
+    id_adresse SERIAL PRIMARY KEY,
+    voie VARCHAR(50) NOT NULL,
+    numero_adresse INT,
+    libelle_adresse VARCHAR(255) NOT NULL,
+    complement_adresse VARCHAR(255),
+    id_ville REFERENCES ville(id_ville)
+);
+
 -- Table utilisateur (classe mère)
 CREATE TABLE utilisateur (
     id_utilisateur SERIAL PRIMARY KEY,
-    id_ville INT NOT NULL REFERENCES ville(id_ville),
+    id_adresse INT NOT NULL REFERENCES adresse(id_adresse),
     prenom VARCHAR(50) NOT NULL,
     nom VARCHAR(50) NOT NULL,
     num_telephone VARCHAR(10) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    adresse VARCHAR(100) NOT NULL,
-    complement_adresse VARCHAR(100) NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL
 );
 
 -- Table professionnel (hérite de utilisateur)
 CREATE TABLE professionnel (
-    id_utilisateur INT PRIMARY KEY REFERENCES utilisateur(id_utilisateur)
+    id_utilisateur INT PRIMARY KEY REFERENCES utilisateur(id_utilisateur),
+    lien_site_web VARCHAR(100),
+    code_secret TEXT
 );
 
 -- Table professionnel_prive
@@ -71,7 +80,6 @@ CREATE TABLE type_activite (
 -- Table offre
 CREATE TABLE offre (
     id_offre SERIAL PRIMARY KEY,
-    id_ville INT NOT NULL REFERENCES ville(id_ville),
     id_type_activite INT NOT NULL REFERENCES type_activite(id_type_activite),
     titre_offre VARCHAR(50) NOT NULL,
     note_moyenne FLOAT NOT NULL,
@@ -80,8 +88,35 @@ CREATE TABLE offre (
     resume VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     date_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    adresse_offre VARCHAR(50) NOT NULL
+    accessibilite VARCHAR(100),
+    id_adresse INT NOT NULL REFERENCES adresse(id_adresse),
+    id_image_couverture INT NOT NULL REFERENCES image(id_image)
 );
+
+CREATE TABLE horaire(
+    id_horaire SERIAL PRIMARY KEY,
+    debut TIME NOT NULL,
+    fin TIME NOT NULL
+)
+
+CREATE TABLE horaire_ouverture(
+    id_horaire INT REFERENCES horaire(id_horaire),
+    id_offre INT REFERENCES offre(id_offre)
+    PRIMARY KEY (id_horaire, id_offre)
+)
+
+CREATE TABLE jour(
+    id_jour SERIAL PRIMARY KEY,
+    libelle VARCHAR(50),
+)
+
+CREATE TABLE jour_ouverture(
+    id_jour INT REFERENCES jour(id_jour),
+    id_offre INT REFERENCES offre(id_offre)
+    PRIMARY KEY (id_jour, id_offre)
+)
+
+
 
 -- Table statut_log
 CREATE TABLE statut_log (
@@ -97,7 +132,9 @@ CREATE TABLE avis (
     id_utilisateur INT REFERENCES membre(id_utilisateur),
     id_offre INT NOT NULL REFERENCES offre(id_offre),
     description_avis VARCHAR(255) NOT NULL,
-    note_avis FLOAT NOT NULL
+    note_avis FLOAT NOT NULL,
+    titre_avis VARCHAR(50) NOT NULL,
+    date_avis DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 -- Table avis_possede_image
@@ -118,6 +155,14 @@ CREATE TABLE image_illustre_offre (
 CREATE TABLE tag (
     id_tag SERIAL PRIMARY KEY,
     libelle_tag VARCHAR(50)
+);
+
+CREATE TABLE tag_restauration (
+    id_tag SERIAL PRIMARY KEY REFERENCES tag(id_tag),
+);
+
+CREATE TABLE tag_commun (
+    id_tag SERIAL PRIMARY KEY REFERENCES tag(id_tag),
 );
 
 -- Table souscription
@@ -200,15 +245,24 @@ CREATE TABLE offre_parc_attraction (
 CREATE TABLE offre_restauration (
     id_offre INT PRIMARY KEY REFERENCES offre(id_offre),
     id_image INT REFERENCES image(id_image),
-    gamme_prix FLOAT NOT NULL
+    gamme_prix VARCHAR(50) NOT NULL
 );
 
--- Table pro_repond_avis
-CREATE TABLE pro_repond_avis (
-    id_utilisateur INT NOT NULL REFERENCES professionnel(id_utilisateur),
-    id_avis INT NOT NULL REFERENCES avis(id_avis),
+CREATE TABLE type_repas(
+    id_repas SERIAL PRIMARY KEY,
+    libelle_repas VARCHAR(50) NOT NULL
+)
+
+CREATE TABLE type_repas_disponible(
+    id_repas INT REFERENCES type_repas(id_repas),
+    id_offre INT REFERENCES offre_restauration(id_offre),
+    PRIMARY KEY (id_repas, id_offre)
+)
+
+-- Table reponse_pro
+CREATE TABLE reponse_pro (
+    id_avis INT NOT NULL REFERENCES avis(id_avis) PRIMARY KEY,
     description_rep VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id_utilisateur, id_avis)
 );
 
 -- Table membre_aime_avis
@@ -217,13 +271,6 @@ CREATE TABLE membre_aime_avis (
     id_avis INT NOT NULL REFERENCES avis(id_avis),
     aime BOOLEAN NOT NULL,
     PRIMARY KEY (id_utilisateur, id_avis)
-);
-
--- Table type_activite_autorise_tag
-CREATE TABLE type_activite_autorise_tag (
-    id_type_activite INT NOT NULL REFERENCES type_activite(id_type_activite),
-    id_tag INT NOT NULL REFERENCES tag(id_tag),
-    PRIMARY KEY (id_type_activite, id_tag)
 );
 
 -- Table activite_inclus_prestation
@@ -249,9 +296,33 @@ CREATE TABLE option_payante_offre (
 );
 
 -- Table offre_possede_tags
-CREATE TABLE offre_possede_tags (
-    id_offre INT NOT NULL REFERENCES offre(id_offre),
-    id_tag INT NOT NULL REFERENCES tag(id_tag),
+CREATE TABLE offre_restauration_possede_tag (
+    id_offre INT NOT NULL REFERENCES offre_restauration(id_offre),
+    id_tag INT NOT NULL REFERENCES tag_restauration(id_tag),
+    PRIMARY KEY (id_offre, id_tag)
+);
+
+CREATE TABLE offre_activite_possede_tag (
+    id_offre INT NOT NULL REFERENCES offre_activite(id_offre),
+    id_tag INT NOT NULL REFERENCES tag_commun(id_tag),
+    PRIMARY KEY (id_offre, id_tag)
+);
+
+CREATE TABLE offre_visite_possede_tag (
+    id_offre INT NOT NULL REFERENCES offre_visite(id_offre),
+    id_tag INT NOT NULL REFERENCES tag_commun(id_tag),
+    PRIMARY KEY (id_offre, id_tag)
+);
+
+CREATE TABLE offre_parc_attraction_possede_tag (
+    id_offre INT NOT NULL REFERENCES offre_parc_attraction(id_offre),
+    id_tag INT NOT NULL REFERENCES tag_commun(id_tag),
+    PRIMARY KEY (id_offre, id_tag)
+);
+
+CREATE TABLE offre_spectacle_possede_tag (
+    id_offre INT NOT NULL REFERENCES offre_spectacle(id_offre),
+    id_tag INT NOT NULL REFERENCES tag_commun(id_tag),
     PRIMARY KEY (id_offre, id_tag)
 );
 
