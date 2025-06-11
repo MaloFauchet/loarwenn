@@ -53,46 +53,42 @@ function afficherEtoile($note){
         <!-- Image et titre de l'offre -->
         <article>
             <figure class="offre">
-                <div class="offre-image-container">
-                    <div class="main-image-container">
-                        <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre" class="offre-image">
-                    </div>
-                    <div class="gallery-offre-parent">
-                        <div class="grid-offre-1">
-                            <img src="<?= $offre->getPathImage()?>" alt="Image de l'offre">
-                        </div>
-                        <div class="grid-offre-2">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
-                        </div>
-                        <div class="grid-offre-3">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
-                        </div>
-                        <div class="grid-offre-4">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
-                        </div>
-                    </div>
+                <div class="grid-images">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage()?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                 </div>
                 <figcaption>
                     <h2> <?= $offre->getTitre() ?></h2>
                 <figcaption>
             </figure>
         </article>
-        <hr>
+        
 
-        <!-- Profi Du Pro -->
+        
         <article>
-            <figure class="pp-pro">
-                <!--PP a recup dans la bdd -->
-                <img src="/images/profils/default_profil.png" alt="Photo de profil pro" id="pp-pro">
-                <figcaption>
-                    <h4>Organisation : <?=$pro?> </h4>
-                    <?php
-                        // Si pro est SUPER ASSO | ORGANISATION
-                        echo '<p>Super Association</p>';
-                    ?>
-                </figcaption>
+
+            <!-- Profi Du Pro -->
+            <figure>
+                <hr>
+                <div class="pp-pro">
+                    <!--PP a recup dans la bdd -->
+                    <img src="/images/profils/default_profil.png" alt="Photo de profil pro" id="pp-pro">
+                    <figcaption>
+                        <h4>Organisation : <?=$pro?> </h4>
+                        <?php
+                            // Si pro est SUPER ASSO | ORGANISATION
+                            echo '<p>Super Association</p>';
+                        ?>
+                    </figcaption>
+                </div>
+                <hr>
             </figure>
-            <div>
+
+            <!-- Note de l'offre -->
+            <div class="note">
                 <h2> <?= $offre->getNoteMoyenne() ?></h2>
                 <div class="star-container">
                     <?php $etoiles = afficherEtoile($offre->getNoteMoyenne()); ?>
@@ -101,10 +97,10 @@ function afficherEtoile($note){
                 <p>sur <?= $offre->getNbAvis() ?> avis </p>
             </div>
         </article>
-        <hr>
+        
 
         <!-- Informations sur l'offre -->
-        <article class="info">
+        <article class="description">
             <div>
                 <h3>Résumé</h3>
                 <p> <?= $offre->getResume() ?></p>
@@ -112,6 +108,10 @@ function afficherEtoile($note){
             <div>
                 <h3>Description</h3>
                 <p> <?= $offre->getDescription() ?></p>
+            </div>
+            <div>
+                <h3>Type d'offre</h3>
+                <p> <?= $offre->getType() ?></p>
             </div>
         </article>
         <hr>
