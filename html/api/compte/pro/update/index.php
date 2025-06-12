@@ -11,6 +11,9 @@ if (!isset($_SESSION['id_utilisateur'])) {
     header('Location: /frontOffice/connexionPro.php');
     exit();
 }
+$controller = new ProfessionnelController();
+
+$isEntreprisePrivee = $controller->estEntreprisePrivee($_SESSION['id_utilisateur']);
 
 // Vérifie les données envoyées
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -29,13 +32,22 @@ if (!isset($_POST['denominationEntreprise'])) {
 $denominationEntreprise = $_POST['denominationEntreprise'];
 
 // Nom Entreprise
-if (!isset($_POST['nomEntreprise'])) {
+if (!isset($_POST['nom'])) {
     http_response_code(400);
-    echo json_encode(['message' => 'Paramètre manquant :  nomEntreprise']);
+    echo json_encode(['message' => 'Paramètre manquant :  nom']);
     exit();
 }
 
-$nomEntreprise = $_POST['nomEntreprise'];
+$nom = $_POST['nom'];
+
+// Prenom Entreprise
+if (!isset($_POST['prenom'])) {
+    http_response_code(400);
+    echo json_encode(['message' => 'Paramètre manquant :  prenom']);
+    exit();
+}
+
+$prenom = $_POST['prenom'];
 
 // Numéro de téléphone
 if (!isset($_POST['telephoneEntreprise'])) {
@@ -73,16 +85,6 @@ if (!isset($_POST['complementAdresseEntreprise'])) {
 
 $complementAdresse = $_POST['complementAdresseEntreprise'];
 
-// Mot de passe
-// if (!isset($_SESSION['motDePasse'])) {
-//     http_response_code(400);
-//     echo json_encode(['message' => 'Paramètre manquant :  motDePasse']);
-//     exit();
-// }
-
-// $motDePasse = $_SESSION['mot_de_passe'];
-$motDepasse = null;
-// TODO : Prendre en compte le mot de passe
 
 // Ville
 if (!isset($_POST['villeEntreprise'])) {
@@ -102,6 +104,26 @@ if (!isset($_POST['codePostalEntreprise'])) {
 
 $codePostal = $_POST['codePostalEntreprise'];
 
+if ($isEntreprisePrivee) {
+    // SIREN
+    if (!isset($_POST['sirenEntreprise'])) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Paramètre manquant :  sirenEntreprise']);
+        exit();
+    }
+
+    $siren = $_POST['sirenEntreprise'];
+
+    // RIB
+    if (!isset($_POST['ribEntreprise'])) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Paramètre manquant :  ribEntreprise']);
+        exit();
+    }
+
+    $rib = $_POST['ribEntreprise'];
+}
+
 // image
 if (!isset($_POST['photoProfil'])) {
     http_response_code(400);
@@ -110,14 +132,48 @@ if (!isset($_POST['photoProfil'])) {
 }
 
 $photoProfil = $_POST['photoProfil'];
-// ecrire l'image dans le dossier images
-// recupere l'extension de l'image
-$extention = explode('/', explode(';', $photoProfil)[0])[1];
-$cheminImage = "/images/profils/" . $denominationEntreprise . "." . $extention;
-echo $_POST['photoProfil'];
-file_put_contents($_SERVER['DOCUMENT_ROOT'] . $cheminImage, base64_decode(explode(',', $photoProfil)[1]));
-// TODO : enregistrer l'image dans la base de données
+if ($photoProfil !== null) {
+    // ecrire l'image dans le dossier images
+    // recupere l'extension de l'image
+    $extention = explode('/', explode(';', $photoProfil)[0])[1];
+    $cheminImage = "/images/profils/" . $_SESSION["id_utilisateur"] . "." . $extention;
+    $controller->updateImage($_SESSION['id_utilisateur'], $cheminImage);
+    file_put_contents($_SERVER['DOCUMENT_ROOT'] . $cheminImage, base64_decode(explode(',', $photoProfil)[1]));
+}
 
 
-// redirectionne vers la page de modification
-header('Location: /backOffice/profil/');
+if ($isEntreprisePrivee) {
+    $controller->updateProfessionnelPrive(
+        $_SESSION['id_utilisateur'],
+        $nom,
+        $prenom,
+        $email,
+        $numTelephone,
+        $adresse,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $denominationEntreprise,
+        $siren,
+        $rib,
+        $cheminImage
+    );
+} else {
+    $controller->updateProfessionnelPublic(
+        $_SESSION['id_utilisateur'],
+        $nom,
+        $prenom,
+        $email,
+        $numTelephone,
+        $adresse,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $denominationEntreprise,
+        $cheminImage
+    );
+}
+
+
+// redirige vers la page de modification
+// header('Location: /backOffice/profil/');

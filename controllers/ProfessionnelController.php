@@ -76,4 +76,16 @@ class ProfessionnelController {
 
         return ['success' => true];
     }
+
+    public function updateProfessionnelPrive($id, $nom, $prenom, $email, $telephone, $adresse, $complementAdresse, $codePostal, $ville, $denomination, $siren, $rib, $cheminImage) {
+        return $this->professionnelModel->updateProfessionnelPrive($id, $nom, $prenom, $email, $telephone, $adresse, $complementAdresse, $codePostal, $ville, $denomination, $siren, $rib, $cheminImage);
+    }
+
+    public function updateProfessionnelPublic($id, $nom, $prenom, $email, $telephone, $adresse, $complementAdresse, $codePostal, $ville, $raisonSociale, $cheminImage) {
+        return $this->professionnelModel->updateProfessionnelPublic($id, $nom, $prenom, $email, $telephone, $adresse, $complementAdresse, $codePostal, $ville, $raisonSociale, $cheminImage);
+    }
+
+    public function updateImage($id, $cheminImage) {
+        return $this->professionnelModel->updateImage($id, $cheminImage);
+    }
 }
