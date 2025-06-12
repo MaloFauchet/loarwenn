@@ -48,11 +48,6 @@ class Utilisateur {
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-<<<<<<< HEAD
-       
-=======
-
->>>>>>> b85262a854f2b4c11c93bd20cb76c60b886d7a26
         if ($result) {
             if (password_verify($mdp, $result['mot_de_passe'])) {
                 // Connexion réussie
@@ -63,11 +58,7 @@ class Utilisateur {
             }else{
                 return false;
             }
-<<<<<<< HEAD
-        }else{
-=======
         }else {
->>>>>>> b85262a854f2b4c11c93bd20cb76c60b886d7a26
             return false;
         }
         
