@@ -84,7 +84,11 @@
         <article class="container-offre">
             <?php
                 foreach ($listeOffreView as $offre => $valueOfOffre) {
-                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
+                    if ($valueOfOffre['Recommandé']) {
+                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedMobileHorizontal.php');  
+                    }else {
+                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
+                    }
                 } 
             ?>
         </article>

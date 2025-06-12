@@ -198,7 +198,7 @@
 .liste-offre .card-horizontal{
     display: flex;
     flex-direction: row;
-    margin: 6vh;
+    margin: 10vh 6vh;
     border-radius: 1em;
     box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
 }
@@ -232,7 +232,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 1em 0 0 1em;
+    border-radius: 0 0 0 1em;
 }
 
 .liste-offre .item-body{
@@ -308,6 +308,58 @@
 .liste-offre .item-tag > span > p{
     margin:  1vh;
 }
+
+/* Recommendation */
+.recommended{
+    background-color: #005CE6;
+    color: #fff;
+    position: absolute;
+    z-index: -1;
+    border-radius: 1em 1em 0 0;
+    bottom: 95%;
+    left: 20%;
+    width: fit-content;
+    padding: 5px 1em 1em 1em;
+    font-size: 1.10em;
+}
+
+.recommended > div{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;   
+}
+
+.recommended p{
+    margin: 0 1.10em 0.5em 0 ;
+    
+}
+.recommended svg{
+    margin: 0 1.10em 0.5em 1.10em ;
+    
+}
+
+.recommended-horizontal{
+    background-color: #005CE6;
+    color: #fff;
+    border-radius: 1em 1em 0 0;
+    position: absolute;
+    z-index: -1; 
+    width: fit-content;
+    height: 40px; 
+    transform: translateY(-30px);
+    padding: 5px;
+}
+
+.recommended-horizontal >div{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recommended-horizontal p{
+    margin: 0 1.10em 0 1.10em;
+}
+
 
 
 /*
@@ -424,8 +476,11 @@
         display: block;
     }
 
-    .liste-offre aside button{
+    .liste-offre aside > button{
         display: block;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
     }
 
 }
