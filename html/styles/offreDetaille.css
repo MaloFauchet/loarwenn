@@ -1,3 +1,5 @@
+
+
 /* Offre Detaillée */
 .offre-detaille-front h4{
     font-size: 13px;
@@ -164,7 +166,7 @@
 
 .offre-detaille-front section > article:nth-of-type(2) {
     display: flex;
-    justify-content: start;
+    justify-content: space-evenly;
     gap: 300px;
 }
 
@@ -228,7 +230,7 @@
 .grid-images img:nth-child(5) { grid-area: 3 / 7 / 5 / 9; }
 
 /* Media query Mobile */
-@media (max-width: 800px) {
+@media screen and (max-width: 1000px) {
     /* Titre */
     .offre-detaille-front h2{
         font-size: 25px;
@@ -243,19 +245,56 @@
     .offre-detaille-front h4{
         font-size: 15px;
         margin: 0;
+        width: 250px;
+    }
+
+    /* Pro et Notes */
+    .offre-detaille-front section > article:nth-of-type(2) {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    /* Notes */
+    .offre-detaille-front .note{
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 0 20px;
+    }
+
+    .offre-detaille-front .star-container{
+        display: inline-flex;
+    }
+
+    .offre-detaille-front .star-container > svg{
+        color: var(--main-star-yellow);
+        height: 20px;
+        width: auto;
     }
 
     /* Profil Pro */
+    .offre-detaille-front section > article:nth-of-type(2) > figure{
+        min-width:720%;
+        margin: 5px;
+    }
+
     .offre-detaille-front .pp-pro {
         display: flex;
         align-items: center;
         gap: 1rem;
         margin: 20px 20px;
     }
+
     .offre-detaille-front #pp-pro{
         border-radius: 50px;
         height: 5vh;
         width: auto;
+    }
+
+    .offre-detaille-front .pp-pro > figcaption{
+        width: 50px;
     }
 
     .offre-detaille-front .pp-pro p{
@@ -290,4 +329,11 @@
         flex-wrap: wrap;
         width: min-content;
     }
+}
+
+@media screen and (max-width: 600px) {
+    .offre-detaille-front .note{
+        flex-direction: column;
+    }
+    
 }
