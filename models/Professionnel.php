@@ -27,6 +27,24 @@ class Professionnel extends Model{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function updateTentativeOTP($idPro, $tentatives, $bloqueJusqua, $now) {
+        $sql = "
+            UPDATE tripenazor.professionnel 
+            SET tentative_otp = :tentatives,
+                derniere_tentative_otp = :now,
+                bloque_jusqua = :bloque 
+            WHERE id_utilisateur = :id
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'tentatives' => $tentatives,
+            'now' => $now,
+            'bloque' => $bloqueJusqua,
+            'id' => $idPro
+        ]);
+    }
+
     public function getProfessionnelParEmailMotDePasse($email, $mdp)
     {
         $sql = "
@@ -139,5 +157,13 @@ class Professionnel extends Model{
         } catch (Exception $e) {
             return ['success' => false, 'error' => "Erreur : " . $e->getMessage()];
         }
+    }
+
+    public function isProfessionnel($id) {
+        $sql = "SELECT COUNT(*) FROM tripenazor.professionnel WHERE id_utilisateur = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
     }
 }

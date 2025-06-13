@@ -14,7 +14,8 @@ window.onload = () => {
     // recupere les données de base de chaque input
     // et les stockes dans une variable.
     const inputs = document.querySelectorAll("input");
-    setupInputs(inputs, estModifie, sauvegardeDiv);
+    let allInputs = [...inputs].filter(input => input.id !== "otp-code-input");
+    setupInputs(allInputs, estModifie, sauvegardeDiv);
 
     let photoInput = document.getElementById("photo-profil-input");
     let photoDeProfil = document.getElementById("photo-profil");
