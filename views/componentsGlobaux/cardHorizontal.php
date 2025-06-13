@@ -19,8 +19,7 @@
                 
             </div>
             <div class="item-avis">
-                <?php 
-                    if ($valueOfOffre["note_avis"]) : ?>
+                <?php if ($valueOfOffre["note_avis"]) : ?>
                     <p><?= $valueOfOffre["note_avis"]  ?></p>
                     <?= afficherEtoile($valueOfOffre["note_avis"]) ?>
                     <p>(<?= $valueOfOffre["nb_avis"]  ?>)</p>

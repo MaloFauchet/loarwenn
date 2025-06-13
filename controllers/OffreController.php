@@ -39,7 +39,7 @@ class OffreController {
     }
 
 
-    public function allOffre() {
+    public function getAllOffre() {
         return $this->offre->getAllOffre();
     }
 

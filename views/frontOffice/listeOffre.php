@@ -5,7 +5,7 @@
 
     $offreController = new OffreController();
     $lastId = -1;
-    $listeOffre = array_slice($offreController->AllOffreByLatest(),0,10);
+    $listeOffre = $offreController->getAllOffre();
     $listeOffreConsultes = [];
 
     if (isset($_COOKIE['consulte'])) {
@@ -18,6 +18,10 @@
 
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
+
+    echo '<pre>';
+    print_r($listeOffreView);
+    echo '</pre>';
 ?>
 <main>
     <section>
@@ -68,11 +72,7 @@
         <article class="container-offre">
             <?php
                 foreach ($listeOffreView as $offre => $valueOfOffre) {
-                    if ($valueOfOffre['Recommandé']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedMobileHorizontal.php');  
-                    }else {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
-                    }
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
                 } 
             ?>
         </article>
@@ -88,31 +88,31 @@
                 <h4>Catégories</h4>
                 <ul>
                     <li>
-                        <input type="checkbox" name="Toutes Catégories" id="AllCategories" checked>
+                        <input type="checkbox" name="AllCategories" id="AllCategories" class="categories" checked>
                         <label for="AllCategories">Toutes Catégories</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Restaurant" id="Restaurant" >
+                        <input type="checkbox" name="Restaurant" id="restauration" class="categories" >
                         <label for="Restaurant">Restaurant</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Spectacle" id="Spectacles" >
-                        <label for="Spectacles">Spectacle</label>
+                        <input type="checkbox" name="spectacle" id="spectacle" class="categories">
+                        <label for="spectacle">Spectacle</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visite guidée" id="Visites" >
+                        <input type="checkbox" name="Visite guidée" id="visite_guide" class="categories">
                         <label for="Visites">Visite guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visite non guidée" id="VisiteNonGuide" >
+                        <input type="checkbox" name="Visite non guidée" id="visite_non_guide" class="categories">
                         <label for="VisiteNonGuide">Visite non guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Activité" id="Activite" >
+                        <input type="checkbox" name="Activité" id="activite" class="categories">
                         <label for="Activite">Activité</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Parc d'attraction" id="ParcAttraction" >
+                        <input type="checkbox" name="Parc d'attraction" id="parc_attraction" class="categories">
                         <label for="ParcAttraction">Parc d'attraction</label>
                     </li>
                     
@@ -121,13 +121,41 @@
             <hr>
             <div>
                 <h4>Lieu</h4>
-                <input type="search" name="Location" id="location" placeholder="Commune, lieu-dit">
+                <input type="search" name="Location" id="location" placeholder="Ville">
             </div>
             <hr>
             <div>
-                <h4>Période</h4>
-                <input type="date" name="Start" id="startDate" placeholder="Date de début">
-                <input type="date" name="End" id="endDate" placeholder="Date de fin">
+                <h4>Jour d'ouverture</h4>
+                <ul>
+                    <li>
+                        <input type="checkbox" name="Lundi" id="Lundi" class="openDays">
+                        <label for="Lundi">Lundi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Mardi" id="Mardi" class="openDays">
+                        <label for="Mardi">Mardi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Mercredi" id="Mercredi" class="openDays">
+                        <label for="Mercredi">Mercredi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Jeudi" id="Jeudi" class="openDays">
+                        <label for="Jeudi">Jeudi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Vendredi" id="Vendredi" class="openDays">
+                        <label for="Vendredi">Vendredi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Samedi" id="Samedi" class="openDays">
+                        <label for="Samedi">Samedi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Dimanche" id="Dimanche" class="openDays">
+                        <label for="Dimanche">Dimanche</label>
+                    </li>
+                </ul>
             </div>
             <hr>
             <div>

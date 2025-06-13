@@ -313,12 +313,7 @@ class Offre {
 
     public function getAllOffre() {
         $sql = "
-            SELECT * FROM tripenazor.offre 
-            JOIN tripenazor.ville ON offre.id_ville = ville.id_ville 
-            JOIN tripenazor.type_activite ON offre.id_type_activite = type_activite.id_type_activite
-            JOIN tripenazor.image_illustre_offre ON offre.id_offre = image_illustre_offre.id_offre
-            JOIN tripenazor.image ON image_illustre_offre.id_image = image.id_image
-            
+            SELECT * FROM tripenazor.infos_carte_offre            
         ";
 
         $stmt = $this->conn->prepare($sql);
