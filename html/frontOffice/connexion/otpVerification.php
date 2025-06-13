@@ -49,7 +49,7 @@
             $_SESSION['messageOtp'] = 'Mauvais code OTP. Veuillez réessayer.';
 
             if ($tentatives >= 3) {
-                $bloqueJusqua = date('Y-m-d H:i:s', strtotime('+1 minutes'));
+                $bloqueJusqua = date('Y-m-d H:i:s', strtotime('+5 minutes'));
                 $proController->updateTentativeOTP($idPro, 0, $bloqueJusqua, $now);
                 $_SESSION['id_utilisateur'] = $idPro;
                 $_SESSION['tentatives_otp'] = 0;
