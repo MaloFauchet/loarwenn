@@ -529,7 +529,7 @@ RETURNS TEXT AS $$
 DECLARE
     result TEXT;
 BEGIN
-    SELECT string_agg(DISTINCT t.libelle_tag, ', ')
+    SELECT string_agg(DISTINCT t.libelle_tag, ',')
     INTO result
     FROM tripenazor.tag t
     LEFT JOIN tripenazor.offre_activite_possede_tag oat ON t.id_tag = oat.id_tag AND oat.id_offre = p_id_offre
