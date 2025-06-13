@@ -410,7 +410,7 @@ class Offre {
     {
         try {
             // 1. Récupérer ou insérer la ville
-            $nomVille = trim($data['lieu']); // Ex : "Paris"
+            $nomVille = trim($data['lieu']); 
 
             $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
 
