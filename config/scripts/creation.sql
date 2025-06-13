@@ -45,7 +45,10 @@ CREATE TABLE utilisateur (
 CREATE TABLE professionnel (
     id_utilisateur INT PRIMARY KEY REFERENCES utilisateur(id_utilisateur),
     lien_site_web VARCHAR(100),
-    code_secret TEXT
+    code_secret TEXT DEFAULT NULL,
+    tentative_otp INT DEFAULT 0,
+    derniere_tentative_otp TIMESTAMP DEFAULT NULL,
+    bloque_jusqua TIMESTAMP DEFAULT NULL
 );
 
 -- Table professionnel_prive
