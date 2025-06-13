@@ -27,11 +27,12 @@
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php')
         ?>
-        <?php 
-            ajoutMultiple('Prestation','Prestation incluse',1);  
-            ajoutMultiple('Prestation','Prestation non incluse',2); 
-        ?>
-
+        <div class="champ-type-offre-row">
+            <?php 
+                ajoutMultiple('Prestation','Prestation incluse',1);  
+                ajoutMultiple('Prestation','Prestation non incluse',2); 
+            ?>
+        </div>
        
 
        

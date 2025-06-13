@@ -74,7 +74,6 @@ class OffreController {
         $codePostal = trim($post['codePostal'] ?? '');
         $numero = trim($post['numero'] ?? '');
         $voie = trim($post['voie'] ?? '');
-        $adresse = trim($post['adresse'] ?? '');
         $complementAdresse = trim($post['complementAdresse'] ?? '');
         $a_la_une = trim($post['a_la_une'] ?? 0);
         $en_relief = trim($post['en_relief'] ?? 0);
@@ -160,7 +159,6 @@ class OffreController {
                 'code_postal' => $codePostal,
                 'numero_adresse' => $numero,
                 'voie' => $voie,
-                'adresse' => $adresse,
                 'complement_adresse' => $complementAdresse,
                 'a_la_une' => $a_la_une,
                 'en_relief' => $en_relief,
@@ -192,7 +190,7 @@ class OffreController {
 
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreSpectacle([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -206,7 +204,6 @@ class OffreController {
                 'code_postal' => $codePostal,
                 'numero_adresse' => $numero,
                 'voie' => $voie,
-                'adresse' => $adresse,
                 'complement_adresse' => $complementAdresse,
                 'a_la_une' => $a_la_une,
                 'en_relief' => $en_relief,
@@ -241,7 +238,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreVisiteGuidee([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -255,7 +252,6 @@ class OffreController {
                 'code_postal' => $codePostal,
                 'numero_adresse' => $numero,
                 'voie' => $voie,
-                'adresse' => $adresse,
                 'complement_adresse' => $complementAdresse,
                 'a_la_une' => $a_la_une,
                 'en_relief' => $en_relief,
@@ -306,7 +302,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreParc([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -320,7 +316,6 @@ class OffreController {
                 'code_postal' => $codePostal,
                 'numero_adresse' => $numero,
                 'voie' => $voie,
-                'adresse' => $adresse,
                 'complement_adresse' => $complementAdresse,
                 'a_la_une' => $a_la_une,
                 'en_relief' => $en_relief,
@@ -372,7 +367,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreRestaurant([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -386,7 +381,6 @@ class OffreController {
                 'code_postal' => $codePostal,
                 'numero_adresse' => $numero,
                 'voie' => $voie,
-                'adresse' => $adresse,
                 'complement_adresse' => $complementAdresse,
                 'a_la_une' => $a_la_une,
                 'en_relief' => $en_relief,
@@ -420,7 +414,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreVisiteNonGuidee([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -434,7 +428,6 @@ class OffreController {
                 'code_postal' => $codePostal,
                 'numero_adresse' => $numero,
                 'voie' => $voie,
-                'adresse' => $adresse,
                 'complement_adresse' => $complementAdresse,
                 'a_la_une' => $a_la_une,
                 'en_relief' => $en_relief,

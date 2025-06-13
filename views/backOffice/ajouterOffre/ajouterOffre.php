@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <title>Nouvelle offre</title>
     <style>
+        
         select {
             padding: 10px;
             border-radius: 10px;
@@ -37,59 +38,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        
 
         .ajoutMultiple-container {
-        max-width: 400px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 100px;
+            max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 100px;
         }
 
         .ajoutMultiple-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        font-weight: bold;
-        border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
         }
 
         .ajoutMultiple-header input {
-        flex: 1;
-        margin-right: 10px;
-        padding: 5px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
+            flex: 1;
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
         .ajoutMultiple-header button {
-        padding: 5px 10px;
-        border: 1px solid #007bff;
-        background-color: white;
-        color: #007bff;
-        border-radius: 5px;
-        cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            background-color: white;
+            color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .ajoutMultiple-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .ajoutMultiple-list li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-top: 1px solid #eee;
         }
 
         .ajoutMultiple-list button {
-        background: none;
-        border: none;
-        font-size: 18px;
-        color: red;
-        cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: red;
+            cursor: pointer;
         }
 
         h1{
@@ -107,9 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-bottom: 20px;
         }
 
-        input {
-            width: 66%;
-        }
+        
         h3 {
             margin-bottom:0px;
             margin-top:0px;
@@ -124,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: flex;
             flex-direction: row;
             margin-bottom: 50px;
+            gap :10em;
 
         }
 
@@ -134,6 +134,141 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         }
 
+        .champ-type-offre h3 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .toggle-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+           
+        }
+
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+
+        .checkbox-container {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .checkbox-container label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-size: 1em;
+        }
+
+        .formulaire  .champ-type-offre-row-jour {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 50px;
+            gap: 10em; 
+        }
+        #description,#resume,#accessibilite
+        {
+            height: 10em;
+        }
+
+        .adressePostale{
+            margin-bottom:2em;
+        }
+
+        #dateDebutMatin ,#dateFinMatin ,#dateDebutApresMidi ,#dateFinApresMidi{
+            height: 2em;
+        }
+        #prixMin{
+            width: 4em;
+
+        }
+        #voie{
+            width: 100vh;
+        }
+
+        .options-payantes {
+            display: none; /* caché par défaut */
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .options-payantes p {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .option-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            transition: box-shadow 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .option-item:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .option-item label {
+            font-size: 1em;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        
+
+        .submit-container {
+            display: none; 
+            margin-top: 20px;
+            text-align: right; 
+        }
+
+        .submit-button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 1.1em;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+
+
+       
 
     </style>
     <script src="../../scripts/ajouterAjoutMultiple.js"></script>
@@ -172,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form action="/backOffice/ajouterOffreTraitement.php" method="POST" enctype="multipart/form-data">
                     <div class="formulaire">
                         <div id="type-activite-app">
-                            <label for="type-select">Choisir un type d'activité :</label>
+                            <h2>Choisissez le type d’offre que vous voulez créer :</h2>
                             <select id="type-select">
                                 <option value="">-- Sélectionner --</option>
                                 <?php foreach ($typeActivites as $index => $type): ?>
@@ -182,97 +317,112 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <?php endforeach; ?>
                             </select>
 
-                            <div id="champs-offre" style="display: none;">
-                                <div class="champ-type-offre">
-                                    <h3>Titre</h3>
-                                    <label class="label-input" for="titre">Titre</label>
-                                    <input id="titre" name="titre" type="text" required />
-                                </div>
+                            <div id="champs-offre" style="display: none;margin-top:2em;">
+                                <div class="champ-type-offre-row">
+                                    <div class="champ-type-offre">
+                                        <h3>Titre</h3>
+                                        <label class="label-input" for="titre">Titre</label>
+                                        <input id="titre" name="titre" type="text" required />
+                                    </div>
 
-                                <div class="champ-type-offre">
-                                    <h3>Photo principale</h3>
-                                    <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*"  />
-                                </div>
-
-                                <div class="champ-type-offre">
-                                    <h3>Photos secondaires</h3>
-                                    <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple />                                
-                                </div>
-
-                                <div class="champ-type-offre">
-                                    <h3>Prix minimum TTC</h3>
-                                    <label class="label-input" for="prixMin">Prix</label>
-                                    <input id="prixMin" name="prixMin" type="text" required style="width: 20%;" />
-                                </div>
-
-
-                                <div class="champ-type-offre">
-                                    <h3>Jours d'ouvertures</h3>
-                                    <button type="button" onclick="document.getElementById('jours-checkboxes').style.display = (document.getElementById('jours-checkboxes').style.display === 'none' ? 'block' : 'none');">
-                                        Sélectionner les jours d'ouverture
-                                    </button>
-                                    <div id="jours-checkboxes" style="display: none; margin-top: 10px;">
-                                        <label><input type="checkbox" name="jours[]" value="Lundi"> Lundi</label>
-                                        <label><input type="checkbox" name="jours[]" value="Mardi"> Mardi</label>
-                                        <label><input type="checkbox" name="jours[]" value="Mercredi"> Mercredi</label>
-                                        <label><input type="checkbox" name="jours[]" value="Jeudi"> Jeudi</label>
-                                        <label><input type="checkbox" name="jours[]" value="Vendredi"> Vendredi</label>
-                                        <label><input type="checkbox" name="jours[]" value="Samedi"> Samedi</label>
-                                        <label><input type="checkbox" name="jours[]" value="Dimanche"> Dimanche</label>
+                                    <div class="champ-type-offre">
+                                        <h3>Prix minimum TTC</h3>
+                                        <label class="label-input" for="prixMin">Prix</label>
+                                        <input id="prixMin" name="prixMin" type="number" required  />
                                     </div>
                                 </div>
                                 
-                                <h3>Date matin</h3>    
                                 <div class="champ-type-offre-row">
+                                    <div class="champ-type-offre" style="margin-right:10em;">
+                                        <h3>Photo principale</h3>
+                                        <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*"  />
+                                        
+                                    </div>
                                     
+                                
                                     <div class="champ-type-offre">
-                                        
-                                        <label class="label-input" for="dateDebutMatin">Debut</label>
-                                        <input id="dateDebutMatin" name="dateDebutMatin" type="text" required />
+                                        <h3>Photos secondaires</h3>
+                                        <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple />                                
                                     </div>
+                                </div>    
+
+                                
+
+                                <div class="champ-type-offre-row-jour">
                                     <div class="champ-type-offre">
-                                        
-                                        <label class="label-input" for="dateFinMatin">Fin</label>
-                                        <input id="dateFinMatin" name="dateFinMatin" type="text" required />
+                                        <h3>Jours d'ouvertures</h3>
+                                        <button type="button" class="toggle-button" onclick="document.getElementById('jours-checkboxes').style.display = (document.getElementById('jours-checkboxes').style.display === 'none' ? 'block' : 'none');">
+                                            Sélectionner les jours d'ouverture
+                                        </button>
+                                        <div id="jours-checkboxes" class="checkbox-container" >
+                                            <label><input type="checkbox" name="jours[]" value="Lundi"> Lundi</label>
+                                            <label><input type="checkbox" name="jours[]" value="Mardi"> Mardi</label>
+                                            <label><input type="checkbox" name="jours[]" value="Mercredi"> Mercredi</label>
+                                            <label><input type="checkbox" name="jours[]" value="Jeudi"> Jeudi</label>
+                                            <label><input type="checkbox" name="jours[]" value="Vendredi"> Vendredi</label>
+                                            <label><input type="checkbox" name="jours[]" value="Samedi"> Samedi</label>
+                                            <label><input type="checkbox" name="jours[]" value="Dimanche"> Dimanche</label>
+                                        </div>
                                     </div>
+                                    <div>
+                                        <h3>Heure matin</h3>
+                                        
+                                        
+                                            <div class="champ-type-offre">
+                                                <label class="label-input" for="dateDebutMatin">Debut</label>
+                                                <input id="dateDebutMatin" name="dateDebutMatin" type="time" required />
+                                            </div>
+                                            <div class="champ-type-offre">
+                                                <label class="label-input" for="dateFinMatin">Fin</label>
+                                                <input id="dateFinMatin" name="dateFinMatin" type="time" required />
+                                            </div>
+                                        
+                                    </div> 
+                                    <div>
+                                        <h3>Heure apres midi</h3>    
+                                        
+                                            
+                                            <div class="champ-type-offre">
+                                                
+                                                <label class="label-input" for="dateDebutApresMidi">Debut</label>
+                                                <input id="dateDebutApresMidi" name="dateDebutApresMidi" type="time" required />
+                                            </div>
+                                            <div class="champ-type-offre">
+                                                <label class="label-input" for="dateFinApresMidi">Fin</label>
+                                                <input id="dateFinApresMidi" name="dateFinApresMidi" type="time" required />
+                                            </div>
+                                        
+                                    </div>   
                                 </div>
 
                                     
-                                <h3>Date apres midi</h3>    
-                                <div class="champ-type-offre-row">
-                                    
-                                    <div class="champ-type-offre">
-                                        
-                                        <label class="label-input" for="dateDebutApresMidi">Debut</label>
-                                        <input id="dateDebutApresMidi" name="dateDebutApresMidi" type="text" required />
-                                    </div>
-                                    <div class="champ-type-offre">
-                                        
-                                        <label class="label-input" for="dateFinApresMidi">Fin</label>
-                                        <input id="dateFinApresMidi " name="dateFinApresMidi" type="text" required />
-                                    </div>
-                                </div>
+                                
 
                                 <div class="champ-type-offre">
                                     <h3>Description</h3>
                                     <label class="label-input" for="description">Description</label>
-                                    <input id="description" name="description" type="text" required />
+                                    <textarea id="description" name="description" type="text" required >
+                                       
+                                    </textarea>
                                 </div>
 
                                 <div class="champ-type-offre">
                                     <h3>Resume</h3>
                                     <label class="label-input" for="resume">Resume</label>
-                                    <input id="resume" name="resume" type="text" required />
+                                    <textarea id="resume" name="resume" type="text" required >
+
+                                    </textarea>
                                 </div>
 
                                 <div class="champ-type-offre">
                                     <h3>Accessibilité</h3>
                                     <label class="label-input" for="accessibilite">Accessibilité</label>
-                                    <input id="accessibilite" name="accessibilite" type="text" required />
+                                    <textarea id="accessibilite" name="accessibilite" type="text" required>
+                                    </textarea>
                                 </div>  
 
                                 
-
+                                <h3 class="adressePostale">Adresse postale</h3>
                                 <div class="champ-type-offre-row">
                                     <div class="champ-type-offre">
                                         <h3>Ville</h3>
@@ -282,7 +432,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="champ-type-offre">
                                         <h3>Code postal</h3>
                                         <label class="label-input" for="codePostal">Code postal</label>
-                                        <input id="codePostal" name="codePostal" type="text" required />
+                                        <input id="codePostal" name="codePostal" type="number" required />
                                     </div>
                                     
                                 </div>
@@ -291,18 +441,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="champ-type-offre">
                                         <h3>Numéro</h3>
                                         <label class="label-input" for="numero">Numéro</label>
-                                        <input id="numero" name="numero" type="text" required />
+                                        <input id="numero" name="numero" type="number" required />
                                     </div> 
                                     <div class="champ-type-offre">
                                         <h3>Voie</h3>   
                                         <label class="label-input" for="voie">Voie</label>
                                         <input id="voie" name="voie" type="text" required />
-                                    </div> 
-                                    <div class="champ-type-offre" style="width: 100%;">
-                                        <h3>Adresse</h3>
-                                        <label class="label-input" for="adresse">Adresse</label>
-                                        <input id="adresse" name="adresse" type="text" required />
-                                    </div> 
+                                    </div>  
                                 </div>
 
                                 <div class="champ-type-offre" style="width: 100%;">
@@ -312,32 +457,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div> 
 
 
-                                
-
-
-
-
-
                             </div>
 
                             
 
                             <div id="activite-details" style="margin-top: 1em;"></div>
 
-                            <div id="option" class="options-payantes" style="display: none;">
+                            <div id="option" class="options-payantes">
                                 <p>Voulez-vous prendre une option :</p>
 
-                                <label>
-                                    <input type="checkbox" name="a_la_une" value="1" >
-                                    A la une : (+20€/mois)
-                                </label><br>
+                                <div class="option-item">
+                                    <label>
+                                        <input type="checkbox" name="a_la_une" value="1">
+                                        A la une : (+20€/mois)
+                                    </label>
+                                </div>
 
-                                <label>
-                                    <input type="checkbox" name="en_relief" value="1" >
-                                    En relief : (+10€/mois)
-                                </label><br>
-
-                                
+                                <div class="option-item">
+                                    <label>
+                                        <input type="checkbox" name="en_relief" value="1">
+                                        En relief : (+10€/mois)
+                                    </label>
+                                </div>
                             </div>
 
                         </div>
@@ -350,7 +491,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     
                     <div id="champs-submit" style="display: none;">
-                        <button type="submit">Enregistrer l’offre</button>
+                        <button type="submit" class="submit-button" >Enregistrer l’offre</button>
                     </div>
 
                     <script defer>
