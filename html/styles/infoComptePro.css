@@ -40,6 +40,14 @@ div.input {
     width: 85%;
 }
 
+#numero-addr-container {
+    width: 20%;
+}
+
+#voie-input-container {
+    width: 78%;
+}
+
 #ville-code-postal-row {
     justify-content: flex-start;
 }

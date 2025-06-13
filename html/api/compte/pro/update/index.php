@@ -68,13 +68,31 @@ if (!isset($_POST['emailEntreprise'])) {
 $email = $_POST['emailEntreprise'];
 
 // Adresse
-if (!isset($_POST['adresseEntreprise'])) {
+// if (!isset($_POST['adresseEntreprise'])) {
+//     http_response_code(400);
+//     echo json_encode(['message' => 'Paramètre manquant :  adresseEntreprise']);
+//     exit();
+// }
+
+// $adresse = $_POST['adresseEntreprise'];
+
+// Numéro de l'adresse
+if (!isset($_POST['numeroAdresse'])) {
     http_response_code(400);
-    echo json_encode(['message' => 'Paramètre manquant :  adresseEntreprise']);
+    echo json_encode(['message' => 'Paramètre manquant :  numeroAdresse']);
     exit();
 }
 
-$adresse = $_POST['adresseEntreprise'];
+$numeroAdresse = $_POST['numeroAdresse'];
+
+// Voie de l'adresse
+if (!isset($_POST['voieEntreprise'])) {
+    http_response_code(400);
+    echo json_encode(['message' => 'Paramètre manquant :  voieEntreprise']);
+    exit();
+}
+
+$voieEntreprise = $_POST['voieEntreprise'];
 
 // Complément d'adresse
 if (!isset($_POST['complementAdresseEntreprise'])) {
@@ -149,7 +167,8 @@ if ($isEntreprisePrivee) {
         $prenom,
         $email,
         $numTelephone,
-        $adresse,
+        $numeroAdresse,
+        $voieEntreprise,
         $complementAdresse,
         $codePostal,
         $ville,
@@ -165,7 +184,8 @@ if ($isEntreprisePrivee) {
         $prenom,
         $email,
         $numTelephone,
-        $adresse,
+        $numeroAdresse,
+        $voieEntreprise,
         $complementAdresse,
         $codePostal,
         $ville,

@@ -147,17 +147,22 @@ class Professionnel extends Model{
         $prenom,
         $email,
         $telephone,
-        $adresse,
+        $numeroAdresse, 
+        $voieEntreprise,
         $complementAdresse,
         $codePostal,
         $ville,
         $denomination,
         $siren,
-        $rib,
-        $cheminImage
+        $rib
     ) {
         // TODO : requete avec nouvelles fonctions
-        $sql = "";
+        $sql = "
+        SELECT * FROM tripenazor.update_professionnel_prive(
+            :id::INTEGER, :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :numeroAdresse::TEXT, :voieEntreprise::TEXT, :complementAdresse::TEXT,
+            :codePostal::TEXT, :ville::TEXT, :denomination::TEXT, :siren::INTEGER, :rib::TEXT
+        )";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -167,14 +172,14 @@ class Professionnel extends Model{
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
-        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':numeroAdresse', $numeroAdresse);
+        $stmt->bindParam(':voieEntreprise', $voieEntreprise);
         $stmt->bindParam(':complementAdresse', $complementAdresse);
         $stmt->bindParam(':codePostal', $codePostal);
         $stmt->bindParam(':ville', $ville);
         $stmt->bindParam(':denomination', $denomination);
         $stmt->bindParam(':siren', $siren);
         $stmt->bindParam(':rib', $rib);
-        $stmt->bindParam(':cheminImage', $cheminImage);
 
         // Exécution de la requête
         return ($stmt->execute()) ? true : false;
@@ -186,15 +191,20 @@ class Professionnel extends Model{
         $prenom,
         $email,
         $telephone,
-        $adresse,
+        $numeroAdresse, 
+        $voieEntreprise,
         $complementAdresse,
         $codePostal,
         $ville,
-        $raisonSociale,
-        $cheminImage
+        $raisonSociale
     ) {
         // TODO : requete avec nouvelles fonctions
-        $sql = "";
+        $sql = "
+        SELECT * FROM tripenazor.update_professionnel_public(
+            :id::INTEGER, :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :numeroAdresse::TEXT, :voieEntreprise::TEXT, :complementAdresse::TEXT,
+            :codePostal::TEXT, :ville::TEXT, :raisonSociale::TEXT
+        )";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -204,20 +214,21 @@ class Professionnel extends Model{
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
-        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':numeroAdresse', $numeroAdresse);
+        $stmt->bindParam(':voieEntreprise', $voieEntreprise);
         $stmt->bindParam(':complementAdresse', $complementAdresse);
         $stmt->bindParam(':codePostal', $codePostal);
         $stmt->bindParam(':ville', $ville);
-        $stmt->bindParam(':raisonSociale', $raisonSociale);
-        $stmt->bindParam(':cheminImage', $cheminImage);
 
         // Exécution de la requête
         return ($stmt->execute()) ? true : false;
     }
 
     public function updateImage($id, $cheminImage) {
-        // TODO : requete avec nouvelles fonctions
-        $sql = "";
+        $sql = "
+        SELECT * FROM tripenazor.update_utilisateur_image(
+            :id::INTEGER, :cheminImage::TEXT
+        )";
 
         $stmt = $this->conn->prepare($sql);
         // Liaison des paramètres
