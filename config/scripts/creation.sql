@@ -348,64 +348,6 @@ CREATE TABLE pro_public_propose_offre (
 );
 
 
--- Vues de données
-
-
-SET SCHEMA 'tripenazor';
-
-
--- Vues de données
-CREATE OR REPLACE VIEW infos_carte_offre AS
-SELECT 
-    o.id_offre,
-    o.titre_offre,
-    o.resume,
-    o.description,
-    o.id_adresse,
-    o.accessibilite,
-    o.date_creation,
-	o.type_offre,
-	o.prix_TTC_min,
-	image.titre_image,
-	image.chemin,
-    adr.voie,
-    adr.numero_adresse,
-    adr.complement_adresse,
-    v.nom_ville,
-    v.code_postal,
-    COUNT(avis.id_avis) as nb_avis,
-    AVG(avis.note_avis) as note_avis,
-
-    MAX(CASE WHEN op.libelle_option = 'En relief' THEN 1 ELSE 0 END)::BOOLEAN AS "En relief",
-    MAX(CASE WHEN op.libelle_option = 'A la une' THEN 1 ELSE 0 END)::BOOLEAN AS "A la une"
-
-FROM offre o
-LEFT JOIN option_payante_offre opo ON o.id_offre = opo.id_offre
-LEFT JOIN option op ON opo.id_option = op.id_option
-LEFT JOIN avis on o.id_offre = avis.id_offre
-INNER JOIN adresse adr ON o.id_adresse=adr.id_adresse
-INNER JOIN ville v on adr.id_ville=v.id_ville 
-INNER JOIN image on o.id_image_couverture=image.id_image
-WHERE en_ligne is TRUE
-GROUP BY 
-    o.id_offre,
-    o.titre_offre,
-    o.resume,
-    o.description,
-    o.id_adresse,
-    o.accessibilite,
-    o.date_creation,
-	o.type_offre,
-	o.prix_TTC_min,
-	image.titre_image,
-	image.chemin,
-    adr.voie,
-    adr.numero_adresse,
-    adr.complement_adresse,
-    v.nom_ville,
-    v.code_postal;
-
-
 -- Fonctions d'insertion
 
 CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_prive(
@@ -578,4 +520,95 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_tags_by_offre(p_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT t.libelle_tag, ', ')
+    INTO result
+    FROM tripenazor.tag t
+    LEFT JOIN tripenazor.offre_activite_possede_tag oat ON t.id_tag = oat.id_tag AND oat.id_offre = p_id_offre
+    LEFT JOIN tripenazor.offre_visite_possede_tag ovt ON t.id_tag = ovt.id_tag AND ovt.id_offre = p_id_offre
+    LEFT JOIN tripenazor.offre_spectacle_possede_tag ost ON t.id_tag = ost.id_tag AND ost.id_offre = p_id_offre
+    LEFT JOIN tripenazor.offre_parc_attraction_possede_tag opat ON t.id_tag = opat.id_tag AND opat.id_offre = p_id_offre
+    LEFT JOIN tripenazor.offre_restauration_possede_tag ort ON t.id_tag = ort.id_tag AND ort.id_offre = p_id_offre
+    WHERE oat.id_offre IS NOT NULL
+       OR ovt.id_offre IS NOT NULL
+       OR ost.id_offre IS NOT NULL
+       OR opat.id_offre IS NOT NULL
+       OR ort.id_offre IS NOT NULL;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_jours_by_offre(p_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT j.libelle, ',')
+    INTO result
+    FROM tripenazor.jour j
+    INNER JOIN tripenazor.jour_ouverture jo ON j.id_jour=jo.id_jour AND jo.id_offre = p_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Vues de données
+
+
+-- Vues de données
+CREATE OR REPLACE VIEW infos_carte_offre AS
+SELECT 
+    o.id_offre,
+    o.titre_offre,
+    o.resume,
+    o.description,
+    o.accessibilite,
+    o.date_creation,
+	o.type_offre,
+	o.prix_TTC_min,
+	image.titre_image,
+	image.chemin,
+    adr.voie,
+    adr.numero_adresse,
+    adr.complement_adresse,
+    v.nom_ville,
+    v.code_postal,
+    COUNT(avis.id_avis) as nb_avis,
+    AVG(avis.note_avis) as note_avis,
+    get_tags_by_offre(o.id_offre) as tags,
+	get_jours_by_offre(o.id_offre) as jours_ouverture,
+
+    MAX(CASE WHEN op.libelle_option = 'En relief' THEN 1 ELSE 0 END)::BOOLEAN AS "En relief",
+    MAX(CASE WHEN op.libelle_option = 'A la une' THEN 1 ELSE 0 END)::BOOLEAN AS "A la une"
+
+FROM offre o
+LEFT JOIN option_payante_offre opo ON o.id_offre = opo.id_offre
+LEFT JOIN option op ON opo.id_option = op.id_option
+LEFT JOIN avis on o.id_offre = avis.id_offre
+INNER JOIN adresse adr ON o.id_adresse=adr.id_adresse
+INNER JOIN ville v on adr.id_ville=v.id_ville 
+INNER JOIN image on o.id_image_couverture=image.id_image
+WHERE en_ligne is TRUE
+GROUP BY 
+    o.id_offre,
+    o.titre_offre,
+    o.resume,
+    o.description,
+    o.accessibilite,
+    o.date_creation,
+	o.type_offre,
+	o.prix_TTC_min,
+	image.titre_image,
+	image.chemin,
+    adr.voie,
+    adr.numero_adresse,
+    adr.complement_adresse,
+    v.nom_ville,
+    v.code_postal;
 
