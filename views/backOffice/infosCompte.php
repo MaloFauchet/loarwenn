@@ -43,7 +43,10 @@ $prenom = $data['prenom'];
 $telephoneEntreprise = $data['num_telephone'];
 $emailEntreprise = $data['email'];
 
-$adresseEntreprise = $data['adresse'];
+$numeroAdresse = ($data['numeroAdresse']) ? $data['numeroAdresse'] : "-157";  // TODO : seulement le temps que la bdd soit mise à jour
+                                                                             // Remplacer par $data['numeroAdresse'] quand la bdd sera mise à jour
+$voieEntreprise = ($data['voie']) ? $data['voie'] : "Test Avant Changement de BDD";  // TODO : seulement en attendant que la bdd soit mise à jour
+                                                         // Remplacer par $data['voie'] quand la bdd sera mise à jour
 $complementAdresseEntreprise = $data['complement_adresse'];
 $codePostalEntreprise = $data['code_postal'];
 $villeEntreprise = $data['nom_ville'];
@@ -106,8 +109,16 @@ $villeEntreprise = $data['nom_ville'];
                     <div>
 
                         <h3>Adresse Postale</h3>
-                        <label class="label-input" for="adresseEntreprise">ADRESSE *</label>
-                        <input type="text" name="adresseEntreprise" id="adresseEntreprise" value="<?= $adresseEntreprise ?>" required>
+                        <div class="input-row" id="addresse-voie-row">
+                            <div class="input" id="numero-addr-container">
+                                <label class="label-input" for="numeroAdresse">NUMÉRO *</label>
+                                <input type="text" name="numeroAdresse" id="numeroAdresse" value="<?= $numeroAdresse ?>" required>
+                            </div>
+                            <div class="input" id="voie-input-container">
+                                <label class="label-input" for="voieEntreprise">VOIE *</label>
+                                <input type="text" name="voieEntreprise" id="voieEntreprise" value="<?= $voieEntreprise ?>" required>
+                            </div>
+                        </div>
                         <div class="input-row" id="ville-code-postal-row">
                             <div class="input" id="ville-input-container">
                                 <label class="label-input" for="villeEntreprise">VILLE *</label>
