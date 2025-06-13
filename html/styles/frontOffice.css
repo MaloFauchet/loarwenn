@@ -45,8 +45,27 @@ main{
 }
 
 
+.card-horizontal .item-image {
+    height: unset; /* ou 250px selon ton design */
+    width: 40%;
+    
+    max-height: 50vh;
+    flex-shrink: 0;
+}
+
+.card-horizontal .item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1em 0 0 1em;
+}
+
+
 .item-body{
-    padding: 15px 25px 25px 25px;
+    padding: 15px 25px 25px 40px;
+}
+.item-body > div{
+    margin: 0.8em 0 0 0;
 }
 
 .item-title{
@@ -179,7 +198,7 @@ main{
 .card-horizontal{
     display: flex;
     flex-direction: row;
-    margin: 6vh;
+    margin: 5vh 0;
     border-radius: 1em;
     box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
 }
@@ -187,7 +206,6 @@ main{
 
 .item-location > p{
     display: inline-flex;
-    margin: 1vh;
 }
 .item-avis{
     display: inline-flex;
@@ -198,7 +216,7 @@ main{
 }
 
 .item-tag  svg{
-    margin-left: 2vh;
+    margin-left: 1em;
 }
 /*
 .item-tag > span{
@@ -215,6 +233,7 @@ main{
   display: flex;
   flex-wrap: wrap;
   gap: 0.5em;
+  
 }
 
 .item-tag > span {
@@ -223,15 +242,16 @@ main{
   background-color: #CAE9FF;
   border: solid white 1px;
   border-radius: 2em;
-  padding: 0.3em 1em;
+  
   font-size: clamp(0.7rem, 1vw, 1rem); /* 👈 S'adapte à la taille écran */
   max-width: 200px;
 }
 .item-tag > span > img{
-    margin:  1vh;
+    margin:  1em;
 }
 .item-tag > span > p{
-    margin:  1vh;
+    margin:  1em;
+    
 }
 
 .tel-card{
@@ -253,7 +273,7 @@ main{
   position: relative;
   width: 100%;
   display: flex;
-  height: 80vh;
+  height: 60vh;
 }
 
 .front-office-main ul {

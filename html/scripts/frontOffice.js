@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () =>{
         
     })*/
     new Caroussel(document.querySelector('#carousselSelectForYou'),{
-        slidesToScroll:2,
-        slidesVisible: 2,
+        slidesToScroll:1,
+        slidesVisible: 3,
         pagination:true,
         infinite:true,
         /*loop:true,*/
