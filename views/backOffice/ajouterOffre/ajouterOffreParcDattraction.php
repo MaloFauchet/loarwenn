@@ -1,66 +1,32 @@
-<?php if (!empty($errors)): ?>
-    <ul style="color:red;">
-        <?php foreach ($errors as $err): ?>
-            <li><?= htmlspecialchars($err) ?></li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
 
 
-<form action="/backOffice/ajouterOffreTraitement.php" method="POST" enctype="multipart/form-data">
-    <div class="formulaire">
-        <div class="champ-type-offre">
-            <h3>Titre</h3>
-            <label class="label-input" for="titre">Titre</label>
-            <input id="titre" name="titre" type="text" required />
-        </div>
-
-        <div class="champ-type-offre">
-            <h3>Photo</h3>  
-            <input id="image" name="image" type="file" accept="image/*" required />
-        </div>
 
         
 
-       
 
-        <div class="options-payantes">
-            <p>Voulez-vous prendre une option :</p>
-
-            <label>
-                <input type="checkbox" name="a_la_une" value="1" >
-                A la une : (+20€/mois)
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="en_relief" value="1" >
-                En relief : (+10€/mois)
-            </label><br>
-
-            
-
+       <div class="champ-type-offre-row">
+            <div class="champ-type-offre">
+                <h3>Nombre d'attraction</h3>
+                <label class="label-input" for="numero">Numéro</label>
+                <input id="numero" name="numero" type="text" required />
+            </div> 
+            <div class="champ-type-offre">
+                <h3>Age minimum</h3>   
+                <label class="label-input" for="age">Age minimum</label>
+                <input id="age" name="age" type="text" required />
+            </div> 
         </div>
+
+
+        <div class="champ-type-offre">
+            <h3>Image du plan</h3>  
+            <input id="imagePlan" name="imagePlan" type="file" accept="image/*" />
+        </div>
+
 
         <?php
-        function afficherTag($tags, $libelle, $id_activite) {
-            echo "<h4>Tags liés à l'activité : " . htmlspecialchars($libelle) . "</h4>";
-
-            echo "<input type='hidden' name='id_activite' value='" . htmlspecialchars($id_activite) . "'>";
-
-            
-
-            echo "<div style='display: flex; flex-wrap: wrap; gap: 0.5em;'>";
-            foreach ($tags as $index => $tag) {
-                $tagId = 'tag_' . $index;
-                echo "<label for='$tagId' style='border: 1px solid #ccc; border-radius: 5px; padding: 0.3em 0.6em; background: #f4f4f4; cursor: pointer;'>";
-                echo "<input type='checkbox' id='$tagId' name='tags[]' value='" . htmlspecialchars($tag) . "' style='margin-right: 0.3em;'>";
-                echo htmlspecialchars($tag);
-                echo "</label>";
-            }
-            echo "</div>";
-
-        }
-        
+      
+            require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
             
             $name= $_COOKIE['selectedLibelle'];
             $selectedActiviteId= $_COOKIE['selectedActiviteId'];
@@ -86,6 +52,4 @@
         
        
         
-    </div>
-    <button type="submit">Enregistrer l’offre</button>
-</form>
+   
