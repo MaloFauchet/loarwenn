@@ -154,8 +154,7 @@ class Utilisateur {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-
+    
     /**
      * Setters
      */
