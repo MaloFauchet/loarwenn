@@ -39,14 +39,8 @@ class OffreController {
     }
 
 
-    public function allOffre() {
+    public function getAllOffre() {
         return $this->offre->getAllOffre();
-    }
-    public function getAllOffreRecommande()  {
-        return $this->offre->getAllOffreRecommande();
-    }
-    public function getAllOffreTag()  {
-        return $this->offre->getAllOffreTag();
     }
 
      public function ajouterOffre($post, $files) {
@@ -205,4 +199,8 @@ class OffreController {
             $adresse_offre
         );
     }*/
+
+    public function getAllOffreByCategory($category) {
+        return $this->offre->getAllOffreByCategory($category);
+    }
 }
