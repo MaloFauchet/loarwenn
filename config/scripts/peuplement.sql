@@ -78,11 +78,11 @@ INSERT INTO jour (libelle) VALUES
 
 -- Insertion Utilisateur
 INSERT INTO utilisateur (id_adresse, prenom, nom, num_telephone, email, mot_de_passe) VALUES
-(1, 'Lucas', 'Martin', '0612345678', 'lucas.martin@example.com', 'hashedpassword1'),
-(5, 'Claire', 'Dubois', '0698765432', 'claire.dubois@example.com', 'hashedpassword2'),
-(10, 'Nora', 'Moreau', '0678123456', 'nora.moreau@example.com', 'hashedpassword3'),
-(15, 'Julien', 'Bernard', '0654321876', 'julien.bernard@example.com', 'hashedpassword4'),
-(20, 'Sophie', 'Lemoine', '0623456789', 'sophie.lemoine@example.com', 'hashedpassword5');
+(1, 'Lucas', 'Martin', '0612345678', 'lucas.martin@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
+(5, 'Claire', 'Dubois', '0698765432', 'claire.dubois@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
+(10, 'Nora', 'Moreau', '0678123456', 'nora.moreau@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
+(15, 'Julien', 'Bernard', '0654321876', 'julien.bernard@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
+(20, 'Sophie', 'Lemoine', '0623456789', 'sophie.lemoine@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G');
 
 -- Insertion Membre
 INSERT INTO membre (id_utilisateur, pseudo) VALUES
