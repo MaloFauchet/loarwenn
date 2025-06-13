@@ -16,17 +16,6 @@
         }
     }
 
-    $offreTag = $offreController->getAllOffreTag();
-    $tabTag = [];
-
-    foreach ($offreTag as $offreValue => $valueOfOffre) {
-        if($lastId != $valueOfOffre['id_offre']){
-
-            $lastId = $valueOfOffre['id_offre'];
-        }
-        $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
-
-    }
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
 ?>

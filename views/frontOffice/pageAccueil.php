@@ -18,32 +18,18 @@
         }
     }
 
-    $offreRecommandes = $offreController->getAllOffreRecommande();
-
-
-    $offreTag = $offreController->getAllOffreTag();
-
-    $tabTag = [];
-
-    foreach ($offreTag as $offreValue => $valueOfOffre) {
-        if($lastId != $valueOfOffre['id_offre']){
-
-            $lastId = $valueOfOffre['id_offre'];
-        }
-        $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
-
-    }
     $listeOffreView = $offreController->getViewOffreAccueil();
     
     $i=0;
 
     function dump($dataDump) {
         echo "<pre>";
-        var_dump($dataDump);
+        print_r($dataDump);
         echo "</pre>";
     }
     
 
+    dump($listeOffreView);
 ?>
     
     
@@ -109,11 +95,7 @@
             <div id="carousselSelectForYou">
 
                 <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
-                    if ($valueOfOffre['Recommandé']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedVerticalCarousselle.php'); 
-                    }elseif ($valueOfOffre['En relief']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
-                    }
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
                 }?>
 
             </div>
@@ -122,20 +104,10 @@
         <hr>
         <div class="container-nouveautes">
             <?php
-
-            foreach ($listeOffreView as $offre => $valueOfOffre) {
-                if ($valueOfOffre['Recommandé']) {
-                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedHorizontal.php'); 
-                }else{
+                foreach ($listeOffreView as $offre => $valueOfOffre) {
                     require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');
-                    
-                }
-                
-                
-            }    
-            ?>
-            
-            
+                }    
+            ?>  
         </div>
     </main>
 

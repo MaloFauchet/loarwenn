@@ -42,12 +42,6 @@ class OffreController {
     public function allOffre() {
         return $this->offre->getAllOffre();
     }
-    public function getAllOffreRecommande()  {
-        return $this->offre->getAllOffreRecommande();
-    }
-    public function getAllOffreTag()  {
-        return $this->offre->getAllOffreTag();
-    }
 
      public function ajouterOffre($post, $files) {
         // Validation simple
