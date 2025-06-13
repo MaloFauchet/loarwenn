@@ -16,11 +16,7 @@
         }
     }
 
-    $offreRecommandes = $offreController->getAllOffreRecommande();
-
-
     $offreTag = $offreController->getAllOffreTag();
-
     $tabTag = [];
 
     foreach ($offreTag as $offreValue => $valueOfOffre) {
@@ -32,7 +28,6 @@
 
     }
     $listeOffreView = $offreController->getViewOffreAccueil();
-    
     $i=0;
 ?>
 <main>
@@ -104,7 +99,7 @@
                 <h4>Catégories</h4>
                 <ul>
                     <li>
-                        <input type="checkbox" name="AllCategories" id="AllCategories" checked>
+                        <input type="checkbox" name="Toutes Catégories" id="AllCategories" checked>
                         <label for="AllCategories">Toutes Catégories</label>
                     </li>
                     <li>
@@ -112,21 +107,26 @@
                         <label for="Restaurant">Restaurant</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Spectacles" id="Spectacles" >
-                        <label for="Spectacles">Spectacles</label>
+                        <input type="checkbox" name="Spectacle" id="Spectacles" >
+                        <label for="Spectacles">Spectacle</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visites" id="Visites" >
-                        <label for="Visites">Visites</label>
+                        <input type="checkbox" name="Visite guidée" id="Visites" >
+                        <label for="Visites">Visite guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Activite" id="Activite" >
-                        <label for="Activite">Activite</label>
+                        <input type="checkbox" name="Visite non guidée" id="VisiteNonGuide" >
+                        <label for="VisiteNonGuide">Visite non guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="ParcAttraction" id="ParcAttraction" >
-                        <label for="ParcAttraction">ParcAttraction</label>
+                        <input type="checkbox" name="Activité" id="Activite" >
+                        <label for="Activite">Activité</label>
                     </li>
+                    <li>
+                        <input type="checkbox" name="Parc d'attraction" id="ParcAttraction" >
+                        <label for="ParcAttraction">Parc d'attraction</label>
+                    </li>
+                    
                 </ul>
             </div>
             <hr>

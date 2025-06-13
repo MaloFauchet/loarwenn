@@ -22,5 +22,6 @@
 
     
     <script src="/scripts/openFilter.js"></script>
+    <script src="/scripts/filter.js"></script>
 </body>
 </html>

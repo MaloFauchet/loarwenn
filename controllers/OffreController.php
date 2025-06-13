@@ -147,4 +147,8 @@ class OffreController {
             $adresse_offre
         );
     }*/
+
+    public function getAllOffreByCategory($category) {
+        return $this->offre->getAllOffreByCategory($category);
+    }
 }

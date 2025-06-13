@@ -1,4 +1,4 @@
-<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
+<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card" type_activite="<?= $valueOfOffre['type_activite'] ?>" location="<?= $valueOfOffre['ville'] ?>">
     <div class="card-horizontal">
         <div class="item-image">
             <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
@@ -26,7 +26,7 @@
             </div>
             <div class="item-description">
                 <p>
-                    <?= $valueOfOffre["description"]  ?>
+                    <?= $valueOfOffre["resume"]  ?>
                 </p>
             </div>
             <div class="container-avis-tags">
