@@ -561,6 +561,71 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_horaires_by_offre(p_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(
+            to_char(h.debut, 'YYYY-MM-DD HH24:MI') || ' | ' || to_char(h.fin, 'YYYY-MM-DD HH24:MI'),
+            ','
+        )
+    INTO result
+    FROM tripenazor.horaire h
+    INNER JOIN tripenazor.horaire_ouverture ho ON h.id_horaire=ho.id_horaire AND ho.id_offre = p_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_images_by_offre(p_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(i.titre_image || ' | ' || i.chemin, ',')
+    INTO result
+    FROM tripenazor.image i
+    INNER JOIN tripenazor.image_illustre_offre imo ON i.id_image = imo.id_image
+    WHERE imo.id_offre = p_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION get_pro_info_by_offre(p_id_offre INTEGER)
+RETURNS TABLE (
+    id_pro INTEGER,
+    nom TEXT,
+    prenom TEXT,
+    email TEXT,
+    telephone TEXT,
+    site_web TEXT,
+    nom_societe TEXT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        pro.id_utilisateur AS id_pro,
+        u.nom::TEXT,
+        u.prenom::TEXT,
+        u.email::TEXT,
+        u.num_telephone::TEXT,
+        pro.lien_site_web::TEXT,
+        COALESCE(ppr.denomination, ppu.raison_sociale)::TEXT as nom_societe
+    FROM professionnel pro
+    INNER JOIN utilisateur u on pro.id_utilisateur = u.id_utilisateur
+    LEFT JOIN professionnel_prive ppr on ppr.id_utilisateur = u.id_utilisateur
+    LEFT JOIN professionnel_public ppu on ppu.id_utilisateur = u.id_utilisateur
+    LEFT JOIN abonnement on abonnement.id_utilisateur_prive = u.id_utilisateur AND abonnement.id_offre = p_id_offre
+    LEFT JOIN pro_public_propose_offre on pro_public_propose_offre.id_utilisateur_public = u.id_utilisateur AND pro_public_propose_offre.id_offre = p_id_offre
+    LIMIT 1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 -- Vues de données
 
 
@@ -614,4 +679,84 @@ GROUP BY
     adr.complement_adresse,
     v.nom_ville,
     v.code_postal;
+
+CREATE OR REPLACE VIEW infos_offre_details AS
+SELECT 
+    o.id_offre,
+    o.titre_offre,
+    o.resume,
+    o.description,
+    o.accessibilite,
+    o.date_creation,
+    o.type_offre,
+    o.prix_TTC_min,
+    image.titre_image,
+    image.chemin,
+    adr.voie,
+    adr.numero_adresse,
+    adr.complement_adresse,
+    v.nom_ville,
+    v.code_postal,
+    COUNT(avis.id_avis) as nb_avis,
+    AVG(avis.note_avis) as note_avis,
+    get_tags_by_offre(o.id_offre) as tags,
+    get_jours_by_offre(o.id_offre) as jours_ouverture,
+    get_horaires_by_offre(o.id_offre) as horaires_ouverture,
+    get_images_by_offre(o.id_offre) as images_illustration,
+
+    -- Colonnes de la fonction get_pro_info_by_offre
+    pro_infos.id_pro,
+    pro_infos.nom,
+    pro_infos.prenom,
+    pro_infos.email,
+    pro_infos.num_telephone,
+    pro_infos.lien_site_web,
+    pro_infos.nom_societe,
+
+    -- Options payantes sous forme booléenne
+    MAX(CASE WHEN op.libelle_option = 'En relief' THEN 1 ELSE 0 END)::BOOLEAN AS "En relief",
+    MAX(CASE WHEN op.libelle_option = 'A la une' THEN 1 ELSE 0 END)::BOOLEAN AS "A la une"
+
+FROM offre o
+LEFT JOIN option_payante_offre opo ON o.id_offre = opo.id_offre
+LEFT JOIN option op ON opo.id_option = op.id_option
+LEFT JOIN avis ON o.id_offre = avis.id_offre
+INNER JOIN adresse adr ON o.id_adresse = adr.id_adresse
+INNER JOIN ville v ON adr.id_ville = v.id_ville
+INNER JOIN image ON o.id_image_couverture = image.id_image
+
+-- Fonction latérale pour récupérer les infos du professionnel
+LEFT JOIN LATERAL get_pro_info_by_offre(o.id_offre) AS pro_infos (
+    id_pro,
+    nom,
+    prenom,
+    email,
+    num_telephone,
+    lien_site_web,
+    nom_societe
+) ON TRUE
+
+GROUP BY 
+    o.id_offre,
+    o.titre_offre,
+    o.resume,
+    o.description,
+    o.accessibilite,
+    o.date_creation,
+    o.type_offre,
+    o.prix_TTC_min,
+    image.titre_image,
+    image.chemin,
+    adr.voie,
+    adr.numero_adresse,
+    adr.complement_adresse,
+    v.nom_ville,
+    v.code_postal,
+    pro_infos.id_pro,
+    pro_infos.nom,
+    pro_infos.prenom,
+    pro_infos.email,
+    pro_infos.num_telephone,
+    pro_infos.lien_site_web,
+    pro_infos.nom_societe;
 
