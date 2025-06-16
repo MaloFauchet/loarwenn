@@ -9,16 +9,24 @@
                     <p>Recommandé</p>
                 </div>
             </div>
+            <div class="item-image-recommended">
+                <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
+            </div>
+        <?php else: ?>
+            <div class="item-image">
+                <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
+            </div>
         <?php endif; ?>
-        <div class="item-image">
-            <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
-        </div>
         <div class="item-body">
             <div class="container-title-price">
                 <div class="item-title"><?= $valueOfOffre["titre_offre"]  ?></div>
                 <!-- Remplir avec le prix de l'offre -->
                 <div >
-                    <p class="item-price"><?= $valueOfOffre['prix_ttc_min'] ?>€</p>
+                    <?php if ($valueOfOffre['prix_ttc_min'] == 0) : ?>
+                        <p class="item-price">Gratuit</p>
+                    <?php else: ?>
+                        <p class="item-price"><?= $valueOfOffre['prix_ttc_min']?>€</p>
+                    <?php endif; ?>
                 </div>
             </div>
             
