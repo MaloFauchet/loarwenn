@@ -8,6 +8,9 @@ class ProfessionnelController {
         $this->professionnelModel = new Professionnel();
     }
 
+    public function updateTentativeOTP($idPro, $tentatives, $bloqueJusqua) {
+        return $this->professionnelModel->updateTentativeOTP($idPro, $tentatives, $bloqueJusqua, $now = date('Y-m-d H:i:s'));
+    }
 
     public function seConnecter($email, $motDePasse) {
         return $this->professionnelModel->getProfessionnelParEmailMotDePasse($email, $motDePasse);
@@ -75,5 +78,20 @@ class ProfessionnelController {
         ]);
 
         return ['success' => true];
+    }
+
+    public function isProfessionnel($id) {
+        return $this->professionnelModel->isProfessionnel($id);
+    }
+    public function updateProfessionnelPrive($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $denomination, $siren, $rib, $cheminImage) {
+        return $this->professionnelModel->updateProfessionnelPrive($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $denomination, $siren, $rib);
+    }
+
+    public function updateProfessionnelPublic($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $raisonSociale, $cheminImage) {
+        return $this->professionnelModel->updateProfessionnelPublic($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $raisonSociale);
+    }
+
+    public function updateImage($id, $cheminImage) {
+        return $this->professionnelModel->updateImage($id, $cheminImage);
     }
 }

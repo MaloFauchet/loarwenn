@@ -19,13 +19,15 @@ if (!isset($_SESSION['id_utilisateur'])) {
     <link rel="stylesheet" href="/styles/backOffice.css">
 </head>
 <body>
-    <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
+    <?php 
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
     <div class="page-back-office">
         <div class="container-back-office">
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
             <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/pageAccueil.php');?>
         </div>
         <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
+
     </div>
 </body>
 </html>

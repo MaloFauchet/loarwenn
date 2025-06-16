@@ -16,14 +16,9 @@ $whitelist = [
     'Spectacle',
     'Visiteguidee',
     'Parcdattraction',
-    'Restaurant'
+    'Restaurant',
+    'VisiteNonGuidee'
 ];
-
-if (!in_array($cleaned, $whitelist)) {
-    http_response_code(403);
-    echo "Accès refusé.";
-    exit;
-}
 
 // Inclure les contrôleurs (nécessaire pour récupérer les tags)
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController.php');

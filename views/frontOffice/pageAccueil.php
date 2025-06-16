@@ -108,40 +108,10 @@
     <hr>
     <div class="container-caroussel">
         <div id="carousselSelectForYou">
-
-<<<<<<< HEAD
             <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
-                    if ($valueOfOffre['Recommandé']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedVerticalCarousselle.php'); 
-                    }elseif ($valueOfOffre['En relief']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
-                    }
-=======
-                <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
-                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
->>>>>>> sloan-listeOffre-front
-                }?>
-
+                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+            }?>
         </div>
-<<<<<<< HEAD
-    </div>
-    <h1>Les nouveautés</h1>
-    <hr>
-    <div class="container-nouveautes">
-        <?php
-
-            foreach ($listeOffreView as $offre => $valueOfOffre) {
-                if ($valueOfOffre['Recommandé']) {
-                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedHorizontal.php'); 
-                }else{
-                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');
-                    
-                }
-                
-                
-            }    
-            ?>
-=======
         <h1>Les nouveautés</h1>
         <hr>
         <div class="container-nouveautes">
@@ -152,7 +122,6 @@
             ?>  
         </div>
     </main>
->>>>>>> sloan-listeOffre-front
 
 
     </div>

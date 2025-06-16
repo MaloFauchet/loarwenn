@@ -25,7 +25,11 @@ CREATE TABLE utilisateur (
 
 -- Table professionnel (hérite de utilisateur)
 CREATE TABLE professionnel (
-    id_utilisateur INT PRIMARY KEY REFERENCES utilisateur(id_utilisateur)
+    id_utilisateur INT PRIMARY KEY REFERENCES utilisateur(id_utilisateur),
+    code_secret TEXT,
+    tentative_otp INT DEFAULT 0,
+    derniere_tentative_otp TIMESTAMP DEFAULT NULL,
+    bloque_jusqua TIMESTAMP DEFAULT NULL
 );
 
 -- Table professionnel_prive

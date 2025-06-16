@@ -246,6 +246,11 @@
     }
 
     /* Profil Pro */
+    .offre-detaille-front .pp-pro-container {
+        margin: 0;
+        width: 100%;
+    }
+
     .offre-detaille-front .pp-pro {
         display: flex;
         align-items: center;
@@ -264,8 +269,17 @@
     }
 
     /*Notes */
-    .offre-detaille-front .pp-pro + div{
+    .offre-detaille-front .note{
         display: none;
+    }
+
+    /* Resumer et Description */
+    .offre-detaille-front .description{
+        margin: 0;
+    }
+    /* Ajouter un alinéa au paragraphe sous les titres */
+    .offre-detaille-front .description div h3 + p {
+        margin-left: 5%;
     }
 
     /* Informations Pratiques */
