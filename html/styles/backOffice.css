@@ -188,13 +188,12 @@
 
 /* Contenu principal à droite de la nav */
 .page-back-office .contenu-back-office {
-     flex: 1;
-     display: flex;
-     flex-direction: column;
-     overflow: hidden;
-     padding: 2em;
-     overflow-y: auto;
-     padding-top: 10em;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    padding-top: 10em;  
+    min-height: 30em;
 }
 
 .offre .image-container img {

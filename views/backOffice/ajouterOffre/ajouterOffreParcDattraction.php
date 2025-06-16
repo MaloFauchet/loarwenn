@@ -8,12 +8,12 @@
             <div class="champ-type-offre">
                 <h3>Nombre d'attraction</h3>
                 <label class="label-input" for="numero">Numéro</label>
-                <input id="numero" name="numero" type="text" required />
+                <input id="numero" name="numero" type="number" required />
             </div> 
             <div class="champ-type-offre">
                 <h3>Age minimum</h3>   
                 <label class="label-input" for="age">Age minimum</label>
-                <input id="age" name="age" type="text" required />
+                <input id="age" name="age" type="number" required />
             </div> 
         </div>
 
