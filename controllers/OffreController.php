@@ -44,17 +44,12 @@ class OffreController {
     }
 
 
-    public function allOffre() {
+    public function getAllOffre() {
         return $this->offre->getAllOffre();
     }
-    public function getAllOffreRecommande()  {
-        return $this->offre->getAllOffreRecommande();
-    }
-    public function getAllOffreTag()  {
-        return $this->offre->getAllOffreTag();
-    }
 
-     public function ajouterOffre($post, $files) {
+    /*
+    public function ajouterOffre($post, $files) {
 
         #die(print_r($post,true));
 
@@ -450,6 +445,25 @@ class OffreController {
 
 
         
+
+        } {
+        return $this->offre->editOffre(
+            $idOffre,
+            $id_ville, 
+            $id_statut_log, 
+            $id_type_activite, 
+            $titre_offre, 
+            $note_moyenne, 
+            $nb_avis, 
+            $en_ligne, 
+            $resume, 
+            $description, 
+            $adresse_offre
+        );
     }
+    */
     
+    public function getAllOffreByCategory($category) {
+        return $this->offre->getAllOffreByCategory($category);
+    }
 }
