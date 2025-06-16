@@ -18,10 +18,6 @@
 
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
-
-    echo '<pre>';
-    print_r($listeOffreView);
-    echo '</pre>';
 ?>
 <main>
     <section>
