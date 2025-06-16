@@ -90,7 +90,7 @@ INSERT INTO membre (id_utilisateur, pseudo) VALUES
 (3, 'NoraAzur');
 
 -- Insertion Professionnel
-INSERT INTO professionnel (id_utilisateur, lien_site_web, code_secret) VALUES
+INSERT INTO professionnel (id_utilisateur, lien_site_web) VALUES
 (2, 'https://www.clairedesigns.fr'),
 (4, 'https://www.julien-tech.pro'),
 (5, NULL);
