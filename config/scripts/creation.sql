@@ -2290,5 +2290,5 @@ SELECT
 FROM tripenazor.avis a
 LEFT JOIN tripenazor.reponse_pro r ON a.id_avis = r.id_avis
 LEFT JOIN tripenazor.membre m ON a.id_utilisateur = m.id_utilisateur
-LEFT JOIN tripenazor.avis_possede_image affpi ON a.id_avis = api.id_avis
+LEFT JOIN tripenazor.avis_possede_image api ON a.id_avis = api.id_avis
 LEFT JOIN tripenazor.image i ON api.id_image = i.id_image;
