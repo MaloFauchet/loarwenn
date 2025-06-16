@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OTPController.php');
 
     /**
      * Récupère les informations du professionnel
@@ -9,11 +10,18 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['mot-de-passe'])) {
         $utilisateurController = new UtilisateurController();
         $pro = $utilisateurController->connexionPro($_POST['email'], $_POST['mot-de-passe']);
+        
+        $otpController = new OTPController();
 
         if ($pro) {
             //Redirection ou message de succès
-            header('Location: /backOffice/index.php');
-            exit;
+            if($otpController->secretGenere($pro['id_utilisateur'])) {
+                header('Location: /frontOffice/connexion/otpVerification.php');
+                exit;
+            } else {
+                header('Location: /backOffice/index.php');
+                exit;
+            }
         } else {
         ?>
             <script>
@@ -32,6 +40,7 @@
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/input.css">
     <link rel="stylesheet" href="/styles/components/formulaire.css">
+    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body>
     <!-- Vue de connexion -->

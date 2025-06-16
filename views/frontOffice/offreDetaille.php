@@ -1,4 +1,8 @@
 <?php
+// On inclut le controller ProfessionnelController
+require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/ProfessionnelController.php');
+// On instancie le controller ProfessionnelController
+$professionnelController = new ProfessionnelController();
 // On inclut le controller OffreActivité
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php');
 // On instancie le controller
@@ -8,6 +12,22 @@ $id = $_GET['id'] ?? null;
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 $pro = $offreController->getProfessionnelByIdOffre($offre->getId());
+
+// On récupère les informations du professionnel lié à l'offre
+$info_pro = $offreController->getProfessionnelInformationsByIdOffre($offre->getId());
+// On récupère l'id du professionnel
+$id_pro = $info_pro['id_utilisateur'];
+// Si l'id du professionnel est null, on essaie de récupérer l'id du professionnel privé
+if ($id_pro === null) {
+    $id_pro = $info_pro['id_utilisateur_prive'];
+}
+// Si c'est un professionnel public, on essaie de récupérer l'id du professionnel public
+if ($id_pro === null) {
+    $id_pro = $info_pro['id_utilisateur_public'];
+}
+
+// On récupère les informations du professionnel par son id
+$pro = $professionnelController->getProfessionnelById($id_pro)[0]; 
 
  /**
   * Affichage des étoiles en fonction de la note
@@ -43,7 +63,7 @@ function afficherEtoile($note){
         </a>
         <nav class="breadcrumb">
             <ul>
-                <li><a href="index.php">Accueil</a></li>
+                <li><a href="/index.php">Accueil</a></li>
                 <li>Offre détaillée</li>
             </ul>
         </nav>
@@ -53,46 +73,37 @@ function afficherEtoile($note){
         <!-- Image et titre de l'offre -->
         <article>
             <figure class="offre">
-                <div class="offre-image-container">
-                    <div class="main-image-container">
-                        <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre" class="offre-image">
-                    </div>
-                    <div class="gallery-offre-parent">
-                        <div class="grid-offre-1">
-                            <img src="<?= $offre->getPathImage()?>" alt="Image de l'offre">
-                        </div>
-                        <div class="grid-offre-2">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
-                        </div>
-                        <div class="grid-offre-3">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
-                        </div>
-                        <div class="grid-offre-4">
-                            <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
-                        </div>
-                    </div>
+                <div class="grid-images">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage()?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
+                    <img src="<?= $offre->getPathImage() ?>" alt="Image de l'offre">
                 </div>
                 <figcaption>
                     <h2> <?= $offre->getTitre() ?></h2>
                 <figcaption>
             </figure>
         </article>
-        <hr>
-
-        <!-- Profi Du Pro -->
+        
         <article>
-            <figure class="pp-pro">
-                <!--PP a recup dans la bdd -->
-                <img src="/images/profils/default_profil.png" alt="Photo de profil pro" id="pp-pro">
-                <figcaption>
-                    <h4>Organisation : <?=$pro?> </h4>
-                    <?php
-                        // Si pro est SUPER ASSO | ORGANISATION
-                        echo '<p>Super Association</p>';
-                    ?>
-                </figcaption>
+            <!-- Profi Du Pro -->
+            <figure class="pp-pro-container">
+                <hr>
+                <div class="pp-pro">
+                    <!--PP a recup dans la bdd -->
+                    <img src="<?= $pro["chemin"] ?>" alt="Photo de profil pro" id="pp-pro">
+                    <figcaption>
+                        <h4><?=$pro[($pro["denomination"] !== null) ? "denomination" : "raison_sociale"]?></h4>
+                        <p><?= $pro["prenom"]; ?> <?=$pro["nom"]; ?></p>
+                        <a href="tel:<?= $pro["num_telephone"] ?>"><?= $pro["num_telephone"] ?></a>
+                    </figcaption>
+                </div>
+                <hr>
             </figure>
-            <div>
+
+            <!-- Note de l'offre -->
+            <div class="note">
                 <h2> <?= $offre->getNoteMoyenne() ?></h2>
                 <div class="star-container">
                     <?php $etoiles = afficherEtoile($offre->getNoteMoyenne()); ?>
@@ -101,10 +112,10 @@ function afficherEtoile($note){
                 <p>sur <?= $offre->getNbAvis() ?> avis </p>
             </div>
         </article>
-        <hr>
+        
 
         <!-- Informations sur l'offre -->
-        <article class="info">
+        <article class="description">
             <div>
                 <h3>Résumé</h3>
                 <p> <?= $offre->getResume() ?></p>
@@ -112,6 +123,10 @@ function afficherEtoile($note){
             <div>
                 <h3>Description</h3>
                 <p> <?= $offre->getDescription() ?></p>
+            </div>
+            <div>
+                <h3>Type d'offre</h3>
+                <p> <?= $offre->getType() ?></p>
             </div>
         </article>
         <hr>

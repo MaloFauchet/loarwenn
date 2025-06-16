@@ -7,9 +7,9 @@
             <h6>Pages</h6>
             <ul>
                 <li><a href="/">Accueil</a></li>
-                <li><a href="/listeOffres/">Offres</a></li>
+                <!-- <li><a href="/listeOffres/">Offres</a></li>
                 <li><a href="/cartographie/">Cartographie</a></li>
-                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/contact/">Contact</a></li> -->
             </ul>
         </div>
         <div>

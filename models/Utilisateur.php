@@ -48,16 +48,20 @@ class Utilisateur {
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-       
-        if (password_verify($mdp, $result['mot_de_passe'])) {
-            // Connexion réussie
-            $membre = new Membre();
-            $membre->setIdUtilisateur($result['id_utilisateur']);
-            $membre->setPseudo($result['pseudo']);
-            return $membre;
-        }else{
+        if ($result) {
+            if (password_verify($mdp, $result['mot_de_passe'])) {
+                // Connexion réussie
+                $membre = new Membre();
+                $membre->setIdUtilisateur($result['id_utilisateur']);
+                $membre->setPseudo($result['pseudo']);
+                return $membre;
+            }else{
+                return false;
+            }
+        }else {
             return false;
         }
+        
     }
 
 
@@ -99,11 +103,16 @@ class Utilisateur {
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Vérification du mot de passe
-        if (password_verify($mdp, $result[0]['mot_de_passe'])) {
-            return $result[0];
+        if($result){
+            // Vérification du mot de passe
+            if (password_verify($mdp, $result[0]['mot_de_passe'])) {
+                return $result[0];
+            }
+            return false;
+        }else{
+            return false;
         }
-        return false;
+        
     }
 
         public function insertMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse)
@@ -145,8 +154,7 @@ class Utilisateur {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-
+    
     /**
      * Setters
      */

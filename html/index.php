@@ -17,7 +17,7 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     /*$tabConsulteRecement[] = 8;
     setcookie('consulte',json_encode($tabConsulteRecement) , time() + 60 * 60 * 24 * 7, "/");*/
 
-    if (isset($_SESSION['id_utilisateur']) && !isset($_SESSION['pseuddo'])) {
+    if (isset($_SESSION['id_utilisateur']) && !isset($_SESSION['pseudo'])) {
         header("Location: /backOffice/");
     }
     
@@ -33,7 +33,6 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body class="body-main">
-    
         <!-- Header compris dans le composant pageAccueil -->
         <?php 
             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/pageAccueil.php');
