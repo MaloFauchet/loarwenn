@@ -18,33 +18,17 @@
         }
     }
 
-    $offreRecommandes = $offreController->getAllOffreRecommande();
-
-
-    $offreTag = $offreController->getAllOffreTag();
-
-    $tabTag = [];
-
-    foreach ($offreTag as $offreValue => $valueOfOffre) {
-        if($lastId != $valueOfOffre['id_offre']){
-
-            $lastId = $valueOfOffre['id_offre'];
-        }
-        $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
-
-    }
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
 
-    //dump($listeOffreView);
-
     function dump($dataDump) {
         echo "<pre>";
-        var_dump($dataDump);
+        print_r($dataDump);
         echo "</pre>";
     }
     
 
+    dump($listeOffreView);
 ?>
 
 
@@ -120,32 +104,24 @@
             </div>
         </div>!-->
     <?php //} ?>
-    
-        <h1>Sélectionnées pour vous</h1>
-        <hr>
-
-        <div class="container-caroussel">
-            <div id="carousselSelectForYou">
-                
-                <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
-                    if ($valueOfOffre['En relief'] || /*TODO à retirer ----->*/$valueOfOffre['Recommandé']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
-                    }
-                }?>
-
-            </div>
+    <h1>Sélectionnées pour vous</h1>
+    <hr>
+    <div class="container-caroussel">
+        <div id="carousselSelectForYou">
+            <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
+                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+            }?>
         </div>
-    <div style="margin: 3em 0;">
         <h1>Les nouveautés</h1>
         <hr>
-    </div>
-    <div class="container-nouveautes">
-        <?php
-
-            foreach ($listeOffreView as $offre => $valueOfOffre) {
-                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');   
-            }    
-        ?>
+        <div class="container-nouveautes">
+            <?php
+                foreach ($listeOffreView as $offre => $valueOfOffre) {
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardHorizontal.php');
+                }    
+            ?>  
+        </div>
+    </main>
 
 
     </div>
