@@ -90,7 +90,7 @@ INSERT INTO membre (id_utilisateur, pseudo) VALUES
 (3, 'NoraAzur');
 
 -- Insertion Professionnel
-INSERT INTO professionnel (id_utilisateur, lien_site_web, code_secret) VALUES
+INSERT INTO professionnel (id_utilisateur, lien_site_web) VALUES
 (2, 'https://www.clairedesigns.fr'),
 (4, 'https://www.julien-tech.pro'),
 (5, NULL);
@@ -126,11 +126,11 @@ INSERT INTO image(titre_image, chemin) VALUES
 ('Initiation à la photographie', '/image/offres/0bcba216-b6a3-44e1-a847-4984d47091d5/initiation_à_la_photographie.jpg'),
 ('Stage de plongée', '/image/offres/7792a9b0-2a3c-48ab-8fa2-e96ff7ce8455/stage_de_plongée.jpg'),
 ('Cours de danse provençale', '/image/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/cours_de_danse_provençale.jpg'),
-('Photo de profil', '/image/profil/1.jpg'),
-('Photo de profil', '/image/profil/2.jpg'),
-('Photo de profil', '/image/profil/3.jpg'),
-('Photo de profil', '/image/profil/4.jpg'),
-('Photo de profil', '/image/profil/5.jpg'),
+('Photo de profil', '/image/profils/1.jpg'),
+('Photo de profil', '/image/profils/2.jpg'),
+('Photo de profil', '/image/profils/3.jpg'),
+('Photo de profil', '/image/profils/4.jpg'),
+('Photo de profil', '/image/profils/5.jpg'),
 ('Plan Parcours accrobranche', '/image/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/plan_parcours_accrobranche.jpg'),
 ('Carte Dégustation de vins', '/image/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/carte_degustation_de_vins.jpg'),
 ('Carte Dîner gastronomique', '/image/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/carte_diner_gastronomique.jpg'),
@@ -149,26 +149,77 @@ INSERT INTO utilisateur_represente_image(id_utilisateur, id_image) VALUES
 
 -- Insertion Offre
 INSERT INTO offre (titre_offre, en_ligne, resume, description, accessibilite, type_offre, id_adresse, id_image_couverture, prix_TTC_min) VALUES
-('Balade en bord de mer', TRUE, 'Balade nature guidée', 'Balade guidée de 2h30 sur la plage, idéale pour toute la famille.', 'Accessibilité PMR', 'activite', 2, 1, 0.0),
-('Visite historique', TRUE, 'Découverte du patrimoine local', 'Tour guidé de 2h dans les monuments historiques.', 'Ouvert à tous', 'visite_guide', 3, 2, 6.0),
-('Dégustation de vins', FALSE, 'Soirée dégustation', 'Dégustation de vins locaux, idéale pour les amateurs.', 'Accessible aux adultes uniquement', 'restauration', 4, 3, 15.0),
-('Atelier cuisine provençale', TRUE, 'Cours de cuisine', 'Atelier pratique de 3h pour apprendre les recettes provençales.', 'Accès handicapés', 'activite', 6, 4, 25.0),
-('Cours de voile', TRUE, 'Initiation à la voile', 'Apprenez à naviguer en Méditerranée pendant 4h.', 'Sur inscription', 'activite', 7, 5, 40.0),
-('Randonnée dans l''arrière-pays', TRUE, 'Randonnée guidée', 'Randonnée de 5h pour découvrir la nature locale.', 'Niveau débutant', 'activite', 8, 6, 5.0),
-('Concert jazz en plein air', TRUE, 'Soirée musicale', 'Concert de jazz de 2h dans un parc naturel.', 'Ouvert à tous', 'spectacle', 9, 7, 0.0),
-('Cours de peinture', FALSE, 'Atelier créatif', 'Atelier de peinture de 3h avec un artiste local.', 'Matériel fourni', 'activite', 11, 8, 20.0),
-('Visite des marchés locaux', TRUE, 'Découverte gourmande', 'Visite de 3h des marchés pour goûter les produits régionaux.', 'Accessible aux familles', 'visite_non_guide', 12, 9, 0.0),
-('Tour en vélo électrique', TRUE, 'Balade écologique', 'Tour de 2h en vélo électrique avec guide.', 'Casques fournis', 'activite', 13, 10, 18.0),
-('Dîner gastronomique', FALSE, 'Soirée raffinée', 'Dîner de 3h avec un chef étoilé.', 'Sur réservation', 'restauration', 14, 11, 60.0),
-('Cours de yoga en plein air', TRUE, 'Relaxation', 'Séance de yoga de 1h30 face à la mer.', 'Tous niveaux', 'activite', 16, 12, 8.0),
-('Excursion en bateau', TRUE, 'Exploration maritime', 'Excursion de 3h pour découvrir les criques.', 'Gilet de sauvetage obligatoire', 'activite', 17, 13, 35.0),
-('Atelier sculpture', FALSE, 'Cours de sculpture', 'Atelier de 4h pour apprendre la sculpture sur pierre.', 'Public adulte', 'activite', 18, 14, 28.0),
-('Festival de cinéma', TRUE, 'Projection de films', 'Projection de 3h avec films locaux.', 'Gratuit', 'spectacle', 19, 15, 0.0),
-('Parcours accrobranche', TRUE, 'Aventure en forêt', 'Parcours de 4h avec 15 attractions.', 'Équipement fourni', 'parc_attraction', 21, 16, 22.0),
-('Dégustation de produits locaux', TRUE, 'Saveurs du terroir', 'Dégustation avec produits artisanaux.', 'Accessible aux familles', 'restauration', 22, 17, 10.0),
-('Initiation à la photographie', FALSE, 'Atelier photo', 'Atelier de 3h pour débutants.', 'Matériel personnel requis', 'activite', 23, 18, 16.0),
-('Stage de plongée', TRUE, 'Exploration sous-marine', 'Stage de plongée de 5h en Méditerranée.', 'Certificat médical requis', 'activite', 24, 19, 50.0),
-('Cours de danse provençale', TRUE, 'Danse traditionnelle', 'Cours de danse de 2h30 pour tous.', 'Ouvert à tous', 'activite', 25, 20, 12.0);
+('Balade en bord de mer', TRUE, 'Partez pour une balade guidée le long de la côte, idéale pour se ressourcer en famille.', 'Profitez d’une sortie en plein air de 2h30 encadrée par un guide passionné pour découvrir la faune, la flore et les paysages du littoral. Vous longerez les plages sauvages tout en apprenant l’histoire naturelle et locale. L’activité est ponctuée de pauses explicatives, de moments d’observation et de temps libres pour profiter de la mer. Cette expérience accessible ravira aussi bien les enfants que les adultes, et ne nécessite aucune condition physique particulière. Une immersion sensorielle et culturelle au bord de l’eau, propice à la détente et à la découverte en pleine nature.', 'Accessibilité PMR', 'activite', 2, 1, 0.0),
+
+('Visite historique', TRUE, 'Remontez le temps lors d’une visite guidée à travers les sites historiques emblématiques de la région.', 'Explorez les trésors du patrimoine local lors d’une visite guidée immersive de 2 heures au cœur des monuments emblématiques de la ville. Accompagnés d’un guide expérimenté, les participants découvrent l’histoire, l’architecture et les anecdotes culturelles qui façonnent l’identité du territoire. Chaque étape est l’occasion d’observer des détails historiques, de poser des questions, et d’enrichir ses connaissances. Une activité parfaite pour les amateurs d’histoire, les curieux et les familles souhaitant découvrir leur région autrement.', 'Ouvert à tous', 'visite_guide', 3, 2, 6.0),
+
+('Dégustation de vins', FALSE, 'Une soirée conviviale autour des vins du terroir, idéale pour amateurs et passionnés.', 'Lors de cette soirée gourmande, les participants découvrent une sélection de vins locaux présentée par un sommelier. Dans une ambiance chaleureuse, vous apprendrez à reconnaître les arômes, les cépages et les accords mets-vins. L’événement se déroule dans un cadre convivial, propice aux échanges et à la découverte sensorielle. Chaque vin est accompagné d’explications détaillées et de produits locaux en dégustation. Un moment idéal pour les amateurs comme pour les curieux désireux d’enrichir leur culture œnologique dans une atmosphère détendue.', 'Accessible aux adultes uniquement', 'restauration', 4, 3, 15.0),
+
+('Atelier cuisine provençale', TRUE, 'Initiez-vous à la gastronomie provençale dans un atelier de cuisine interactif et gourmand.', 'Cet atelier de 3 heures vous plonge au cœur de la cuisine traditionnelle provençale. Guidés par un chef local, vous apprendrez à confectionner plusieurs recettes typiques à base de produits frais et de saison. L’atelier est ponctué d’astuces culinaires, de moments de partage, et se conclut par une dégustation conviviale des plats préparés ensemble. Que vous soyez débutant ou cuisinier passionné, cette expérience enrichissante allie apprentissage, plaisir gustatif et immersion dans les saveurs du Sud.', 'Accès handicapés', 'activite', 6, 4, 25.0),
+
+('Cours de voile', TRUE, 'Apprenez les bases de la navigation', 
+'Participez à un cours d’initiation à la voile en Méditerranée de 4h. Vous apprendrez à manœuvrer un voilier en toute sécurité, guidé par un moniteur expérimenté. Une activité idéale pour découvrir les plaisirs de la navigation tout en profitant du paysage maritime.', 
+'Sur inscription', 'activite', 7, 5, 40.0),
+
+('Randonnée dans l''arrière-pays', TRUE, 'Explorez les sentiers de la nature provençale', 
+'Randonnée guidée de 5h à travers les sentiers vallonnés de l’arrière-pays. Découvrez la flore locale, les points de vue panoramiques et l’histoire naturelle de la région. Prévue pour les débutants, cette excursion offre une immersion complète dans un environnement authentique.', 
+'Niveau débutant', 'activite', 8, 6, 5.0),
+
+('Concert jazz en plein air', TRUE, 'Vivez une soirée jazz sous les étoiles', 
+'Un concert exceptionnel de 2h dans un parc naturel. Des musiciens de jazz animent la soirée avec des sons envoûtants. Apportez votre plaid et installez-vous confortablement pour un moment musical unique au cœur de la nature, dans une ambiance détendue et conviviale.', 
+'Ouvert à tous', 'spectacle', 9, 7, 0.0),
+
+('Cours de peinture', FALSE, 'Initiez-vous à l’art pictural avec un artiste local', 
+'Atelier de peinture de 3h guidé par un artiste local passionné. Découvrez les techniques de base, les jeux de couleurs et les secrets d’une toile réussie. Accessible à tous, cet atelier offre une pause créative dans un cadre chaleureux. Tout le matériel est fourni sur place.', 
+'Matériel fourni', 'activite', 11, 8, 20.0),
+
+('Visite des marchés locaux', TRUE, 'Parcourez les marchés et goûtez aux spécialités', 
+'Une visite de 3h des marchés provençaux où vous découvrirez des produits du terroir : fruits, fromages, charcuteries et spécialités locales. Échangez avec les producteurs et savourez des dégustations tout au long du parcours. Une immersion gustative idéale pour les familles.', 
+'Accessible aux familles', 'visite_non_guide', 12, 9, 0.0),
+
+('Tour en vélo électrique', TRUE, 'Explorez la région à vélo sans effort', 
+'Tour guidé de 2h en vélo électrique à travers les paysages naturels et les petits villages. Adapté à tous les niveaux, le circuit vous permet de découvrir la région autrement tout en profitant d’explications historiques et culturelles du guide. Casques et vélos fournis.', 
+'Casques fournis', 'activite', 13, 10, 18.0),
+
+('Dîner gastronomique', FALSE, 'Savourez un dîner raffiné avec un chef étoilé', 
+'Un dîner de 3h dans un restaurant renommé, où un chef étoilé propose un menu dégustation de saison. Profitez d’un moment culinaire d’exception dans un cadre élégant. Les plats sont accompagnés de vins soigneusement sélectionnés. Une expérience gastronomique unique et mémorable.', 
+'Sur réservation', 'restauration', 14, 11, 60.0),
+
+('Cours de yoga en plein air', TRUE, 'Un moment de sérénité face à la mer', 
+'Séance de yoga de 1h30 sur la plage, idéale pour tous les niveaux. Respirez, détendez-vous et recentrez-vous en pratiquant des postures douces au rythme des vagues. Encadrée par un professeur certifié, cette activité favorise bien-être et relaxation dans un décor naturel apaisant.', 
+'Tous niveaux', 'activite', 16, 12, 8.0),
+
+('Excursion en bateau', TRUE, 'Partez à la découverte des criques méditerranéennes', 
+'Excursion maritime de 3h à bord d’un bateau confortable. Vous longerez la côte pour découvrir des criques sauvages, accessibles uniquement par la mer. Arrêts baignade et commentaires du guide pour tout connaître de la faune marine et de la géologie locale. Équipement inclus.', 
+'Gilet de sauvetage obligatoire', 'activite', 17, 13, 35.0),
+
+('Atelier sculpture', FALSE, 'Initiez-vous à la sculpture sur pierre', 
+'Durant cet atelier de 4h, découvrez les outils et techniques de base de la sculpture sur pierre avec un sculpteur professionnel. Apprenez à modeler une œuvre simple tout en explorant votre créativité. Convivial et stimulant, cet atelier est réservé aux adultes curieux d’art.', 
+'Public adulte', 'activite', 18, 14, 28.0),
+
+('Festival de cinéma', TRUE, 'Participez à un festival de films en plein air',
+'Profitez de 3h de projection de courts et longs métrages réalisés par des cinéastes locaux et émergents. Le festival propose une programmation riche et variée en extérieur, accompagnée d’échanges avec les réalisateurs. Une ambiance conviviale, gratuite et accessible à tous les cinéphiles.', 
+'Gratuit', 'spectacle', 19, 15, 0.0),
+
+('Parcours accrobranche', TRUE, 'Vivez l’aventure dans un parcours forestier',
+'Ce parcours accrobranche de 4h propose 15 attractions suspendues entre les arbres, accessibles aux petits comme aux grands. Tyroliennes, ponts de singe et filets suspendus sont au programme pour tester votre agilité et votre courage. Tout le matériel est fourni et les encadrants assurent votre sécurité.', 
+'Équipement fourni', 'parc_attraction', 21, 16, 22.0),
+
+('Dégustation de produits locaux', TRUE, 'Savourez les spécialités artisanales du terroir',
+'Cette dégustation vous emmène à la rencontre de producteurs locaux passionnés. Charcuterie, fromages, confitures, huiles et autres produits du terroir sont à l’honneur. En famille ou entre amis, laissez-vous guider dans un voyage gustatif authentique au cœur des traditions régionales.', 
+'Accessible aux familles', 'restauration', 22, 17, 10.0),
+
+('Initiation à la photographie', FALSE, 'Maîtrisez les bases de la photo avec un pro',
+'Un atelier de 3h conçu pour les débutants qui souhaitent apprendre à utiliser leur appareil photo. Accompagné d’un photographe expérimenté, vous découvrirez les réglages essentiels, la composition d’image et l’utilisation de la lumière naturelle lors d’exercices pratiques en extérieur.', 
+'Matériel personnel requis', 'activite', 23, 18, 16.0),
+
+('Stage de plongée', TRUE, 'Plongez à la découverte des fonds marins',
+'Ce stage de 5h en Méditerranée vous initiera aux bases de la plongée sous-marine. Après une présentation du matériel et des règles de sécurité, partez explorer des fonds marins riches en biodiversité, accompagné d’un moniteur diplômé. Expérience inoubliable garantie pour les amateurs de sensations aquatiques.', 
+'Certificat médical requis', 'activite', 24, 19, 50.0),
+
+('Cours de danse provençale', TRUE, 'Initiez-vous aux danses traditionnelles du sud',
+'Venez découvrir les danses folkloriques de Provence lors d’un cours de 2h30 ouvert à tous. Rythmes entraînants, tenues traditionnelles et ambiance conviviale seront au rendez-vous. Un moment d’échange culturel et festif qui vous plongera dans les traditions musicales de la région.', 
+'Ouvert à tous', 'activite', 25, 20, 12.0);
 
 -- Insertion Activite
 INSERT INTO offre_activite (id_offre, duree, age) VALUES
