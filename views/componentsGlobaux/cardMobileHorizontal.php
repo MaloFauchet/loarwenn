@@ -1,4 +1,4 @@
-<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card" data-category="<?= strtolower($valueOfOffre['type_offre']) ?>"" location="<?= $valueOfOffre['nom_ville'] ?>" data-open-days="<?= $valueOfOffre['jours_ouverture'] ?>">
+<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card" data-category="<?= strtolower($valueOfOffre['type_offre']) ?>" data-location="<?= $valueOfOffre['nom_ville'] ?>" data-open-days="<?= $valueOfOffre['jours_ouverture'] ?>">
     <div class="card-horizontal">
         <?php if ($valueOfOffre['En relief']): ?>
             <div class="recommended-horizontal">
