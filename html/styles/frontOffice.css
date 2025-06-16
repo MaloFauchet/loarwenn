@@ -1,12 +1,10 @@
 .body-main ,html{
-    
     padding: 0;
     min-height: 100%;
     overflow-x: hidden;
 }
 
 .body-main{
-    
     font-family: sans-serif;
 }
 
@@ -61,9 +59,10 @@ main{
 }
 
 
-.item-body{
+.item-body {
     padding: 15px 25px 25px 40px;
 }
+
 .item-body > div{
     margin: 0.8em 0 0 0;
 }
@@ -79,6 +78,7 @@ main{
 .item-description{
     color: #585858;
 }
+
 .items{
     position: relative;
 }
@@ -246,9 +246,11 @@ main{
   font-size: clamp(0.7rem, 1vw, 1rem); /* 👈 S'adapte à la taille écran */
   max-width: 200px;
 }
+
 .item-tag > span > img{
     margin:  1em;
 }
+
 .item-tag > span > p{
     margin:  1em;
     
@@ -269,14 +271,16 @@ main{
     
 }
 
+
+
 .front-office-main {
-  position: relative;
-  width: 100%;
-  display: flex;
-  height: 60vh;
+    position: relative;
+    width: 100%;
+    display: flex;
+    height: 60vh;
 }
 
-.front-office-main ul {
+/* .front-office-main ul {
     display: flex;
     width: 100%;
     margin-right:auto ;
@@ -312,12 +316,153 @@ main{
     
 }
 .front-office-main > a{
-    /*margin: 1.10em;*/
-    /* juste pour la review*/
+    /*margin: 1.10em;
+    /* juste pour la review
     position: absolute;
     top: 20px;
     right: 20px;
+} */
+
+/* header complet au dessus de la video */
+.front-office-main > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
+
+/* logo */
+#logo-navbar {
+    position: absolute;
+    left: 0;
+    margin: 0 15px;
+}
+
+/* nav bar */
+.front-office-main > div > nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+/* liste des liens dans la navbar */
+.front-office-main > div > nav > ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+    color: #fff;
+}
+
+.front-office-main > div > nav > ul > li {
+    margin: 0 1.5em;
+    font-size: 1.2em;
+}
+
+/* profil navbar */
+#profil-navbar {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    margin: 0 15px;
+}
+
+.front-office-main a {
+    color: white;
+    text-decoration: none;
+}
+
+.front-office-main a:visited {
+    color: white;
+}
+
+.front-office-main .search-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--main-color);
+  border-radius: 50px;
+  padding: 5px;
+  /* min-width: 500px; */
+  /* max-width: 800px; */
+  background-color: white;
+}
+
+.front-office-main .search-row input {
+  border: none;
+  width: 300px;
+  font-size: 16px;
+  padding: 0 10px;
+}
+
+.front-office-main .search-row input:focus {
+  border: none;
+}
+
+.front-office-main .search-icon {
+  width: 25px;
+  height: 25px;
+  background-color: grey;
+  padding: 4px;
+  border-radius: 50%;
+  border: none;
+}
+
+.front-office-main .container-search-funnel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.front-office-main .search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transform: translateY(18px);
+}
+
+#searchbar {
+    width: 20vw;
+    transition: all 0.3s ease-in-out;
+}
+
+#searchbar:focus {
+    width: 30vw;
+    outline: none;
+}
+
+#search-button {
+    background-color: #005CE6;
+    cursor: pointer;
+}
+
+#search-button:disabled {
+    background-color: #585858;
+    cursor: normal;
+}
+
+/* #search-button {
+    border: none;
+    border-radius: 25%;
+    background-color: #005CE6;
+    color: white;
+    font-size: 12px;
+    padding: 10px;
+    transform: translateX(-50px);
+} */
+
+/* #search-button svg {
+    background: #005CE6;
+} */
 
 .video-header {
   position: absolute;
@@ -326,8 +471,9 @@ main{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
+  z-index: -1;
 }
+
 header a img{
     border-radius: 50%;
 }
@@ -335,16 +481,16 @@ header a img{
   box-sizing: border-box;
 }
 
-input {
+/* input {
   border: 1px solid #ccc;
   font-size: 12px;
   height: 30px;
   padding: 4px 8px;
   position: absolute;
   width: 50%;
-}
+} */
 
-input:focus {
+/* input:focus {
   outline: none;
 }
 
@@ -376,7 +522,7 @@ button.btn-reset {
   width: 65%;
 }
 
-/* .sample.one input */
+/* .sample.one input 
 .sample.one input {
 
   border-radius: 15px;
@@ -385,7 +531,7 @@ button.btn-reset {
   width: 70%;
 }
 
-/* input:focus effect on sibling buttons */
+/* input:focus effect on sibling buttons 
 .sample.one input:focus ~ button.btn-search {
   background: hotpink;
   color: #fff;
@@ -396,12 +542,12 @@ button.btn-reset {
   
 }
 
-/* .sample.one button */
+/* .sample.one button 
 .sample.one button {
   transition: all 0.3s ease-in-out;
 }
 
-/* .sample.one button.btn-search */
+/* .sample.one button.btn-search 
 .sample.one button.btn-search {
   background: #ccc;
   border-radius: 50%;
@@ -412,7 +558,7 @@ button.btn-reset {
   width: 26px;
 }
 
-/* .sample.one button.btn-reset */
+/* .sample.one button.btn-reset 
 .sample.one button.btn-reset {
   background: #fff;
   border: 1px solid #ccc;
@@ -426,24 +572,18 @@ button.btn-reset {
   width: 20px;
   z-index: 3;
 }
-
+*/
 .welcome-text-fo{
-    position: absolute;
-    top: 30%;
     background-color: #005CE6;
     color: #fff;
     z-index: 5;
-    right: 35%;
     padding: 1vh;
     font-size: 5vh;
 }
 
 .discover-text-fo{
-    position: absolute;
-    top: 50%;
     color: #fff;
     z-index: 5;
-    right: 35%;
     font-size: 5vh;
 }
 
