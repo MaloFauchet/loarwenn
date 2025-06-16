@@ -1,4 +1,4 @@
-<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
+<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card offre">
     <div class="card-horizontal">
         <div class="item-image">
             <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
