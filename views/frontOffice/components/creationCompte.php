@@ -78,7 +78,6 @@
     const submitBtn = document.getElementById('inscrire');
     
     function checkInputs() {
-    console.log("Oups");
       if (motDePasse.value === confirmation.value && motDePasse.value.trim() !== '') {
         submitBtn.classList.remove('disabled');
       } else {

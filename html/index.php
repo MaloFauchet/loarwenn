@@ -33,7 +33,6 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body class="body-main">
-    
         <!-- Header compris dans le composant pageAccueil -->
         <?php 
             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/pageAccueil.php');

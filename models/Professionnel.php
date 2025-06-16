@@ -27,6 +27,24 @@ class Professionnel extends Model{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function updateTentativeOTP($idPro, $tentatives, $bloqueJusqua, $now) {
+        $sql = "
+            UPDATE tripenazor.professionnel 
+            SET tentative_otp = :tentatives,
+                derniere_tentative_otp = :now,
+                bloque_jusqua = :bloque 
+            WHERE id_utilisateur = :id
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'tentatives' => $tentatives,
+            'now' => $now,
+            'bloque' => $bloqueJusqua,
+            'id' => $idPro
+        ]);
+    }
+
     public function getProfessionnelParEmailMotDePasse($email, $mdp)
     {
         $sql = "
@@ -139,5 +157,111 @@ class Professionnel extends Model{
         } catch (Exception $e) {
             return ['success' => false, 'error' => "Erreur : " . $e->getMessage()];
         }
+    }
+
+    public function isProfessionnel($id) {
+        $sql = "SELECT COUNT(*) FROM tripenazor.professionnel WHERE id_utilisateur = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public function updateProfessionnelPrive(
+        $id,
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $numeroAdresse, 
+        $voieEntreprise,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $denomination,
+        $siren,
+        $rib
+    ) {
+        // TODO : requete avec nouvelles fonctions
+        $sql = "
+        SELECT * FROM tripenazor.update_professionnel_prive(
+            :id::INTEGER, :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :numeroAdresse::TEXT, :voieEntreprise::TEXT, :complementAdresse::TEXT,
+            :codePostal::TEXT, :ville::TEXT, :denomination::TEXT, :siren::INTEGER, :rib::TEXT
+        )";
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':numeroAdresse', $numeroAdresse);
+        $stmt->bindParam(':voieEntreprise', $voieEntreprise);
+        $stmt->bindParam(':complementAdresse', $complementAdresse);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':denomination', $denomination);
+        $stmt->bindParam(':siren', $siren);
+        $stmt->bindParam(':rib', $rib);
+
+        // Exécution de la requête
+        return ($stmt->execute()) ? true : false;
+    }
+
+    public function updateProfessionnelPublic(
+        $id,
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $numeroAdresse, 
+        $voieEntreprise,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $raisonSociale
+    ) {
+        // TODO : requete avec nouvelles fonctions
+        $sql = "
+        SELECT * FROM tripenazor.update_professionnel_public(
+            :id::INTEGER, :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
+            :numeroAdresse::TEXT, :voieEntreprise::TEXT, :complementAdresse::TEXT,
+            :codePostal::TEXT, :ville::TEXT, :raisonSociale::TEXT
+        )";
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':numeroAdresse', $numeroAdresse);
+        $stmt->bindParam(':voieEntreprise', $voieEntreprise);
+        $stmt->bindParam(':complementAdresse', $complementAdresse);
+        $stmt->bindParam(':codePostal', $codePostal);
+        $stmt->bindParam(':ville', $ville);
+
+        // Exécution de la requête
+        return ($stmt->execute()) ? true : false;
+    }
+
+    public function updateImage($id, $cheminImage) {
+        $sql = "
+        SELECT * FROM tripenazor.update_utilisateur_image(
+            :id::INTEGER, :cheminImage::TEXT
+        )";
+
+        $stmt = $this->conn->prepare($sql);
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':cheminImage', $cheminImage);
+
+        // Exécution de la requête
+        return ($stmt->execute()) ? true : false;
     }
 }

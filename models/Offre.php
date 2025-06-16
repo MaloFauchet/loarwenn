@@ -406,7 +406,7 @@ class Offre {
     {
         try {
             // 1. Récupérer ou insérer la ville
-            $nomVille = trim($data['lieu']); // Ex : "Paris"
+            $nomVille = trim($data['lieu']); 
 
             $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
 
@@ -568,6 +568,28 @@ class Offre {
             return false;
         }
     }
+
+    public function getProfessionnelInformationsByIdOffre($id_offre) {
+        $sql = "
+            SELECT 
+            *
+
+            FROM tripenazor.professionnel p
+            LEFT JOIN tripenazor.abonnement a ON p.id_utilisateur = a.id_utilisateur_prive
+            LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_utilisateur_public = p.id_utilisateur
+            LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+            LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+
+            WHERE a.id_offre = :id_offre
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_offre', $id_offre);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
 
 
 

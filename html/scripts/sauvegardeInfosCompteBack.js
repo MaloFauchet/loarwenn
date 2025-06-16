@@ -14,7 +14,8 @@ window.onload = () => {
     // recupere les données de base de chaque input
     // et les stockes dans une variable.
     const inputs = document.querySelectorAll("input");
-    setupInputs(inputs, estModifie, sauvegardeDiv);
+    let allInputs = [...inputs].filter(input => input.id !== "otp-code-input");
+    setupInputs(allInputs, estModifie, sauvegardeDiv);
 
     let photoInput = document.getElementById("photo-profil-input");
     let photoDeProfil = document.getElementById("photo-profil");
@@ -76,10 +77,16 @@ function setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale) {
         }
         const reader = new FileReader();
         reader.onload = function(e) {
-          photoDeProfil.src = e.target.result;
-          photoDeProfil.onmouseleave = () => {
-              photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfil.src);
-          }
+            photoDeProfil.src = e.target.result;
+            photoDeProfil.onmouseenter = () => {
+                debugger;
+                let newPhotoDeProfilSrc = photoDeProfil.src;
+                photoDeProfil.onmouseleave = () => {
+                  photoDeProfilOnMouseLeave(photoDeProfil, newPhotoDeProfilSrc);
+                }
+                photoDeProfil.style.cursor = "pointer";
+                photoDeProfil.setAttribute("src", "/images/profils/changerPhotoDeProfil.png");
+            }
         };
         reader.readAsDataURL(file);
       }
@@ -118,14 +125,16 @@ function updateAffichageDivSauvegarde(sauvegardeDiv, estModifie) {
 function getValuesInputs() {
     let result = {
         denominationEntreprise: document.getElementById("denominationEntreprise").value,
-        nomEntreprise: document.getElementById("nomEntreprise").value,
-        prenomEntreprise: document.getElementById("prenomEntreprise").value,
+        nom: document.getElementById("nom").value,
+        prenom: document.getElementById("prenom").value,
         telephoneEntreprise: document.getElementById("telephoneEntreprise").value,
         emailEntreprise: document.getElementById("emailEntreprise").value,
-        adresseEntreprise: document.getElementById("adresseEntreprise").value,
+        voieEntreprise: document.getElementById("voieEntreprise").value,
+        numeroAdresse: document.getElementById("numeroAdresse").value,
         codePostalEntreprise: document.getElementById("codePostalEntreprise").value,
         villeEntreprise: document.getElementById("villeEntreprise").value,
-        complementAdresseEntreprise: document.getElementById("complementAdresseEntreprise").value
+        complementAdresseEntreprise: document.getElementById("complementAdresseEntreprise").value,
+        photoProfil: null // sera rempli plus tard avec la photo de profil si une est donnée
     };
 
     // si l'utilisateur est une entreprise privée
@@ -141,6 +150,14 @@ function getValuesInputs() {
  */
 async function sauvegarderClique() {
     let data = getValuesInputs();
+
+    // Fonction de vérification des entrées
+    debugger;
+    if (!verifyInputs(data)) {
+        console.error("Les données saisies ne sont pas valides.");
+        // preventDefault();
+        return;
+    }
 
     const photoFile = document.getElementById("photo-profil-input").files[0];
 
@@ -158,7 +175,7 @@ async function sauvegarderClique() {
 }
 
 async function sendData(data) {
-    console.log(Object.entries(data).map(([k, v]) => { return k + '=' + encodeURIComponent(v); }).join('&'));
+    // console.log(Object.entries(data).map(([k, v]) => { return k + '=' + encodeURIComponent(v); }).join('&'));
     fetch("/api/compte/pro/update/", {
         method: "POST",
         headers: {
@@ -174,8 +191,10 @@ async function sendData(data) {
     }).then(data => {
         // TODO : afficher un message de succès
         console.log("Sauvegarde réussie");
+        alert("Vos informations ont été sauvegardées avec succès.");
     }).catch(error => {
         // TODO : afficher un message d'erreur
+        alert("Erreur lors de la sauvegarde. Veuillez réessayer plus tard.");
         console.error("Erreur lors de la sauvegarde", error);
     });
 
@@ -192,4 +211,98 @@ function annulerClique(sauvegardeDiv) {
     sauvegardeDiv.style.bottom = "-100px";
     // recharge la page
     location.reload();
+}
+
+function verifyInputs(data) {
+    // Vérification des champs requis
+    if (!data.denominationEntreprise || !data.nom || !data.prenom ||
+        !data.telephoneEntreprise || !data.emailEntreprise || !data.adresseEntreprise ||
+        !data.codePostalEntreprise || !data.villeEntreprise) {
+        alert("Veuillez remplir tous les champs obligatoires.");
+        return false;
+    }
+
+    // Vérification de la dénomination de l'entreprise
+    if (data.denominationEntreprise.length > 50) {
+        alert("La dénomination de l'entreprise doit contenir au maximum 50 caractères.");
+        return false;
+    }
+
+    // Vérification du nom
+    if (data.nom.length > 50) {
+        alert("Votre nom doit contenir au maximum 50 caractères.");
+        return false;
+    }
+
+    // Vérification du prénom
+    if (data.prenom.length > 50) {
+        alert("Votre prénom doit contenir au maximum 50 caractères.");
+        return false;
+    }
+
+    // Vérification de l'adresse
+    // Vérification du numéro d'adresse
+    if (!/^\d+$/.test(data.numeroAdresse)) {
+        alert("Veuillez entrer un numéro d'adresse valide (chiffres uniquement).");
+        return false;
+    }
+    // Vérification de la voie de l'entreprise
+    if (data.voieEntreprise.length > 100) {
+        alert("L'adresse doit contenir au maximum 100 caractères.");
+        return false;
+    }
+
+    // Vérification du code postal
+    if (!/^\d{5}$/.test(data.codePostalEntreprise)) {
+        alert("Veuillez entrer un code postal valide (5 chiffres).");
+        return false;
+    }
+
+    // Vérification du format du téléphone (exemple simple, à adapter selon les besoins)
+    const phoneRegex = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s]*\d{2}){4}$/; // 10 chiffres pour un numéro français
+    if (!phoneRegex.test(data.telephoneEntreprise)) {
+        alert("Veuillez entrer un numéro de téléphone valide (10 chiffres).");
+        return false;
+    }
+
+    // Vérification du format de l'email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.emailEntreprise)) {
+        alert("Veuillez entrer un email valide.");
+        return false;
+    }
+
+    // Vérification de la ville
+    if (data.villeEntreprise.length > 50) {
+        alert("La ville doit contenir au maximum 50 caractères.");
+        return false;
+    }
+
+    // Vérification du complément d'adresse (optionnel, mais limité à 100 caractères)
+    if (data.complementAdresseEntreprise && data.complementAdresseEntreprise.length > 100) {
+        alert("Le complément d'adresse doit contenir au maximum 100 caractères.");
+        return false;
+    }
+    
+    console.log("Vérification des entrées de professionnel privé");
+    // Si l'utilisateur est une entreprise privée, vérifier le RIB et le SIREN
+    if (document.getElementById("ribEntreprise") !== null) {
+        console.log("Vérification du RIB et du SIREN");
+        
+        console.log("Vérification du SIREN");
+        const sirenRegex = /^[0-9]{9}$/; // SIREN doit être composé de 9 chiffres
+        if (!sirenRegex.test(data.sirenEntreprise)) {
+            alert("Veuillez entrer un SIREN valide (9 chiffres).");
+            console.log("SIREN invalide : " + data.sirenEntreprise);
+            return false;
+        }
+
+        const ibanRegex = /^[A-Z]{2}[0-9]{2}([ ]?[0-9]{4}){5}([ ]?[0-9]{3}){1}$/;
+        if (!ibanRegex.test(data.ribEntreprise)) {
+            alert("Veuillez entrer un IBAN valide.");
+            return false;
+        }
+    }
+
+    return true; // Toutes les vérifications sont passées
 }

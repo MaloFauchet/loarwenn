@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] .'/../models/Utilisateur.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .'/../controllers/OTPController.php';
 
 class UtilisateurController {
     private $utilisateurModel;
@@ -29,6 +30,7 @@ class UtilisateurController {
 
     public function connexionPro($email, $mdp) {
         $pro = $this->utilisateurModel->connexionPro($email, $mdp);
+
         if ($pro) {
             $_SESSION['id_utilisateur'] = $pro['id_utilisateur'];
             $_SESSION['nom'] = $pro['nom'];
