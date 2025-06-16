@@ -44,5 +44,6 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
 
     <script src="<?='/scripts/caroussel.js'?>"></script>
     <script src="<?='/scripts/frontOffice.js'?>"></script>
+    <script src="<?='/scripts/rechercheOffreAcceuil.js'?>"></script>
 </body>
 </html>

@@ -24,3 +24,10 @@ searchbar.onkeyup = () => {
         }
     });
 }
+
+// Si une recherche était présente dans l'URL, on la met dans la barre de recherche
+if (initialSearch !== '') {
+    searchbar.value = initialSearch;
+    // On déclenche l'événement keyup pour filtrer les offres
+    searchbar.onkeyup();
+}

@@ -3,6 +3,14 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
 
+    // Verification du GET
+    // si un search est présent dans l'URL, on le stocke dans une variable
+    if (isset($_GET['search'])) {
+        $search = htmlspecialchars($_GET['search']);
+    } else {
+        $search = '';
+    }
+
     $offreController = new OffreController();
     $lastId = -1;
     $listeOffre = $offreController->getAllOffre();
@@ -19,6 +27,10 @@
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
 ?>
+<script type="text/javascript">
+    const initialSearch = '<?= $search ?>';
+    // utilisé pour transférer la variable PHP dans le script JS
+</script>
 <main>
     <section>
 
@@ -29,7 +41,7 @@
             </a>
             <nav class="breadcrumb">
                 <ul>
-                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="/">Accueil</a></li>
                     <li>Liste des offres</li>
                 </ul>
             </nav>
