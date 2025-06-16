@@ -37,7 +37,6 @@
                 $proData = $proData[0] ?? null;
                 $bloquer = ($proData['bloque_jusqua'] && strtotime($proData['bloque_jusqua']) > time());
             }
-
             if ($bloquer) {
                 ?><p style="color:red;"><?= $_SESSION['messageOtp']?></p><?php
             }

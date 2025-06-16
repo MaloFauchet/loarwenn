@@ -78,11 +78,11 @@ INSERT INTO jour (libelle) VALUES
 
 -- Insertion Utilisateur
 INSERT INTO utilisateur (id_adresse, prenom, nom, num_telephone, email, mot_de_passe) VALUES
-(1, 'Lucas', 'Martin', '0612345678', 'lucas.martin@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
-(5, 'Claire', 'Dubois', '0698765432', 'claire.dubois@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
-(10, 'Nora', 'Moreau', '0678123456', 'nora.moreau@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
-(15, 'Julien', 'Bernard', '0654321876', 'julien.bernard@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G'),
-(20, 'Sophie', 'Lemoine', '0623456789', 'sophie.lemoine@example.com', '$2y$10$U7aVmM1IKxsmK4wQY7UqL.HohL2P3ZfXrK6fwkZx9P1A7FdEf0z4G');
+(1, 'Lucas', 'Martin', '0612345678', 'lucas.martin@example.com', '$2y$10$zPW8jeQFX9FL5Z9bMhFkJeC.YNutCKU5.RklANJ66/fBNxm2un1FG'),
+(5, 'Claire', 'Dubois', '0698765432', 'claire.dubois@example.com', '$2y$10$zPW8jeQFX9FL5Z9bMhFkJeC.YNutCKU5.RklANJ66/fBNxm2un1FG'),
+(10, 'Nora', 'Moreau', '0678123456', 'nora.moreau@example.com', '$2y$10$zPW8jeQFX9FL5Z9bMhFkJeC.YNutCKU5.RklANJ66/fBNxm2un1FG'),
+(15, 'Julien', 'Bernard', '0654321876', 'julien.bernard@example.com', '$2y$10$zPW8jeQFX9FL5Z9bMhFkJeC.YNutCKU5.RklANJ66/fBNxm2un1FG'),
+(20, 'Sophie', 'Lemoine', '0623456789', 'sophie.lemoine@example.com', '$2y$10$zPW8jeQFX9FL5Z9bMhFkJeC.YNutCKU5.RklANJ66/fBNxm2un1FG');
 
 -- Insertion Membre
 INSERT INTO membre (id_utilisateur, pseudo) VALUES
@@ -91,9 +91,9 @@ INSERT INTO membre (id_utilisateur, pseudo) VALUES
 
 -- Insertion Professionnel
 INSERT INTO professionnel (id_utilisateur, lien_site_web, code_secret) VALUES
-(2, 'https://www.clairedesigns.fr', 'PRO-5468-CLAIRE'),
-(4, 'https://www.julien-tech.pro', NULL),
-(5, NULL, 'PRO-3017-SOPHIE');
+(2, 'https://www.clairedesigns.fr'),
+(4, 'https://www.julien-tech.pro'),
+(5, NULL);
 
 -- Insertion Professionnel Public
 INSERT INTO professionnel_public (id_utilisateur, raison_sociale) VALUES
