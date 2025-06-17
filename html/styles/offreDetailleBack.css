@@ -332,3 +332,27 @@ div#sauvegarder button {
     border-radius: 20px;
     padding: 1vh 2vw;
 }
+
+.duree {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Roboto', sans-serif
+}
+
+.age-min {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    
+}
+
+.capactie-accueil{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Roboto', sans-serif
+}

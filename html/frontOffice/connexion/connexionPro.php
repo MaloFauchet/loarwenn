@@ -2,6 +2,8 @@
     session_start();
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
 
+
+    
     /**
      * Récupère les informations du professionnel
      * Et les creer les variables de session

@@ -12,12 +12,10 @@ class OffreController {
     public function getAllOffres() {
         return $this->offre->getAllOffre();
     }
-
-    // Récupérer une offre activité par ID
-    public function getOffreById($id) {
-        return $this->offre->getOffreById($id);
+    
+    public function getOffreById($id_professionnel,$id_offre) {
+        return $this->offre->getOffreById($id_professionnel,$id_offre);
     }
-
     public function getOffreByIdAccueil($id) {
         return $this->offre->getOffreByIdAccueil($id);
     }
@@ -25,11 +23,10 @@ class OffreController {
         return $this->offre->getViewOffreAccueil();
     }
     //toString
-    
-    // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);
     }
+    
     public function AllOffreByLatest()  {
         return $this->offre->getAllOffreByLatest();
     }
@@ -49,7 +46,7 @@ class OffreController {
         return $this->offre->getAllOffreTag();
     }
 
-     public function ajouterOffre($post, $files) {
+    public function ajouterOffre($post, $files) {
         print_r($post);
         // Validation simple
         $errors = [];
@@ -205,4 +202,419 @@ class OffreController {
             $adresse_offre
         );
     }*/
+    function updateOffre($id_offre,$post) {
+
+        //valeur commune 
+        //valeur pour la bdd
+        $titre = trim($post['titre'] ?? '');
+        $prixMin = trim($post['prixMin'] ?? '');
+        $dateDebutMatin = trim($post['dateDebutMatin'] ?? '');
+        $dateFinMatin = trim($post['dateFinMatin'] ?? '');
+        $dateDebutApresMidi = trim($post['dateDebutApresMidi'] ?? '');
+        $dateFinApresMidi = trim($post['dateFinApresMidi'] ?? '');
+        $description = trim($post['description'] ?? '');
+        $resume = trim($post['resume'] ?? '');
+        $accessibilite = trim($post['accessibilite'] ?? '');
+        $ville = trim($post['ville'] ?? '');
+        $codePostal = trim($post['codePostal'] ?? '');
+        $numero = trim($post['numero'] ?? '');
+        $voie = trim($post['voie'] ?? '');
+        $complementAdresse = trim($post['complementAdresse'] ?? '');
+        $a_la_une = trim($post['a_la_une'] ?? 0);
+        $en_relief = trim($post['en_relief'] ?? 0);
+        $jours = $post['jours'] ?? [];
+        $tags = $post['tags'] ??[];
+
+        //Gestion image 
+        // Générer un dossier unique pour l'offre
+        $uniqueId = uniqid();
+        $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/images/offres/' . $uniqueId . '/';
+
+        // Créer le dossier
+        if (!is_dir($baseDir)) {
+            mkdir($baseDir, 0755, true);
+        }
+
+        // Traitement de l'image principale
+        $imagePrincipalePath = null;
+
+        if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
+            $tmpName = $files['imagePrincipale']['tmp_name'];
+            $fileName = basename($files['imagePrincipale']['name']);
+
+            $destination = $baseDir . $fileName;
+
+            if (move_uploaded_file($tmpName, $destination)) {
+                $imagePrincipalePath = $destination;
+            }
+        }
+
+        //valeur pour la bdd
+        $cheminImagePrincipale = $baseDir;
+        $nomImagePrincipale = $fileName;
+
+        // Traitement des images secondaires
+        $imagesSecondairesPaths = [];
+
+        //valeur pour la bdd
+        $nomsImagesSecondaire  = [];
+
+        if (isset($files['imagesSecondaires'])) {
+            foreach ($files['imagesSecondaires']['tmp_name'] as $index => $tmpName) {
+                if ($files['imagesSecondaires']['error'][$index] === UPLOAD_ERR_OK) {
+                    $fileName = basename($files['imagesSecondaires']['name'][$index]);
+                    array_push($nomsImagesSecondaire,$fileName);
+                    $destination = $baseDir . $fileName;
+
+                    if (move_uploaded_file($tmpName, $destination)) {
+                        $imagesSecondairesPaths[] = $destination;
+                    }
+                }
+            }
+        }
+
+        //valeur pour la bdd
+        $cheminImageSecondaire = $baseDir;
+
+        //id activite 
+
+        //récupérer l'id de l'activité
+
+        //activite:1
+        if($post['id_activite'] == 1) {
+
+            
+            
+            $duree = trim($post['duree']);
+            $age = trim($post['age']);
+            $prestation_incluse  = trim($post['ajoutMultiple_1']);
+            $prestation_non_incluse  = trim($post['ajoutMultiple_2']);
+
+            
+        
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre_offre' => $titre,
+                'prixMin' => $prixMin,
+                'dateDebutMatin' => $dateDebutMatin,
+                'dateFinMatin' => $dateFinMatin,
+                'dateDebutApresMidi' => $dateDebutApresMidi,
+                'dateFinApresMidi' => $dateFinApresMidi,
+                'description' => $description,
+                'resume' => $resume,
+                'accessibilite' => $accessibilite,
+                'nom_ville' => $ville,
+                'code_postal' => $codePostal,
+                'numero_adresse' => $numero,
+                'voie' => $voie,
+                'complement_adresse' => $complementAdresse,
+                'a_la_une' => $a_la_une,
+                'en_relief' => $en_relief,
+                'jours' => $jours,
+                'tags' => $tags,
+                'cheminImagePrincipale' => $cheminImagePrincipale,
+                'nomImagePrincipale' => $nomImagePrincipale,
+                'cheminImageSecondaire' => $cheminImageSecondaire,
+                'nomsImagesSecondaire' => $nomsImagesSecondaire,
+                'id_activite' => $post['id_activite'],
+
+                'duree' => $duree,
+                'age_min' =>$age,
+                'prestation_non_incluse' => $prestation_non_incluse,
+                'prestation_incluse' => $prestation_incluse,
+                
+                
+            ]);
+
+            return ['success' => true];
+        }
+        //spectacle:2
+        else if($post['id_activite'] == 2) {
+            
+            $duree = trim($post['duree']);
+            $capacite_accueil  = trim($post['capacite']);
+           
+
+
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre_offre' => $titre,
+                'prixMin' => $prixMin,
+                'dateDebutMatin' => $dateDebutMatin,
+                'dateFinMatin' => $dateFinMatin,
+                'dateDebutApresMidi' => $dateDebutApresMidi,
+                'dateFinApresMidi' => $dateFinApresMidi,
+                'description' => $description,
+                'resume' => $resume,
+                'accessibilite' => $accessibilite,
+                'nom_ville' => $ville,
+                'code_postal' => $codePostal,
+                'numero_adresse' => $numero,
+                'voie' => $voie,
+                'complement_adresse' => $complementAdresse,
+                'a_la_une' => $a_la_une,
+                'en_relief' => $en_relief,
+                'jours' => $jours,
+                'tags' => $tags,
+                'cheminImagePrincipale' => $cheminImagePrincipale,
+                'nomImagePrincipale' => $nomImagePrincipale,
+                'cheminImageSecondaire' => $cheminImageSecondaire,
+                'nomsImagesSecondaire' => $nomsImagesSecondaire,
+                'id_activite' => $post['id_activite'],
+
+                'duree' => $duree,
+                'capacite_accueil' =>$capacite_accueil,
+                
+                
+                
+            ]);
+
+            return ['success' => true];
+        }
+
+        
+
+
+        //visite guidee:3
+        else if($post['id_activite'] == 3) {
+            
+            
+            
+            $duree = trim($post['duree']);
+            $langues = trim($post['langue-checkboxes']);
+            
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre_offre' => $titre,
+                'prixMin' => $prixMin,
+                'dateDebutMatin' => $dateDebutMatin,
+                'dateFinMatin' => $dateFinMatin,
+                'dateDebutApresMidi' => $dateDebutApresMidi,
+                'dateFinApresMidi' => $dateFinApresMidi,
+                'description' => $description,
+                'resume' => $resume,
+                'accessibilite' => $accessibilite,
+                'nom_ville' => $ville,
+                'code_postal' => $codePostal,
+                'numero_adresse' => $numero,
+                'voie' => $voie,
+                'complement_adresse' => $complementAdresse,
+                'a_la_une' => $a_la_une,
+                'en_relief' => $en_relief,
+                'jours' => $jours,
+                'tags' => $tags,
+                'cheminImagePrincipale' => $cheminImagePrincipale,
+                'nomImagePrincipale' => $nomImagePrincipale,
+                'cheminImageSecondaire' => $cheminImageSecondaire,
+                'nomsImagesSecondaire' => $nomsImagesSecondaire,
+                'id_activite' => $post['id_activite'],
+
+                'langues' => $langues,
+                'duree' =>$duree,
+               
+                
+                
+                
+            ]);
+
+            return ['success' => true];
+        }
+
+        //parc d'attraction:4
+        else if($post['id_activite'] == 4) {
+            
+            
+
+            $numero  = trim($post['numero']);
+            $age  = trim($post['age']);
+
+           // Traitement de l'image principale
+            $carteParc = null;
+
+            if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $files['imagePrincipale']['tmp_name'];
+                $fileName = basename($files['imagePrincipale']['name']);
+
+                $destination = $baseDir . $fileName;
+
+                if (move_uploaded_file($tmpName, $destination)) {
+                    $carteParc = $destination;
+                }
+            }
+
+            //valeur pour la bdd
+            $cheminCarteParc = $baseDir;
+            $nomCarteParc = $fileName;
+            
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre_offre' => $titre,
+                'prixMin' => $prixMin,
+                'dateDebutMatin' => $dateDebutMatin,
+                'dateFinMatin' => $dateFinMatin,
+                'dateDebutApresMidi' => $dateDebutApresMidi,
+                'dateFinApresMidi' => $dateFinApresMidi,
+                'description' => $description,
+                'resume' => $resume,
+                'accessibilite' => $accessibilite,
+                'nom_ville' => $ville,
+                'code_postal' => $codePostal,
+                'numero_adresse' => $numero,
+                'voie' => $voie,
+                'complement_adresse' => $complementAdresse,
+                'a_la_une' => $a_la_une,
+                'en_relief' => $en_relief,
+                'jours' => $jours,
+                'tags' => $tags,
+                'cheminImagePrincipale' => $cheminImagePrincipale,
+                'nomImagePrincipale' => $nomImagePrincipale,
+                'cheminImageSecondaire' => $cheminImageSecondaire,
+                'nomsImagesSecondaire' => $nomsImagesSecondaire,
+                'id_activite' => $post['id_activite'],
+
+                'cheminCarteParc' => $cheminCarteParc,
+                'nomCarteParc' =>$nomCarteParc,
+                'numero' => $numero,
+                'age' => $age,
+                
+                
+                
+            ]);
+
+            return ['success' => true];
+        }
+
+
+        //restaurant:5
+        else if($post['id_activite'] == 5) {
+            
+            
+
+            $gamme_prix  = trim($post['prix']);
+
+           // Traitement de l'image principale
+            $carteRestaurant = null;
+
+            if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $files['imagePrincipale']['tmp_name'];
+                $fileName = basename($files['imagePrincipale']['name']);
+
+                $destination = $baseDir . $fileName;
+
+                if (move_uploaded_file($tmpName, $destination)) {
+                    $carteRestaurant = $destination;
+                }
+            }
+
+            //valeur pour la bdd
+            $cheminCarteRestaurant = $baseDir;
+            $nomCarteRestaurant = $fileName;
+            
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre_offre' => $titre,
+                'prixMin' => $prixMin,
+                'dateDebutMatin' => $dateDebutMatin,
+                'dateFinMatin' => $dateFinMatin,
+                'dateDebutApresMidi' => $dateDebutApresMidi,
+                'dateFinApresMidi' => $dateFinApresMidi,
+                'description' => $description,
+                'resume' => $resume,
+                'accessibilite' => $accessibilite,
+                'nom_ville' => $ville,
+                'code_postal' => $codePostal,
+                'numero_adresse' => $numero,
+                'voie' => $voie,
+                'complement_adresse' => $complementAdresse,
+                'a_la_une' => $a_la_une,
+                'en_relief' => $en_relief,
+                'jours' => $jours,
+                'tags' => $tags,
+                'cheminImagePrincipale' => $cheminImagePrincipale,
+                'nomImagePrincipale' => $nomImagePrincipale,
+                'cheminImageSecondaire' => $cheminImageSecondaire,
+                'nomsImagesSecondaire' => $nomsImagesSecondaire,
+                'id_activite' => $post['id_activite'],
+
+                'cheminCarteRestaurant' => $cheminCarteRestaurant,
+                'nomCarteRestaurant' =>$nomCarteRestaurant,
+                'gamme_prix' => $gamme_prix,
+                
+                
+                
+            ]);
+
+            return ['success' => true];
+        }
+
+        //visite non guidee :6
+        else if($post['id_activite'] == 6) {
+            
+            
+
+            $duree  = trim($post['duree']);
+
+           
+            
+            
+            // Insertion en BDD via le modèle
+            $this->offre->insertOffreActivite([
+                'titre_offre' => $titre,
+                'prixMin' => $prixMin,
+                'dateDebutMatin' => $dateDebutMatin,
+                'dateFinMatin' => $dateFinMatin,
+                'dateDebutApresMidi' => $dateDebutApresMidi,
+                'dateFinApresMidi' => $dateFinApresMidi,
+                'description' => $description,
+                'resume' => $resume,
+                'accessibilite' => $accessibilite,
+                'nom_ville' => $ville,
+                'code_postal' => $codePostal,
+                'numero_adresse' => $numero,
+                'voie' => $voie,
+                'complement_adresse' => $complementAdresse,
+                'a_la_une' => $a_la_une,
+                'en_relief' => $en_relief,
+                'jours' => $jours,
+                'tags' => $tags,
+                'cheminImagePrincipale' => $cheminImagePrincipale,
+                'nomImagePrincipale' => $nomImagePrincipale,
+                'cheminImageSecondaire' => $cheminImageSecondaire,
+                'nomsImagesSecondaire' => $nomsImagesSecondaire,
+                'id_activite' => $post['id_activite'],
+
+                'duree' => $duree,
+                
+                
+                
+            ]);
+
+            return ['success' => true];
+        }
+
+
+        
+    
+        
+        $this->offre->updateOffreActivite(
+            $id_offre,
+            $post["title"] ,
+            $post["duration"] ,
+            $post["age"] ,
+            $post["location"] ,
+            $post["description"] ,
+            $post["resume"] ,
+            $post["accessibility"] ,
+            $post["enRelief"] ,
+            $post["aLaUne"] ,
+            $post["prestationIncluse"] ,
+            $post["prestationNonIncluse"] ,
+            $post["tags"],
+            //$id_type_activite,
+        );
+    }
 }

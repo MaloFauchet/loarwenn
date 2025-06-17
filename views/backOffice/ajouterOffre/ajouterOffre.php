@@ -154,6 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 list.appendChild(li);
                 input.value = '';
             }
+            
         }
 
         function supprimerajoutMultiple(btn) {
