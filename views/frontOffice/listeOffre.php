@@ -188,23 +188,19 @@
                 <h4>Trier par</h4>
                 <ul>
                     <li>
-                        <input type="radio" name="sort" id="sortRelevance" checked>
-                        <label for="sortRelevance">Pertinence</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="sort" id="sortGrowingOpinions">
+                        <input type="radio" name="sort" id="sortGrowingOpinions" onclick="triCroissantNote()">
                         <label for="sortGrowingOpinions">Avis croissant</label>
                     </li>
                     <li>
-                        <input type="radio" name="sort" id="sortDecreasingOpinions">
+                        <input type="radio" name="sort" id="sortDecreasingOpinions" onclick="triDecroissantParNote()">
                         <label for="sortDecreasingOpinions">Avis décroissant</label>
                     </li>
                     <li>
-                        <input type="radio" name="sort" id="sortPriceAsc">
+                        <input type="radio" name="sort" id="sortPriceAsc" onclick="triCroissantParPrix()">
                         <label for="sortPriceAsc">Prix croissant</label>
                     </li>
                     <li>
-                        <input type="radio" name="sort" id="sortPriceDesc">
+                        <input type="radio" name="sort" id="sortPriceDesc" onclick="triDecroissantParPrix()">
                         <label for="sortPriceDesc">Prix décroissant</label>
                     </li>
                 </ul>
