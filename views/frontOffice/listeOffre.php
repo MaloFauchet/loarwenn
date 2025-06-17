@@ -3,9 +3,17 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/afficherEtoile.php');
 
+    // Verification du GET
+    // si un search est présent dans l'URL, on le stocke dans une variable
+    if (isset($_GET['search'])) {
+        $search = htmlspecialchars($_GET['search']);
+    } else {
+        $search = '';
+    }
+
     $offreController = new OffreController();
     $lastId = -1;
-    $listeOffre = array_slice($offreController->AllOffreByLatest(),0,10);
+    $listeOffre = $offreController->getAllOffre();
     $listeOffreConsultes = [];
 
     if (isset($_COOKIE['consulte'])) {
@@ -16,25 +24,13 @@
         }
     }
 
-    $offreRecommandes = $offreController->getAllOffreRecommande();
-
-
-    $offreTag = $offreController->getAllOffreTag();
-
-    $tabTag = [];
-
-    foreach ($offreTag as $offreValue => $valueOfOffre) {
-        if($lastId != $valueOfOffre['id_offre']){
-
-            $lastId = $valueOfOffre['id_offre'];
-        }
-        $tabTag[$valueOfOffre['id_offre']][] = $valueOfOffre['libelle_tag'];
-
-    }
     $listeOffreView = $offreController->getViewOffreAccueil();
-    
     $i=0;
 ?>
+<script type="text/javascript">
+    const initialSearch = '<?= $search ?>';
+    // utilisé pour transférer la variable PHP dans le script JS
+</script>
 <main>
     <section>
 
@@ -45,7 +41,7 @@
             </a>
             <nav class="breadcrumb">
                 <ul>
-                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="/">Accueil</a></li>
                     <li>Liste des offres</li>
                 </ul>
             </nav>
@@ -60,7 +56,7 @@
                             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                         </svg>
                     </button>
-                    <input type="search" name="search" placeholder="Rechercher une offre">
+                    <input type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
                     <div class="search-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -84,11 +80,7 @@
         <article class="container-offre">
             <?php
                 foreach ($listeOffreView as $offre => $valueOfOffre) {
-                    if ($valueOfOffre['Recommandé']) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardRecommendedMobileHorizontal.php');  
-                    }else {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
-                    }
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
                 } 
             ?>
         </article>
@@ -104,41 +96,74 @@
                 <h4>Catégories</h4>
                 <ul>
                     <li>
-                        <input type="checkbox" name="AllCategories" id="AllCategories" checked>
+                        <input type="checkbox" name="AllCategories" id="AllCategories" class="categories" checked>
                         <label for="AllCategories">Toutes Catégories</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Restaurant" id="Restaurant" >
+                        <input type="checkbox" name="Restaurant" id="restauration" class="categories" >
                         <label for="Restaurant">Restaurant</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Spectacles" id="Spectacles" >
-                        <label for="Spectacles">Spectacles</label>
+                        <input type="checkbox" name="spectacle" id="spectacle" class="categories">
+                        <label for="spectacle">Spectacle</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visites" id="Visites" >
-                        <label for="Visites">Visites</label>
+                        <input type="checkbox" name="Visite guidée" id="visite_guide" class="categories">
+                        <label for="Visites">Visite guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Activite" id="Activite" >
-                        <label for="Activite">Activite</label>
+                        <input type="checkbox" name="Visite non guidée" id="visite_non_guide" class="categories">
+                        <label for="VisiteNonGuide">Visite non guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="ParcAttraction" id="ParcAttraction" >
-                        <label for="ParcAttraction">ParcAttraction</label>
+                        <input type="checkbox" name="Activité" id="activite" class="categories">
+                        <label for="Activite">Activité</label>
                     </li>
+                    <li>
+                        <input type="checkbox" name="Parc d'attraction" id="parc_attraction" class="categories">
+                        <label for="ParcAttraction">Parc d'attraction</label>
+                    </li>
+                    
                 </ul>
             </div>
             <hr>
             <div>
                 <h4>Lieu</h4>
-                <input type="search" name="Location" id="location" placeholder="Commune, lieu-dit">
+                <input type="search" name="Location" id="location" placeholder="Ville">
             </div>
             <hr>
             <div>
-                <h4>Période</h4>
-                <input type="date" name="Start" id="startDate" placeholder="Date de début">
-                <input type="date" name="End" id="endDate" placeholder="Date de fin">
+                <h4>Jour d'ouverture</h4>
+                <ul>
+                    <li>
+                        <input type="checkbox" name="Lundi" id="Lundi" class="openDays">
+                        <label for="Lundi">Lundi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Mardi" id="Mardi" class="openDays">
+                        <label for="Mardi">Mardi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Mercredi" id="Mercredi" class="openDays">
+                        <label for="Mercredi">Mercredi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Jeudi" id="Jeudi" class="openDays">
+                        <label for="Jeudi">Jeudi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Vendredi" id="Vendredi" class="openDays">
+                        <label for="Vendredi">Vendredi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Samedi" id="Samedi" class="openDays">
+                        <label for="Samedi">Samedi</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="Dimanche" id="Dimanche" class="openDays">
+                        <label for="Dimanche">Dimanche</label>
+                    </li>
+                </ul>
             </div>
             <hr>
             <div>
@@ -164,39 +189,31 @@
             </div>
             <hr>
             <div>
-                <h4>Avis</h4>
-                <div>
-                    <input type="number" name="MinNote" id="minNote" placeholder="Note minimale">
-                    <input type="number" name="MaxNote" id="maxNote" placeholder="Note maximum">
-                </div>
-            </div>
-            <hr>
-            <div>
                 <h4>Trier par</h4>
                 <ul>
                     <li>
-                        <input type="radio" name="sort" id="sortRelevance" checked>
-                        <label for="sortRelevance">Pertinence</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="sort" id="sortGrowingOpinions">
+                        <input type="radio" name="sort" id="sortGrowingOpinions" onclick="triCroissantNote()">
                         <label for="sortGrowingOpinions">Avis croissant</label>
                     </li>
                     <li>
-                        <input type="radio" name="sort" id="sortDecreasingOpinions">
+                        <input type="radio" name="sort" id="sortDecreasingOpinions" onclick="triDecroissantParNote()">
                         <label for="sortDecreasingOpinions">Avis décroissant</label>
                     </li>
                     <li>
-                        <input type="radio" name="sort" id="sortPriceAsc">
+                        <input type="radio" name="sort" id="sortPriceAsc" onclick="triCroissantParPrix()">
                         <label for="sortPriceAsc">Prix croissant</label>
                     </li>
                     <li>
-                        <input type="radio" name="sort" id="sortPriceDesc">
+                        <input type="radio" name="sort" id="sortPriceDesc" onclick="triDecroissantParPrix()">
                         <label for="sortPriceDesc">Prix décroissant</label>
                     </li>
                 </ul>
+            </div>
+            <div>
+                <button>Réinitialiser</button>
             </div>
         </aside>
     </section>
 </main>
 <div class="modal-overlay"></div>
+

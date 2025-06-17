@@ -33,7 +33,6 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
     <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body class="body-main">
-    
         <!-- Header compris dans le composant pageAccueil -->
         <?php 
             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/frontOffice/pageAccueil.php');
@@ -45,5 +44,6 @@ $utilisateurs = $controller->afficherUtilisateurs();*/
 
     <script src="<?='/scripts/caroussel.js'?>"></script>
     <script src="<?='/scripts/frontOffice.js'?>"></script>
+    <script src="<?='/scripts/rechercheOffreAcceuil.js'?>"></script>
 </body>
 </html>

@@ -6,8 +6,8 @@ SET SCHEMA 'tripenazor';
 
 -- Type Activité 
 CREATE TYPE type_activite AS ENUM (
-  'visite_guide',
-  'visite_non_guide',
+  'visite_guidee',
+  'visite_non_guidee',
   'activite',
   'parc_attraction',
   'spectacle',
@@ -90,8 +90,8 @@ CREATE TABLE offre (
     id_offre SERIAL PRIMARY KEY,
     titre_offre VARCHAR(50) NOT NULL,
     en_ligne BOOLEAN NOT NULL,
-    resume VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    resume TEXT NOT NULL,
+    description TEXT NOT NULL,
     date_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     accessibilite VARCHAR(255),
     type_offre type_activite NOT NULL,
@@ -102,8 +102,8 @@ CREATE TABLE offre (
 
 CREATE TABLE horaire(
     id_horaire SERIAL PRIMARY KEY,
-    debut TIMESTAMP NOT NULL,
-    fin TIMESTAMP NOT NULL
+    debut TIME NOT NULL,
+    fin TIME NOT NULL
 );
 
 CREATE TABLE horaire_ouverture(
@@ -339,7 +339,7 @@ CREATE TABLE offre_spectacle_possede_tag (
 CREATE TABLE abonnement (
     id_offre INT REFERENCES offre(id_offre),
     id_utilisateur_prive INT NOT NULL REFERENCES professionnel_prive(id_utilisateur),
-    prix FLOAT NOT NULL DEFAULT 15.0,
+    prix FLOAT NOT NULL DEFAULT 2.0,
     PRIMARY KEY (id_offre, id_utilisateur_prive)
 );
 
@@ -529,7 +529,7 @@ RETURNS TEXT AS $$
 DECLARE
     result TEXT;
 BEGIN
-    SELECT string_agg(DISTINCT t.libelle_tag, ', ')
+    SELECT string_agg(DISTINCT t.libelle_tag, ',')
     INTO result
     FROM tripenazor.tag t
     LEFT JOIN tripenazor.offre_activite_possede_tag oat ON t.id_tag = oat.id_tag AND oat.id_offre = p_id_offre

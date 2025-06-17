@@ -35,176 +35,23 @@ class OffreController {
         return $this->offre->getProfessionnelByIdOffre($id_offre);
     }
 
+    //Retourne le nom de l'entreprise de l'offre
+    public function getProfessionnelInformationsByIdOffre($id_offre){
+        return $this->offre->getProfessionnelInformationsByIdOffre($id_offre);
+    }
 
-    public function allOffre() {
+
+    public function getAllOffre() {
         return $this->offre->getAllOffre();
     }
-    public function getAllOffreRecommande()  {
-        return $this->offre->getAllOffreRecommande();
-    }
-    public function getAllOffreTag()  {
-        return $this->offre->getAllOffreTag();
-    }
 
-    public function ajouterOffre($post, $files) {
-        print_r($post);
-        // Validation simple
-        $errors = [];
-
-        if($post['id_activite'] == 1) {
-            
-            $titre = trim($post['titre'] ?? '');
-            $lieu = trim($post['lieu'] ?? '');
-         
-
-            if ($titre === '') $errors[] = "Le titre est obligatoire.";
-            if ($lieu === '') $errors[] = "Le lieu est obligatoire.";
-           
-
-            if (!empty($errors)) {
-                return ['success' => false, 'errors' => $errors];
-            }
-
-            
-            
-            // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
-                'titre' => $titre,
-                'lieu' => $lieu,
-                'duree' => $post['duree'] ?? '',
-                'age' => $post['age'] ?? '',
-                'prix' => $post['prix'] ?? '',
-                'description' => $post['description'] ?? '',
-                'accessibilite' => $post['accessibilite'] ?? '',
-                'id_activite' => $post['id_activite'] ?? '',
-                'user_id' => $post['user_id'] ?? '',
-            ]);
-
-            return ['success' => true];
-        }
-
-        else if($post['id_activite'] == 2) {
-            
-            $titre = trim($post['titre'] ?? '');
-            $lieu = trim($post['lieu'] ?? '');
-
-            if ($titre === '') $errors[] = "Le titre est obligatoire.";
-
-            if (!empty($errors)) {
-                return ['success' => false, 'errors' => $errors];
-            }
-
-           
-
-
-            
-            // Insertion en BDD via le modèle
-            $this->offre->insertOffreSpectacle([
-                'titre' => $titre,
-                'lieu' => $lieu,
-                'adresse' => $post['adresse'] ?? '',
-                'duree' => $post['duree'] ?? '',
-                'capacite' => $post['capacite'] ?? '',
-                'prix' => $post['prix'] ?? '',
-                'resume' => $post['resume'] ?? '',
-                'description' => $post['description'] ?? '',
-                'id_activite' => $post['id_activite'] ?? '',
-                'accessibilite' => $post['accessibilite'] ?? '',
-                'user_id' => $post['user_id'] ?? '',
-            ]);
-
-            return ['success' => true];
-        }
-
-        else if($post['id_activite'] == 5) {
-            
-            $titre = trim($post['titre'] ?? '');
-           
-            $lieu = trim($post['lieu'] ?? '');
-
-            if ($titre === '') $errors[] = "Le titre est obligatoire.";
-
-            if (!empty($errors)) {
-                return ['success' => false, 'errors' => $errors];
-            }
-
-           
-            
-            
-            // Insertion en BDD via le modèle
-            $this->offre->insertOffreRestaurant([
-                'titre' => $titre,
-                'lieu' => $lieu,
-                'adresse' => $post['adresse'] ?? '',
-                'prix' => $post['prix'] ?? '',
-                'resume' => $post['resume'] ?? '',
-                'description' => $post['description'] ?? '',
-                'id_activite' => $post['id_activite'] ?? '',
-                'user_id' => $post['user_id'] ?? '',
-            ]);
-
-            return ['success' => true];
-        }
-    }
     /*
-    public function createOffre(
-        $id_ville, 
-        $id_statut_log, 
-        $id_type_activite, 
-        $titre_offre, 
-        $note_moyenne, 
-        $nb_avis, 
-        $en_ligne, 
-        $resume, 
-        $description, 
-        $adresse_offre
-        
-    ) {
-        return $this->offre->createOffre(
-            $id_ville, 
-            $id_statut_log, 
-            $id_type_activite, 
-            $titre_offre, 
-            $note_moyenne, 
-            $nb_avis, 
-            $en_ligne, 
-            $resume, 
-            $description, 
-            $adresse_offre
-        );
-    }
+    public function ajouterOffre($post, $files) {
 
-    public function editOffre(
-        $idOffre,
-        $id_ville, 
-        $id_statut_log, 
-        $id_type_activite, 
-        $titre_offre, 
-        $note_moyenne, 
-        $nb_avis, 
-        $en_ligne, 
-        $resume, 
-        $description, 
-        $adresse_offre
-        
-    ) {
-        return $this->offre->editOffre(
-            $idOffre,
-            $id_ville, 
-            $id_statut_log, 
-            $id_type_activite, 
-            $titre_offre, 
-            $note_moyenne, 
-            $nb_avis, 
-            $en_ligne, 
-            $resume, 
-            $description, 
-            $adresse_offre
-        );
-    }*/
-    function updateOffre($id_offre,$post) {
+        #die(print_r($post,true));
 
-        //valeur commune 
+        
+        
         //valeur pour la bdd
         $titre = trim($post['titre'] ?? '');
         $prixMin = trim($post['prixMin'] ?? '');
@@ -225,7 +72,7 @@ class OffreController {
         $jours = $post['jours'] ?? [];
         $tags = $post['tags'] ??[];
 
-        //Gestion image 
+
         // Générer un dossier unique pour l'offre
         $uniqueId = uniqid();
         $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/images/offres/' . $uniqueId . '/';
@@ -276,9 +123,6 @@ class OffreController {
         //valeur pour la bdd
         $cheminImageSecondaire = $baseDir;
 
-        //id activite 
-
-        //récupérer l'id de l'activité
 
         //activite:1
         if($post['id_activite'] == 1) {
@@ -338,7 +182,7 @@ class OffreController {
 
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreSpectacle([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -386,7 +230,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreVisiteGuidee([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -450,7 +294,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreParc([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -515,7 +359,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreRestaurant([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -562,7 +406,7 @@ class OffreController {
             
             
             // Insertion en BDD via le modèle
-            $this->offre->insertOffreActivite([
+            $this->offre->insertOffreVisiteNonGuidee([
                 'titre_offre' => $titre,
                 'prixMin' => $prixMin,
                 'dateDebutMatin' => $dateDebutMatin,
@@ -598,23 +442,25 @@ class OffreController {
 
 
         
-    
-        
-        $this->offre->updateOffreActivite(
-            $id_offre,
-            $post["title"] ,
-            $post["duration"] ,
-            $post["age"] ,
-            $post["location"] ,
-            $post["description"] ,
-            $post["resume"] ,
-            $post["accessibility"] ,
-            $post["enRelief"] ,
-            $post["aLaUne"] ,
-            $post["prestationIncluse"] ,
-            $post["prestationNonIncluse"] ,
-            $post["tags"],
-            //$id_type_activite,
+
+        } {
+        return $this->offre->editOffre(
+            $idOffre,
+            $id_ville, 
+            $id_statut_log, 
+            $id_type_activite, 
+            $titre_offre, 
+            $note_moyenne, 
+            $nb_avis, 
+            $en_ligne, 
+            $resume, 
+            $description, 
+            $adresse_offre
         );
+    }
+    */
+    
+    public function getAllOffreByCategory($category) {
+        return $this->offre->getAllOffreByCategory($category);
     }
 }

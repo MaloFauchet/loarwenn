@@ -28,8 +28,20 @@
             <label class="label-input" for="mot-de-passe">Mot de passe</label>
             <input type="password" id="mot-de-passe" name="mot-de-passe" required />
 
+            <?php
+            $bloquer = false;
+            if(isset($_SESSION['id_utilisateur'])) {
+                require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/ProfessionnelController.php');
+                $proController = new ProfessionnelController();
+                $proData = $proController->getProfessionnelById($_SESSION['id_utilisateur'] ?? 0);
+                $proData = $proData[0] ?? null;
+                $bloquer = ($proData['bloque_jusqua'] && strtotime($proData['bloque_jusqua']) > time());
+            }
+            if ($bloquer) {
+                ?><p style="color:red;"><?= $_SESSION['messageOtp']?></p><?php
+            }
+            ?>
             <button type="submit">Se connecter</button>
-
         </form>
 
         <div class="form-container">

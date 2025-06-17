@@ -8,6 +8,10 @@
     width: 70%;
 }
 
+.liste-offre main {
+    min-height: 100vh;
+}
+
 /* Aside Filtre */
 .liste-offre aside{
     width: 20%;
@@ -57,7 +61,28 @@
     margin: 20px 0;
 }
 
+.liste-offre aside div:has(button){
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
 .liste-offre aside button{
+    background-color: #005CE6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 1.5em;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.liste-offre aside button:hover{
+    background-color: #004bb5;
+}
+
+.liste-offre aside button:not(:last-child){
     display: none;
 }
 
@@ -159,6 +184,11 @@
     max-width: 800px;
 }
 
+.liste-offre .search-row:focus{
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 2px #cae9ff80;
+}
+
 .liste-offre .search-row button{
     display: none;
 }
@@ -168,6 +198,8 @@
     width: 300px;
     font-size: 16px;
     padding: 0 10px;
+    width: -webkit-fill-available;
+    width: -moz-available;
 }
 
 .liste-offre .search-row input:focus{
@@ -232,12 +264,29 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 1em 0 0 1em;
+}
+
+.liste-offre .item-image-recommended {
+    height: 250px;
+    width: 300px; 
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.liste-offre .item-image-recommended img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 0 0 0 1em;
 }
 
+
 .liste-offre .item-body{
     flex: 1 1 0;
-    padding: 15px 25px 0 25px;
+    padding: 15px 15px 0 25px;
 }
 
 .liste-offre .container-title-price{
@@ -421,17 +470,22 @@
         margin: 50px 20px;
     }
 
-    .liste-offre .item-image {
+    .liste-offre .item-image,
+    .liste-offre .item-image-recommended {
         height: 150px;
         width: auto;
     }
+
+    .liste-offre .item-image-recommended img {
+        border-radius: 0 1em 0 0;
+    } 
 
     .liste-offre .item-image img {
         border-radius: 1em 1em 0 0;
     }
 
     .liste-offre .item-body {
-        padding: 15px 0 0 15px;
+        padding: 15px 15px 0 15px;
     }
 
     .liste-offre .item-title {
@@ -439,6 +493,10 @@
     }
 
     .liste-offre .item-location p{
+        font-size: 14px;
+    }
+
+    .liste-offre .item-description p {
         font-size: 14px;
     }
 

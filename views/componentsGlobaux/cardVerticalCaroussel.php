@@ -1,6 +1,16 @@
 <div>
 <a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
     <div>
+        <?php if ($valueOfOffre["Recommandé"]) { ?>
+            <div class="recommended">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
+                        <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708" />
+                    </svg>
+                    <p>Recommandé</p>
+                </div>
+            </div> 
+        <?php } ?>
         <div class="item-image">
             <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
             
@@ -11,7 +21,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                     <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                 </svg>
-                <p><?= $valueOfOffre["adresse_offre"]?></p>
+                <p><?= $valueOfOffre["numero_adresse"] . ' ' . $valueOfOffre["voie"] . ', ' . $valueOfOffre["nom_ville"] . ', ' . $valueOfOffre["code_postal"]?></p>
                 <!--<div class="tel-card">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
@@ -21,9 +31,12 @@
                 
             </div>
             <div class="item-avis">
-                <p><?= $valueOfOffre["note_moyenne"]  ?></p>
-                <?= afficherEtoile($valueOfOffre["note_moyenne"]) ?>
-                <p>(<?= $valueOfOffre["nb_avis"]  ?>)</p>
+                <?php 
+                    if ($valueOfOffre["note_avis"]) : ?>
+                    <p><?= $valueOfOffre["note_avis"]  ?></p>
+                    <?= afficherEtoile($valueOfOffre["note_avis"]) ?>
+                    <p>(<?= $valueOfOffre["nb_avis"]  ?>)</p>
+                <?php endif; ?>
             </div>
             <div class="item-description"> <?= $valueOfOffre["description"]  ?>
             </div>

@@ -14,7 +14,8 @@ window.onload = () => {
     // recupere les données de base de chaque input
     // et les stockes dans une variable.
     const inputs = document.querySelectorAll("input");
-    setupInputs(inputs, estModifie, sauvegardeDiv);
+    let allInputs = [...inputs].filter(input => input.id !== "otp-code-input");
+    setupInputs(allInputs, estModifie, sauvegardeDiv);
 
     let photoInput = document.getElementById("photo-profil-input");
     let photoDeProfil = document.getElementById("photo-profil");
@@ -128,7 +129,8 @@ function getValuesInputs() {
         prenom: document.getElementById("prenom").value,
         telephoneEntreprise: document.getElementById("telephoneEntreprise").value,
         emailEntreprise: document.getElementById("emailEntreprise").value,
-        adresseEntreprise: document.getElementById("adresseEntreprise").value,
+        voieEntreprise: document.getElementById("voieEntreprise").value,
+        numeroAdresse: document.getElementById("numeroAdresse").value,
         codePostalEntreprise: document.getElementById("codePostalEntreprise").value,
         villeEntreprise: document.getElementById("villeEntreprise").value,
         complementAdresseEntreprise: document.getElementById("complementAdresseEntreprise").value,
@@ -239,8 +241,14 @@ function verifyInputs(data) {
     }
 
     // Vérification de l'adresse
-    if (data.adresseEntreprise.length > 100) {
-        alert("L'adresse de l'entreprise doit contenir au maximum 100 caractères.");
+    // Vérification du numéro d'adresse
+    if (!/^\d+$/.test(data.numeroAdresse)) {
+        alert("Veuillez entrer un numéro d'adresse valide (chiffres uniquement).");
+        return false;
+    }
+    // Vérification de la voie de l'entreprise
+    if (data.voieEntreprise.length > 100) {
+        alert("L'adresse doit contenir au maximum 100 caractères.");
         return false;
     }
 

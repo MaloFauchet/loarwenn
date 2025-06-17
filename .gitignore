@@ -2,3 +2,6 @@ logs/
 testComposant/
 .env
 config/.env
+html/composer.json
+html/composer.lock
+html/vendor/
