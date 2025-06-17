@@ -50,8 +50,9 @@ class OffreController {
 
     
     public function ajouterOffre($post, $files) {
-
-
+        // echo "<pre>";
+        // die(print_r($files));
+        // echo "</pre>";
         
         
         //valeur pour la bdd    
@@ -238,7 +239,7 @@ class OffreController {
             $type = "visite_guidee";
             
             $duree = trim($post['duree']);
-            $langues = trim($post['langue-checkboxes']);
+            $langues = implode(', ', $post['langue']);
             
             
             // Insertion en BDD via le modèle
@@ -289,14 +290,14 @@ class OffreController {
             $numero  = trim($post['numero']);
             $age  = trim($post['age']);
 
-           // Traitement de l'image principale
+            // Traitement de la carte du parc
             $carteParc = null;
 
-            if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
-                $tmpName = $files['imagePrincipale']['tmp_name'];
-                $fileName = basename($files['imagePrincipale']['name']);
+            if (isset($files['imagePlan']) && $files['imagePlan']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $files['imagePlan']['tmp_name'];
+                $fileName = basename($files['imagePlan']['name']);
 
-                $destination = $baseDir . $fileName;
+                $destination = $baseDirBdd . $fileName;
 
                 if (move_uploaded_file($tmpName, $destination)) {
                     $carteParc = $destination;
@@ -304,7 +305,7 @@ class OffreController {
             }
 
             //valeur pour la bdd
-            $cheminCarteParc = $baseDir;
+            $cheminCarteParc = $destination;
             $nomCarteParc = $fileName;
             
             
@@ -360,9 +361,9 @@ class OffreController {
            // Traitement de l'image principale
             $carteRestaurant = null;
 
-            if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
-                $tmpName = $files['imagePrincipale']['tmp_name'];
-                $fileName = basename($files['imagePrincipale']['name']);
+            if (isset($files['imagePlan']) && $files['imagePlan']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $files['imagePlan']['tmp_name'];
+                $fileName = basename($files['imagePlan']['name']);
 
                 $destination = $baseDir . $fileName;
 

@@ -22,14 +22,15 @@ class TypeActivite {
 
     public function getTagIdByTypeActivite($id_activite,$name_activite) {
         // Liste des tables possibles
-        $allowed_tables = ['activite', 'spectacle', 'visite', 'parc_attractions', 'restauration'];
+        $allowed_tables = ['activite', 'spectacle', 'visite', 'parc_attractions', 'restauration','visite_guidee'];
         
         $liste = [
             'activite' => 'id_activite',
             'spectacle' => 'id_spectacle',
-            'visite' => 'id_visite',
-            'parc_attractions' => 'id_parc_attractions',
-            'restaurant' => 'id_restaurant'
+            'visite non guidee' => 'id_visite',
+            'parc dattraction' => 'id_parc_attractions',
+            'restaurant' => 'id_restaurant',
+            'visite guidee' => 'id_visite-guidee'
         ];
 
         $id_colonne = $liste[$name_activite];

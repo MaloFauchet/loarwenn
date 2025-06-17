@@ -6,8 +6,8 @@ SET SCHEMA 'tripenazor';
 
     -- Type Activité 
     CREATE TYPE type_activite AS ENUM (
-    'visite_guide',
-    'visite_non_guide',
+    'visite_guidee',
+    'visite_non_guidee',
     'activite',
     'parc_attraction',
     'spectacle',
@@ -1963,6 +1963,7 @@ BEGIN
         END IF;
     END LOOP;
 END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW v_avis AS
 SELECT 
