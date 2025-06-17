@@ -1,4 +1,5 @@
--- Suppression des tables existantes
+
+        -- Suppression des tables existantes
 DROP SCHEMA IF EXISTS tripenazor CASCADE;
 CREATE SCHEMA tripenazor;
 SET SCHEMA 'tripenazor';
@@ -561,38 +562,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION get_repas_by_offre(o_id_offre INT)
-RETURNS TEXT AS $$
-DECLARE
-    result TEXT;
-BEGIN
-    SELECT string_agg(DISTINCT type_repas.libelle_repas, ', ')
-    INTO result
-    FROM tripenazor.type_repas
-	LEFT JOIN tripenazor.type_repas_disponible ON type_repas.id_repas = type_repas_disponible.id_repas
-    WHERE type_repas_disponible.id_offre = o_id_offre;
-       
-
-    RETURN result;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION get_langue_by_offre(o_id_offre INT)
-RETURNS TEXT AS $$
-DECLARE
-    result TEXT;
-BEGIN
-    SELECT string_agg(DISTINCT langue.libelle_langue, ', ')
-    INTO result
-    FROM tripenazor.visite_guidee_disponible_en_langue vgl
-    JOIN tripenazor.langue ON langue.id_langue = vgl.id_langue
-    WHERE vgl.id_visite = o_id_offre;
-
-    RETURN result;
-END;
-$$ LANGUAGE plpgsql;
-
-
 CREATE OR REPLACE FUNCTION get_horaires_by_offre(p_id_offre INT)
 RETURNS TEXT AS $$
 DECLARE
@@ -625,36 +594,67 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
-CREATE OR REPLACE FUNCTION get_pro_info_by_offre(p_id_offre INTEGER)
-RETURNS TABLE (
-    id_pro INTEGER,
-    nom TEXT,
-    prenom TEXT,
-    email TEXT,
-    telephone TEXT,
-    site_web TEXT,
-    nom_societe TEXT
-) AS $$
+CREATE OR REPLACE FUNCTION get_langue_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
 BEGIN
-    RETURN QUERY
-    SELECT 
-        pro.id_utilisateur AS id_pro,
-        u.nom::TEXT,
-        u.prenom::TEXT,
-        u.email::TEXT,
-        u.num_telephone::TEXT,
-        pro.lien_site_web::TEXT,
-        COALESCE(ppr.denomination, ppu.raison_sociale)::TEXT as nom_societe
-    FROM professionnel pro
-    INNER JOIN utilisateur u on pro.id_utilisateur = u.id_utilisateur
-    LEFT JOIN professionnel_prive ppr on ppr.id_utilisateur = u.id_utilisateur
-    LEFT JOIN professionnel_public ppu on ppu.id_utilisateur = u.id_utilisateur
-    LEFT JOIN abonnement on abonnement.id_utilisateur_prive = u.id_utilisateur AND abonnement.id_offre = p_id_offre
-    LEFT JOIN pro_public_propose_offre on pro_public_propose_offre.id_utilisateur_public = u.id_utilisateur AND pro_public_propose_offre.id_offre = p_id_offre
-    LIMIT 1;
+    SELECT string_agg(DISTINCT langue.libelle_langue, ', ')
+    INTO result
+    FROM tripenazor.visite_guidee_disponible_en_langue vgl
+    JOIN tripenazor.langue ON langue.id_langue = vgl.id_langue
+    WHERE vgl.id_visite = o_id_offre;
+
+    RETURN result;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_repas_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT type_repas.libelle_repas, ', ')
+    INTO result
+    FROM tripenazor.type_repas
+	LEFT JOIN tripenazor.type_repas_disponible ON type_repas.id_repas = type_repas_disponible.id_repas
+    WHERE type_repas_disponible.id_offre = o_id_offre;
+       
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_prestation_incluses_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT p.libelle_prestation, ', ')
+    INTO result
+    from tripenazor.activite_inclus_prestation as ap
+	LEFT JOIN tripenazor.prestation as p ON ap.id_prestation = p.id_prestation
+    WHERE ap.id_offre = o_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_prestation_non_incluses_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT p.libelle_prestation, ', ')
+    INTO result
+    from tripenazor.activite_non_inclus_prestation as ap
+	LEFT JOIN tripenazor.prestation as p ON ap.id_prestation = p.id_prestation
+    WHERE ap.id_offre = o_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+-- Vues de données
 
 
 -- Vues de données
@@ -708,7 +708,7 @@ GROUP BY
     v.nom_ville,
     v.code_postal;
 
-	CREATE OR REPLACE VIEW infos_carte_offre_with_offline AS
+    CREATE OR REPLACE VIEW infos_carte_offre_with_offline AS
 SELECT 
     o.id_offre,
     o.titre_offre,
@@ -758,5 +758,3202 @@ SELECT
         adr.complement_adresse,
         v.nom_ville,
         v.code_postal;
+
+    CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_activite(
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_prestations_incluses TEXT[],
+    p_prestations_non_incluses TEXT[],
+    p_duree TIME,
+    p_age INT,
+	
+	p_prix_prive FLOAT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+    v_id_prestation_incluse INT;
+    v_id_prestation_non_incluse INT;
+	v_jour TEXT;
+    v_tag TEXT;
+	v_prestation_incluse TEXT;
+	v_prestation_non_incluse TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville 
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        -- Insère l'adresse
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (p_voie, p_numero_adresse, p_complement_adresse, v_id_ville)
+        RETURNING id_adresse INTO v_id_adresse;
+    END IF;
+
+    -- Insère image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image, p_chemin_image)
+    RETURNING id_image INTO v_id_image;
+	
+    -- Insertion de l'offre
+    INSERT INTO tripenazor.offre (
+        titre_offre,
+        en_ligne,
+        resume,
+        description,
+        accessibilite,
+        type_offre,
+        prix_TTC_min,
+        id_adresse,
+        id_image_couverture
+    )
+    VALUES (
+        p_titre_offre,
+        p_en_ligne,
+        p_resume,
+        p_description,
+        p_accessibilite,
+        p_type_offre::tripenazor.type_activite,
+        p_prix_TTC_min,
+        v_id_adresse,
+        v_id_image
+    )
+    RETURNING id_offre INTO v_id_offre;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image);
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour = null;
+
+        SELECT id_jour INTO v_id_jour FROM tripenazor.jour
+        WHERE id_jour = v_jour::INT;
+
+        IF v_id_jour IS NOT NULL THEN 
+            INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+            VALUES (v_id_jour, v_id_offre);
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire
+    WHERE debut = p_matin_heure_debut::TIME WITH TIME ZONE  AND
+    fin = p_matin_heure_fin::TIME WITH TIME ZONE;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut::TIME WITH TIME ZONE, 
+            p_matin_heure_fin::TIME WITH TIME ZONE
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+    WHERE debut = p_apres_midi_heure_debut::TIME AND
+    fin = p_apres_midi_heure_fin::TIME;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut::TIME, 
+            p_apres_midi_heure_fin::TIME
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+        VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+        VALUES (v_id_offre, v_id_professionnel_public);
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Insertion dans offre_activite
+    INSERT INTO tripenazor.offre_activite (
+        id_offre, duree, age
+    )
+    VALUES (
+        v_id_offre, p_duree, p_age
+    );
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag INTO v_id_tag FROM tripenazor.tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag INTO v_id_tag_commun FROM tripenazor.tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_activite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Prestation incluses
+    FOREACH v_prestation_incluse IN ARRAY p_prestations_incluses
+    LOOP
+        v_id_prestation_incluse = NULL;
+
+        SELECT id_prestation INTO v_id_prestation_incluse FROM tripenazor.prestation 
+        WHERE libelle_prestation = v_prestation_incluse;
+
+        IF v_id_prestation_incluse IS NULL THEN
+            INSERT INTO tripenazor.prestation (libelle_prestation)
+            VALUES (v_prestation_incluse)
+			RETURNING id_prestation INTO v_id_prestation_incluse;
+
+            INSERT INTO tripenazor.activite_inclus_prestation (id_offre, id_prestation)
+            VALUES (v_id_offre, v_id_prestation_incluse);
+        END IF;
+    END LOOP;
+
+    -- Prestation non incluses
+    FOREACH v_prestation_non_incluse IN ARRAY p_prestations_non_incluses
+    LOOP
+        v_id_prestation_incluse = NULL;
+
+        SELECT id_prestation INTO v_id_prestation_incluse FROM tripenazor.prestation 
+        WHERE libelle_prestation = v_prestation_non_incluse;
+
+        IF v_id_prestation_non_incluse IS NULL THEN 
+            INSERT INTO tripenazor.prestation (libelle_prestation)
+            VALUES (v_prestation_non_incluse)
+			RETURNING id_prestation INTO v_id_prestation_incluse;
+
+            INSERT INTO tripenazor.activite_non_inclus_prestation (id_offre, id_prestation)
+            VALUES (v_id_offre, v_id_prestation_incluse);
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_parc_attration(
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_nb_attractions INT,
+    p_age_min INT,
+    p_titre_image_parc TEXT,
+    p_chemin_image_parc TEXT,
+
+    p_prix_prive FLOAT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_image_parc INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_jour INT;
+    v_tag TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville 
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        -- Insère l'adresse
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (p_voie, p_numero_adresse, p_complement_adresse, v_id_ville)
+        RETURNING id_adresse INTO v_id_adresse;
+    END IF;
+
+    -- Insère image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image, p_chemin_image)
+    RETURNING id_image INTO v_id_image;
+	
+    -- Insertion de l'offre
+    INSERT INTO tripenazor.offre (
+        titre_offre,
+        en_ligne,
+        resume,
+        description,
+        accessibilite,
+        type_offre,
+        prix_TTC_min,
+        id_adresse,
+        id_image_couverture
+    )
+    VALUES (
+        p_titre_offre,
+        p_en_ligne,
+        p_resume,
+        p_description,
+        p_accessibilite,
+        p_type_offre::tripenazor.type_activite,
+        p_prix_TTC_min,
+        v_id_adresse,
+        v_id_image
+    )
+    RETURNING id_offre INTO v_id_offre;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image);
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour = null;
+
+        SELECT id_jour INTO v_id_jour FROM tripenazor.jour
+        WHERE id_jour = v_jour::INT;
+
+        IF v_id_jour IS NOT NULL THEN 
+            INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+            VALUES (v_id_jour, v_id_offre);
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire
+    WHERE debut = p_matin_heure_debut::TIME WITH TIME ZONE  AND
+    fin = p_matin_heure_fin::TIME WITH TIME ZONE;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut::TIME WITH TIME ZONE, 
+            p_matin_heure_fin::TIME WITH TIME ZONE
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+    WHERE debut = p_apres_midi_heure_debut::TIME AND
+    fin = p_apres_midi_heure_fin::TIME;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut::TIME, 
+            p_apres_midi_heure_fin::TIME
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+        VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+        VALUES (v_id_offre, v_id_professionnel_public);
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+    
+    -- ///////// Partie différente /////////
+	-- Image carte du parc
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image_parc, p_chemin_image_parc)
+    RETURNING id_image INTO v_id_image_parc;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image_parc);
+	
+	-- Insertion dans offre_parc_attraction
+    INSERT INTO tripenazor.offre_parc_attraction (id_offre, id_image, nb_attraction, age_min)
+    VALUES (v_id_offre, v_id_image_parc, p_nb_attractions, p_age_min);
+	
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag INTO v_id_tag FROM tripenazor.tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag INTO v_id_tag_commun FROM tripenazor.tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_parc_attraction_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_restauration(
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_titre_image_carte TEXT,
+    p_chemin_image_carte TEXT,
+    p_libelle_gamme_prix TEXT,
+
+	p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_restauration INT;
+    v_id_image_carte INT;
+    v_id_gamme_prix INT;
+	v_jour INT;
+    v_tag TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville 
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        -- Insère l'adresse
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (p_voie, p_numero_adresse, p_complement_adresse, v_id_ville)
+        RETURNING id_adresse INTO v_id_adresse;
+    END IF;
+
+    -- Insère image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image, p_chemin_image)
+    RETURNING id_image INTO v_id_image;
+	
+    -- Insertion de l'offre
+    INSERT INTO tripenazor.offre (
+        titre_offre,
+        en_ligne,
+        resume,
+        description,
+        accessibilite,
+        type_offre,
+        prix_TTC_min,
+        id_adresse,
+        id_image_couverture
+    )
+    VALUES (
+        p_titre_offre,
+        p_en_ligne,
+        p_resume,
+        p_description,
+        p_accessibilite,
+        p_type_offre::tripenazor.type_activite,
+        p_prix_TTC_min,
+        v_id_adresse,
+        v_id_image
+    )
+    RETURNING id_offre INTO v_id_offre;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image);
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour = null;
+
+        SELECT id_jour INTO v_id_jour FROM tripenazor.jour
+        WHERE id_jour = v_jour::INT;
+
+        IF v_id_jour IS NOT NULL THEN 
+            INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+            VALUES (v_id_jour, v_id_offre);
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire
+    WHERE debut = p_matin_heure_debut::TIME WITH TIME ZONE  AND
+    fin = p_matin_heure_fin::TIME WITH TIME ZONE;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut::TIME WITH TIME ZONE, 
+            p_matin_heure_fin::TIME WITH TIME ZONE
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+    WHERE debut = p_apres_midi_heure_debut::TIME AND
+    fin = p_apres_midi_heure_fin::TIME;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut::TIME, 
+            p_apres_midi_heure_fin::TIME
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+        VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+        VALUES (v_id_offre, v_id_professionnel_public);
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Image de la carte
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image_carte, p_chemin_image_carte)
+    RETURNING id_image INTO v_id_image_carte;
+    
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image_carte);
+
+    -- Gamme de prix
+    SELECT id_gamme_prix INTO v_id_gamme_prix 
+    FROM tripenazor.gamme_prix
+    WHERE libelle_gamme_prix = p_libelle_gamme_prix;
+
+    IF v_id_gamme_prix IS NULL THEN
+        INSERT INTO tripenazor.gamme_prix (libelle_gamme_prix)
+        VALUES (p_libelle_gamme_prix)
+        RETURNING id_gamme_prix INTO v_id_gamme_prix;
+    END IF;
+
+    -- Insertion dans offre_activite
+    INSERT INTO tripenazor.offre_restauration (id_offre, id_image, id_gamme_prix)
+    VALUES (v_id_offre, v_id_image_carte, v_id_gamme_prix);
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_restauration = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag
+        WHERE libelle_tag = v_tag
+        INTO v_id_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun
+            WHERE id_tag = v_id_tag
+            INTO v_id_tag_restauration;
+
+            IF v_id_tag_restauration IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_activite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_spectacle(
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_duree TIME,
+    p_capacite_accueil FLOAT,
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+	v_id_tag_commun INT;
+	v_jour INT;
+    v_tag TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville 
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        -- Insère l'adresse
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (p_voie, p_numero_adresse, p_complement_adresse, v_id_ville)
+        RETURNING id_adresse INTO v_id_adresse;
+    END IF;
+
+    -- Insère image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image, p_chemin_image)
+    RETURNING id_image INTO v_id_image;
+	
+    -- Insertion de l'offre
+    INSERT INTO tripenazor.offre (
+        titre_offre,
+        en_ligne,
+        resume,
+        description,
+        accessibilite,
+        type_offre,
+        prix_TTC_min,
+        id_adresse,
+        id_image_couverture
+    )
+    VALUES (
+        p_titre_offre,
+        p_en_ligne,
+        p_resume,
+        p_description,
+        p_accessibilite,
+        p_type_offre::tripenazor.type_activite,
+        p_prix_TTC_min,
+        v_id_adresse,
+        v_id_image
+    )
+    RETURNING id_offre INTO v_id_offre;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image);
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour = null;
+
+        SELECT id_jour INTO v_id_jour FROM tripenazor.jour
+        WHERE id_jour = v_jour::INT;
+
+        IF v_id_jour IS NOT NULL THEN 
+            INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+            VALUES (v_id_jour, v_id_offre);
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire
+    WHERE debut = p_matin_heure_debut::TIME WITH TIME ZONE  AND
+    fin = p_matin_heure_fin::TIME WITH TIME ZONE;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut::TIME WITH TIME ZONE, 
+            p_matin_heure_fin::TIME WITH TIME ZONE
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+    WHERE debut = p_apres_midi_heure_debut::TIME AND
+    fin = p_apres_midi_heure_fin::TIME;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut::TIME, 
+            p_apres_midi_heure_fin::TIME
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+        VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+        VALUES (v_id_offre, v_id_professionnel_public);
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Insertion dans offre_activite
+    INSERT INTO tripenazor.offre_spectacle (id_offre, duree, capacite_accueil)VALUES (v_id_offre, p_duree, p_capacite_accueil);
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag
+        WHERE libelle_tag = v_tag
+        INTO v_id_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun
+            WHERE id_tag = v_id_tag
+            INTO v_id_tag_commun;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_spectacle_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_guidee(
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_duree TIME,
+    p_langues TEXT[],
+
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+    v_id_langue INT;
+	v_jour INT;
+    v_tag TEXT;
+    v_langue TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville 
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        -- Insère l'adresse
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (p_voie, p_numero_adresse, p_complement_adresse, v_id_ville)
+        RETURNING id_adresse INTO v_id_adresse;
+    END IF;
+
+    -- Insère image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image, p_chemin_image)
+    RETURNING id_image INTO v_id_image;
+	
+    -- Insertion de l'offre
+    INSERT INTO tripenazor.offre (
+        titre_offre,
+        en_ligne,
+        resume,
+        description,
+        accessibilite,
+        type_offre,
+        prix_TTC_min,
+        id_adresse,
+        id_image_couverture
+    )
+    VALUES (
+        p_titre_offre,
+        p_en_ligne,
+        p_resume,
+        p_description,
+        p_accessibilite,
+        p_type_offre::tripenazor.type_activite,
+        p_prix_TTC_min,
+        v_id_adresse,
+        v_id_image
+    )
+    RETURNING id_offre INTO v_id_offre;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image);
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour = null;
+
+        SELECT id_jour INTO v_id_jour FROM tripenazor.jour
+        WHERE id_jour = v_jour::INT;
+
+        IF v_id_jour IS NOT NULL THEN 
+            INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+            VALUES (v_id_jour, v_id_offre);
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire
+    WHERE debut = p_matin_heure_debut::TIME WITH TIME ZONE  AND
+    fin = p_matin_heure_fin::TIME WITH TIME ZONE;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut::TIME WITH TIME ZONE, 
+            p_matin_heure_fin::TIME WITH TIME ZONE
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+    WHERE debut = p_apres_midi_heure_debut::TIME AND
+    fin = p_apres_midi_heure_fin::TIME;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut::TIME, 
+            p_apres_midi_heure_fin::TIME
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+        VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+        VALUES (v_id_offre, v_id_professionnel_public);
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Insertion dans offre_visite
+    INSERT INTO tripenazor.offre_visite (id_offre, duree)VALUES (v_id_offre, p_duree);
+
+    -- Insertion dans visite_guidee
+    INSERT INTO tripenazor.visite_guidee (id_offre)VALUES (v_id_offre);
+
+    -- Les langues
+    FOREACH v_langue IN ARRAY p_langues
+    LOOP
+        v_id_langue = null;
+        SELECT id_langue FROM tripenazor.langue l
+        WHERE l.libelle_langue = v_langue
+        INTO v_id_langue;
+
+        IF v_id_langue IS NULL THEN 
+            INSERT INTO tripenazor.langue (libelle_langue) VALUES (v_langue)
+			RETURNING id_langue INTO v_id_langue;
+        END IF;
+        
+        INSERT INTO tripenazor.visite_guidee_disponible_en_langue (id_visite, id_langue)VALUES ( v_id_offre, v_id_langue);
+    END LOOP;
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag
+        WHERE libelle_tag = v_tag
+        INTO v_id_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun
+            WHERE id_tag = v_id_tag
+            INTO v_id_tag_commun;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_visite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_non_guidee(
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_duree TIME,
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_jour INT;
+    v_tag TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville 
+    WHERE nom_ville = p_nom_ville AND code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (p_nom_ville, p_code_postal)
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        -- Insère l'adresse
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (p_voie, p_numero_adresse, p_complement_adresse, v_id_ville)
+        RETURNING id_adresse INTO v_id_adresse;
+    END IF;
+
+    -- Insère image
+    INSERT INTO tripenazor.image (titre_image, chemin)
+    VALUES (p_titre_image, p_chemin_image)
+    RETURNING id_image INTO v_id_image;
+	
+    -- Insertion de l'offre
+    INSERT INTO tripenazor.offre (
+        titre_offre,
+        en_ligne,
+        resume,
+        description,
+        accessibilite,
+        type_offre,
+        prix_TTC_min,
+        id_adresse,
+        id_image_couverture
+    )
+    VALUES (
+        p_titre_offre,
+        p_en_ligne,
+        p_resume,
+        p_description,
+        p_accessibilite,
+        p_type_offre::tripenazor.type_activite,
+        p_prix_TTC_min,
+        v_id_adresse,
+        v_id_image
+    )
+    RETURNING id_offre INTO v_id_offre;
+
+    -- Liaison image et offre
+    INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+    VALUES (v_id_offre, v_id_image);
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour = null;
+
+        SELECT id_jour INTO v_id_jour FROM tripenazor.jour
+        WHERE id_jour = v_jour::INT;
+
+        IF v_id_jour IS NOT NULL THEN 
+            INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+            VALUES (v_id_jour, v_id_offre);
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire
+    WHERE debut = p_matin_heure_debut::TIME WITH TIME ZONE  AND
+    fin = p_matin_heure_fin::TIME WITH TIME ZONE;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut::TIME WITH TIME ZONE, 
+            p_matin_heure_fin::TIME WITH TIME ZONE
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+    WHERE debut = p_apres_midi_heure_debut::TIME AND
+    fin = p_apres_midi_heure_fin::TIME;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut::TIME, 
+            p_apres_midi_heure_fin::TIME
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+        VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+        VALUES (v_id_offre, v_id_professionnel_public);
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+        -- Insertion dans offre_visite
+    INSERT INTO tripenazor.offre_visite (id_offre, duree)VALUES (v_id_offre, p_duree);
+
+    -- Insertion dans visite_guidee
+    INSERT INTO tripenazor.visite_guidee (id_offre)VALUES (v_id_offre);
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag
+        WHERE libelle_tag = v_tag
+        INTO v_id_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun
+            WHERE id_tag = v_id_tag
+            INTO v_id_tag_commun;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_visite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE VIEW v_avis AS
+SELECT 
+    a.id_avis,
+    a.id_utilisateur,
+    a.id_offre,
+    a.description_avis,
+    a.note_avis,
+    a.titre_avis,
+    a.date_avis,
+    (
+        SELECT COUNT(*) 
+        FROM tripenazor.membre_aime_avis maa 
+        WHERE maa.id_avis = a.id_avis
+    ) AS nb_aime,
+
+    r.id_avis AS id_avis_reponse,
+    r.description_rep,
+
+    i.id_image,
+    i.titre_image,
+    i.chemin
+FROM tripenazor.avis a
+LEFT JOIN tripenazor.reponse_pro r ON a.id_avis = r.id_avis
+LEFT JOIN tripenazor.membre m ON a.id_utilisateur = m.id_utilisateur
+LEFT JOIN tripenazor.avis_possede_image api ON a.id_avis = api.id_avis
+LEFT JOIN tripenazor.image i ON api.id_image = i.id_image;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_offre_activite(
+    p_id_offre INT,
+    
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_prestations_incluses TEXT[],
+    p_prestations_non_incluses TEXT[],
+    p_duree TIME,
+    p_age INT,
+	
+	p_prix_prive FLOAT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_id_prestation_incluse INT;
+	v_id_prestation_non_incluse INT;
+	v_jour TEXT;
+    v_tag TEXT;
+	v_prestation_incluse TEXT;
+	v_prestation_non_incluse TEXT;
+    v_offre_activite_existante INT;
+BEGIN
+SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND
+        code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (
+            p_nom_ville,
+            p_code_postal
+        )
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse 
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (
+            p_voie, 
+            p_numero_adresse, 
+            p_complement_adresse, 
+            v_id_ville
+        )
+        RETURNING id_adresse INTO v_id_adresse;
+    ELSE 
+        -- Update dans adresse
+        UPDATE tripenazor.adresse
+        SET voie = p_voie, 
+            numero_adresse = p_numero_adresse, 
+            complement_adresse = p_complement_adresse, 
+            id_ville = v_id_ville
+        WHERE id_adresse = v_id_adresse;
+    END IF;
+
+    -- Update image
+    SELECT id_image INTO v_id_image FROM tripenazor.image 
+    WHERE titre_image = p_titre_image AND 
+        chemin = p_chemin_image;
+
+    IF v_id_image IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image, p_chemin_image)
+        RETURNING id_image INTO v_id_image;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (p_id_offre, v_id_image);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image,
+            chemin = p_chemin_image
+        WHERE id_image = v_id_image;
+    END IF;
+
+    -- Update de l'offre
+    SELECT id_offre FROM tripenazor.offre INTO v_id_offre
+    WHERE id_offre = p_id_offre;
+
+    IF v_id_offre IS NOT NULL THEN
+        UPDATE tripenazor.offre
+        SET titre_offre = p_titre_offre,
+            en_ligne = p_en_ligne,
+            resume = p_resume,
+            description = p_description,
+            accessibilite = p_accessibilite,
+            type_offre = p_type_offre,
+            prix_TTC_min = p_prix_TTC_min,
+            id_adresse = v_id_adresse,
+            id_image_couverture = v_id_image
+        WHERE id_offre = v_id_offre;
+    ELSE 
+        RAISE EXCEPTION 'L''offre n''existe pas';
+    END IF;
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour := NULL;
+
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
+
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
+            ) THEN
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire 
+    WHERE debut = p_matin_heure_debut AND fin = p_matin_heure_fin;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut, 
+            p_matin_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_matin_heure_debut,
+            fin = p_matin_heure_fin
+        WHERE id_horaire = v_id_horaire_matin;
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+    WHERE debut = p_apres_midi_heure_debut AND
+    fin = p_apres_midi_heure_fin;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut, 
+            p_apres_midi_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_apres_midi_heure_debut,
+            fin = p_apres_midi_heure_fin
+        WHERE id_horaire = v_id_horaire_apres_midi;
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive 
+    FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public 
+    FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.abonnement
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive
+        ) THEN
+            UPDATE tripenazor.abonnement
+            SET prix = p_prix,
+                id_utilisateur_prive = v_id_professionnel_prive
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive;
+        ELSE
+            INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix);
+        END IF;
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.pro_public_propose_offre
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public
+        ) THEN
+            UPDATE tripenazor.pro_public_propose_offre
+            SET id_utilisateur_public = v_id_professionnel_public
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public;
+        ELSE
+            INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+            VALUES (v_id_offre, v_id_professionnel_public);
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Update dans offre_activite
+    SELECT id_offre INTO v_offre_activite_existante 
+    FROM tripenazor.offre_activite
+    WHERE id_offre = p_id_offre;
+    
+    IF v_offre_activite_existante IS NULL THEN
+        INSERT INTO tripenazor.offre_activite (id_offre, duree, age)
+        VALUES (v_id_offre, p_duree, p_age)
+        RETURNING id_offre INTO v_offre_activite_existante;
+    ELSE 
+        UPDATE tripenazor.offre_activite
+        SET duree = p_duree,
+            age = p_age
+        WHERE id_offre = v_offre_activite_existante;
+    END IF;
+
+    -- Update des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag INTO v_id_tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun INTO v_id_tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_activite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            ELSE
+                UPDATE tripenazor.offre_activite_possede_tag
+                SET id_tag = tag
+                WHERE id_offre = p_id_offre;
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Prestation incluses
+    FOREACH v_prestation_incluse IN ARRAY p_prestations_incluses
+    LOOP
+        v_id_prestation_incluse = NULL;
+
+        SELECT id_prestation INTO v_id_prestation_incluse FROM tripenazor.prestation
+        WHERE libelle_prestation = v_prestation_incluse;
+
+        IF v_id_prestation_incluse IS NULL THEN
+            INSERT INTO tripenazor.prestation (libelle_prestation)
+            VALUES (v_prestation_incluse)
+            RETURNING id_prestation INTO v_id_prestation_incluse;
+
+            INSERT INTO tripenazor.activite_inclus_prestation (id_offre, id_prestation)
+            VALUES (v_id_offre, v_id_prestation_incluse);
+        ELSE 
+            UPDATE tripenazor.prestation
+            SET libelle_prestation = v_prestation_incluse
+            WHERE id_prestation = v_id_prestation_incluse;
+
+            UPDATE tripenazor.activite_inclus_prestation
+            SET id_offre = p_id_offre, id_prestation = v_id_prestation_incluse
+            WHERE id_offre = v_id_offre AND id_prestation = v_id_prestation_incluse;
+        END IF;
+    END LOOP;
+
+    -- Prestation non incluses
+    FOREACH v_prestation_non_incluse IN ARRAY p_prestations_non_incluses
+    LOOP
+        v_id_prestation_non_incluse = NULL;
+
+        SELECT id_prestation INTO v_id_prestation_non_incluse FROM tripenazor.prestation
+        WHERE libelle_prestation = v_prestation_non_incluse;
+
+        IF v_id_prestation_non_incluse IS NULL THEN
+            INSERT INTO tripenazor.prestation (libelle_prestation)
+            VALUES (v_prestation_non_incluse)
+            RETURNING id_prestation INTO v_id_prestation_non_incluse;
+
+            INSERT INTO tripenazor.activite_non_inclus_prestation (id_offre, id_prestation)
+            VALUES (v_id_offre, v_id_prestation_non_incluse);
+        ELSE 
+            UPDATE tripenazor.prestation
+            SET libelle_prestation = v_prestation_non_incluse
+            WHERE id_prestation = v_id_prestation_non_incluse;
+
+            UPDATE tripenazor.activite_non_inclus_prestation
+            SET id_offre = p_id_offre, id_prestation = v_id_prestation_non_incluse
+            WHERE id_offre = v_id_offre AND id_prestation = v_id_prestation_non_incluse;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_offre_parc_attraction(
+    p_id_offre INT,
+    
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_nb_attractions INT,
+    p_age_min INT,
+    p_titre_image_parc TEXT,
+    p_chemin_image_parc TEXT,
+
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_id_prestation_incluse INT;
+	v_id_prestation_non_incluse INT;
+	v_jour TEXT;
+    v_tag TEXT;
+    v_offre_parc_attraction_existante INT;
+
+    v_id_image_parc INT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND
+        code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (
+            p_nom_ville,
+            p_code_postal
+        )
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse 
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (
+            p_voie, 
+            p_numero_adresse, 
+            p_complement_adresse, 
+            v_id_ville
+        )
+        RETURNING id_adresse INTO v_id_adresse;
+    ELSE 
+        -- Update dans adresse
+        UPDATE tripenazor.adresse
+        SET voie = p_voie, 
+            numero_adresse = p_numero_adresse, 
+            complement_adresse = p_complement_adresse, 
+            id_ville = v_id_ville
+        WHERE id_adresse = v_id_adresse;
+    END IF;
+
+    -- Update image
+    SELECT id_image INTO v_id_image FROM tripenazor.image 
+    WHERE titre_image = p_titre_image AND 
+        chemin = p_chemin_image;
+
+    IF v_id_image IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image, p_chemin_image)
+        RETURNING id_image INTO v_id_image;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (p_id_offre, v_id_image);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image,
+            chemin = p_chemin_image
+        WHERE id_image = v_id_image;
+    END IF;
+
+    -- Update de l'offre
+    SELECT id_offre FROM tripenazor.offre INTO v_id_offre
+    WHERE id_offre = p_id_offre;
+
+    IF v_id_offre IS NOT NULL THEN
+        UPDATE tripenazor.offre
+        SET titre_offre = p_titre_offre,
+            en_ligne = p_en_ligne,
+            resume = p_resume,
+            description = p_description,
+            accessibilite = p_accessibilite,
+            type_offre = p_type_offre,
+            prix_TTC_min = p_prix_TTC_min,
+            id_adresse = v_id_adresse,
+            id_image_couverture = v_id_image
+        WHERE id_offre = v_id_offre;
+    ELSE 
+        RAISE EXCEPTION 'L''offre n''existe pas';
+    END IF;
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour := NULL;
+
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
+
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
+            ) THEN
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire 
+    WHERE debut = p_matin_heure_debut AND fin = p_matin_heure_fin;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut, 
+            p_matin_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_matin_heure_debut,
+            fin = p_matin_heure_fin
+        WHERE id_horaire = v_id_horaire_matin;
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+    WHERE debut = p_apres_midi_heure_debut AND
+    fin = p_apres_midi_heure_fin;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut, 
+            p_apres_midi_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_apres_midi_heure_debut,
+            fin = p_apres_midi_heure_fin
+        WHERE id_horaire = v_id_horaire_apres_midi;
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive 
+    FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public 
+    FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.abonnement
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive
+        ) THEN
+            UPDATE tripenazor.abonnement
+            SET prix = p_prix,
+                id_utilisateur_prive = v_id_professionnel_prive
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive;
+        ELSE
+            INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix);
+        END IF;
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.pro_public_propose_offre
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public
+        ) THEN
+            UPDATE tripenazor.pro_public_propose_offre
+            SET id_utilisateur_public = v_id_professionnel_public
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public;
+        ELSE
+            INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+            VALUES (v_id_offre, v_id_professionnel_public);
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+
+    -- ///////// Partie différente /////////
+    -- Image carte du parc
+    SELECT id_image INTO v_id_image_parc FROM tripenazor.image
+    WHERE titre_image = p_titre_image_parc AND chemin = p_chemin_image_parc;
+
+    IF v_id_image_parc IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_parc, p_chemin_image_parc)
+        RETURNING id_image INTO v_id_image_parc;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image_parc);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image_parc,
+            chemin = p_chemin_image_parc
+        WHERE id_image = v_id_image_parc;
+    END IF;
+
+    -- Update dans offre_parc_attraction
+    SELECT id_offre INTO v_offre_parc_attraction_existante 
+    FROM tripenazor.offre_parc_attraction
+    WHERE id_offre = p_id_offre;
+    
+    IF v_offre_parc_attraction_existante IS NULL THEN
+        INSERT INTO tripenazor.offre_parc_attraction (id_offre, id_image, nb_attraction, age_min)
+        VALUES (v_id_offre, v_id_image_parc, p_nb_attractions, p_age_min)
+        RETURNING id_offre INTO v_offre_parc_attraction_existante;
+    ELSE 
+        UPDATE tripenazor.offre_parc_attraction
+        SET id_image = v_id_image_parc, 
+            nb_attraction = p_nb_attractions, 
+            age_min = p_age_min
+        WHERE id_offre = v_offre_parc_attraction_existante;
+    END IF;
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag INTO v_id_tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun INTO v_id_tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_parc_attraction_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            ELSE
+                UPDATE tripenazor.offre_parc_attraction_possede_tag
+                SET id_tag = v_tag
+                WHERE id_offre = p_id_offre;
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_offre_restaurant(
+    p_id_offre INT,
+    
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_titre_image_carte TEXT,
+    p_chemin_image_carte TEXT,
+    p_libelle_gamme_prix TEXT,
+
+	p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_restauration INT;
+	v_id_image_carte INT;
+	v_id_gamme_prix INT;
+	v_jour INT;
+    v_tag TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND
+        code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (
+            p_nom_ville,
+            p_code_postal
+        )
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse 
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (
+            p_voie, 
+            p_numero_adresse, 
+            p_complement_adresse, 
+            v_id_ville
+        )
+        RETURNING id_adresse INTO v_id_adresse;
+    ELSE 
+        -- Update dans adresse
+        UPDATE tripenazor.adresse
+        SET voie = p_voie, 
+            numero_adresse = p_numero_adresse, 
+            complement_adresse = p_complement_adresse, 
+            id_ville = v_id_ville
+        WHERE id_adresse = v_id_adresse;
+    END IF;
+
+    -- Update image
+    SELECT id_image INTO v_id_image FROM tripenazor.image 
+    WHERE titre_image = p_titre_image AND 
+        chemin = p_chemin_image;
+
+    IF v_id_image IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image, p_chemin_image)
+        RETURNING id_image INTO v_id_image;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (p_id_offre, v_id_image);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image,
+            chemin = p_chemin_image
+        WHERE id_image = v_id_image;
+    END IF;
+
+    -- Update de l'offre
+    SELECT id_offre FROM tripenazor.offre INTO v_id_offre
+    WHERE id_offre = p_id_offre;
+
+    IF v_id_offre IS NOT NULL THEN
+        UPDATE tripenazor.offre
+        SET titre_offre = p_titre_offre,
+            en_ligne = p_en_ligne,
+            resume = p_resume,
+            description = p_description,
+            accessibilite = p_accessibilite,
+            type_offre = p_type_offre,
+            prix_TTC_min = p_prix_TTC_min,
+            id_adresse = v_id_adresse,
+            id_image_couverture = v_id_image
+        WHERE id_offre = v_id_offre;
+    ELSE 
+        RAISE EXCEPTION 'L''offre n''existe pas';
+    END IF;
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour := NULL;
+
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
+
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
+            ) THEN
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire 
+    WHERE debut = p_matin_heure_debut AND fin = p_matin_heure_fin;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut, 
+            p_matin_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_matin_heure_debut,
+            fin = p_matin_heure_fin
+        WHERE id_horaire = v_id_horaire_matin;
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+    WHERE debut = p_apres_midi_heure_debut AND
+    fin = p_apres_midi_heure_fin;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut, 
+            p_apres_midi_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_apres_midi_heure_debut,
+            fin = p_apres_midi_heure_fin
+        WHERE id_horaire = v_id_horaire_apres_midi;
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive 
+    FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public 
+    FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.abonnement
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive
+        ) THEN
+            UPDATE tripenazor.abonnement
+            SET prix = p_prix,
+                id_utilisateur_prive = v_id_professionnel_prive
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive;
+        ELSE
+            INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix);
+        END IF;
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.pro_public_propose_offre
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public
+        ) THEN
+            UPDATE tripenazor.pro_public_propose_offre
+            SET id_utilisateur_public = v_id_professionnel_public
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public;
+        ELSE
+            INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+            VALUES (v_id_offre, v_id_professionnel_public);
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Image carte du parc
+    SELECT id_image INTO v_id_image_carte FROM tripenazor.image
+    WHERE titre_image = p_titre_image_carte AND chemin = p_chemin_image_carte;
+
+    IF v_id_image_carte IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_carte, p_chemin_image_carte)
+        RETURNING id_image INTO v_id_image_carte;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image_carte);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image_carte,
+            chemin = p_chemin_image_carte
+        WHERE id_image = v_id_image_carte;
+    END IF;
+
+    -- Gamme de prix
+    SELECT id_gamme_prix INTO v_id_gamme_prix FROM tripenazor.gamme_prix
+    WHERE libelle_gamme_prix = p_libelle_gamme_prix;
+
+    IF v_id_gamme_prix IS NULL THEN
+        INSERT INTO tripenazor.gamme_prix(id_gamme_prix, libelle_gamme_prix)
+        VALUES(v_id_gamme_prix, p_libelle_gamme_prix)
+        RETURNING id_gamme_prix INTO v_id_gamme_prix;
+    ELSE
+        UPDATE tripenazor.gamme_prix
+        SET libelle_gamme_prix = p_libelle_gamme_prix
+        WHERE id_gamme_prix = v_id_gamme_prix;
+    END IF;
+
+    -- Insertion dans offre_parc_attraction
+    UPDATE tripenazor.offre_restauration
+    SET id_offre = p_id_offre,
+        id_image = v_id_image_carte,
+        id_gamme_prix = v_id_gamme_prix
+    WHERE id_offre = p_id_offre;
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_restauration = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag INTO v_id_tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun INTO v_id_tag_restauration
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_restauration IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_restauration_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            ELSE
+                UPDATE tripenazor.offre_restauration_possede_tag
+                SET id_tag = v_tag
+                WHERE id_offre = p_id_offre;
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_offre_spectacle(
+    p_id_offre INT,
+    
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_duree TIME,
+    p_capacite_accueil FLOAT,
+
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_id_image_parc INT;
+	v_jour TEXT;
+    v_tag TEXT;
+BEGIN
+SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND
+        code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (
+            p_nom_ville,
+            p_code_postal
+        )
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse 
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (
+            p_voie, 
+            p_numero_adresse, 
+            p_complement_adresse, 
+            v_id_ville
+        )
+        RETURNING id_adresse INTO v_id_adresse;
+    ELSE 
+        -- Update dans adresse
+        UPDATE tripenazor.adresse
+        SET voie = p_voie, 
+            numero_adresse = p_numero_adresse, 
+            complement_adresse = p_complement_adresse, 
+            id_ville = v_id_ville
+        WHERE id_adresse = v_id_adresse;
+    END IF;
+
+    -- Update image
+    SELECT id_image INTO v_id_image FROM tripenazor.image 
+    WHERE titre_image = p_titre_image AND 
+        chemin = p_chemin_image;
+
+    IF v_id_image IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image, p_chemin_image)
+        RETURNING id_image INTO v_id_image;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (p_id_offre, v_id_image);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image,
+            chemin = p_chemin_image
+        WHERE id_image = v_id_image;
+    END IF;
+
+    -- Update de l'offre
+    SELECT id_offre FROM tripenazor.offre INTO v_id_offre
+    WHERE id_offre = p_id_offre;
+
+    IF v_id_offre IS NOT NULL THEN
+        UPDATE tripenazor.offre
+        SET titre_offre = p_titre_offre,
+            en_ligne = p_en_ligne,
+            resume = p_resume,
+            description = p_description,
+            accessibilite = p_accessibilite,
+            type_offre = p_type_offre,
+            prix_TTC_min = p_prix_TTC_min,
+            id_adresse = v_id_adresse,
+            id_image_couverture = v_id_image
+        WHERE id_offre = v_id_offre;
+    ELSE 
+        RAISE EXCEPTION 'L''offre n''existe pas';
+    END IF;
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour := NULL;
+
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
+
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
+            ) THEN
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire 
+    WHERE debut = p_matin_heure_debut AND fin = p_matin_heure_fin;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut, 
+            p_matin_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_matin_heure_debut,
+            fin = p_matin_heure_fin
+        WHERE id_horaire = v_id_horaire_matin;
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+    WHERE debut = p_apres_midi_heure_debut AND
+    fin = p_apres_midi_heure_fin;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut, 
+            p_apres_midi_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_apres_midi_heure_debut,
+            fin = p_apres_midi_heure_fin
+        WHERE id_horaire = v_id_horaire_apres_midi;
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive 
+    FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public 
+    FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.abonnement
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive
+        ) THEN
+            UPDATE tripenazor.abonnement
+            SET prix = p_prix,
+                id_utilisateur_prive = v_id_professionnel_prive
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive;
+        ELSE
+            INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix);
+        END IF;
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.pro_public_propose_offre
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public
+        ) THEN
+            UPDATE tripenazor.pro_public_propose_offre
+            SET id_utilisateur_public = v_id_professionnel_public
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public;
+        ELSE
+            INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+            VALUES (v_id_offre, v_id_professionnel_public);
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    UPDATE tripenazor.offre_spectacle 
+    SET duree = p_duree,
+        capacite_accueil = p_capacite_accueil
+    WHERE id_offre = p_id_offre;
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag INTO v_id_tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun INTO v_id_tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_spectacle_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            ELSE
+                UPDATE tripenazor.offre_spectacle_possede_tag
+                SET id_tag = v_tag
+                WHERE id_offre = p_id_offre;
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_guidee(
+    p_id_offre INT,
+    
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_duree TIME,
+    p_langues TEXT[],
+
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_jour TEXT;
+    v_tag TEXT;
+    v_langue TEXT;
+    v_id_langue INT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND
+        code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (
+            p_nom_ville,
+            p_code_postal
+        )
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse 
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (
+            p_voie, 
+            p_numero_adresse, 
+            p_complement_adresse, 
+            v_id_ville
+        )
+        RETURNING id_adresse INTO v_id_adresse;
+    ELSE 
+        -- Update dans adresse
+        UPDATE tripenazor.adresse
+        SET voie = p_voie, 
+            numero_adresse = p_numero_adresse, 
+            complement_adresse = p_complement_adresse, 
+            id_ville = v_id_ville
+        WHERE id_adresse = v_id_adresse;
+    END IF;
+
+    -- Update image
+    SELECT id_image INTO v_id_image FROM tripenazor.image 
+    WHERE titre_image = p_titre_image AND 
+        chemin = p_chemin_image;
+
+    IF v_id_image IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image, p_chemin_image)
+        RETURNING id_image INTO v_id_image;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (p_id_offre, v_id_image);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image,
+            chemin = p_chemin_image
+        WHERE id_image = v_id_image;
+    END IF;
+
+    -- Update de l'offre
+    SELECT id_offre FROM tripenazor.offre INTO v_id_offre
+    WHERE id_offre = p_id_offre;
+
+    IF v_id_offre IS NOT NULL THEN
+        UPDATE tripenazor.offre
+        SET titre_offre = p_titre_offre,
+            en_ligne = p_en_ligne,
+            resume = p_resume,
+            description = p_description,
+            accessibilite = p_accessibilite,
+            type_offre = p_type_offre,
+            prix_TTC_min = p_prix_TTC_min,
+            id_adresse = v_id_adresse,
+            id_image_couverture = v_id_image
+        WHERE id_offre = v_id_offre;
+    ELSE 
+        RAISE EXCEPTION 'L''offre n''existe pas';
+    END IF;
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour := NULL;
+
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
+
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
+            ) THEN
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire 
+    WHERE debut = p_matin_heure_debut AND fin = p_matin_heure_fin;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut, 
+            p_matin_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_matin_heure_debut,
+            fin = p_matin_heure_fin
+        WHERE id_horaire = v_id_horaire_matin;
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+    WHERE debut = p_apres_midi_heure_debut AND
+    fin = p_apres_midi_heure_fin;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut, 
+            p_apres_midi_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_apres_midi_heure_debut,
+            fin = p_apres_midi_heure_fin
+        WHERE id_horaire = v_id_horaire_apres_midi;
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive 
+    FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public 
+    FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.abonnement
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive
+        ) THEN
+            UPDATE tripenazor.abonnement
+            SET prix = p_prix,
+                id_utilisateur_prive = v_id_professionnel_prive
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive;
+        ELSE
+            INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix);
+        END IF;
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.pro_public_propose_offre
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public
+        ) THEN
+            UPDATE tripenazor.pro_public_propose_offre
+            SET id_utilisateur_public = v_id_professionnel_public
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public;
+        ELSE
+            INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+            VALUES (v_id_offre, v_id_professionnel_public);
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Update dans offre_visite
+    UPDATE tripenazor.offre_visite 
+    SET duree = p_duree
+    WHERE id_offre = v_id_offre;
+
+    -- Les langues
+    FOREACH v_langue IN ARRAY p_langues
+    LOOP
+        v_id_langue := NULL;
+
+        SELECT id_langue INTO v_id_langue
+        FROM tripenazor.langue
+        WHERE libelle_langue = v_langue;
+
+        -- Si la langue n'existe pas, on l'insère
+        IF v_id_langue IS NULL THEN
+            INSERT INTO tripenazor.langue (libelle_langue)
+            VALUES (v_langue)
+            RETURNING id_langue INTO v_id_langue;
+        END IF;
+
+        -- Vérifie si le lien existe déjà entre la visite et la langue
+        IF NOT EXISTS (
+            SELECT 1 FROM tripenazor.visite_guidee_disponible_en_langue
+            WHERE id_visite = v_id_offre AND id_langue = v_id_langue
+        ) THEN
+            UPDATE tripenazor.langue 
+            SET libelle_langue = v_langue
+            WHERE id_langue = v_id_langue;
+        END IF;
+    END LOOP;
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag INTO v_id_tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun INTO v_id_tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_visite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            ELSE
+                UPDATE tripenazor.offre_visite_possede_tag
+                SET id_tag = v_tag
+                WHERE id_offre = p_id_offre;
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_non_guidee(
+    p_id_offre INT,
+    
+    -- Paramètres de l'offre
+    p_nom_ville TEXT,
+    p_code_postal TEXT,
+
+    p_titre_offre TEXT,
+	p_en_ligne BOOLEAN,
+    p_resume TEXT,
+    p_description TEXT,
+    p_accessibilite TEXT,
+    p_type_offre tripenazor.type_activite,
+    p_prix_TTC_min FLOAT,
+    p_tags TEXT[],
+
+    -- Adresse
+    p_voie TEXT,
+    p_numero_adresse INT,
+    p_complement_adresse TEXT,
+    
+    -- Image
+    p_titre_image TEXT,
+    p_chemin_image TEXT,
+
+    -- Jour de l'activité
+    p_jours NUMERIC[],
+    p_matin_heure_debut TIME,
+    p_matin_heure_fin TIME,
+    p_apres_midi_heure_debut TIME,
+    p_apres_midi_heure_fin TIME,
+
+    -- Professionnel
+    p_id_professionnel INT,
+
+    -- Paramètres spécifiques à l'activité
+    p_duree TIME,
+
+    p_prix_prive INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_offre INT;
+    v_id_image INT;
+    v_id_horaire_matin INT;
+    v_id_horaire_apres_midi INT;
+    v_id_adresse INT;
+    v_id_ville INT;
+	v_id_jour INT;
+    v_id_professionnel_prive INT;
+    v_id_professionnel_public INT;
+    v_id_tag INT;
+    v_id_tag_commun INT;
+	v_jour TEXT;
+    v_tag TEXT;
+BEGIN
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    WHERE nom_ville = p_nom_ville AND
+        code_postal = p_code_postal;
+
+    IF v_id_ville IS NULL THEN
+        -- Insère la ville
+        INSERT INTO tripenazor.ville(nom_ville, code_postal)
+        VALUES (
+            p_nom_ville,
+            p_code_postal
+        )
+        RETURNING id_ville INTO v_id_ville;
+    END IF;
+
+    SELECT id_adresse INTO v_id_adresse FROM tripenazor.adresse 
+    WHERE voie = p_voie AND
+        numero_adresse = p_numero_adresse AND
+        complement_adresse = p_complement_adresse AND
+        id_ville = v_id_ville;
+
+    IF v_id_adresse IS NULL THEN
+        INSERT INTO tripenazor.adresse(voie, numero_adresse, complement_adresse, id_ville)
+        VALUES (
+            p_voie, 
+            p_numero_adresse, 
+            p_complement_adresse, 
+            v_id_ville
+        )
+        RETURNING id_adresse INTO v_id_adresse;
+    ELSE 
+        -- Update dans adresse
+        UPDATE tripenazor.adresse
+        SET voie = p_voie, 
+            numero_adresse = p_numero_adresse, 
+            complement_adresse = p_complement_adresse, 
+            id_ville = v_id_ville
+        WHERE id_adresse = v_id_adresse;
+    END IF;
+
+    -- Update image
+    SELECT id_image INTO v_id_image FROM tripenazor.image 
+    WHERE titre_image = p_titre_image AND 
+        chemin = p_chemin_image;
+
+    IF v_id_image IS NULL THEN
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image, p_chemin_image)
+        RETURNING id_image INTO v_id_image;
+
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (p_id_offre, v_id_image);
+    ELSE
+        UPDATE tripenazor.image
+        SET titre_image = p_titre_image,
+            chemin = p_chemin_image
+        WHERE id_image = v_id_image;
+    END IF;
+
+    -- Update de l'offre
+    SELECT id_offre FROM tripenazor.offre INTO v_id_offre
+    WHERE id_offre = p_id_offre;
+
+    IF v_id_offre IS NOT NULL THEN
+        UPDATE tripenazor.offre
+        SET titre_offre = p_titre_offre,
+            en_ligne = p_en_ligne,
+            resume = p_resume,
+            description = p_description,
+            accessibilite = p_accessibilite,
+            type_offre = p_type_offre,
+            prix_TTC_min = p_prix_TTC_min,
+            id_adresse = v_id_adresse,
+            id_image_couverture = v_id_image
+        WHERE id_offre = v_id_offre;
+    ELSE 
+        RAISE EXCEPTION 'L''offre n''existe pas';
+    END IF;
+
+    -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
+    LOOP
+        v_id_jour := NULL;
+
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
+
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
+            ) THEN
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
+            END IF;
+        END IF;
+    END LOOP;
+
+    -- Insertion des horaires
+    SELECT id_horaire INTO v_id_horaire_matin FROM tripenazor.horaire 
+    WHERE debut = p_matin_heure_debut AND fin = p_matin_heure_fin;
+
+    IF v_id_horaire_matin IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_matin_heure_debut, 
+            p_matin_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_matin;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_matin, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_matin_heure_debut,
+            fin = p_matin_heure_fin
+        WHERE id_horaire = v_id_horaire_matin;
+    END IF;
+
+    
+    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+    WHERE debut = p_apres_midi_heure_debut AND
+    fin = p_apres_midi_heure_fin;
+
+    IF v_id_horaire_apres_midi IS NULL THEN
+        INSERT INTO tripenazor.horaire(debut, fin)
+        VALUES (
+            p_apres_midi_heure_debut, 
+            p_apres_midi_heure_fin
+        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+
+        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+        VALUES (v_id_horaire_apres_midi, v_id_offre);
+    ELSE
+        UPDATE tripenazor.horaire
+        SET debut = p_apres_midi_heure_debut,
+            fin = p_apres_midi_heure_fin
+        WHERE id_horaire = v_id_horaire_apres_midi;
+    END IF;
+
+    -- Insertion du professionnel
+    SELECT id_utilisateur INTO v_id_professionnel_prive 
+    FROM tripenazor.professionnel_prive
+    WHERE id_utilisateur = p_id_professionnel;
+
+    SELECT id_utilisateur INTO v_id_professionnel_public 
+    FROM tripenazor.professionnel_public
+    WHERE id_utilisateur = p_id_professionnel;
+
+    IF v_id_professionnel_prive IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.abonnement
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive
+        ) THEN
+            UPDATE tripenazor.abonnement
+            SET prix = p_prix,
+                id_utilisateur_prive = v_id_professionnel_prive
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_prive = v_id_professionnel_prive;
+        ELSE
+            INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix);
+        END IF;
+    ELSIF v_id_professionnel_public IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1
+            FROM tripenazor.pro_public_propose_offre
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public
+        ) THEN
+            UPDATE tripenazor.pro_public_propose_offre
+            SET id_utilisateur_public = v_id_professionnel_public
+            WHERE id_offre = v_id_offre
+            AND id_utilisateur_public = v_id_professionnel_public;
+        ELSE
+            INSERT INTO tripenazor.pro_public_propose_offre (id_offre, id_utilisateur_public)
+            VALUES (v_id_offre, v_id_professionnel_public);
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Le professionnel avec l''ID % n''existe pas dans les tables professionnel_prive ou professionnel_public', p_id_professionnel;
+    END IF;
+
+    -- ///////// Partie différente /////////
+    -- Update dans offre_visite
+    UPDATE tripenazor.offre_visite 
+    SET duree = p_duree
+    WHERE id_offre = v_id_offre;
+
+    -- Insert des tags
+    FOREACH v_tag IN ARRAY p_tags
+    LOOP
+        v_id_tag_commun = null;
+        v_id_tag = null;
+
+        SELECT id_tag FROM tripenazor.tag INTO v_id_tag
+        WHERE libelle_tag = v_tag;
+
+        IF v_id_tag IS NOT NULL THEN
+            SELECT id_tag FROM tripenazor.tag_commun INTO v_id_tag_commun
+            WHERE id_tag = v_id_tag;
+
+            IF v_id_tag_commun IS NOT NULL THEN
+                INSERT INTO tripenazor.offre_visite_possede_tag(id_offre, id_tag)
+                VALUES (v_id_offre, v_id_tag);
+            ELSE
+                UPDATE tripenazor.offre_visite_possede_tag
+                SET id_tag = v_tag
+                WHERE id_offre = p_id_offre;
+            END IF;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
 
 

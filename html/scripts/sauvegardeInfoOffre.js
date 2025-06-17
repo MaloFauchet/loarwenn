@@ -195,11 +195,12 @@ async function sendData(data) {
         }
     }).then(data => {
         // TODO : afficher un message de succès (flash card)
-        console.log("Sauvegarde réussie  " + data.message);
+        //console.log("Sauvegarde réussie  " + data.message);
         displayFlashCard("success",data.message)
     }).catch(error => {
         // TODO : afficher un message d'erreur (flash card)
-        console.error("Erreur lors de la sauvegarde", error);
+        //console.error("Erreur lors de la sauvegarde", error);
+        displayFlashCard("success",error)
         //displayFlashCard("error")
     });
 
@@ -218,17 +219,31 @@ function annulerClique(sauvegardeDiv) {
     location.reload();
 }
 
-function displayFlashCard(response,message) {
-    const flashCard = document.getElementById("reponse-flash")
-    const p = document.getElementById("message-flash")
-    console.log(p)
-    console.log(message)
+function displayFlashCard(response, message) {
+    const flashCard = document.getElementById("reponse-flash");
+    const p = document.getElementById("message-flash");
 
-    if(response == "success"){
-        flashCard.style.display = "block"
-        p.text = message
-    }else{
-        flashCard.style.display = ""
-        p.text = message
+    // Nettoie les classes précédentes
+    flashCard.classList.remove("success", "error");
+
+    // Applique la bonne classe
+    if (response === "success") {
+        flashCard.classList.add("success");
+    } else {
+        flashCard.classList.add("error");
     }
+
+    // Affiche le message
+    p.textContent = message;
+
+    // Relance proprement l'animation
+    flashCard.style.display = "block";
+    flashCard.style.animation = "none";
+    flashCard.offsetHeight; // trigger reflow
+    flashCard.style.animation = null;
+
+    // Masque après 4 secondes (ou ce que tu veux)
+    setTimeout(() => {
+        flashCard.style.display = "none";
+    }, 4000);
 }

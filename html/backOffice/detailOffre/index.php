@@ -81,7 +81,7 @@ $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
 
 
             <main class="contenu-back-office">
-                <div id="reponse-flash" style="display:none">
+                <div id="reponse-flash" class="flash-card" style="display:none">
                     <p id="message-flash"></p>
                 </div>
                 <div class="status-offre">
