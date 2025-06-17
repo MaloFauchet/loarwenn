@@ -25,6 +25,8 @@ searchbar.onkeyup = () => {
     });
 }
 
+searchbar.onchange = searchbar.onkeyup;
+
 // Si une recherche était présente dans l'URL, on la met dans la barre de recherche
 if (initialSearch !== '') {
     searchbar.value = initialSearch;
