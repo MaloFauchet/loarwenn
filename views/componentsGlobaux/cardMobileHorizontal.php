@@ -1,6 +1,7 @@
-<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card" data-category="<?= strtolower($valueOfOffre['type_offre']) ?>"" location="<?= $valueOfOffre['nom_ville'] ?>" data-open-days="<?= $valueOfOffre['jours_ouverture'] ?>">
-    <div class="card-horizontal">
-        <?php if ($valueOfOffre['En relief']): ?>
+
+<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card" data-category="<?= strtolower($valueOfOffre['type_offre']) ?>"" note_avis="<?php echo $valueOfOffre["note_avis"] ?>" location="<?= $valueOfOffre['nom_ville'] ?>" data-open-days="<?= $valueOfOffre['jours_ouverture'] ?>">    
+<div class="card-horizontal">
+      <?php if ($valueOfOffre['En relief']): ?>
             <div class="recommended-horizontal">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
@@ -9,16 +10,24 @@
                     <p>Recommandé</p>
                 </div>
             </div>
+            <div class="item-image-recommended">
+                <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
+            </div>
+        <?php else: ?>
+            <div class="item-image">
+                <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
+            </div>
         <?php endif; ?>
-        <div class="item-image">
-            <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
-        </div>
         <div class="item-body">
             <div class="container-title-price">
                 <div class="item-title"><?= $valueOfOffre["titre_offre"]  ?></div>
                 <!-- Remplir avec le prix de l'offre -->
                 <div >
-                    <p class="item-price"><?= $valueOfOffre['prix_ttc_min'] ?>€</p>
+                    <?php if ($valueOfOffre['prix_ttc_min'] == 0) : ?>
+                        <p class="item-price">Gratuit</p>
+                    <?php else: ?>
+                        <p class="item-price"><?= $valueOfOffre['prix_ttc_min']?>€</p>
+                    <?php endif; ?>
                 </div>
             </div>
             
