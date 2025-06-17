@@ -48,14 +48,13 @@ class OffreController {
         return $this->offre->getAllOffre();
     }
 
-    /*
+    
     public function ajouterOffre($post, $files) {
 
-        #die(print_r($post,true));
 
         
         
-        //valeur pour la bdd
+        //valeur pour la bdd    
         $titre = trim($post['titre'] ?? '');
         $prixMin = trim($post['prixMin'] ?? '');
         $dateDebutMatin = trim($post['dateDebutMatin'] ?? '');
@@ -94,15 +93,16 @@ class OffreController {
             $tmpName = $files['imagePrincipale']['tmp_name'];
             $fileName = basename($files['imagePrincipale']['name']);
 
-            $destination = $baseDir . $fileName;
+            $destination = $baseDir.$fileName;
 
-            if (move_uploaded_file($tmpName, $destination)) {
-                $imagePrincipalePath = $destination;
-            }
+            move_uploaded_file($tmpName, $destination);
+                
         }
 
+        
+
         //valeur pour la bdd
-        $cheminImagePrincipale = $baseDirBdd;
+        $cheminImagePrincipale = $baseDirBdd.$fileName;
         $nomImagePrincipale = $fileName;
 
         // Traitement des images secondaires
@@ -118,15 +118,13 @@ class OffreController {
                     array_push($nomsImagesSecondaire,$fileName);
                     $destination = $baseDir . $fileName;
 
-                    if (move_uploaded_file($tmpName, $destination)) {
-                        $imagesSecondairesPaths[] = $destination;
-                    }
+                    move_uploaded_file($tmpName, $destination);
+                    $cheminImageSecondaire[] = $baseDirBdd.$fileName;
+                    
                 }
             }
         }
 
-        //valeur pour la bdd
-        $cheminImageSecondaire = $baseDirBdd;
 
 
         //activite:1
@@ -237,7 +235,7 @@ class OffreController {
         //visite guidee:3
         else if($post['id_activite'] == 3) {
             
-            $type = "visite guidee";
+            $type = "visite_guidee";
             
             $duree = trim($post['duree']);
             $langues = trim($post['langue-checkboxes']);
@@ -285,7 +283,7 @@ class OffreController {
 
         //parc d'attraction:4
         else if($post['id_activite'] == 4) {
-            $type= "parc d'attraction";
+            $type= "parc_attraction";
             
 
             $numero  = trim($post['numero']);
@@ -355,7 +353,7 @@ class OffreController {
         //restaurant:5
         else if($post['id_activite'] == 5) {
             
-            $type = "restaurant";
+            $type = "restauration";
 
             $gamme_prix  = trim($post['prix']);
 
@@ -420,7 +418,7 @@ class OffreController {
         //visite non guidee :6
         else if($post['id_activite'] == 6) {
             
-            $type= "visite non guidee";
+            $type= "visite_non_guidee";
 
             $duree  = trim($post['duree']);
 
@@ -466,24 +464,8 @@ class OffreController {
         }
 
 
-        
-
-        } {
-        return $this->offre->editOffre(
-            $idOffre,
-            $id_ville, 
-            $id_statut_log, 
-            $id_type_activite, 
-            $titre_offre, 
-            $note_moyenne, 
-            $nb_avis, 
-            $en_ligne, 
-            $resume, 
-            $description, 
-            $adresse_offre
-        );
     }
-    */
+    
     
     public function getAllOffreByCategory($category) {
         return $this->offre->getAllOffreByCategory($category);

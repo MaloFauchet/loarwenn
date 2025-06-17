@@ -351,31 +351,31 @@ class Offre {
         try {
             $sql = "
             SELECT tripenazor.inserer_offre_activite(
-                :p_nom_ville,   
-                :p_code_postal,
-                :p_titre_offre,
-                :p_en_ligne,
-                :p_resume,
-                :p_description,
-                :p_accessibilite,
-                :p_type_offre,
-                :p_prix_TCC_min,
-                :p_tags,
-                :p_voie,
-                :p_numero_adresse,
-                :p_complement_adresse,
-                :p_titre_image,
-                :p_chemin_image,
-                :p_jours,
-                :p_matin_heure_debut,
-                :p_matin_heure_fin,
-                :p_apres_midi_heure_debut,
-                :p_apres_midi_heure_fin,
-                :p_id_professionnel,
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
 
-                :p_duree,
-                :p_capacite_accueil,
-                :p_prix_prive
+                :p_duree::TIME,
+                :p_capacite_accueil::FLOAT,
+                :p_prix_prive::INT
             );
         ";
 
@@ -405,7 +405,7 @@ class Offre {
         $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_duree', $data['duree'], PDO::PARAM_INT);
-        $stmt->bindValue(':p_age', $data['capacite_accueil'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_capacite_accueil', $data['capacite_accueil'], PDO::PARAM_INT);
         $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 
         // Exécution

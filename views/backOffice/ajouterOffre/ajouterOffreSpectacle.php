@@ -6,7 +6,7 @@
             <div class="champ-type-offre">
                 <h3>Durée</h3>
                 <label class="label-input" for="duree">Durée</label>
-                <input id="duree" name="duree" type="number" required />
+                <input id="duree" name="duree" type="time" required />
             </div>
 
             <div class="champ-type-offre">

@@ -102,8 +102,8 @@ CREATE TABLE offre (
 
 CREATE TABLE horaire(
     id_horaire SERIAL PRIMARY KEY,
-    debut TIMESTAMP NOT NULL,
-    fin TIMESTAMP NOT NULL
+    debut TIME NOT NULL,
+    fin TIME NOT NULL
 );
 
 CREATE TABLE horaire_ouverture(

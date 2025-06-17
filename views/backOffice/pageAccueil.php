@@ -70,8 +70,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
             </span>
 
             <!-- Image de l'offre -->
-            
-            <img src="<?php echo $offre['image_chemin'].$offre['titre_image']; ?>" alt="<?php echo $offre['titre_image']; ?>">
+ 
+            <img src="<?php echo $offre['image_chemin']; ?>" alt="<?php echo $offre['titre_image']; ?>">
         </div>
         <div class="offre-content">
             <!-- Titre de l'offre -->
