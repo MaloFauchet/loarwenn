@@ -222,6 +222,7 @@ function displayFlashCard(response,message) {
     const flashCard = document.getElementById("reponse-flash")
     const p = document.getElementById("message-flash")
     console.log(p)
+    console.log(message)
 
     if(response == "success"){
         flashCard.style.display = "block"
