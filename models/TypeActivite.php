@@ -11,7 +11,7 @@ class TypeActivite {
 
     public function getAllActivite() {
         $sql = "
-            SELECT * FROM tripenazor.type_activite
+            SELECT * FROM tripenazor.offre
         ";
 
         $stmt = $this->conn->prepare($sql);
@@ -20,15 +20,37 @@ class TypeActivite {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getTagIdByTypeActivite($type_activite) {
-        $sql = "
-            SELECT t.id_tag FROM tripenazor.type_activite_autorise_tag as t
-            JOIN tripenazor.type_activite as ta ON t.id_type_activite = ta.id_type_activite
-            WHERE ta.libelle_activite = :type_activite;
-        ";
+    public function getTagIdByTypeActivite($id_activite,$name_activite) {
+        // Liste des tables possibles
+        $allowed_tables = ['activite', 'spectacle', 'visite', 'parc_attractions', 'restauration'];
+        
+        $liste = [
+            'activite' => 'id_activite',
+            'spectacle' => 'id_spectacle',
+            'visite' => 'id_visite',
+            'parc_attractions' => 'id_parc_attractions',
+            'restaurant' => 'id_restaurant'
+        ];
+
+        $id_colonne = $liste[$name_activite];
+
+        if ($name_activite === 'restaurant') {
+            $sql = "
+                SELECT t.id_tag, t.libelle_tag
+                FROM tripenazor.tag t
+                JOIN tripenazor.tag_restauration c ON t.id_tag = c.id_tag
+            ";
+        } else {
+            $sql = "
+                SELECT t.id_tag, t.libelle_tag
+                FROM tripenazor.tag t
+                JOIN tripenazor.tag_commun c ON t.id_tag = c.id_tag
+            ";
+        }
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':type_activite', $type_activite);
+       
+       
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
