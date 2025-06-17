@@ -12,8 +12,8 @@ class TypeActiviteController {
         return $this->typeActiviteModel->getAllActivite();
     }
 
-    public function getTagIdByTypeActivite($type_activite) {
+    public function getTagIdByTypeActivite($id_activite,$name_activite) {
         $typeActiviteModel = new TypeACtivite();
-        return $typeActiviteModel->getTagIdByTypeActivite($type_activite);
+        return $typeActiviteModel->getTagIdByTypeActivite($id_activite,$name_activite);
     }
 }

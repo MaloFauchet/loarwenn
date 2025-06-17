@@ -12,7 +12,7 @@
             <div class="champ-type-offre">
                 <h3>Durée</h3>
                 <label class="label-input" for="duree">Durée</label>
-                <input id="duree" name="duree" type="number" required />
+                <input id="duree" name="duree" type="time" required />
             </div>
 
             <div class="champ-type-offre">
@@ -42,13 +42,13 @@
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
         
-            
+            $id= $_COOKIE['selectedActiviteId'];
             $name= $_COOKIE['selectedLibelle'];
             $selectedActiviteId= $_COOKIE['selectedActiviteId'];
           
             
 
-            $id_tags = $typeActiviteController->getTagIdByTypeActivite($name);
+            $id_tags = $typeActiviteController->getTagIdByTypeActivite($id,$name);
             $arrayIdTags = array_column($id_tags, 'id_tag');
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
