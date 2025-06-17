@@ -8,6 +8,10 @@
     width: 70%;
 }
 
+.liste-offre main {
+    min-height: 100vh;
+}
+
 /* Aside Filtre */
 .liste-offre aside{
     width: 20%;
@@ -168,6 +172,8 @@
     width: 300px;
     font-size: 16px;
     padding: 0 10px;
+    width: -webkit-fill-available;
+    width: -moz-available;
 }
 
 .liste-offre .search-row input:focus{
