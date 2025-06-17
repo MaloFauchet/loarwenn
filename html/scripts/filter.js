@@ -1,162 +1,116 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
+
+
     /**
-     * FILTRE SUR LES CATEGORIES
+     * Récupération des inputs
      */
     const allCat = document.getElementById("AllCategories");
-    const otherCats = document.querySelectorAll("input[class='categories']:not(#AllCategories)");
-
-
-    // Si "Toute catégorie" est coché, afficher toutes les cartes
-    // et décocher les autres catégories
-    allCat.addEventListener("change", function() {
-        otherCats.forEach(category => {
-            category.checked = false; // Décoché les autres catégories
-        });
-        document.querySelectorAll(".a-card").forEach(card => {
-            card.style.display = ""; 
-        });
-    });
-
-
-    // Si une autre catégorie est cochée, décocher "Toute catégorie"
-    // et afficher uniquement les cartes correspondantes
-    otherCats.forEach(category => {
-        category.addEventListener("change", function() {
-            // Décoché Toute catégorie
-            allCat.checked = false;
-
-            //Liste des catégories cochées
-            const allChecked = Array.from(otherCats)
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.id.trim().toLocaleLowerCase());
-
-            document.querySelectorAll(".a-card").forEach(card => {
-                const category = card.getAttribute("data-category");
-                if (allChecked.length === 0 || allChecked.includes(category)) {
-                    card.style.display = ""; 
-                }else {
-                    card.style.display = "none"; 
-                }
-            });
-        });
-    });
-
-
-
-    /**
-     * FILTRE SUR LES LIEUX
-     */
+    const otherCats = Array.from(document.querySelectorAll("input.categories:not(#AllCategories)"));
     const locInput = document.getElementById("location");
-    locInput.addEventListener("input", function() {
-
-        //Récupérer la valeur de l'input
-        const searchTerm = locInput.value;
-
-        //Afficher les cartes qui correspondent à la recherche
-        document.querySelectorAll(".a-card").forEach(card => {
-            const cardLocation = card.getAttribute("location");
-            if (cardLocation && cardLocation.toLowerCase().includes(searchTerm.toLowerCase())) {
-                card.style.display = ""; 
-            } else if (searchTerm === "") {
-                card.style.display = ""; 
-            }else {
-                card.style.display = "none"; 
-            }
-        });
-    });
-
-
-    /**
-     * FILTRE PAR PRIX MINIMUM
-     */
     const minPriceInput = document.getElementById("minPrice");
     const maxPriceInput = document.getElementById("maxPrice");
-    function filterByPrice() {
+    const openInput = document.getElementsByName("Open/Close");
+    const selectedDaysInput = Array.from(document.querySelectorAll("input[class='openDays']"));
+    const today = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][new Date().getDay()];
+
+
+    /**
+     * Fonction pour obtenir les catégories sélectionnées
+     * @returns {string[]} Liste des catégories sélectionnées
+     */
+    function getSelectedCategories() {
+        return otherCats.filter(c => c.checked).map(c => c.id.trim().toLowerCase());
+    }
+
+    /**
+     * Fonction pour obtenir les jours d'ouverture sélectionnées
+     * @returns {string[]} Liste des jours d'ouvertures sélectionnées
+     */
+    function getSelectedDays() {
+        return selectedDaysInput.filter(c => c.checked).map(c => c.id.trim().toLowerCase());
+    }
+
+
+    /**
+     * 
+     * @param {*} card 
+     * Cette fonction vérifie si une carte correspond aux critères de filtrage définis par l'utilisateur.
+     * Elle prend en compte la catégorie, la ville, les jours d'ouverture, le prix et l'état d'ouverture.
+     * @returns {boolean} - Retourne true si la carte correspond aux critères, sinon false.
+     */
+    function matchCard(card) {
+        const type = card.getAttribute("data-category")?.trim().toLowerCase();
+        const ville = card.getAttribute("data-location")?.trim().toLowerCase();
+        const openDays = card.getAttribute("data-open-days");
+        const days = openDays.split(",").map(d => d.trim().toLowerCase());
+        const priceElement = card.querySelector(".item-price");
+
+        const searchTerm = locInput.value.trim().toLowerCase();
         const minPrice = parseFloat(minPriceInput.value);
         const maxPrice = parseFloat(maxPriceInput.value);
+        const selectedCategories = getSelectedCategories();
+        const isOpenToday = openDays.split(",").map(j => j.trim().toLowerCase()).includes(today);
+        const selectedOpenInput = Array.from(openInput).find(i => i.checked);
+        const dayChecked = getSelectedDays();
+
+        let cardPrice = NaN;
+        if (priceElement) {
+            const priceText = priceElement.textContent.replace(/[^\d,.-]/g, "").replace(",", ".");
+            cardPrice = parseFloat(priceText);
+        }
+
+        const matchType = selectedCategories.length === 0 || selectedCategories.includes(type);
+        const matchVille = ville.includes(searchTerm);
+        const matchPrice = (isNaN(minPrice) || cardPrice >= minPrice) && (isNaN(maxPrice) || cardPrice <= maxPrice);
+        const matchOpen = selectedOpenInput?.id === "open" ? isOpenToday : selectedOpenInput?.id === "close" ? !isOpenToday : true;
+        const matchDay = dayChecked.length === 0 || dayChecked.some(day => days.includes(day));
+
+        return matchType && matchVille && matchPrice && matchOpen && matchDay;
+    }
+
+
+    /**
+     * Fonction pour mettre à jour l'affichage des cartes en fonction des filtres sélectionnés
+     * 
+     * Cette fonction parcourt toutes les cartes et les affiche ou les masque en fonction des critères de filtrage.
+     */
+    function updateCards() {
+        const selectedCategories = getSelectedCategories();
+        allCat.checked = selectedCategories.length === 0;
 
         document.querySelectorAll(".a-card").forEach(card => {
-            const priceElement = card.querySelector('.item-price');
-            if (!priceElement) return;
-
-            const cardPrice = parseFloat(priceElement.textContent.replace("€", "").trim());
-
-            const isAboveMin = isNaN(minPrice) || cardPrice >= minPrice;
-            const isBelowMax = isNaN(maxPrice) || cardPrice <= maxPrice;
-
-            card.style.display = (isAboveMin && isBelowMax) ? "" : "none";
+            card.style.display = matchCard(card) ? "" : "none";
         });
     }
 
-    minPriceInput.addEventListener("input", filterByPrice);
-    maxPriceInput.addEventListener("input", filterByPrice);
+    // Gestion de "Toute catégorie"
+    allCat.addEventListener("change", function () {
+        if (allCat.checked) {
+            otherCats.forEach(c => c.checked = false);
+            updateCards();
+        }
+    });
 
-    /**
-     * FILTRE PAR JOUR D'OUVERTURE
-     * */
-    const openClosedCheckbox = document.querySelectorAll("input.openDays");
-    openClosedCheckbox.forEach(day => {
-        day.addEventListener("change", function() {
-            // Liste des jours cochés
-            const allChecked = Array.from(openClosedCheckbox)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.id.trim().toLowerCase());
-
-            document.querySelectorAll(".a-card").forEach(card => {
-                const days = card.getAttribute("data-open-days")
-                    .split(",")
-                    .map(j => j.trim().toLowerCase());
-
-                // Affiche la carte si aucun filtre OU au moins un jour coché est dans les jours d'ouverture
-                if (allChecked.length === 0 || allChecked.some(jour => days.includes(jour))) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
-                }
-            });
+    // Gestion des autres catégories
+    otherCats.forEach(cat => {
+        cat.addEventListener("change", function () {
+            allCat.checked = false;
+            updateCards();
         });
     });
 
-
-    /** 
-    * * FILTRE PAR NOTION OUVERT/FERMÉ AUJOURD'HUI
-     */
-    const openInput = document.getElementsByName("Open/Close");
-    console.log(new Date().getDay().toString());
-    openInput.forEach(input => {
-        input.addEventListener("change", function() {
-            if(input.id === "open"){
-                document.querySelectorAll('.a-card').forEach(card => {
-                    const days = card.getAttribute('data-open-days')
-                    .split(',')
-                    .map(j => j.trim().toLowerCase());
-
-                    const jours = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
-                    const today = jours[new Date().getDay()];
-
-                    if (days.includes(today)) {
-                        card.style.display = ""; 
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-            }
-            if(input.id === "close"){
-                document.querySelectorAll(".a-card").forEach(card => {
-                    const days = card.getAttribute('data-open-days')
-                    .split(',')
-                    .map(j => j.trim().toLowerCase());
-
-                    const jours = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
-                    const today = jours[new Date().getDay()];
-
-                    if (!days.includes(today)) {
-                        card.style.display = ""; 
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-            }
+    // Gestion des jours d'ouverture
+    selectedDaysInput.forEach(day => {
+        day.addEventListener("change", function () {
+            updateCards();
         });
     });
+
+    // Événements de filtrage
+    locInput.addEventListener("input", updateCards);
+    minPriceInput.addEventListener("input", updateCards);
+    maxPriceInput.addEventListener("input", updateCards);
+    openInput.forEach(input => input.addEventListener("change", updateCards));
 });
+
+

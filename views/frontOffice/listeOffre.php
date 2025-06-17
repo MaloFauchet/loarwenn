@@ -177,14 +177,6 @@
             </div>
             <hr>
             <div>
-                <h4>Avis</h4>
-                <div>
-                    <input type="number" name="MinNote" id="minNote" placeholder="Note minimale">
-                    <input type="number" name="MaxNote" id="maxNote" placeholder="Note maximum">
-                </div>
-            </div>
-            <hr>
-            <div>
                 <h4>Trier par</h4>
                 <ul>
                     <li>
