@@ -24,5 +24,6 @@
     
     <script src="/scripts/openFilter.js"></script>
     <script src="/scripts/filter.js"></script>
+    <script src="/scripts/listeOffre.js"></script>
 </body>
 </html>

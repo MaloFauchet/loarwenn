@@ -57,7 +57,28 @@
     margin: 20px 0;
 }
 
+.liste-offre aside div:has(button){
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
 .liste-offre aside button{
+    background-color: #005CE6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 1.5em;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.liste-offre aside button:hover{
+    background-color: #004bb5;
+}
+
+.liste-offre aside button:not(:last-child){
     display: none;
 }
 
@@ -157,6 +178,11 @@
     padding: 5px;
     min-width: 500px;
     max-width: 800px;
+}
+
+.liste-offre .search-row:focus{
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 2px #cae9ff80;
 }
 
 .liste-offre .search-row button{

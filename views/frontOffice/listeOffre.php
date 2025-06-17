@@ -201,7 +201,11 @@
                     </li>
                 </ul>
             </div>
+            <div>
+                <button>Réinitialiser</button>
+            </div>
         </aside>
     </section>
 </main>
 <div class="modal-overlay"></div>
+
