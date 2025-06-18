@@ -4,7 +4,7 @@
     <div>
         <img src="/images/logos/logoBlue.png" alt="Logo">
         <div>
-            <h6>Pages</h6>
+            <p>Pages</p>
             <ul>
                 <li><a href="/">Accueil</a></li>
                 <!-- <li><a href="/listeOffres/">Offres</a></li>
@@ -13,7 +13,7 @@
             </ul>
         </div>
         <div>
-            <h6>Besoin d'aide</h6>
+            <p>Besoin d'aide</p>
             <ul>
                 <li><a href="/legal/politiqueDeConfidentialite/">Politique de confidentialité</a></li>
                 <li><a href="/legal/mentionsLegales">Mentions légales</a></li>

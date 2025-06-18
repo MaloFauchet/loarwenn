@@ -26,16 +26,16 @@
         print_r($dataDump);
         echo "</pre>";
     }
-    
-
-    dump($listeOffreView);
 ?>
 
 
 <header class="front-office-main">
     <video autoplay muted loop id="myVideo" class="video-header">
         <source src="videos/video_accueil.mp4" type="video/mp4">
+        <track kind="captions" src="" srclang="fr" label="Français" default>
+        Votre navigateur ne supporte pas la vidéo.
     </video>
+
     <div>
         <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
     </div>
@@ -50,10 +50,10 @@
         </nav>!-->
     <?php if (isset($_SESSION['id_utilisateur'])) { ?>
     <div class="profil">
-        <a href="">
+        <a href="" aria-label="Profil">
             <img class="profil" src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
         </a>
-        <a href="/scriptPHP/logout.php">
+        <a href="/scriptPHP/logout.php" aria-label="Déconnexion">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -64,7 +64,7 @@
         </a>
     </div>
     <?php } else{?>
-    <a href="/frontOffice/connexion/index.php">
+    <a href="/frontOffice/connexion/index.php" aria-label="Se connecter">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
             class="bi bi-person-circle" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
