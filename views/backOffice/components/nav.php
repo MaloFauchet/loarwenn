@@ -13,12 +13,12 @@ if (!$isBackOffice && !$isAjouterOffre) {
     <ul>
         <li>
             <a href="/backOffice/" class="<?= $isBackOffice ? 'active' : '' ?>">
-                <img src="/images/icons/offres-white.svg"><p>Mes Offres</p>
+                <img src="/images/icons/offres-white.svg" alt="ticket page offre"><p>Mes Offres</p>
             </a>
         </li>
         <li>
             <a href="/backOffice/ajouterOffre/" class="<?= $isAjouterOffre ? 'active' : '' ?>">
-                <img src="/images/icons/plus-lg-white.svg"><p>Ajouter une offre</p>
+                <img src="/images/icons/plus-lg-white.svg" alt="plus ajouter offre"><p>Ajouter une offre</p>
             </a>
         </li>
     </ul>

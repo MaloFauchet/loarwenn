@@ -25,18 +25,15 @@
 
 
         <?php
-      
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
-            
+        
+            $id= $_COOKIE['selectedActiviteId'];
             $name= $_COOKIE['selectedLibelle'];
             $selectedActiviteId= $_COOKIE['selectedActiviteId'];
-            $idSession = session_id();
-
-            $userId = $_SESSION['id_utilisateur'] ?? null;
+          
             
-            echo "<input type='hidden' name='id_utilisatuer' value='" .$userId . "'>";
 
-            $id_tags = $typeActiviteController->getTagIdByTypeActivite($name);
+            $id_tags = $typeActiviteController->getTagIdByTypeActivite($id,$name);
             $arrayIdTags = array_column($id_tags, 'id_tag');
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
