@@ -358,18 +358,20 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_prive(
     p_prenom TEXT,
     p_email TEXT,
     p_telephone TEXT,
-    p_adresse TEXT,
+    p_num_adresse INT,
+    p_voie_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
     p_denomination TEXT,
     p_siren INT,
-    p_rib TEXT,
+    p_iban TEXT,
     p_mot_de_passe TEXT
 )
 RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
+    v_id_adresse INTEGER;
     v_id_utilisateur INTEGER;
 	v_id_image INTEGER;
 BEGIN
@@ -384,20 +386,25 @@ BEGIN
         RETURNING id_ville INTO v_id_ville;
     END IF;
 
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
+
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
-        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
+        nom, prenom, email, num_telephone, mot_de_passe, id_adresse
     )
     VALUES (
-        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+        p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
     -- 3. Insérer dans professionnel
 	INSERT INTO tripenazor.professionnel (id_utilisateur)
 	VALUES (v_id_utilisateur);
-    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, rib)
-    VALUES (v_id_utilisateur, p_denomination, p_siren, p_rib);
+    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
+    VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
 
     -- 4. Insérer dans image
     INSERT INTO tripenazor.image (titre_image, chemin)
@@ -417,7 +424,8 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
     p_prenom TEXT,
     p_email TEXT,
     p_telephone TEXT,
-    p_adresse TEXT,
+    p_num_adresse INT,
+    p_voie_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
@@ -427,6 +435,7 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
 RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
+    v_id_adresse INTEGER;
     v_id_utilisateur INTEGER;
 	v_id_image INTEGER;
 BEGIN
@@ -441,12 +450,17 @@ BEGIN
         RETURNING id_ville INTO v_id_ville;
     END IF;
 
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
+
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
-        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
+        nom, prenom, email, num_telephone, mot_de_passe, id_adresse
     )
     VALUES (
-        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+        p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
@@ -474,7 +488,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_utilisateur_et_membre(
     p_prenom TEXT,
     p_email TEXT,
     p_telephone TEXT,
-    p_adresse TEXT,
+    p_num_adresse INT,
+    p_voie_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
@@ -484,6 +499,7 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_utilisateur_et_membre(
 RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
+    v_id_adresse INTEGER;
     v_id_utilisateur INTEGER;
 	v_id_image INTEGER;
 BEGIN
@@ -498,12 +514,17 @@ BEGIN
         RETURNING id_ville INTO v_id_ville;
     END IF;
 
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
+
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
-        nom, prenom, email, num_telephone, adresse, complement_adresse, mot_de_passe, id_ville
+        nom, prenom, email, num_telephone, mot_de_passe, id_adresse
     )
     VALUES (
-        p_nom, p_prenom, p_email, p_telephone, p_adresse, p_complement, p_mot_de_passe, v_id_ville
+        p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
 
