@@ -4,27 +4,15 @@ CREATE SCHEMA tripenazor;
 SET SCHEMA 'tripenazor';
 
 
-<<<<<<< HEAD
     -- Type Activité 
-    CREATE TYPE type_activite AS ENUM (
+CREATE TYPE type_activite AS ENUM (
     'visite_guidee',
     'visite_non_guidee',
     'activite',
     'parc_attraction',
     'spectacle',
     'restauration'
-    );
-=======
--- Type Activité 
-CREATE TYPE type_activite AS ENUM (
-  'visite_guidee',
-  'visite_non_guidee',
-  'activite',
-  'parc_attraction',
-  'spectacle',
-  'restauration'
 );
->>>>>>> main
 
 
 -- Table ville
