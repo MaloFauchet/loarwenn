@@ -65,20 +65,21 @@ class Professionnel extends Model{
         $prenom,
         $email,
         $telephone,
-        $adresse,
+        $num_adresse, 
+        $voie_adresse,
         $complement,
         $codePostal,
         $ville,
         $denomination,
         $siren,
-        $rib,
+        $iban,
         $motDePasse
     ) {
         $sql = "
         SELECT * FROM tripenazor.inserer_utilisateur_et_professionnel_prive(
             :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
-            :adresse::TEXT, :complement::TEXT, :codePostal::TEXT, :ville::TEXT,
-            :denomination::TEXT, :siren::INTEGER, :rib::TEXT, :motDePasse::TEXT
+            :num_adresse::INT, :voie_adresse::TEXT, :complement::TEXT, :codePostal::TEXT, :ville::TEXT,
+            :denomination::TEXT, :siren::INTEGER, :iban::TEXT, :motDePasse::TEXT
         )
     ";
 
@@ -88,13 +89,14 @@ class Professionnel extends Model{
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
-        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':num_adresse', $num_adresse);
+        $stmt->bindParam(':voie_adresse', $voie_adresse);
         $stmt->bindParam(':complement', $complement);
         $stmt->bindParam(':codePostal', $codePostal);
         $stmt->bindParam(':ville', $ville);
         $stmt->bindParam(':denomination', $denomination);
         $stmt->bindParam(':siren', $siren);
-        $stmt->bindParam(':rib', $rib);
+        $stmt->bindParam(':iban', $iban);
         $stmt->bindParam(':motDePasse', $motDePasse);
 
         $stmt->execute();
@@ -103,12 +105,12 @@ class Professionnel extends Model{
     }
 
 
-    public function insertProfessionnelPublic($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse)
+    public function insertProfessionnelPublic($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse)
     {
         $sql = "
         SELECT * FROM tripenazor.inserer_utilisateur_et_professionnel_public(
             :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
-            :adresse::TEXT, :complement::TEXT, :codePostal::TEXT,
+            :num_adresse::INT, :voie_adresse::TEXT, :complement::TEXT, :codePostal::TEXT,
             :ville::TEXT, :raisonSociale::TEXT, :motDePasse::TEXT)";
 
 
@@ -119,7 +121,8 @@ class Professionnel extends Model{
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
-        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':num_adresse', $num_adresse);
+        $stmt->bindParam(':voie_adresse', $voie_adresse);
         $stmt->bindParam(':complement', $complement);
         $stmt->bindParam(':codePostal', $codePostal);
         $stmt->bindParam(':ville', $ville);

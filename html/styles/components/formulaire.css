@@ -14,12 +14,11 @@ main img {
 .container{
     background: #fff;
     z-index: 1002;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .form-container {
-    background: #fff;
     padding: 0 40px 10px 40px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     max-width: 500px;
     width: 100%;
     position: relative;
@@ -29,21 +28,35 @@ main img {
     align-items: center;
 }
 
-.form-container > div > div{
+.grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+
+.grid  input{
+    width: 100%;
+}
+
+.grid label {
+    transform: translate(0px, 18px);
+}
+
+.grid > div {
+    width: 48%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.grid > .smaller{
+    width: 30%;
 }
 
-.grid  input{
-    width: 80%;
+.grid > .bigger{
+    width: 66%;
 }
 
 .option {
@@ -104,7 +117,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.6); /* voile sombre */
     display: flex;
     justify-content: center;
@@ -115,6 +128,7 @@ body {
 }
 
 input{
+    box-sizing: border-box;
     width: 90%;
 }
 
@@ -138,3 +152,24 @@ nav a {
     margin: 10px;
 }
 
+@media screen and (max-width: 840px){
+    .form-container{
+        max-width: none;
+        box-sizing: border-box;
+        min-width: none;
+    }
+
+    main{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+
+
+    .container{
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+}

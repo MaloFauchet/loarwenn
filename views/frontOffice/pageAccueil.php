@@ -145,7 +145,19 @@
 
 
     </div>
-</main>
+</main>  
+<script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const success = params.get('success');
+
+      if (success === '1') {
+        alert("L'opération s'est bien déroulée !");
+      } else if (success === '0') {
+        alert("Une erreur est survenue.");
+      }
+    }
+  </script>
 
 
 
