@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const openInput = document.getElementsByName("Open/Close");
     const selectedDaysInput = Array.from(document.querySelectorAll("input[class='openDays']"));
     const today = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][new Date().getDay()];
+    const resetButton = document.querySelector(".liste-offre aside div:has(button) button")
 
 
     /**
@@ -106,11 +107,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    
+
     // Événements de filtrage
     locInput.addEventListener("input", updateCards);
     minPriceInput.addEventListener("input", updateCards);
     maxPriceInput.addEventListener("input", updateCards);
     openInput.forEach(input => input.addEventListener("change", updateCards));
+
+
+    // Gestion du bouton de réinitialisation
+    resetButton.addEventListener("click", function () {
+        allCat.checked = true;
+        otherCats.forEach(c => c.checked = false);
+        locInput.value = "";
+        minPriceInput.value = "";
+        maxPriceInput.value = "";
+        openInput.forEach(input => input.checked = false);
+        selectedDaysInput.forEach(day => day.checked = false);
+        updateCards();
+    });
 });
 
 

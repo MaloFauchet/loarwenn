@@ -40,152 +40,88 @@ class Offre {
      * Récupère une offre  par son id
      * @return offre
      */
-    public function getOffreById($id) {
-        $sql = "
-            SELECT 
-            o.id_offre,
-            o.id_ville,
-            o.titre_offre,
-            o.note_moyenne,
-            o.nb_avis,
-            o.resume,
-            o.description,
-            o.adresse_offre,
+    public function getOffreById($id_professionnel,$id_offre) {
+        $sql = "SELECT 
+                o.*,
 
-            ville.nom_ville as ville,
+                -- Infos spécifiques selon le type
+                ov.duree AS visite_duree,
+                
 
-            img.chemin,
+                oa.duree AS activite_duree,
+                oa.age AS activite_age,
+                
 
-            ta.libelle_activite as type_activite,
+                os.duree AS spectacle_duree,
+                
+                os.capacite_accueil AS spectacle_capacite,
+                
 
-            tag_agg.libelle_tag,
+                opa.nb_attraction AS pa_nb_attraction,
+                opa.age_min AS pa_age_min,
 
-            ov.duree AS visite_duree,
-            ov.accessibilite AS visite_accessibilite,
+                orestau.id_gamme_prix ,
+				gp.libelle_gamme_prix AS restaurant_gamme_prix,
+                tripenazor.get_langue_by_offre(o.id_offre) AS langue,
+				tripenazor.get_prestation_incluses_by_offre(o.id_offre) as prestation_incluses,
+				tripenazor.get_prestation_non_incluses_by_offre(o.id_offre) as prestation_non_incluses,
+				
 
-            oa.duree AS activite_duree,
-            oa.age AS activite_age,
-            oa.accessibilite AS activite_accessibilite,
 
-            os.duree AS spectacle_duree,
-            os.accessibilite AS spectacle_accessibilite,
-            os.capacite_accueil AS spectacle_capacite,
-            os.prix AS spectacle_prix,
+                -- Pro info
+                COALESCE(pp.denomination, pu.raison_sociale) AS nom_societe,
+                COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public) AS id_professionnel,
+                pro.lien_site_web AS site_web,
+				pp.denomination as denomination,
+				pu.raison_sociale as raison_sociale,
+                util.nom AS nom_utilisateur,
+                util.prenom AS prenom,
+                util.email AS email_utilisateur,
+                util.num_telephone AS telephone_utilisateur,
+				tripenazor.get_images_by_offre(o.id_offre) as images,
+				tripenazor.get_horaires_by_offre(o.id_offre) as horaires
 
-            opa.nb_attraction AS pa_nb_attraction,
-            opa.age_min AS pa_age_min,
 
-            orestau.gamme_prix AS restaurant_gamme_prix
+                FROM tripenazor.infos_carte_offre_with_offline o
 
-            FROM tripenazor.offre as o
+                -- Type spécifique
+                LEFT JOIN tripenazor.offre_visite ov ON ov.id_offre = o.id_offre
+                LEFT JOIN tripenazor.offre_activite oa ON oa.id_offre = o.id_offre
+                LEFT JOIN tripenazor.offre_spectacle os ON os.id_offre = o.id_offre
+                LEFT JOIN tripenazor.offre_parc_attraction opa ON opa.id_offre = o.id_offre
+                LEFT JOIN tripenazor.offre_restauration orestau ON orestau.id_offre = o.id_offre
+                
 
-            JOIN tripenazor.ville as ville ON o.id_ville = ville.id_ville
-            JOIN tripenazor.image_illustre_offre as iio ON o.id_offre = iio.id_offre
-            JOIN tripenazor.image as img ON iio.id_image = img.id_image
-            JOIN tripenazor.type_activite as ta ON o.id_type_activite = ta.id_type_activite
-            JOIN LATERAL (
-                SELECT string_agg(t.libelle_tag, ', ') AS libelle_tag
-                FROM tripenazor.type_activite_autorise_tag taot
-                JOIN tripenazor.tag t ON taot.id_tag = t.id_tag
-                WHERE taot.id_type_activite = o.id_type_activite
-            ) AS tag_agg ON TRUE
+				-- gamme de prix
+                LEFT JOIN tripenazor.gamme_prix gp ON orestau.id_gamme_prix = gp.id_gamme_prix
 
-            LEFT JOIN tripenazor.offre_visite as ov ON o.id_offre = ov.id_offre
-            LEFT JOIN tripenazor.offre_activite as oa ON o.id_offre = oa.id_offre
-            LEFT JOIN tripenazor.offre_spectacle as os ON o.id_offre = os.id_offre
-            LEFT JOIN tripenazor.offre_parc_attraction as opa ON o.id_offre = opa.id_offre
-            LEFT JOIN tripenazor.offre_restauration as orestau ON o.id_offre = orestau.id_offre
+                -- Pro linkage
+                LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+                LEFT JOIN tripenazor.pro_public_propose_offre ppp ON ppp.id_offre = o.id_offre
+                LEFT JOIN tripenazor.professionnel p 
+                    ON p.id_utilisateur = a.id_utilisateur_prive OR p.id_utilisateur = ppp.id_utilisateur_public
+                LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+                LEFT JOIN tripenazor.professionnel pro ON pro.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+                LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
 
-            WHERE o.id_offre = :id;
+                -- Filtrage
+                WHERE 
+                    a.id_utilisateur_prive = :id_utilisateur
+                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;"
 
-        ";    
+        
+            ;
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $stmt->execute([
+            ':id_utilisateur' => $id_professionnel,
+            ':id_offre' => $id_offre
 
-        $result =  $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        ]);
 
-        if ($result) {
-            switch ($result['type_activite']) {
-                case 'Visite guidée':
-                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
-                    $offre = new OffreVisite();
-                    break;
-                case 'Visite non guidée':
-                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreVisite.php');
-                    $offre = new OffreVisite();
-                    break;
-                case 'Activité':
-                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreActivite.php');
-                    $offre = new OffreActivite();
-                    break;
-                case 'Spectacle':
-                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreSpectacle.php');
-                    $offre = new OffreSpectacle();
-                    break;
-                case 'Parc d\'attraction':
-                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreParcAttraction.php');
-                    $offre = new OffreParcAttraction();
-                    break;
-                case 'Restaurant':
-                    require_once($_SERVER['DOCUMENT_ROOT'] . '/../models/OffreRestaurant.php');
-                    $offre = new OffreRestaurant();
-                    break;
-
-                default:
-                    $offre = new Offre();
-            }
-
-            /**
-             * Setters de la classe mère
-             */
-
-            //Recupération des tags
-            foreach (explode(',', $result['libelle_tag']) as $tag) {
-                $offre->setTag($tag);
-            }
-            //Type
-            $offre->setType($result['type_activite']);
-            $offre->setId($result['id_offre']);
-            $offre->setTitre($result['titre_offre']);
-            $offre->setResume($result['resume']);
-            $offre->setDescription($result['description']);
-            $offre->setAdresse($result['adresse_offre']);
-            $offre->setType($result['type_activite']);
-            $offre->setNoteMoyenne($result['note_moyenne']);
-            $offre->setNbAvis($result['nb_avis']);
-            $offre->setIdVille($result['ville']);
-            $offre->setPathImage($result['chemin']);
-
-            /**
-             * Setters de la classe spécifique
-             */
-            if ($offre instanceof OffreVisite) {
-                $offre->setDuree($result['visite_duree']);
-                $offre->setAccessibilite($result['visite_accessibilite']);
-            }elseif ($offre instanceof OffreActivite) {
-                $offre->setDuree($result['activite_duree']);
-                $offre->setAgeMin($result['activite_age']);
-                $offre->setAccessibilite($result['activite_accessibilite']);
-            }elseif ($offre instanceof OffreSpectacle) {
-                $offre->setDuree($result['spectacle_duree']);
-                $offre->setAccessibilite($result['spectacle_accessibilite']);
-                $offre->setCapaciteAccueil($result['spectacle_capacite']);
-                $offre->setPrix($result['spectacle_prix']);
-            }else if($offre instanceof OffreParcAttraction) {
-                $offre->setNbAttraction($result['pa_nb_attraction']);
-                $offre->setAgeMin($result['pa_age_min']);
-            }elseif ($offre instanceof OffreRestaurant) {
-                $offre->setGammePrix($result['restaurant_gamme_prix']);
-            }
-            
-            
-            
-
-            return $offre;
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getProByOffre($idOffre){
@@ -207,195 +143,400 @@ class Offre {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    
+
+
+
     public function getOffreByIdProfessionnel($id_professionnel) {
         $sql = "
             SELECT o.*, i.chemin AS image_chemin, i.titre_image
             FROM tripenazor.offre o
-            JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
-            JOIN tripenazor.professionnel p ON p.id_utilisateur = a.id_utilisateur_prive
-            LEFT JOIN tripenazor.image_illustre_offre io ON io.id_offre = o.id_offre
+            LEFT JOIN tripenazor.image_illustre_offre io ON io.id_image = o.id_image_couverture
             LEFT JOIN tripenazor.image i ON i.id_image = io.id_image
-            WHERE p.id_utilisateur = :id_utilisateur;
+            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre AND a.id_utilisateur_prive = :id_utilisateur
+            LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_offre = o.id_offre AND pppo.id_utilisateur_public = :id_utilisateur
+            WHERE a.id_utilisateur_prive = :id_utilisateur OR pppo.id_utilisateur_public = :id_utilisateur
         ";
 
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql); 
         $stmt->execute([':id_utilisateur' => $id_professionnel]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    function formatArrayToPostgresText($array) {
+        if (!is_array($array)) {
+            return '{}';
+        }
+
+        $escaped = array_map(function($item) {
+            return '"' . addslashes($item) . '"';
+        }, $array);
+
+        return '{' . implode(',', $escaped) . '}';
+    }
+
     public function insertOffreActivite($data)
     {
+        $joursTexte = $data['jours'];
+        $joursMap = [
+            "Lundi" => 1,
+            "Mardi" => 2,
+            "Mercredi" => 3,
+            "Jeudi" => 4,
+            "Vendredi" => 5,
+            "Samedi" => 6,
+            "Dimanche" => 7
+        ];
+        $joursNumeriques = array_map(function($jour) use ($joursMap) {
+            return $joursMap[$jour] ?? null;
+        }, $joursTexte);
+
         try {
-            // 1. Récupérer ou insérer la ville
-            $nomVille = trim($data['lieu']); // Ex : "Paris"
+            $sql = "
+            SELECT tripenazor.inserer_offre_activite(
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
 
-            $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
+                :p_prestations_incluses::TEXT[],
+                :p_prestations_non_incluses::TEXT[],
+                :p_duree::TIME,
+                :p_age::INT,
+                :p_prix_prive::FLOAT    
+            );
+        ";
 
+        $stmt = $this->conn->prepare($sql);
 
-            // Chercher ville existante
-            $sqlVille = "SELECT id_ville FROM tripenazor.ville WHERE nom_ville = :nomVille";
-            $stmtVille = $this->conn->prepare($sqlVille);
-            $stmtVille->bindParam(':nomVille', $nomVille);
-            $stmtVille->execute();
+      
+        $stmt->bindValue(':p_nom_ville', $data['nom_ville'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_code_postal', $data['code_postal'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_offre',$data['titre_offre'] );
+        $stmt->bindValue(':p_en_ligne', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':p_resume', $data['resume'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
 
-            $ville = $stmtVille->fetch(PDO::FETCH_ASSOC);
+        $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin']);
+        $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin']);
+        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi']);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi']);
+        $stmt->bindValue(':p_id_professionnel',$data['userId'] );
+        $stmt->bindValue(':p_prestations_incluses', $this->formatArrayToPostgresText($data['prestation_incluse']));
+        $stmt->bindValue(':p_prestations_non_incluses', $this->formatArrayToPostgresText($data['prestation_non_incluse']));
+        $stmt->bindValue(':p_duree', $data['duree'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_age', $data['age_min'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 
-            if ($ville) {
-                $idVille = $ville['id_ville'];
-            } else {
-                // Insérer nouvelle ville
-                $sqlInsertVille = "INSERT INTO tripenazor.ville (nom_ville, code_postal) VALUES (:nomVille, :codePostal)";
-                $stmtInsertVille = $this->conn->prepare($sqlInsertVille);
-                $stmtInsertVille->bindParam(':nomVille', $nomVille);
-                $stmtInsertVille->bindParam(':codePostal', $codePostal);
-                $stmtInsertVille->execute();
-                $idVille = $this->conn->lastInsertId();
-            }
+        // Exécution
+        $stmt->execute();
 
-            // 2. Insérer l'offre avec id_ville obtenu
-            $sql = "INSERT INTO tripenazor.offre (
-                        id_ville,
-                        id_type_activite,
-                        titre_offre,
-                        note_moyenne,
-                        nb_avis,
-                        en_ligne,
-                        resume,
-                        description,
-                        adresse_offre
-                    ) VALUES (
-                        :id_ville,
-                        :id_type_activite,
-                        :titre_offre,
-                        :note_moyenne,
-                        :nb_avis,
-                        :en_ligne,
-                        :resume,
-                        :description,
-                        :adresse_offre
-                    )";
-
-            $stmt = $this->conn->prepare($sql);
-
-            // Lier les paramètres
-            $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
-            $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
-            $stmt->bindParam(':titre_offre', $data['titre']);
-            $stmt->bindValue(':note_moyenne', 0);
-            $stmt->bindValue(':nb_avis', 0, PDO::PARAM_INT);
-            $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
-            $stmt->bindParam(':resume', $data['description']);
-            $stmt->bindParam(':description', $data['description']);
-            $adresseAleatoire = "123 Rue de la Paix, 75002 Paris";
-            $stmt->bindParam(':adresse_offre', $adresseAleatoire);
-
-            $stmt->execute();
-
-            echo "Offre insérée avec succès.";
+       
 
         } catch (PDOException $e) {
+            die(print_r($e->getMessage()));  
             echo "Erreur SQL : " . $e->getMessage();
         }
     }
 
 
     public function insertOffreSpectacle($data)
-    {
+   {
+        $joursTexte = $data['jours'];
+        $joursMap = [
+            "Lundi" => 1,
+            "Mardi" => 2,
+            "Mercredi" => 3,
+            "Jeudi" => 4,
+            "Vendredi" => 5,
+            "Samedi" => 6,
+            "Dimanche" => 7
+        ];
+        $joursNumeriques = array_map(function($jour) use ($joursMap) {
+            return $joursMap[$jour] ?? null;
+        }, $joursTexte);
+
         try {
-            // 1. Récupérer ou insérer la ville
-            $nomVille = trim($data['lieu']); // Ex : "Paris"
+            $sql = "
+            SELECT tripenazor.inserer_offre_spectacle(
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
 
-            $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
+                :p_duree::TIME,
+                :p_capacite_accueil::FLOAT,
+                :p_prix_prive::INT
+            );
+        ";
 
+        $stmt = $this->conn->prepare($sql);
 
-            // Chercher ville existante
-            $sqlVille = "SELECT id_ville FROM tripenazor.ville WHERE nom_ville = :nomVille";
-            $stmtVille = $this->conn->prepare($sqlVille);
-            $stmtVille->bindParam(':nomVille', $nomVille);
-            $stmtVille->execute();
+      
+        $stmt->bindValue(':p_nom_ville', $data['nom_ville'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_code_postal', $data['code_postal'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_offre',$data['titre_offre'] );
+        $stmt->bindValue(':p_en_ligne', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':p_resume', $data['resume'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
 
-            $ville = $stmtVille->fetch(PDO::FETCH_ASSOC);
+        $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_id_professionnel',$data['userId'] );
+        $stmt->bindValue(':p_duree', $data['duree'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_capacite_accueil', $data['capacite_accueil'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 
-            if ($ville) {
-                $idVille = $ville['id_ville'];
-            } else {
-                // Insérer nouvelle ville
-                $sqlInsertVille = "INSERT INTO tripenazor.ville (nom_ville, code_postal) VALUES (:nomVille, :codePostal)";
-                $stmtInsertVille = $this->conn->prepare($sqlInsertVille);
-                $stmtInsertVille->bindParam(':nomVille', $nomVille);
-                $stmtInsertVille->bindParam(':codePostal', $codePostal);
-                $stmtInsertVille->execute();
-                $idVille = $this->conn->lastInsertId();
-            }
+        // Exécution
+        $stmt->execute();
 
-            // 2. Insérer l'offre avec id_ville obtenu
-            $sql = "INSERT INTO tripenazor.offre (
-                        id_ville,
-                        id_type_activite,
-                        titre_offre,
-                        note_moyenne,
-                        nb_avis,
-                        en_ligne,
-                        resume,
-                        description,
-                        adresse_offre
-                    ) VALUES (
-                        :id_ville,
-                        :id_type_activite,
-                        :titre_offre,
-                        :note_moyenne,
-                        :nb_avis,
-                        :en_ligne,
-                        :resume,
-                        :description,
-                        :adresse_offre
-                    )";
-
-            $stmt = $this->conn->prepare($sql);
-
-            // Lier les paramètres
-            $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
-            $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
-            $stmt->bindParam(':titre_offre', $data['titre']);
-            $stmt->bindValue(':note_moyenne', 0);
-            $stmt->bindValue(':nb_avis', 0, PDO::PARAM_INT);
-            $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
-            $stmt->bindParam(':resume', $data['description']);
-            $stmt->bindParam(':description', $data['description']);
-            $adresseAleatoire = "123 Rue de la Paix, 75002 Paris";
-            $stmt->bindParam(':adresse_offre', $adresseAleatoire);
-
-            $stmt->execute();
-
-            $idOffre = $this->conn->lastInsertId();
-
-            // 3. Insérer dans offre_spectacle
-            $sqlSpectacle = "INSERT INTO tripenazor.offre_spectacle (
-                                id_offre,
-                                duree,
-                                accessibilite,
-                                capacite_accueil,
-                                prix
-                            ) VALUES (
-                                :id_offre,
-                                :duree,
-                                :accessibilite,
-                                :capacite_accueil,
-                                :prix
-                            )";
-
-            $stmtSpectacle = $this->conn->prepare($sqlSpectacle);
-            $stmtSpectacle->bindParam(':id_offre', $idOffre, PDO::PARAM_INT);
-            $stmtSpectacle->bindParam(':duree', $data['duree']);
-            $stmtSpectacle->bindParam(':accessibilite', $data['accessibilite']);
-            $stmtSpectacle->bindParam(':capacite_accueil', $data['capacite']);
-            $stmtSpectacle->bindParam(':prix', $data['prix']);
-            $stmtSpectacle->execute();
-
-            echo "Offre et offre_spectacle insérées avec succès.";
+       
 
         } catch (PDOException $e) {
+            die(print_r($$e->getMessage()));  
+            echo "Erreur SQL : " . $e->getMessage();
+        }
+    }
+
+    public function insertOffreVisiteGuidee($data)
+   {
+        $joursTexte = $data['jours'];
+        $joursMap = [
+            "Lundi" => 1,
+            "Mardi" => 2,
+            "Mercredi" => 3,
+            "Jeudi" => 4,
+            "Vendredi" => 5,
+            "Samedi" => 6,
+            "Dimanche" => 7
+        ];
+        $joursNumeriques = array_map(function($jour) use ($joursMap) {
+            return $joursMap[$jour] ?? null;
+        }, $joursTexte);
+
+        try {
+            $sql = "
+            SELECT tripenazor.inserer_offre_visite_guidee(
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
+
+                :p_duree::TIME,
+                :p_langues::TEXT[],
+                
+
+                :p_prix_prive::INT
+    
+            );
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+      
+        $stmt->bindValue(':p_nom_ville', $data['nom_ville'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_code_postal', $data['code_postal'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_offre',$data['titre_offre'] );
+        $stmt->bindValue(':p_en_ligne', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':p_resume', $data['resume'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_id_professionnel',$data['userId'] );
+        $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
+
+        $stmt->bindValue(':p_duree', $data['duree'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_langues', $this->formatArrayToPostgresText($data['langues']), PDO::PARAM_STR);
+
+
+        // Exécution
+        $stmt->execute();
+
+       
+
+        } catch (PDOException $e) {
+            die(print_r($$e->getMessage()));  
+            echo "Erreur SQL : " . $e->getMessage();
+        }
+    }
+
+    public function insertOffreParc($data)
+   {
+        $joursTexte = $data['jours'];
+        $joursMap = [
+            "Lundi" => 1,
+            "Mardi" => 2,
+            "Mercredi" => 3,
+            "Jeudi" => 4,
+            "Vendredi" => 5,
+            "Samedi" => 6,
+            "Dimanche" => 7
+        ];
+        $joursNumeriques = array_map(function($jour) use ($joursMap) {
+            return $joursMap[$jour] ?? null;
+        }, $joursTexte);
+
+        try {
+            $sql = "
+            SELECT tripenazor.inserer_offre_parc_attration(
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
+
+                :p_nb_attractions::INT,
+                :p_age_min::INT,
+                :p_titre_image_parc::TEXT,
+                :p_chemin_image_parc::TEXT,
+            
+                :p_prix_prive::INT
+                
+            );
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+      
+        $stmt->bindValue(':p_nom_ville', $data['nom_ville'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_code_postal', $data['code_postal'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_offre',$data['titre_offre'] );
+        $stmt->bindValue(':p_en_ligne', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':p_resume', $data['resume'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_id_professionnel',$data['userId'] );
+        $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
+
+        $stmt->bindValue(':p_chemin_image_parc', $data['cheminCarteParc'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_parc', $data['nomCarteParc'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_nb_attractions', $data['numero'], PDO::PARAM_INT);
+        $stmt->bindValue(':p_age_min', $data['age'], PDO::PARAM_INT);
+
+
+
+        // Exécution
+        $stmt->execute();
+
+       
+
+        } catch (PDOException $e) {
+            die(print_r($$e->getMessage()));  
             echo "Erreur SQL : " . $e->getMessage();
         }
     }
@@ -403,103 +544,187 @@ class Offre {
 
     
     public function insertOffreRestaurant($data)
-    {
+   {
+        $joursTexte = $data['jours'];
+        $joursMap = [
+            "Lundi" => 1,
+            "Mardi" => 2,
+            "Mercredi" => 3,
+            "Jeudi" => 4,
+            "Vendredi" => 5,
+            "Samedi" => 6,
+            "Dimanche" => 7
+        ];
+        $joursNumeriques = array_map(function($jour) use ($joursMap) {
+            return $joursMap[$jour] ?? null;
+        }, $joursTexte);
+
         try {
-            // 1. Récupérer ou insérer la ville
-            $nomVille = trim($data['lieu']); 
+            $sql = "
+            SELECT tripenazor.inserer_offre_restauration(
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
 
-            $codePostal = isset($data['code_postal']) && $data['code_postal'] !== '' ? trim($data['code_postal']) : '00000';
+                :p_titre_image_carte::TEXT,
+                :p_chemin_image_carte::TEXT,
+                :p_libelle_gamme_prix::TEXT,
+
+                :p_prix_prive::INT
+                
+            );
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+      
+        $stmt->bindValue(':p_nom_ville', $data['nom_ville'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_code_postal', $data['code_postal'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_offre',$data['titre_offre'] );
+        $stmt->bindValue(':p_en_ligne', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':p_resume', $data['resume'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_id_professionnel',$data['userId'] );
+        $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
+
+        $stmt->bindValue(':p_titre_image_carte', $data['nomCarteRestaurant'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_carte', $data['cheminCarteRestaurant'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_libelle_gamme_prix', $data['gamme_prix'], PDO::PARAM_STR);
 
 
-            // Chercher ville existante
-            $sqlVille = "SELECT id_ville FROM tripenazor.ville WHERE nom_ville = :nomVille";
-            $stmtVille = $this->conn->prepare($sqlVille);
-            $stmtVille->bindParam(':nomVille', $nomVille);
-            $stmtVille->execute();
 
-            $ville = $stmtVille->fetch(PDO::FETCH_ASSOC);
+        // Exécution
+        $stmt->execute();
 
-            if ($ville) {
-                $idVille = $ville['id_ville'];
-            } else {
-                // Insérer nouvelle ville
-                $sqlInsertVille = "INSERT INTO tripenazor.ville (nom_ville, code_postal) VALUES (:nomVille, :codePostal)";
-                $stmtInsertVille = $this->conn->prepare($sqlInsertVille);
-                $stmtInsertVille->bindParam(':nomVille', $nomVille);
-                $stmtInsertVille->bindParam(':codePostal', $codePostal);
-                $stmtInsertVille->execute();
-                $idVille = $this->conn->lastInsertId();
-            }
-
-            // 2. Insérer l'offre avec id_ville obtenu
-            $sql = "INSERT INTO tripenazor.offre (
-                        id_ville,
-                        id_type_activite,
-                        titre_offre,
-                        note_moyenne,
-                        nb_avis,
-                        en_ligne,
-                        resume,
-                        description,
-                        adresse_offre
-                    ) VALUES (
-                        :id_ville,
-                        :id_type_activite,
-                        :titre_offre,
-                        :note_moyenne,
-                        :nb_avis,
-                        :en_ligne,
-                        :resume,
-                        :description,
-                        :adresse_offre
-                    )";
-
-            $stmt = $this->conn->prepare($sql);
-
-            // Lier les paramètres
-            $stmt->bindParam(':id_ville', $idVille, PDO::PARAM_INT);
-            $stmt->bindParam(':id_type_activite', $data['id_activite'], PDO::PARAM_INT);
-            $stmt->bindParam(':titre_offre', $data['titre']);
-            $stmt->bindValue(':note_moyenne', 0);
-            $stmt->bindValue(':nb_avis', 0, PDO::PARAM_INT);
-            $stmt->bindValue(':en_ligne', 1, PDO::PARAM_INT);
-            $stmt->bindParam(':resume', $data['description']);
-            $stmt->bindParam(':description', $data['description']);
-            $adresseAleatoire = "123 Rue de la Paix, 75002 Paris";
-            $stmt->bindParam(':adresse_offre', $adresseAleatoire);
-
-            $stmt->execute();
-
-            $idOffre = $this->conn->lastInsertId();
-
-            // 3. Insérer dans offre_spectacle
-            $sqlRestauration = "INSERT INTO tripenazor.offre_restauration (
-                            id_offre,
-                            id_image,
-                            gamme_prix
-                        ) VALUES (
-                            :id_offre,
-                            :id_image,
-                            :gamme_prix
-                        )";
-
-            $stmtRestauration = $this->conn->prepare($sqlRestauration);
-            $stmtRestauration->bindParam(':id_offre', $idOffre, PDO::PARAM_INT);
-
-            // Si aucune image n'est fournie, on passe NULL
-            if (!empty($data['id_image'])) {
-                $stmtRestauration->bindParam(':id_image', $data['id_image'], PDO::PARAM_INT);
-            } else {
-                $stmtRestauration->bindValue(':id_image', null, PDO::PARAM_NULL);
-            }
-
-            $stmtRestauration->bindParam(':gamme_prix', $data['gamme_prix']);
-
-            $stmtRestauration->execute();
-
-            echo "Offre et offre_restauration insérées avec succès.";
+       
 
         } catch (PDOException $e) {
+            die(print_r($$e->getMessage()));  
+            echo "Erreur SQL : " . $e->getMessage();
+        }
+    }
+
+
+
+    
+    public function insertOffreVisiteNonGuidee($data)
+   {
+        $joursTexte = $data['jours'];
+        $joursMap = [
+            "Lundi" => 1,
+            "Mardi" => 2,
+            "Mercredi" => 3,
+            "Jeudi" => 4,
+            "Vendredi" => 5,
+            "Samedi" => 6,
+            "Dimanche" => 7
+        ];
+        $joursNumeriques = array_map(function($jour) use ($joursMap) {
+            return $joursMap[$jour] ?? null;
+        }, $joursTexte);
+
+        try {
+            $sql = "
+            SELECT tripenazor.inserer_offre_visite_non_guidee(
+                :p_nom_ville::TEXT,   
+                :p_code_postal::TEXT,
+                :p_titre_offre::TEXT,
+                :p_en_ligne::BOOLEAN,
+                :p_resume::TEXT,
+                :p_description::TEXT,
+                :p_accessibilite::TEXT,
+                :p_type_offre::tripenazor.type_activite,
+                :p_prix_TCC_min::FLOAT,
+                :p_tags::TEXT[],
+                :p_voie::TEXT,
+                :p_numero_adresse::INT,
+                :p_complement_adresse::TEXT,
+                :p_titre_image::TEXT,
+                :p_chemin_image::TEXT,
+                :p_jours::NUMERIC[],
+                :p_matin_heure_debut::TIME,
+                :p_matin_heure_fin::TIME,
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,
+                :p_id_professionnel::INT,
+
+             
+                :p_duree::TIME,
+                
+                :p_prix_prive::INT
+                
+            );
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+      
+        $stmt->bindValue(':p_nom_ville', $data['nom_ville'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_code_postal', $data['code_postal'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_offre',$data['titre_offre'] );
+        $stmt->bindValue(':p_en_ligne', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':p_resume', $data['resume'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_id_professionnel',$data['userId'] );
+        $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
+
+        $stmt->bindValue(':p_duree', $data['duree'], PDO::PARAM_INT);
+
+
+
+        // Exécution
+        $stmt->execute();
+
+       
+
+        } catch (PDOException $e) {
+            die(print_r($$e->getMessage()));  
             echo "Erreur SQL : " . $e->getMessage();
         }
     }

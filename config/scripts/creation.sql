@@ -4,7 +4,7 @@ CREATE SCHEMA tripenazor;
 SET SCHEMA 'tripenazor';
 
 
--- Type Activité 
+    -- Type Activité 
 CREATE TYPE type_activite AS ENUM (
   'visite_guidee',
   'visite_non_guidee',
@@ -12,6 +12,7 @@ CREATE TYPE type_activite AS ENUM (
   'parc_attraction',
   'spectacle',
   'restauration'
+
 );
 
 
@@ -113,7 +114,7 @@ CREATE TABLE horaire_ouverture(
 );
 
 CREATE TABLE jour(
-    id_jour SERIAL PRIMARY KEY,
+    id_jour SERIAL PRIMARY KEY,         
     libelle VARCHAR(50) NOT NULL
 );
 

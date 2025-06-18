@@ -8,8 +8,8 @@
     <h1>Bienvenue sur votre espace Pro !</h1>
 
     <div class="header-droit">
-        <a href="/backOffice/profil/">
-            <img src="<?=$_SESSION['pathImg']?>">
+        <a href="/backOffice/profil/" >
+            <img src="<?=$_SESSION['pathImg']?>" alt="photo de profil">
             <p><?=$_SESSION['prenom']?> <?=$_SESSION['nom']?></p>
         </a>
 
