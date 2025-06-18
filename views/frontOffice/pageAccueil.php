@@ -79,18 +79,10 @@
         </nav>
 
         <!-- Titre -->
-        <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
-        <h2 class="discover-text-fo">Découvrez vos vacances</h2>
-
-        <!-- Barre de recherche -->
-        <!-- <div class="sample one" >
-            <input type="text" name="search" placeholder="Rechercher..." id="searchbar">
-            <button type="submit" class="btn-search" id="search-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                </svg>
-            </button>
-        </div> -->
+        <div class="title-container">
+            <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
+            <h2 class="discover-text-fo">Découvrez vos vacances</h2>
+        </div>
 
         <div class="search-container">
             <div class="container-search-funnel">
@@ -107,29 +99,14 @@
     </div>
 </header>
 <main>
-    <!--
-        <h1>Récemment consultés</h1>
-        <hr>
-        <?php //  FAIRE CONNEXION     if ($connected) { ?>
-            
-            <div class="container-caroussel">
-                <div id="carousselAlreadySee">
-                    
-                    <?php /*foreach ($listeOffreConsultes as $listeOffreRecementConsultes =>$offreRecementConsultes ) { 
-                        
-                        foreach ($offreRecementConsultes as $offreRecementConsulte =>$valueOfOffre) {
-                            require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php');  
-                        }
-                    }*/ ?>
-            </div>
-        </div>!-->
-    <?php //} ?>
     <h1>Sélectionnées pour vous</h1>
     <hr>
     <div class="container-caroussel">
         <div id="carousselSelectForYou">
             <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
-                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+                if($valueOfOffre['A la une']) {
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+                }
             }?>
         </div>
         <h1>Les nouveautés</h1>
@@ -146,12 +123,4 @@
 
     </div>
 </main>
-
-
-
-
-<!-- TO FIX -->
-<?php //require_once("./components/footer.php") ?>
-
-
 </html>

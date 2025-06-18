@@ -1,74 +1,75 @@
 <div>
-<a style="text-decoration:none;color:#011B43" href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
-    <div>
-        <?php if ($valueOfOffre["Recommandé"]) { ?>
+    <a style="text-decoration:none;color:#011B43"
+        href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
+        <div>
+            <?php 
+        if ($valueOfOffre["En relief"]) { ?>
             <div class="recommended">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
-                        <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-patch-check-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708" />
                     </svg>
                     <p>Recommandé</p>
                 </div>
-            </div> 
-        <?php } ?>
-        <div class="item-image">
-            <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>" alt="<?php $valueOfOffre["titre_image"] ?>">
-            
-        </div>
-        <div class="item-body">
-            <div class="item-title"><?= $valueOfOffre["titre_offre"]  ?></div>
-            <div class="item-location">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
-                </svg>
-                <p><?= $valueOfOffre["numero_adresse"] . ' ' . $valueOfOffre["voie"] . ', ' . $valueOfOffre["nom_ville"] . ', ' . $valueOfOffre["code_postal"]?></p>
-                <!--<div class="tel-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
-                    </svg>
-                    
-                </div>!-->
-                
             </div>
-            <div class="item-avis">
-                <?php 
+            <?php } ?>
+            <div class="item-image">
+                <img src="<?= $valueOfOffre["chemin"] ?$valueOfOffre["chemin"] : "/images/offres/missingImage.png" ?>"
+                    alt="<?php $valueOfOffre["titre_image"] ?>">
+
+            </div>
+            <div class="item-body">
+                <div class="item-title"><?= $valueOfOffre["titre_offre"]  ?></div>
+                <div class="item-location">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+                    </svg>
+                    <p><?= $valueOfOffre["numero_adresse"] . ' ' . $valueOfOffre["voie"] . ', ' . $valueOfOffre["nom_ville"] . ', ' . $valueOfOffre["code_postal"]?>
+                    </p>
+                </div>
+                <div class="item-avis">
+                    <?php 
                     if ($valueOfOffre["note_avis"]) : ?>
                     <p><?= $valueOfOffre["note_avis"]  ?></p>
                     <?= afficherEtoile($valueOfOffre["note_avis"]) ?>
                     <p>(<?= $valueOfOffre["nb_avis"]  ?>)</p>
-                <?php endif; ?>
-            </div>
-            <div class="item-description"> <?= $valueOfOffre["description"]  ?>
-            </div>
-            <div class="item-tag">
-                <?php foreach ($tabTag as $id_offre => $tags) { 
-                if ($id_offre === $valueOfOffre["id_offre"] ) { ?>
+                    <?php endif; ?>
+                </div>
+                <div class="item-description"> <?= $valueOfOffre["description"]  ?>
+                </div>
+                <div class="item-tag">
+                    <?php 
+                    $allTagsOffre = explode(',', $valueOfOffre['tags']);
+                    $i = 0;
+                    foreach ($allTagsOffre as $id_offre => $tag) {
+                        if ($i < 3) { 
+                        ?>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-tags-fill" viewBox="0 0 16 16">
+                                    <path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                                    <path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043z" />
+                                </svg>
+                                <p><?= $tag ?></p>
+                            </span>
+                        <?php 
+                            $i++;
+                        } 
+                        if ($i === 3) { 
+                            ?>
+                            <span>
+                                <p>...</p>
+                            </span>
+                            <?php 
+                            break;
+                        } 
+                    }?>
+                </div>
 
-                    <?php foreach ($tags as $tag => $value) { ?>
-                       <?php if($i<3){ ?>
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tags-fill" viewBox="0 0 16 16">
-                                <path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                                <path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043z"/>
-                            </svg>
-                            <p><?= $value ?></p>
-                            
-                        </span>
-                    <?php $i++ ?>
-                    <?php } ?>
-                    <?php } ?>
-
-               <?php } ?>
-               <?php } ?>
-               <?php if ($i === 3 ) { ?>
-                   <span>
-                       <p>...</p>
-                   </span>
-                   <?php $i = 0?>
-               <?php } ?>
-               <?php $i = 0?>
             </div>
         </div>
-    </div>
-</a>
+    </a>
 </div>
