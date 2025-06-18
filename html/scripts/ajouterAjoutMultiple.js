@@ -86,5 +86,7 @@ function afficherElementMasque(){
             option.style.display = "block";
         }
     });
-}   
+}  
+
+
 

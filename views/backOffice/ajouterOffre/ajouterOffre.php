@@ -257,6 +257,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             box-sizing: border-box;
         }
 
+        .champ-type-offre-row {
+            display: flex;
+            gap: 10em;
+            flex-wrap: wrap;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preview-container img {
+            width: 100px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .custom-file-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            font-weight: 500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 5px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .custom-file-button:hover {
+            background-color: #0056b3;
+        }
+
 
 
 
@@ -332,18 +371,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                                 
                                 <div class="champ-type-offre-row">
-                                    <div class="champ-type-offre" style="margin-right:10em;">
+                                    <div class="champ-type-offre principale">
                                         <h3>Photo principale</h3>
-                                        <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*"  />
-                                        
+                                        <label for="imagePrincipale" class="custom-file-button">Choisir une photo principale</label>
+                                        <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*" hidden />
+                                        <div id="previewPrincipale" class="preview-container"></div>
                                     </div>
-                                    
-                                
-                                    <div class="champ-type-offre">
-                                        <h3>Photos secondaires</h3>
-                                        <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple />                                
+
+                                    <div class="champ-type-offre secondaires">
+                                        <h3>Photos secondaires (4 maximum)</h3>
+                                        <label for="imagesSecondaires" class="custom-file-button">Ajouter des photos secondaires</label>
+                                        <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple hidden />
+                                        <div id="previewSecondaires" class="preview-container"></div>
                                     </div>
-                                </div>    
+                                </div>
 
                                 
 
@@ -496,5 +537,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </body>
 </html>
+
+<script>
+    document.getElementById('imagePrincipale').addEventListener('change', function (event) {
+        const preview = document.getElementById('previewPrincipale');
+        preview.innerHTML = ''; 
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            preview.appendChild(img);
+        }
+    });
+
+    
+
+    document.getElementById('imagesSecondaires').addEventListener('change', function (event) {
+        const preview = document.getElementById('previewSecondaires');
+        preview.innerHTML = ''; 
+        Array.from(event.target.files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                preview.appendChild(img);
+            }
+        });
+    });
+
+
+
+</script>
+
     
 
