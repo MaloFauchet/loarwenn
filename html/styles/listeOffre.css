@@ -23,9 +23,9 @@
 }
 
 
-.liste-offre aside h4{
-    font-size: 30px;
-    margin: 10px;
+.liste-offre aside p{
+    font-size: 30px!important;
+    font-weight: bold;
 }
 
 .liste-offre aside li{
@@ -38,7 +38,7 @@
 .liste-offre aside input[type="number"]{
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     display: block;
     padding: 10px 16px;
     border: 1.5px solid var(--main-color);
@@ -54,7 +54,9 @@
     box-shadow: 0 0 0 2px #cae9ff80;
 }
 
-
+.liste-offre aside li, .filtre-ouvert-fermer-container div {
+    margin-bottom:15px;
+}
 
 .liste-offre aside hr{
     border: 1px solid var(--hr-color);

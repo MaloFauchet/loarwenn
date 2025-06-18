@@ -1,9 +1,3 @@
-
-
-
-        
-
-
        <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Nombre d'attraction</h3>
@@ -20,7 +14,7 @@
 
         <div class="champ-type-offre">
             <h3>Image du plan</h3>  
-            <input id="imagePlan" name="imagePlan" type="file" accept="image/*" />
+            <input id="imagePlan" name="imagePlan" type="file" accept="image/*" aria-label="Image du plan"/>
         </div>
 
 
@@ -38,15 +32,5 @@
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
 
-            
-
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-   

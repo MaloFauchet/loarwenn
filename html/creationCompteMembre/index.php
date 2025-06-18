@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/styles/components/input.css" />
     <link rel="stylesheet" href="/styles/styles.css" />
     <link rel="stylesheet" href="/styles/components/formulaire.css" />
+    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body>
     <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/../views/frontOffice/components/creationCompte.php"); ?>
