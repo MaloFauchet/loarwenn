@@ -12,8 +12,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
 
 // Création d'une instance du contrôleur Offre et récupération des offres du professionnel avec l'ID 1
 $offreController = new OffreController();
-$offres = $offreController->getOffreByIdProfessionnel($_SESSION["id_utilisateur"]);
+$userId = $_SESSION['id_utilisateur'];
 
+$offres = $offreController->getOffreByIdProfessionnel($userId);
 
 // Variables pour la note et le nombre de nouveaux avis (exemple statique)
 $note = 0;
@@ -62,7 +63,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
             <img src="/images/icons/funnel-fill-blue.svg" alt="Filtrer">
         </button>
     </div> -->
-
+   
     <?php
     // Boucle sur chaque offre récupérée pour l'afficher
     foreach ($offres as $offre) {
@@ -76,6 +77,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
 
             <!-- Image de l'offre -->
             <img src="<?php echo $offre['chemin']; ?>" alt="<?php echo $offre['titre_image']; ?>">
+ 
         </div>
         <div class="offre-content">
             <!-- Titre de l'offre -->

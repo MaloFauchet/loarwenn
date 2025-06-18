@@ -20,32 +20,31 @@ function ajouterajoutMultiple(id) {
 function supprimerajoutMultiple(btn) {
     btn.parentElement.remove();
 }
-
 /*
-* selectionne le type de l'offre
+* Sélectionne le type de l'offre
 */
 function TypeSelectChange() {
+
     const select = document.getElementById('type-select');
     const detailsDiv = document.getElementById('activite-details');
 
     select.addEventListener('change', function () {
+        if (!this.value) {
+            detailsDiv.innerHTML = '';
+            return;
+        }
+
         // Récupérer les deux valeurs séparées par |
         const [selectedId, selectedLibelle] = this.value.split('|');
 
         // Stocker dans les cookies
         document.cookie = `selectedActiviteId=${encodeURIComponent(selectedId)}; path=/`;
         document.cookie = `selectedLibelle=${encodeURIComponent(selectedLibelle)}; path=/`;
-       
-
-        if (!selectedLibelle) {
-            detailsDiv.innerHTML = '';
-            return;
-        }
 
         // Nettoyage du libellé
         const libelleSanitized = selectedLibelle
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // supprime accents
-            .replace(/[^a-zA-Z]/g, ''); // garde que lettres uniquement
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // supprime les accents
+            .replace(/[^a-zA-Z]/g, ''); // garde uniquement les lettres
 
         // Envoi des deux versions au backend
         const url = `/backOffice/chargeComposant.php?libelle=${encodeURIComponent(selectedLibelle)}&sanitized=${encodeURIComponent(libelleSanitized)}`;
@@ -65,6 +64,7 @@ function TypeSelectChange() {
             });
     });
 }
+
 
 
 // Afficher ou masquer les champs d'offre en fonction de la sélection du type d'activité

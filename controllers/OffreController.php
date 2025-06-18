@@ -46,14 +46,13 @@ class OffreController {
     }
 
     
-    /*
     public function ajouterOffre($post, $files) {
-
-        #die(print_r($post,true));
-
+        // echo "<pre>";
+        // die(print_r($files));
+        // echo "</pre>";
         
         
-        //valeur pour la bdd
+        //valeur pour la bdd    
         $titre = trim($post['titre'] ?? '');
         $prixMin = trim($post['prixMin'] ?? '');
         $dateDebutMatin = trim($post['dateDebutMatin'] ?? '');
@@ -72,11 +71,13 @@ class OffreController {
         $en_relief = trim($post['en_relief'] ?? 0);
         $jours = $post['jours'] ?? [];
         $tags = $post['tags'] ??[];
+        $userId = $post['userId'] ?? null;
 
 
         // Générer un dossier unique pour l'offre
         $uniqueId = uniqid();
         $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/images/offres/' . $uniqueId . '/';
+        $baseDirBdd = '/images/offres/' . $uniqueId . '/';
 
         // Créer le dossier
         if (!is_dir($baseDir)) {
@@ -90,15 +91,16 @@ class OffreController {
             $tmpName = $files['imagePrincipale']['tmp_name'];
             $fileName = basename($files['imagePrincipale']['name']);
 
-            $destination = $baseDir . $fileName;
+            $destination = $baseDir.$fileName;
 
-            if (move_uploaded_file($tmpName, $destination)) {
-                $imagePrincipalePath = $destination;
-            }
+            move_uploaded_file($tmpName, $destination);
+                
         }
 
+        
+
         //valeur pour la bdd
-        $cheminImagePrincipale = $baseDir;
+        $cheminImagePrincipale = $baseDirBdd.$fileName;
         $nomImagePrincipale = $fileName;
 
         // Traitement des images secondaires
@@ -114,26 +116,24 @@ class OffreController {
                     array_push($nomsImagesSecondaire,$fileName);
                     $destination = $baseDir . $fileName;
 
-                    if (move_uploaded_file($tmpName, $destination)) {
-                        $imagesSecondairesPaths[] = $destination;
-                    }
+                    move_uploaded_file($tmpName, $destination);
+                    $cheminImageSecondaire[] = $baseDirBdd.$fileName;
+                    
                 }
             }
         }
 
-        //valeur pour la bdd
-        $cheminImageSecondaire = $baseDir;
 
 
         //activite:1
         if($post['id_activite'] == 1) {
 
             
-            
+            $type = "activite";
             $duree = trim($post['duree']);
             $age = trim($post['age']);
-            $prestation_incluse  = trim($post['ajoutMultiple_1']);
-            $prestation_non_incluse  = trim($post['ajoutMultiple_2']);
+            $prestation_incluse  = $post['ajoutMultiple_1'];
+            $prestation_non_incluse  = $post['ajoutMultiple_2'];
 
             
         
@@ -167,11 +167,16 @@ class OffreController {
                 'age_min' =>$age,
                 'prestation_non_incluse' => $prestation_non_incluse,
                 'prestation_incluse' => $prestation_incluse,
+
+                'type' => $type,
+                'userId' => $userId,
                 
                 
             ]);
 
             return ['success' => true];
+
+
         }
         //spectacle:2
         else if($post['id_activite'] == 2) {
@@ -179,7 +184,7 @@ class OffreController {
             $duree = trim($post['duree']);
             $capacite_accueil  = trim($post['capacite']);
            
-
+            $type = "spectacle";
 
             
             // Insertion en BDD via le modèle
@@ -210,6 +215,10 @@ class OffreController {
 
                 'duree' => $duree,
                 'capacite_accueil' =>$capacite_accueil,
+
+                'type' => $type,
+
+                'userId' => $userId,
                 
                 
                 
@@ -224,10 +233,10 @@ class OffreController {
         //visite guidee:3
         else if($post['id_activite'] == 3) {
             
-            
+            $type = "visite_guidee";
             
             $duree = trim($post['duree']);
-            $langues = trim($post['langue-checkboxes']);
+            $langues = implode(', ', $post['langue']);
             
             
             // Insertion en BDD via le modèle
@@ -258,6 +267,9 @@ class OffreController {
 
                 'langues' => $langues,
                 'duree' =>$duree,
+
+                'userId' => $userId,
+                'type' => $type,
                
                 
                 
@@ -269,20 +281,20 @@ class OffreController {
 
         //parc d'attraction:4
         else if($post['id_activite'] == 4) {
-            
+            $type= "parc_attraction";
             
 
             $numero  = trim($post['numero']);
             $age  = trim($post['age']);
 
-           // Traitement de l'image principale
+            // Traitement de la carte du parc
             $carteParc = null;
 
-            if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
-                $tmpName = $files['imagePrincipale']['tmp_name'];
-                $fileName = basename($files['imagePrincipale']['name']);
+            if (isset($files['imagePlan']) && $files['imagePlan']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $files['imagePlan']['tmp_name'];
+                $fileName = basename($files['imagePlan']['name']);
 
-                $destination = $baseDir . $fileName;
+                $destination = $baseDirBdd . $fileName;
 
                 if (move_uploaded_file($tmpName, $destination)) {
                     $carteParc = $destination;
@@ -290,7 +302,7 @@ class OffreController {
             }
 
             //valeur pour la bdd
-            $cheminCarteParc = $baseDir;
+            $cheminCarteParc = $destination;
             $nomCarteParc = $fileName;
             
             
@@ -324,6 +336,9 @@ class OffreController {
                 'nomCarteParc' =>$nomCarteParc,
                 'numero' => $numero,
                 'age' => $age,
+
+                'userId' => $userId,
+                'type' => $type,
                 
                 
                 
@@ -336,16 +351,16 @@ class OffreController {
         //restaurant:5
         else if($post['id_activite'] == 5) {
             
-            
+            $type = "restauration";
 
             $gamme_prix  = trim($post['prix']);
 
            // Traitement de l'image principale
             $carteRestaurant = null;
 
-            if (isset($files['imagePrincipale']) && $files['imagePrincipale']['error'] === UPLOAD_ERR_OK) {
-                $tmpName = $files['imagePrincipale']['tmp_name'];
-                $fileName = basename($files['imagePrincipale']['name']);
+            if (isset($files['imagePlan']) && $files['imagePlan']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $files['imagePlan']['tmp_name'];
+                $fileName = basename($files['imagePlan']['name']);
 
                 $destination = $baseDir . $fileName;
 
@@ -388,7 +403,9 @@ class OffreController {
                 'cheminCarteRestaurant' => $cheminCarteRestaurant,
                 'nomCarteRestaurant' =>$nomCarteRestaurant,
                 'gamme_prix' => $gamme_prix,
-                
+
+                'userId' => $userId,
+                'type' => $type,
                 
                 
             ]);
@@ -399,7 +416,7 @@ class OffreController {
         //visite non guidee :6
         else if($post['id_activite'] == 6) {
             
-            
+            $type= "visite_non_guidee";
 
             $duree  = trim($post['duree']);
 
@@ -433,6 +450,9 @@ class OffreController {
                 'id_activite' => $post['id_activite'],
 
                 'duree' => $duree,
+
+                'userId' => $userId,
+                'type' => $type,
                 
                 
                 
@@ -444,8 +464,8 @@ class OffreController {
 
         
 
-        } {
-        return $this->offre->editOffre(
+        
+        /*return $this->offre->editOffre(
             $idOffre,
             $id_ville, 
             $id_statut_log, 
@@ -457,9 +477,9 @@ class OffreController {
             $resume, 
             $description, 
             $adresse_offre
-        );
+        );*/
     }
-    */
+    
     
     /*public function getAllOffreByCategory($category) {
         return $this->offre->getAllOffreByCategory($category);

@@ -271,7 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        
 
     </style>
-    <script src="../../scripts/ajouterAjoutMultiple.js"></script>
+    <script src="<?php echo $_SERVER['DOCUMENT_ROOT'] ?>/../../../scripts/ajouterAjoutMultiple.js"></script>
 
     
     
@@ -321,20 +321,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php
                     $typeActiviteController = new TypeActiviteController(); 
                     $typeActivites = $typeActiviteController->getAllTypeActivite();
+                    $userId = $_SESSION['id_utilisateur'];
 
-                    
                 ?>
+                
                 <form action="/backOffice/ajouterOffreTraitement.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="userId" value="<?= htmlspecialchars($userId) ?>">
                     <div class="formulaire">
                         <div id="type-activite-app">
                             <h2>Choisissez le type d’offre que vous voulez créer :</h2>
                             <select id="type-select">
                                 <option value="">-- Sélectionner --</option>
-                                <?php foreach ($typeActivites as $index => $type): ?>
-                                    <option value="<?= $type['id_type_activite'] . '|' . $type['libelle_activite'] ?>">
-                                        <?= htmlspecialchars($type['libelle_activite']) ?>
-                                    </option>
-                                <?php endforeach; ?>
+                                <option value="1|activite">Activité</option>
+                                <option value="2|spectacle">Spectacle</option>
+                                <option value="3|visite guidee">Visite guidée</option>
+                                <option value="4|parc dattraction">Parc d'attraction</option>
+                                <option value="5|restaurant">Restaurant</option>
+                                <option value="6|visite non guidee">Visite non guidée</option>
+
+
+
+                               
                             </select>
 
                             <div id="champs-offre" style="display: none;margin-top:2em;">
@@ -502,9 +509,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
 
                         </div>
+                        
                         <script defer>
+                            
                             TypeSelectChange();
                         </script>
+                        
 
                         
 
