@@ -1,7 +1,3 @@
-
-
-       
-      
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Durée</h3>
@@ -17,12 +13,6 @@
 
             
         </div>
-
-
-
-
-       
-
 
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
@@ -41,12 +31,4 @@
             
 
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-    
