@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <input type="checkbox" name="Restaurant" id="restauration" class="categories" >
-                        <label for="Restaurant">Restaurant</label>
+                        <label for="restauration">Restaurant</label>
                     </li>
                     <li>
                         <input type="checkbox" name="spectacle" id="spectacle" class="categories">
@@ -109,19 +109,19 @@
                     </li>
                     <li>
                         <input type="checkbox" name="Visite guidée" id="visite_guide" class="categories">
-                        <label for="Visites">Visite guidée</label>
+                        <label for="visite_guide">Visite guidée</label>
                     </li>
                     <li>
                         <input type="checkbox" name="Visite non guidée" id="visite_non_guide" class="categories">
-                        <label for="VisiteNonGuide">Visite non guidée</label>
+                        <label for="visite_non_guide">Visite non guidée</label>
                     </li>
                     <li>
                         <input type="checkbox" name="Activité" id="activite" class="categories">
-                        <label for="Activite">Activité</label>
+                        <label for="activite">Activité</label>
                     </li>
                     <li>
                         <input type="checkbox" name="Parc d'attraction" id="parc_attraction" class="categories">
-                        <label for="ParcAttraction">Parc d'attraction</label>
+                        <label for="parc_attraction">Parc d'attraction</label>
                     </li>
                     
                 </ul>
