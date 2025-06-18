@@ -3,7 +3,7 @@
 
         
 
-
+       <h3 class="nameActivite">Champs liées a l'offre Parc d'attraction</h3>
        <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Nombre d'attraction</h3>

@@ -138,8 +138,8 @@ class OffreController {
             $prestation_incluse  = $post['ajoutMultiple_1'];
             $prestation_non_incluse  = $post['ajoutMultiple_2'];
 
+          
             
-        
             // Insertion en BDD via le modèle
             $this->offre->insertOffreActivite([
                 'titre_offre' => $titre,

@@ -7,8 +7,10 @@
         
 
         
-
+        <h3 class="nameActivite">Champs liées a l'offre Activité</h3>
+        
         <div class="champ-type-offre-row">
+
             <div class="champ-type-offre">
                 <h3>Durée</h3>
                 <label class="label-input" for="duree">Durée</label>
@@ -23,6 +25,8 @@
 
         </div>
 
+
+        
         
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php')
@@ -33,6 +37,7 @@
                 ajoutMultiple('Prestation','Prestation non incluse',2); 
             ?>
         </div>
+        
        
 
        

@@ -1,7 +1,7 @@
 
 
 
-
+        <h3 class="nameActivite">Champs liées a l'offre Restaurant</h3>
         <div class="champ-type-offre">
             <h3>Carte du restaurant</h3>  
             <input id="carteRestaurant" name="carteRestaurant" type="file" accept="image/*" required />
@@ -23,18 +23,12 @@
 
         <div class="champ-type-offre">
             <h3>Menus</h3>
-            <button type="button" onclick="document.getElementById('menu-checkboxes').style.display = (document.getElementById('menu-checkboxes').style.display === 'none' ? 'block' : 'none');">
-                Sélectionner le/les type(s) de menu(s)
-            </button>
-            <div id="menu-checkboxes" style="display: none; margin-top: 10px;">
+            <div id="menu-checkboxes" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
                 <label><input type="checkbox" name="menu[]" value="petit-dej"> Petit déjeuner</label>
-                <label><input type="checkbox" name="menu[]" value="dej"> déjeuner</label>
-                <label><input type="checkbox" name="menu[]" value="diner    "> Diner</label> 
-              
+                <label><input type="checkbox" name="menu[]" value="dej"> Déjeuner</label>
+                <label><input type="checkbox" name="menu[]" value="diner"> Diner</label>
             </div>
-        </div>
-
-        
+        </div>    
         
 
 

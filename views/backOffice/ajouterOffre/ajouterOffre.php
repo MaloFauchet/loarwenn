@@ -172,16 +172,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-bottom: 50px;
             gap: 10em; 
         }
-        #description,#resume,#accessibilite
+        #description,#accessibilite
         {
             height: 10em;
         }
 
-        .adressePostale{
+        .adressePostale {
             margin-bottom:2em;
         }
 
-        #dateDebutMatin ,#dateFinMatin ,#dateDebutApresMidi ,#dateFinApresMidi{
+        .nameActivite{
+            margin-bottom: 1em;
+        }
+        #dateDebutMatin ,#dateFinMatin ,#dateDebutApresMidi ,#dateFinApresMidi,#duree{
             height: 2em;
         }
         #prixMin{
@@ -192,50 +195,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100vh;
         }
 
-        .options-payantes {
-            display: none; /* caché par défaut */
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            max-width: 400px;
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .options-payantes p {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .option-item {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            transition: box-shadow 0.3s, transform 0.2s;
-            cursor: pointer;
-        }
-
-        .option-item:hover {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .option-item label {
-            font-size: 1em;
-            color: #333;
-            display: flex;
-            align-items: center;
-        }
-
-        .option-item input[type="checkbox"] {
-            margin-right: 10px;
-            transform: scale(1.3);
-            cursor: pointer;
-        }
 
         
 
@@ -255,6 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2em;
         }
 
         .submit-button:hover {
@@ -265,6 +225,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .submit-button:active {
             transform: translateY(0);
         }
+
+        #langue-checkboxes {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .checkbox-column {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        #langue-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #langue-checkboxes img {
+            width: 30px;
+            vertical-align: middle;
+        }
+
+        .champ-type-offre button {
+            width: 20em;
+            padding: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
 
 
 
@@ -403,7 +395,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
 
                                     
-                                
+                                <div class="champ-type-offre">
+                                    <h3>Resume</h3>
+                                    <label class="label-input" for="resume">Resume</label>
+                                    <input id="resume" name="resume" type="text" required >
+
+                                </div>
 
                                 <div class="champ-type-offre">
                                     <h3>Description</h3>
@@ -413,13 +410,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </textarea>
                                 </div>
 
-                                <div class="champ-type-offre">
-                                    <h3>Resume</h3>
-                                    <label class="label-input" for="resume">Resume</label>
-                                    <textarea id="resume" name="resume" type="text" required >
-
-                                    </textarea>
-                                </div>
+                                
 
                                 <div class="champ-type-offre">
                                     <h3>Accessibilité</h3>
@@ -470,23 +461,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             <div id="activite-details" style="margin-top: 1em;"></div>
 
-                            <div id="option" class="options-payantes">
-                                <p>Voulez-vous prendre une option :</p>
-
-                                <div class="option-item">
-                                    <label>
-                                        <input type="checkbox" name="a_la_une" value="1">
-                                        A la une : (+20€/mois)
-                                    </label>
-                                </div>
-
-                                <div class="option-item">
-                                    <label>
-                                        <input type="checkbox" name="en_relief" value="1">
-                                        En relief : (+10€/mois)
-                                    </label>
-                                </div>
-                            </div>
+                            
 
                         </div>
                         
