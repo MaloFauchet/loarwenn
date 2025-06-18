@@ -109,17 +109,22 @@ class Offre {
                 WHERE 
                     a.id_utilisateur_prive = :id_utilisateur
                     OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;"
-
-        
             ;
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            ':id_utilisateur' => $id_professionnel,
-            ':id_offre' => $id_offre
+        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
+        if ($id_professionnel !== null) {
+            $sql = $sql . "-- Filtrage
+                WHERE 
+                    a.id_utilisateur_prive = :id_utilisateur
+                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
+            $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
+        } else {
+            $sql = $sql . "-- Filtrage
+                WHERE o.id_offre = :id_offre;";
+        }
 
-        
-        ]);
+        $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

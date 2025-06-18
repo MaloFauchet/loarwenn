@@ -1,19 +1,31 @@
 <?php
+echo "<pre>";
 // On inclut le controller ProfessionnelController
+echo "require once professionnelController.php\n";
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/ProfessionnelController.php');
 // On instancie le controller ProfessionnelController
+echo "instanciation du controller professionnelController\n";
 $professionnelController = new ProfessionnelController();
+
+
 // On inclut le controller OffreActivité
+echo "require once offreController.php\n";
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php');
 // On instancie le controller
+echo "instanciation du controller offreController\n";
 $offreController = new OffreController();
+
+
 // On récupère l'ID de l'offre à afficher
+echo "récupération de l'id de l'offre\n";
 $id = $_GET['id'] ?? null;
 //On récupère l'offre d'activité par son ID
+echo "récupération de l'offre par son id\n";
 $offre = $offreController->getOffreById($id);
 $pro = $offreController->getProfessionnelByIdOffre($offre->getId());
 
 // On récupère les informations du professionnel lié à l'offre
+echo "récupération des informations du professionnel lié à l'offre\n";
 $info_pro = $offreController->getProfessionnelInformationsByIdOffre($offre->getId());
 // On récupère l'id du professionnel
 $id_pro = $info_pro['id_utilisateur'];
@@ -27,7 +39,9 @@ if ($id_pro === null) {
 }
 
 // On récupère les informations du professionnel par son id
-$pro = $professionnelController->getProfessionnelById($id_pro)[0]; 
+$pro = $professionnelController->getProfessionnelById($id_pro)[0];
+
+echo "</pre>";
 
  /**
   * Affichage des étoiles en fonction de la note

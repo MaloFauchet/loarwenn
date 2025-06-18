@@ -15,7 +15,7 @@ class OffreController {
 
     // Récupérer une offre activité par ID
     public function getOffreById($id) {
-        return $this->offre->getOffreById($id);
+        return $this->offre->getOffreById(null, $id);
     }
 
     public function getOffreByIdAccueil($id) {
