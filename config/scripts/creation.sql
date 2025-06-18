@@ -6,12 +6,13 @@ SET SCHEMA 'tripenazor';
 
     -- Type Activité 
 CREATE TYPE type_activite AS ENUM (
-    'visite_guidee',
-    'visite_non_guidee',
-    'activite',
-    'parc_attraction',
-    'spectacle',
-    'restauration'
+  'visite_guidee',
+  'visite_non_guidee',
+  'activite',
+  'parc_attraction',
+  'spectacle',
+  'restauration'
+
 );
 
 
@@ -671,6 +672,8 @@ GROUP BY
     -- Image
     p_titre_image TEXT,
     p_chemin_image TEXT,
+    p_titre_image_secondaire TEXT[],
+    p_chemin_image_secondaire TEXT[],
 
     -- Jour de l'activité
     p_jours NUMERIC[],
@@ -766,6 +769,17 @@ BEGIN
     -- Liaison image et offre
     INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
     VALUES (v_id_offre, v_id_image);
+
+    FOR i IN 1 .. array_length(p_titre_image_secondaire, 1) LOOP
+        -- Insère chaque image secondaire
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_secondaire[i], p_chemin_image_secondaire[i])
+        RETURNING id_image INTO v_id_image;
+
+        -- Liaison image et offre
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image);
+    END LOOP;
 
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
@@ -919,6 +933,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_parc_attration(
     -- Image
     p_titre_image TEXT,
     p_chemin_image TEXT,
+    p_titre_image_secondaire TEXT[],
+    p_chemin_image_secondaire TEXT[],
 
     -- Jour de l'activité
     p_jours NUMERIC[],
@@ -1011,6 +1027,18 @@ BEGIN
     -- Liaison image et offre
     INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
     VALUES (v_id_offre, v_id_image);
+
+    FOR i IN 1 .. array_length(p_titre_image_secondaire, 1) LOOP
+        -- Insère chaque image secondaire
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_secondaire[i], p_chemin_image_secondaire[i])
+        RETURNING id_image INTO v_id_image;
+
+        -- Liaison image et offre
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image);
+    END LOOP;
+
 
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
@@ -1133,6 +1161,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_restauration(
     -- Image
     p_titre_image TEXT,
     p_chemin_image TEXT,
+    p_titre_image_secondaire TEXT[],
+    p_chemin_image_secondaire TEXT[],
 
     -- Jour de l'activité
     p_jours NUMERIC[],
@@ -1225,6 +1255,17 @@ BEGIN
     -- Liaison image et offre
     INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
     VALUES (v_id_offre, v_id_image);
+
+    FOR i IN 1 .. array_length(p_titre_image_secondaire, 1) LOOP
+        -- Insère chaque image secondaire
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_secondaire[i], p_chemin_image_secondaire[i])
+        RETURNING id_image INTO v_id_image;
+
+        -- Liaison image et offre
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image);
+    END LOOP;
 
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
@@ -1359,6 +1400,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_spectacle(
     -- Image
     p_titre_image TEXT,
     p_chemin_image TEXT,
+    p_titre_image_secondaire TEXT[],
+    p_chemin_image_secondaire TEXT[],
 
     -- Jour de l'activité
     p_jours NUMERIC[],
@@ -1447,6 +1490,17 @@ BEGIN
     -- Liaison image et offre
     INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
     VALUES (v_id_offre, v_id_image);
+
+    FOR i IN 1 .. array_length(p_titre_image_secondaire, 1) LOOP
+        -- Insère chaque image secondaire
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_secondaire[i], p_chemin_image_secondaire[i])
+        RETURNING id_image INTO v_id_image;
+
+        -- Liaison image et offre
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image);
+    END LOOP;
 
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
@@ -1560,6 +1614,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_guidee(
     -- Image
     p_titre_image TEXT,
     p_chemin_image TEXT,
+    p_titre_image_secondaire TEXT[],
+    p_chemin_image_secondaire TEXT[],
 
     -- Jour de l'activité
     p_jours NUMERIC[],
@@ -1651,6 +1707,17 @@ BEGIN
     -- Liaison image et offre
     INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
     VALUES (v_id_offre, v_id_image);
+
+    FOR i IN 1 .. array_length(p_titre_image_secondaire, 1) LOOP
+        -- Insère chaque image secondaire
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_secondaire[i], p_chemin_image_secondaire[i])
+        RETURNING id_image INTO v_id_image;
+
+        -- Liaison image et offre
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image);
+    END LOOP;
 
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
@@ -1783,6 +1850,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_non_guidee(
     -- Image
     p_titre_image TEXT,
     p_chemin_image TEXT,
+    p_titre_image_secondaire TEXT[],
+    p_chemin_image_secondaire TEXT[],
 
     -- Jour de l'activité
     p_jours NUMERIC[],
@@ -1870,6 +1939,17 @@ BEGIN
     -- Liaison image et offre
     INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
     VALUES (v_id_offre, v_id_image);
+
+    FOR i IN 1 .. array_length(p_titre_image_secondaire, 1) LOOP
+        -- Insère chaque image secondaire
+        INSERT INTO tripenazor.image (titre_image, chemin)
+        VALUES (p_titre_image_secondaire[i], p_chemin_image_secondaire[i])
+        RETURNING id_image INTO v_id_image;
+
+        -- Liaison image et offre
+        INSERT INTO tripenazor.image_illustre_offre (id_offre, id_image)
+        VALUES (v_id_offre, v_id_image);
+    END LOOP;
 
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
