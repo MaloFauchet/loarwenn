@@ -86,19 +86,22 @@ $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
                 </div>
                 <div class="status-offre">
                     <label class="switch">
-                        <input class="slider-etat" type="checkbox" <?php echo ($currentOffre['en_ligne'] == 1) ? "checked" : ""; ?>>
+                        <input class="slider-etat" id="slider-etat" type="checkbox" <?php echo ($currentOffre['en_ligne'] == 1) ? "checked" : ""; ?>>
                         <span class="slider"></span>
                     </label>
                     <p class="status-text"><?php echo ($currentOffre['en_ligne'] == 1) ? 'En ligne' : 'Hors ligne'; ?></p>
 
                 </div>
                 <div class="grid-images">
+
                     <img src="/images/offres/canyoning.jpg" alt="Canyoning">
                     <img src="/images/offres/paysage.png" alt="Fleurs paysage">
                     <img src="/images/offres/phare.png" alt="Phare">
                     <img src="/images/offres/paysage.png" alt="Paysage">
                     <img src="/images/offres/velo.png" alt="Vélo">
                 </div>
+                <input type="hidden" id="titre_image" name="titre_image" value="<?= $currentOffre["titre_image"] ?>">
+                <input type="file" id="chemin_image" name="chemin_image" accept="image/*" style="display:none" value="<?= $currentOffre["chemin"] ?>">
                 <div class="input-titre">
                     <label class="label-input" for="titre">Titre</label>
                     <input id="titre" type="text" 
@@ -144,7 +147,7 @@ $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
                     </div>
                     <hr class="black-separator">
                     <div class="info-divers">
-                        
+                        <input type="text" id="type-offre" name="type-offre" value="<?= $currentOffre["type_offre"] ?>" hidden>
                         <div class="prix">
                             <img src="/images/icons/currency-euro.svg" alt="Prix">
                             <div class="input-divers">
@@ -221,6 +224,46 @@ $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
                             <label class="label-input" for="accessibilite">accessibilite</label>
                             <textarea id="accessibilite" name="accessibilite" rows="4" cols="50"><?php echo $currentOffre["accessibilite"] ?>
                             </textarea>
+                        </div>
+                    </div>
+
+                    <div class="jours">
+                        <div class="input-divers">
+                            <label class="label-input" for="jours">Jours</label>
+                            <input id="jours" name="jours" type="text" 
+                            value="<?php echo $currentOffre["jours_ouverture"] ?>" required />
+                        </div>
+                    </div>
+
+                    <div class="matin_heure_debut">
+                        <div class="input-divers">
+                            <label class="label-input" for="matin_heure_debut">Horaires de début du matin </label>
+                            <input id="matin_heure_debut" name="matin_heure_debut" type="text" 
+                            value="<?php echo $currentOffre["horaires"] ?>" required />
+                        </div>
+                    </div>
+
+                    <div class="matin_heure_fin">
+                        <div class="input-divers">
+                            <label class="label-input" for="matin_heure_fin">Horaires de fin du matin</label>
+                            <input id="matin_heure_fin" name="matin_heure_fin" type="text" 
+                            value="<?php echo $currentOffre["horaires"] ?>" required />
+                        </div>
+                    </div>
+
+                    <div class="apres_midi_heure_debut">
+                        <div class="input-divers">
+                            <label class="label-input" for="apres_midi_heure_debut">Horaires de début de l'après-midi</label>
+                            <input id="apres_midi_heure_debut" name="apres_midi_heure_debut" type="text" 
+                            value="<?php echo $currentOffre["horaires"] ?>" required />
+                        </div>
+                    </div>
+
+                    <div class="apres_midi_heure_fin">
+                        <div class="input-divers">
+                            <label class="label-input" for="apres_midi_heure_fin">Horaires de fin de l'après-midi</label>
+                            <input id="apres_midi_heure_fin" name="apres_midi_heure_fin" type="text" 
+                            value="<?php echo $currentOffre["horaires"] ?>" required />
                         </div>
                     </div>
                     <?php if($type_activite == 'activite') {

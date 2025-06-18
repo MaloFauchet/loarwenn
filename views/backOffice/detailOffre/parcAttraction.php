@@ -1,3 +1,10 @@
+<?php 
+
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
+?>
+
 <div class="age-min">
                 <img src="/images/icons/cake-fill.svg" alt="age">
                 <div class="input-divers">

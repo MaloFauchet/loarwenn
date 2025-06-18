@@ -568,7 +568,7 @@ DECLARE
     result TEXT;
 BEGIN
     SELECT string_agg(
-            to_char(h.debut, 'YYYY-MM-DD HH24:MI') || ' | ' || to_char(h.fin, 'YYYY-MM-DD HH24:MI'),
+            to_char(h.debut, 'HH24:MI') || ' | ' || to_char(h.fin, 'HH24:MI'),
             ','
         )
     INTO result

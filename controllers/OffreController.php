@@ -45,6 +45,7 @@ class OffreController {
         return $this->offre->getAllOffre();
     }
 
+    
     /*
     public function ajouterOffre($post, $files) {
 
@@ -460,7 +461,7 @@ class OffreController {
     }
     */
     
-    public function getAllOffreByCategory($category) {
+    /*public function getAllOffreByCategory($category) {
         return $this->offre->getAllOffreByCategory($category);
-    }
+    }*/
 }

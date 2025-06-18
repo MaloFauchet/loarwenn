@@ -1,6 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id_offre'); 
 
+
 window.onload = () => {
     // recupere la div de sauvegarde
     const sauvegardeDiv = document.getElementById("sauvegarder");
@@ -118,27 +119,40 @@ function getListValues(id) {
 
 function getValuesInputs() {
     let result = {
+        //champ commun a toutes les offres
+        type_offre:document.getElementById("type-offre").value,
         title: document.getElementById("titre").value,
+        enLigne:document.getElementById("slider-etat").checked  ?1 :0, 
         codePostal: document.getElementById("code-postal").value,
         complementAdresse: document.getElementById("complement-adresse").value,
         voie: document.getElementById("voie").value,
         numeroAdresse:document.getElementById("numero-adresse").value,
-        prix:document.getElementById("numero-adresse").value,
+        prix:document.getElementById("prix").value,
+        prix_TTC_min:document.getElementById("prix").value,
         city: document.getElementById("ville").value,
         description: document.getElementById("description").value,
         resume: document.getElementById("resume").value,
         accessibility: document.getElementById("accessibilite").value,
-        
+        joursOuverture:document.getElementById("jours").value,
+        matin_heure_debut:document.getElementById("matin_heure_debut").value,
+        matin_heure_fin:document.getElementById("matin_heure_fin").value,
+        apres_midi_heure_debut:document.getElementById("apres_midi_heure_debut").value,
+        apres_midi_heure_fin:document.getElementById("apres_midi_heure_fin").value,
+
+        titre_image:document.getElementById("titre_image").value,
+        chemin_image:document.getElementById("chemin_image").value,
+
+        //specifique au differentes type offres
         duration: document.getElementById("duree") ? document.getElementById("duree").value:null,
         age: document.getElementById("age-min")? document.getElementById("age-min").value:null,
         nbAttractions: document.getElementById("nb-attraction")? document.getElementById("nb-attraction").value:null,
-        nbAttractions: document.getElementById("capacite")? document.getElementById("capacite").value:null,
-        prestationIncluse: getListValues("prestation-incluse") ?getListValues("prestation-incluse") :null,
-        prestationNonIncluse: getListValues("prestation-non-incluse")? getListValues("prestation-non-incluse") : null,
-        repasServi:getListValues("repas-servi") ? getListValues("repas-servi") : null,
-        langue:getListValues("langue") ? getListValues("langue") : null,
+        capaciteAccueil: document.getElementById("capacite")? document.getElementById("capacite").value:null,
+        prestationIncluse: getListValues("prestation-incluse") ?getListValues("prestation-incluse") :[],
+        prestationNonIncluse: getListValues("prestation-non-incluse")? getListValues("prestation-non-incluse") : [],
+        repasServi:getListValues("repas-servi") ? getListValues("repas-servi") : [],
+        langue:getListValues("langue") ? getListValues("langue") : [],
 
-        tags: getListValues("tags"),
+        tags: getListValues("tags") ? getListValues("tags") :[] ,
 
     };
 
@@ -199,8 +213,8 @@ async function sendData(data) {
         displayFlashCard("success",data.message)
     }).catch(error => {
         // TODO : afficher un message d'erreur (flash card)
-        //console.error("Erreur lors de la sauvegarde", error);
-        displayFlashCard("success",error)
+        console.error("Erreur lors de la sauvegarde", error);
+        displayFlashCard("error",error)
         //displayFlashCard("error")
     });
 

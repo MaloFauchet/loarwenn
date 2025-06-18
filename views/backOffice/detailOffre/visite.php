@@ -1,4 +1,9 @@
+<?php 
 
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
+?>
 
 <div class="duree">
                 <img src="/images/icons/clock.svg" alt="Horloge">

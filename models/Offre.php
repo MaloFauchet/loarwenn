@@ -508,9 +508,6 @@ class Offre {
         }
     }
 
-    function updateOffreActivite()  {
-        
-    }
     public function getProfessionnelInformationsByIdOffre($id_offre) {
         $sql = "
             SELECT 
