@@ -73,20 +73,94 @@ function afficherElementMasque(){
     const typeSelect = document.getElementById('type-select');
     const champsOffre = document.getElementById('champs-offre');
     const champsSubmit = document.getElementById('champs-submit');
-    const option = document.getElementById('option');
-
+   
     typeSelect.addEventListener('change', function () {
         if (this.value === "") {
             champsOffre.style.display = "none";
             champsSubmit.style.display = "none";
-            option.style.display = "none";
         } else {
             champsOffre.style.display = "block";
             champsSubmit.style.display = "block";
-            option.style.display = "block";
         }
     });
 }  
+
+/**
+ * Gère l'aperçu des images sélectionnées pour l'image principale et les images secondaires.
+ */
+function imagePreview() {
+    // Gestion de l'aperçu pour l'image principale
+    document.getElementById('imagePrincipale').addEventListener('change', function (event) {
+        const preview = document.getElementById('previewPrincipale');
+        preview.innerHTML = ''; // Réinitialise l'aperçu
+        const file = event.target.files[0];
+        // Vérifie si un fichier image est sélectionné
+        if (file && file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file); // Crée un aperçu temporaire
+            preview.appendChild(img);
+        }
+    });
+
+    // Gestion de l'aperçu pour les images secondaires (jusqu'à 4 images)
+    document.getElementById('imagesSecondaires').addEventListener('change', function (event) {
+        const preview = document.getElementById('previewSecondaires');
+        preview.innerHTML = ''; // Réinitialise l'aperçu
+
+        // Filtre les fichiers pour ne garder que les images
+        const files = Array.from(event.target.files).filter(file => file.type.startsWith('image/'));
+        
+        // Limite à 4 images et crée un aperçu pour chacune
+        files.slice(0, 4).forEach(file => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file); // Crée un aperçu temporaire
+            preview.appendChild(img);
+        });
+    });
+}
+
+/**
+ * Gère l'aperçu de l'image sélectionnée pour la carte du restaurant.
+ */
+function imagePreviewResto(){
+    // Récupère l'élément d'aperçu et le réinitialise
+    const preview = document.getElementById('previewCarteRestaurant');
+    preview.innerHTML = ''; 
+
+    // Récupère le premier fichier sélectionné
+    const file = event.target.files[0];
+
+    // Vérifie si un fichier image est sélectionné
+    if (file && file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.id = 'mapImagePreview'; // Attribue un identifiant à l'image d'aperçu
+        img.src = URL.createObjectURL(file); // Crée un aperçu temporaire de l'image
+        preview.appendChild(img); // Ajoute l'image à l'aperçu
+    }
+}
+
+
+/**
+ * Gère l'aperçu de l'image sélectionnée pour la carte (map).
+ */
+function imagePreviewMap() {
+    // Récupère l'élément d'aperçu et le réinitialise
+    const preview = document.getElementById('previewMap');
+    preview.innerHTML = '';
+
+    // Récupère le premier fichier sélectionné
+    const file = event.target.files[0];
+
+    // Vérifie si un fichier image est sélectionné
+    if (file && file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.id = 'mapImagePreview'; // Attribue un identifiant à l'image d'aperçu
+        img.src = URL.createObjectURL(file); // Crée un aperçu temporaire de l'image
+        preview.appendChild(img); // Ajoute l'image à l'aperçu
+    }
+}
+
+
 
 
 

@@ -9,7 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['submit_offre'])) {
         // Soumission finale du formulaire complet
         $controller = new OffreController();
-        $controller->createOffre();
         header('Location: /backOffice/ajouterOffre/');
         exit(0);
     }
@@ -23,285 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Nouvelle offre</title>
-    <style>
-        
-        select {
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-        label {
-            font-size: 18px;
-        }
-            
-       
-
-        .ajoutMultiple-container {
-            max-width: 400px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 100px;
-        }
-
-        .ajoutMultiple-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            font-weight: bold;
-            border-bottom: 1px solid #eee;
-        }
-
-        .ajoutMultiple-header input {
-            flex: 1;
-            margin-right: 10px;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .ajoutMultiple-header button {
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            background-color: white;
-            color: #007bff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .ajoutMultiple-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .ajoutMultiple-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border-top: 1px solid #eee;
-        }
-
-        .ajoutMultiple-list button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            color: red;
-            cursor: pointer;
-        }
-
-        h1{
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .titre {
-            display: flex;
-            justify-content: center;
-        }
-        
-        .label-type-offre {
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
-
-        
-        h3 {
-            margin-bottom:0px;
-            margin-top:0px;
-        }
-        .formulaire  .champ-type-offre {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 50px;
-
-        }
-        .formulaire  .champ-type-offre-row {
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 50px;
-            gap :10em;
-
-        }
-
-        
-        .formulaire .options-payantes input {
-            width: auto;
-            margin-left: 50px;
-
-        }
-
-        .champ-type-offre h3 {
-            margin-bottom: 10px;
-            font-size: 1.5em;
-            color: #333;
-        }
-
-        .toggle-button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1em;
-            border-radius: 5px;
-            cursor: pointer;
-           
-        }
-
-        .toggle-button:hover {
-            background-color: #0056b3;
-        }
-
-        .checkbox-container {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .checkbox-container label {
-            display: block;
-            margin-bottom: 0.5em;
-            font-size: 1em;
-        }
-
-        .formulaire  .champ-type-offre-row-jour {
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 50px;
-            gap: 10em; 
-        }
-        #description,#accessibilite
-        {
-            height: 10em;
-        }
-
-        .adressePostale {
-            margin-bottom:2em;
-        }
-
-        .nameActivite{
-            margin-bottom: 1em;
-        }
-        #dateDebutMatin ,#dateFinMatin ,#dateDebutApresMidi ,#dateFinApresMidi,#duree{
-            height: 2em;
-        }
-        #prixMin{
-            width: 4em;
-
-        }
-        #voie{
-            width: 100vh;
-        }
-
-
-        
-
-        .submit-container {
-            display: none; 
-            margin-top: 20px;
-            text-align: right; 
-        }
-
-        .submit-button {
-            background-color: #007BFF;
-            color: white;
-            font-size: 1.1em;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 2em;
-        }
-
-        .submit-button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .submit-button:active {
-            transform: translateY(0);
-        }
-
-        #langue-checkboxes {
-            margin-top: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .checkbox-column {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        #langue-checkboxes label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #langue-checkboxes img {
-            width: 30px;
-            vertical-align: middle;
-        }
-
-        .champ-type-offre button {
-            width: 20em;
-            padding: 10px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-
-        .champ-type-offre-row {
-            display: flex;
-            gap: 10em;
-            flex-wrap: wrap;
-        }
-
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .preview-container img {
-            width: 100px;
-            height: auto;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-
-        .custom-file-button {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
-            font-weight: 500;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 5px;
-            transition: background-color 0.2s ease-in-out;
-        }
-
-        .custom-file-button:hover {
-            background-color: #0056b3;
-        }
-
-
-
-
-       
-
-    </style>
     <script src="<?php echo $_SERVER['DOCUMENT_ROOT'] ?>/../../../scripts/ajouterAjoutMultiple.js"></script>
 
     
@@ -323,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     ?>
     
-        
+       
+
     <div class="page-back-office">
         <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/nav.php'); ?>
 
@@ -390,10 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <div class="champ-type-offre-row-jour">
                                     <div class="champ-type-offre">
-                                        <h3>Jours d'ouvertures</h3>
-                                        <button type="button" class="toggle-button" onclick="document.getElementById('jours-checkboxes').style.display = (document.getElementById('jours-checkboxes').style.display === 'none' ? 'block' : 'none');">
+                                        <h2 id="h2-jours">
                                             Sélectionner les jours d'ouverture
-                                        </button>
+                                        </h2>
                                         <div id="jours-checkboxes" class="checkbox-container" >
                                             <label><input type="checkbox" name="jours[]" value="Lundi"> Lundi</label>
                                             <label><input type="checkbox" name="jours[]" value="Mardi"> Mardi</label>
@@ -402,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <label><input type="checkbox" name="jours[]" value="Vendredi"> Vendredi</label>
                                             <label><input type="checkbox" name="jours[]" value="Samedi"> Samedi</label>
                                             <label><input type="checkbox" name="jours[]" value="Dimanche"> Dimanche</label>
-                                        </div>
+                                        </div>    
                                     </div>
                                     <div>
                                         <h3>Heure matin</h3>
@@ -410,11 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         
                                             <div class="champ-type-offre">
                                                 <label class="label-input" for="dateDebutMatin">Debut</label>
-                                                <input id="dateDebutMatin" name="dateDebutMatin" type="time" required />
+                                                <input id="dateDebutMatin" name="dateDebutMatin" type="time"  />
                                             </div>
                                             <div class="champ-type-offre">
                                                 <label class="label-input" for="dateFinMatin">Fin</label>
-                                                <input id="dateFinMatin" name="dateFinMatin" type="time" required />
+                                                <input id="dateFinMatin" name="dateFinMatin" type="time"  />
                                             </div>
                                         
                                     </div> 
@@ -425,11 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="champ-type-offre">
                                                 
                                                 <label class="label-input" for="dateDebutApresMidi">Debut</label>
-                                                <input id="dateDebutApresMidi" name="dateDebutApresMidi" type="time" required />
+                                                <input id="dateDebutApresMidi" name="dateDebutApresMidi" type="time"  />
                                             </div>
                                             <div class="champ-type-offre">
                                                 <label class="label-input" for="dateFinApresMidi">Fin</label>
-                                                <input id="dateFinApresMidi" name="dateFinApresMidi" type="time" required />
+                                                <input id="dateFinApresMidi" name="dateFinApresMidi" type="time"     />
                                             </div>
                                         
                                     </div>   
@@ -507,7 +227,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         
                         <script defer>
-                            
                             TypeSelectChange();
                         </script>
                         
@@ -531,6 +250,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/footer.php'); ?>
         </div>
     </div>
+<script defer>
+    imagePreview();
+</script>
+
 
     
 
@@ -538,35 +261,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 </html>
 
-<script>
-    document.getElementById('imagePrincipale').addEventListener('change', function (event) {
-        const preview = document.getElementById('previewPrincipale');
-        preview.innerHTML = ''; 
-        const file = event.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            preview.appendChild(img);
-        }
-    });
-
-    
-
-    document.getElementById('imagesSecondaires').addEventListener('change', function (event) {
-        const preview = document.getElementById('previewSecondaires');
-        preview.innerHTML = ''; 
-        Array.from(event.target.files).forEach(file => {
-            if (file.type.startsWith('image/')) {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                preview.appendChild(img);
-            }
-        });
-    });
-
-
-
-</script>
 
     
 

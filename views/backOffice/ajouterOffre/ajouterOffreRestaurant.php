@@ -1,13 +1,16 @@
 
+     
 
-
+        
         <h3 class="nameActivite">Champs liées a l'offre Restaurant</h3>
-        <div class="champ-type-offre">
-            <h3>Carte du restaurant</h3>  
-            <input id="carteRestaurant" name="carteRestaurant" type="file" accept="image/*" required />
+        
+        <div class="champ-type-offre principale">
+            <h3>Carte</h3>
+            <label for="carteRestaurant" class="custom-file-button">Image de la carte du restaurant</label>
+            <input id="carteRestaurant" name="carteRestaurant" type="file" accept="image/*" onchange="imagePreviewResto()" hidden />
+            <div id="previewCarteRestaurant" class="preview-container"></div>
         </div>
 
-    
         <div class="champ-type-offre">
             <h3>Gamme de prix</h3>
             <label class="label-input" for="prix">Prix</label>
@@ -19,6 +22,11 @@
             </select>
         </div>
 
+        <script defer>
+            alert();
+            console.log("Restaurant");
+        </script>
+
          
 
         <div class="champ-type-offre">
@@ -29,6 +37,8 @@
                 <label><input type="checkbox" name="menu[]" value="diner"> Diner</label>
             </div>
         </div>    
+
+        
         
 
 
