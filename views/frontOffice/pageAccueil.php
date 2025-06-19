@@ -18,40 +18,24 @@
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
 
-<<<<<<< HEAD
     // function dump($dataDump) {
     //     echo "<pre>";
     //     print_r($dataDump);
     //     echo "</pre>";
     // }
-=======
-    function dump($dataDump) {
-        echo "<pre>";
-        print_r($dataDump);
-        echo "</pre>";
-    }
-
-    // dump($listeOffreView);
->>>>>>> main
 ?>
 
 <header class="front-office-main">
     <!-- Video Arriere Plan -->
     <video autoplay muted loop id="myVideo" class="video-header">
         <source src="videos/video_accueil.mp4" type="video/mp4">
-<<<<<<< HEAD
         <track src="" kind="subtitles" srclang="fr" label="Français" default>
-=======
-        <track kind="captions" src="" srclang="fr" label="Français" default>
-        Votre navigateur ne supporte pas la vidéo.
->>>>>>> main
     </video>
 
     <div>
         <!-- Navigation Bar -->
         <nav>
             <!-- Logo -->
-<<<<<<< HEAD
             <a aria-label="Accueil logo" href="/" id="logo-navbar">
                 <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
             </a>
@@ -62,30 +46,15 @@
                 <li>
                     <a aria-label="Liste offre" href="/frontOffice/listeOffre/">Offres</a>
                 </li>
-=======
-            <a href="/" id="logo-navbar" aria-label="Page accueil">
-                <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
-            </a>
-            <ul class="ul-fo">
-                <li><a href="/" aria-label="Page accueil">Accueil</a></li>
-                <li><a href="/frontOffice/listeOffre/" aria-label="Page offre">Offres</a></li>
->>>>>>> main
             </ul>
 
             <!-- Profil -->
             <?php if (isset($_SESSION['id_utilisateur'])) { ?>
             <div class="profil" id="profil-navbar">
-<<<<<<< HEAD
                 <a aria-label="Profil" href="">
                     <img class="profil" src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
                 </a>
                 <a aria-label="Déconnexion" href="/scriptPHP/logout.php">
-=======
-                <a href="" aria-label="Profil">
-                    <img class="profil" src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
-                </a>
-                <a href="/scriptPHP/logout.php" aria-label="Déconnexion">
->>>>>>> main
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
