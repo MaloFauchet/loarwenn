@@ -1,3 +1,7 @@
+
+
+       <h3 class="nameActivite">Champs liées a l'offre Parc d'attraction</h3>
+
        <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Nombre d'attraction</h3>
@@ -12,11 +16,13 @@
         </div>
 
 
-        <div class="champ-type-offre">
-            <h3>Image du plan</h3>  
-            <input id="imagePlan" name="imagePlan" type="file" accept="image/*" aria-label="Image du plan"/>
-        </div>
+        <div class="champ-type-offre principale">
+            <h3>Carte</h3>
+            <label for="carteParc" class="custom-file-button">Image de la carte du parc</label>
+            <input id="carteParc" name="carteParc" type="file" accept="image/*" onchange="imagePreviewMap()" hidden />
+            <div id="previewMap" class="preview-container"></div>
 
+        </div>
 
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  

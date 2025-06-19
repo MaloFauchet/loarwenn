@@ -1,3 +1,7 @@
+
+       
+        <h3 class="nameActivite">Champs liées a l'offre Spectacle</h3>
+
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Durée</h3>
