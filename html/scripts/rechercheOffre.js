@@ -5,14 +5,16 @@
 let searchbar = document.getElementById("searchbar");
 searchbar.onkeyup = () => {
     // On récupère la valeur de la barre de recherche
-    const searchValue = searchbar.value.toLowerCase();
+    let searchValue = searchbar.value.toLowerCase();
+    searchValue = searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // remove any accents
     
     // On récupère toutes les offres
     const offres = document.querySelectorAll(".offre");
 
     offres.forEach(offre => {
         // On récupère le titre de l'offre
-        const titre = offre.querySelector(".item-title").textContent.toLowerCase();
+        let titre = offre.querySelector(".item-title").textContent.toLowerCase();
+        titre = titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove any accents
         
         // On vérifie si le titre contient la valeur de la barre de recherche
         if (titre.includes(searchValue)) {
