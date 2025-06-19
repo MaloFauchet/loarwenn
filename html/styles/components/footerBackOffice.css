@@ -11,7 +11,8 @@ footer {
 }
 
 footer.back-office {
-    height: 180px;
+    height: min-content;
+    padding-bottom: 0;
 }
 
 footer ul {
