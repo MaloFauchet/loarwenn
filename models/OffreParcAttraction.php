@@ -55,8 +55,6 @@ class OffreParcAttraction extends Offre {
             $parcAttraction->setNbAvis($value['nbAvis']);
 
             $offresActivite[] = $parcAttraction;
-
-            
         }
         return $offresActivite;
     }
@@ -68,10 +66,10 @@ class OffreParcAttraction extends Offre {
         $this->nbAttractions = $nbAttractions;
     } 
     
-
     function setAgeMin($age) {
         $this->ageMinimum = $age;
     }
+
 
     /**
      * Getters
@@ -81,8 +79,6 @@ class OffreParcAttraction extends Offre {
         return $this->nbAttractions;
     }
 
-    
-    
     function getAge() {
         return $this->ageMinimum;
     }

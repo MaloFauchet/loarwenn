@@ -40,7 +40,7 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
 <main class="contenu-back-office">
     <div class="status-offre">
         <label class="switch">
-            <input class="slider-etat" type="checkbox" checked>
+            <input aria-label="Statut de l'offre" class="slider-etat" type="checkbox" checked>
             <span class="slider"></span>
         </label>
         <p>En ligne</p>

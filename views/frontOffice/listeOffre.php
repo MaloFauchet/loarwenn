@@ -33,15 +33,16 @@
 </script>
 <main>
     <section>
-
         <!-- Fil d'arianne -->
         <div class="breadcrumb-container">
-            <a href="/index.php" class="breadcrumb-back-link">
+            <a aria-label="Retour" href="/index.php" class="breadcrumb-back-link">
                 <img src="/images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
             </a>
             <nav class="breadcrumb">
                 <ul>
-                    <li><a href="/">Accueil</a></li>
+                    <li>
+                        <a aria-label="Accueil" href="/">Accueil</a>
+                    </li>
                     <li>Liste des offres</li>
                 </ul>
             </nav>
@@ -51,12 +52,12 @@
         <div class="search-container">
             <div class="container-search-funnel">
                 <div class="search-row">
-                    <button>
+                    <button aria-label="Rechercher">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
                             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                         </svg>
                     </button>
-                    <input type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
+                    <input aria-label="Barre de recherche" type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
                     <div class="search-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -210,7 +211,7 @@
                 </ul>
             </div>
             <div>
-                <button>Réinitialiser</button>
+                <button aria-label="Réinitialiser">Réinitialiser</button>
             </div>
         </aside>
     </section>

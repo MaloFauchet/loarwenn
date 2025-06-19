@@ -54,15 +54,9 @@ class OffreVisite extends Offre {
             $visite->setNbAvis($value['nbAvis']);
 
             $offresVisite[] = $visite;
-
-            
         }
         return $offresVisite;
     }
-
-
-
-    
 
     /**
      * ToString

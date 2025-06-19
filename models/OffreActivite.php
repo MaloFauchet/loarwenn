@@ -63,9 +63,6 @@ class OffreActivite extends Offre {
     }
 
 
-
-    
-
     /**
      * ToString
      * @return string

@@ -27,7 +27,6 @@ if (!isset($_SESSION['id_utilisateur'])) {
             <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/pageAccueil.php');?>
         </div>
         <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
-
     </div>
 </body>
 </html>

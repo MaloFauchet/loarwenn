@@ -108,17 +108,12 @@ class Offre {
                 -- Filtrage
                 WHERE 
                     a.id_utilisateur_prive = :id_utilisateur
-                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;"
-
-        
-            ;
+                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
             ':id_utilisateur' => $id_professionnel,
             ':id_offre' => $id_offre
-
-        
         ]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -929,5 +924,4 @@ class Offre {
     function getTags() {
         return $this->tags;
     }
-
 }

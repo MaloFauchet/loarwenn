@@ -6,7 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offre en détails</title>
+    <title>PACT</title>
+    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
     <link rel="stylesheet" href="/styles/listeOffre.css">
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/headerFrontOffice.css">

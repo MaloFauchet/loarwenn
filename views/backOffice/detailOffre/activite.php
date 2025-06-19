@@ -35,14 +35,12 @@ $arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation')
 
 $prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
 $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
-
-
 ?>
 
 <main class="contenu-back-office">
     <div class="status-offre">
         <label class="switch">
-            <input class="slider-etat" type="checkbox" checked>
+            <input aria-label="Statut de l'offre" class="slider-etat" type="checkbox" checked>
             <span class="slider"></span>
         </label>
         <p class="status-text">En ligne</p>
@@ -57,14 +55,14 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
     </div>
     <div class="input-titre">
         <label class="label-input" for="titre">Titre</label>
-        <input id="titre" type="text" 
-        value="<?php echo $currentOffre->getTitre() ?>" required />
+        <input id="titre" type="text" value="<?php echo $currentOffre->getTitre() ?>" required />
     </div>
 
     <article>
         <hr class="black-separator"> 
         <div class="profil-note">
             <figure class="pp-pro">
+                
                 <!--PP a recup dans la bdd -->
                 <img src="/images/profils/1.jpg" alt="Photo de profil pro" id="pp-pro">
                 <figcaption>
@@ -217,8 +215,8 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
     <div id="sauvegarder">
         <p>Voulez-vous appliquer les modifications ?</p>
         <div>
-            <button type="button" id="annuler-btn">Annuler</button>
-            <button type="button" id="sauvegarder-btn">Appliquer</button>
+            <button aria-label="Annuler" type="button" id="annuler-btn">Annuler</button>
+            <button aria-label="Appliquer" type="button" id="sauvegarder-btn">Appliquer</button>
         </div>
     </div>
 </main>

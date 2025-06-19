@@ -388,12 +388,11 @@ main{
   align-items: center;
   flex-direction: column;
   transform: translateY(3vh);
-  margin-top: -1%;
 }
 
 #searchbar {
     width: 20vw;
-    height: 50px;
+    height: 40px;
     padding-left: 10px;
     font-size: larger;
     background-color: rgba(0, 0, 0, 0);
@@ -578,6 +577,15 @@ header a img{
 
     #searchbar {
         width: 50vw;
+        height: 20px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .recommended {
+        bottom: 97%;
     }
 
     #searchbar:focus {

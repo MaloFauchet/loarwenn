@@ -1,5 +1,5 @@
 <div>
-    <a style="text-decoration:none;color:#011B43"
+    <a aria-label="Une offre" style="text-decoration:none;color:#011B43"
         href="<?="/frontOffice/offreDetaille/index.php?id=" . $valueOfOffre['id_offre'] ?>" class="a-card">
         <div>
             <?php 

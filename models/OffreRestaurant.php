@@ -55,15 +55,9 @@ class OffreRestaurant extends Offre {
             $restaurant->setNbAvis($value['nbAvis']);
 
             $offresRestaurant[] = $restaurant;
-
-            
         }
         return $offresRestaurant;
     }
-
-
-
-    
 
     /**
      * ToString

@@ -40,24 +40,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
 ?>
 
 <main class="contenu-back-office">
-
-    <!-- Barre de recherche et de filtre -->
-    <!--
-    <div class="search-filter-bar">
-        <form>
-            <input type="search" placeholder="Rechercher une offre" name="Rechercher" disabled>
-            <div>
-                <button type="submit">
-                    <img src="/images/icons/search-white.svg" alt="Rechercher" style="margin-left:6px">
-                </button>
-            </div>
-        </form>
-
-        <button>
-            <img src="/images/icons/funnel-fill-blue.svg" alt="Filtrer">
-        </button>
-    </div> -->
-   
     <?php
     // Boucle sur chaque offre récupérée pour l'afficher
     foreach ($offres as $offre) {
