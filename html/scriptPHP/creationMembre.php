@@ -18,7 +18,11 @@ $motDePasse = password_hash($_POST['mot_de_passe'], PASSWORD_BCRYPT);
 $confirmation = $_POST['confirmation'];
 $pseudo = $_POST['pseudo']; // si besoin
 
-$membre->nouveauCompteMembre($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
-
-header('Location: /');
-exit;
+try {
+    $membre->nouveauCompteMembre($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse);
+    header('Location: /?success=1');
+    exit;
+} catch (Exception $th) {
+    header('Location: /?success=0');
+    exit;
+}

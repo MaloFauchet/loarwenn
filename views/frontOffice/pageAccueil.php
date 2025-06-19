@@ -126,9 +126,9 @@
       const success = params.get('success');
 
       if (success === '1') {
-        alert("L'opération s'est bien déroulée !");
+        displayNotif("success","Votre compte a été créé.");
       } else if (success === '0') {
-        alert("Une erreur est survenue.");
+        displayNotif("error","Une erreur est survenue");
       }
     }
   </script>

@@ -1,4 +1,4 @@
-function displayFlashCard(response, message) {
+function displayNotif(response, message) {
     // Crée la carte flash
     const flashCard = document.createElement("div");
     flashCard.classList.add("flash-card");
@@ -23,7 +23,7 @@ function displayFlashCard(response, message) {
     flashCard.style.padding = "1rem 2rem";
     flashCard.style.borderRadius = "8px";
     flashCard.style.color = "white";
-    flashCard.style.zIndex = "1000";
+    flashCard.style.zIndex = "10000";
     flashCard.style.animation = "fadeInOut 4s ease-in-out";
 
     // Styles spécifiques
