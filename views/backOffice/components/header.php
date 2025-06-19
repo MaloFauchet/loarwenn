@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/styles/components/headerBackOffice.css">
 
 <header class="back-office">
-    <div class="logo">
+    <div class="logo" onclick="window.location.href='/backOffice/'" style="cursor: pointer;">
         <img src="/images/logos/logoWhite.png" alt="Logo">
     </div>
 

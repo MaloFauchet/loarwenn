@@ -12,9 +12,10 @@ class OffreController {
     public function getAllOffres() {
         return $this->offre->getAllOffre();
     }
-    
-    public function getOffreById($id_professionnel,$id_offre) {
-        return $this->offre->getOffreById($id_professionnel,$id_offre);
+
+    // Récupérer une offre activité par ID
+    public function getOffreById($id) {
+        return $this->offre->getOffreById(null, $id);
     }
     public function getOffreByIdAccueil($id) {
         return $this->offre->getOffreByIdAccueil($id);
@@ -48,6 +49,7 @@ class OffreController {
 
     
     public function ajouterOffre($post, $files) {
+        
         //valeur pour la bdd    
         $titre = trim($post['titre'] ?? '');
         $prixMin = trim($post['prixMin'] ?? '');
@@ -478,6 +480,7 @@ class OffreController {
         return $this->offre->getAllOffreByCategory($category);
     }
 
+    */
 
     public function publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines) {
         return $this->offre->publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines);
@@ -485,5 +488,5 @@ class OffreController {
 
     public function dePublicationOffre($idOffre) {
         return $this->offre->dePublicationOffre($idOffre);
-    }*/
+    }
 }
