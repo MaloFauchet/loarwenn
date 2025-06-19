@@ -35,6 +35,7 @@ class Offre {
     }
 
 
+   
     /**
      * @id : id de l'offre
      * Récupère une offre  par son id
@@ -138,20 +139,20 @@ class Offre {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    
-
-
-
+    //récupérer une offre par l'id de son professionel
     public function getOffreByIdProfessionnel($id_professionnel) {
-        $sql = "
-            SELECT o.*, i.chemin AS image_chemin, i.titre_image
-            FROM tripenazor.offre o
-            LEFT JOIN tripenazor.image_illustre_offre io ON io.id_image = o.id_image_couverture
-            LEFT JOIN tripenazor.image i ON i.id_image = io.id_image
-            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre AND a.id_utilisateur_prive = :id_utilisateur
-            LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_offre = o.id_offre AND pppo.id_utilisateur_public = :id_utilisateur
-            WHERE a.id_utilisateur_prive = :id_utilisateur OR pppo.id_utilisateur_public = :id_utilisateur
-        ";
+        $sql = "SELECT 
+            o.*,
+            COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public) AS id_professionnel
+            FROM tripenazor.infos_carte_offre_with_offline o
+            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+            LEFT JOIN tripenazor.pro_public_propose_offre ppp ON ppp.id_offre = o.id_offre
+            WHERE 
+                a.id_utilisateur_prive = :id_utilisateur
+                OR ppp.id_utilisateur_public = :id_utilisateur
+            "
+        
+            ;
 
         $stmt = $this->conn->prepare($sql); 
         $stmt->execute([':id_utilisateur' => $id_professionnel]);
@@ -170,6 +171,10 @@ class Offre {
 
         return '{' . implode(',', $escaped) . '}';
     }
+
+
+    //récupérer une offre par l'id de son professionel
+    
 
     public function insertOffreActivite($data)
     {
@@ -808,6 +813,36 @@ class Offre {
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    function publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines) {
+        $sql = "
+            SELECT tripenazor.publication_offre(:idOffre, :enRelief, :aLaUne, :nbSemaines);
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idOffre', $idOffre);
+        $stmt->bindParam(':enRelief', $enRelief, PDO::PARAM_BOOL);
+        $stmt->bindParam(':aLaUne', $aLaUne, PDO::PARAM_BOOL);
+        $stmt->bindParam(':nbSemaines', $nbSemaines, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+
+
+    function dePublicationOffre($idOffre) {
+        $sql = "
+            UPDATE tripenazor.offre
+            SET en_ligne = FALSE
+            WHERE id_offre = :idOffre;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idOffre', $idOffre);
+
+        return $stmt->execute();
     }
     
 

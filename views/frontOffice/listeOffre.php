@@ -79,6 +79,7 @@
 
         <!-- Liste des Offres -->
         <article class="container-offre">
+            <div id="no-result" style="display:none;">Aucune offre ne correspond à vos critères.</div>
             <?php
                 foreach ($listeOffreView as $offre => $valueOfOffre) {
                     require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
@@ -88,13 +89,13 @@
 
         <!-- Filtre et Tri -->
         <aside>
-            <button>
+            <button aria-label="Fermer filtre">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                 </svg>
             </button>
             <div>
-                <h4>Catégories</h4>
+                <p>Catégories</p>
                 <ul>
                     <li>
                         <input type="checkbox" name="AllCategories" id="AllCategories" class="categories" checked>
@@ -109,12 +110,12 @@
                         <label for="spectacle">Spectacle</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visite guidée" id="visite_guide" class="categories">
-                        <label for="visite_guide">Visite guidée</label>
+                        <input type="checkbox" name="Visite guidée" id="visite_guidee" class="categories">
+                        <label for="visite_guidee">Visite guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visite non guidée" id="visite_non_guide" class="categories">
-                        <label for="visite_non_guide">Visite non guidée</label>
+                        <input type="checkbox" name="Visite non guidée" id="visite_non_guidee" class="categories">
+                        <label for="visite_non_guidee">Visite non guidée</label>
                     </li>
                     <li>
                         <input type="checkbox" name="Activité" id="activite" class="categories">
@@ -129,12 +130,12 @@
             </div>
             <hr>
             <div>
-                <h4>Lieu</h4>
+                <p>Lieu</p>
                 <input type="search" name="Location" id="location" placeholder="Ville">
             </div>
             <hr>
             <div>
-                <h4>Jour d'ouverture</h4>
+                <p>Jour d'ouverture</p>
                 <ul>
                     <li>
                         <input type="checkbox" name="Lundi" id="Lundi" class="openDays">
@@ -168,8 +169,8 @@
             </div>
             <hr>
             <div>
-                <h4>Ouvert / Fermé</h4>
-                <div>
+                <p>Ouvert / Fermé</p>
+                <div class="filtre-ouvert-fermer-container">
                     <div>
                         <input type="radio" name="Open/Close" id="open">
                         <label for="open">Ouvert</label>
@@ -182,7 +183,7 @@
             </div>
             <hr>
             <div>
-                <h4>Prix</h4>
+                <p>Prix</p>
                 <div>
                     <input type="number" name="MinPrice" id="minPrice" placeholder="Prix minimum">
                     <input type="number" name="MaxPrice" id="maxPrice" placeholder="Prix maximum">
@@ -190,7 +191,7 @@
             </div>
             <hr>
             <div>
-                <h4>Trier par</h4>
+                <p>Trier par</p>
                 <ul>
                     <li>
                         <input type="radio" name="sort" id="sortGrowingOpinions" onclick="triCroissantNote()">

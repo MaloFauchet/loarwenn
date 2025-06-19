@@ -32,4 +32,23 @@ class Tag {
         }
         return $result;
     }
+
+    /**
+     * @return tag (array de tags)
+     * Récupère tous les tags
+     */
+    public function getAllTagByIdoffre($id_offre) {
+            $sql = "
+                SELECT * FROM tripenazor.tag as t
+                WHERE t.id_tag = :id_tag
+            ";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_tag', $id_tag);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+    }
 }

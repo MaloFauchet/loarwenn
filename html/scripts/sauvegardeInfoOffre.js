@@ -1,3 +1,7 @@
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id_offre'); 
+
+
 window.onload = () => {
     // recupere la div de sauvegarde
     const sauvegardeDiv = document.getElementById("sauvegarder");
@@ -15,11 +19,11 @@ window.onload = () => {
     // et les stockes dans une variable.
     const inputs = document.querySelectorAll("input");
     setupInputs(inputs, estModifie, sauvegardeDiv);
+    const textareas = document.querySelectorAll("textarea");
+    setupInputs(textareas, estModifie, sauvegardeDiv);
+    const checkboxs = document.querySelectorAll("input[type=checkbox]");
+    setUpCheckBox(checkboxs, estModifie, sauvegardeDiv)
 
-    let photoInput = document.getElementById("photo-profil-input");
-    let photoDeProfil = document.getElementById("photo-profil");
-    let photoDeProfilOriginale = photoDeProfil.getAttribute("src");
-    setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale);
 }
 
 
@@ -46,43 +50,26 @@ function setupInputs(inputs, estModifie, sauvegardeDiv) {
     });
 }
 
-function photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfilOriginale) {
-    photoDeProfil.style.cursor = "default";
-    photoDeProfil.setAttribute("src", photoDeProfilOriginale);
-}
+function setUpCheckBox(checkboxs, estModifie, sauvegardeDiv) {
+    checkboxs.forEach(checkbox => {
+        // recupere la valeur de chaque input
+        const valeurOriginale = checkbox.checked;
 
-function setupPhotoDeProfil(photoInput, photoDeProfil, photoDeProfilOriginale) {
-    photoDeProfil.onmouseenter = () => {
-        photoDeProfil.onmouseleave = () => {
-            photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfilOriginale);
-        }
-        photoDeProfil.style.cursor = "pointer";
-        photoDeProfil.setAttribute("src", "/images/profils/changerPhotoDeProfil.png")
-    }
-    photoDeProfil.onclick = () => {
-        photoInput.click();
-    }
-    photoInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      
-      if (file) {
-        const maxSizeMB = 2; // set your size limit (e.g. 2 MB)
-        const fileSizeMB = file.size / (1024 * 1024); // convert from bytes to MB
+        estModifie[checkbox.id] = false;
 
-        if (fileSizeMB > maxSizeMB) {
-            alert(`File is too large. Maximum allowed size is ${maxSizeMB} MB.`);
-            fileInput.value = ''; // optional: reset the input
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          photoDeProfil.src = e.target.result;
-          photoDeProfil.onmouseleave = () => {
-              photoDeProfilOnMouseLeave(photoDeProfil, photoDeProfil.src);
-          }
+        // ajoute un event listener sur chaque input
+        checkbox.oninput = () => {
+            // si la valeur de l'input est different de la valeur de base
+            if (checkbox.checked !== valeurOriginale) {
+                // affiche le bouton de sauvegarde et d'annulation
+                estModifie[checkbox.id] = true;
+            } else {
+                // cache le bouton de sauvegarde et d'annulation
+                // sauvegardeDiv.style.display = "none";
+                estModifie[checkbox.id] = false;
+            }
+            updateAffichageDivSauvegarde(sauvegardeDiv, estModifie);
         };
-        reader.readAsDataURL(file);
-      }
     });
 }
 
@@ -115,24 +102,61 @@ function updateAffichageDivSauvegarde(sauvegardeDiv, estModifie) {
     }
 }
 
+function getListValues(id) {
+    const list = document.querySelectorAll(`#ajoutMultipleList_${id} > li`);
+    const values = [];
+
+    list.forEach(li => {
+        // Récupère uniquement le texte avant le bouton
+        const text = li.firstChild.nodeType === 3 ? li.firstChild.textContent.trim() : '';
+        if (text !== "") {
+            values.push(text);
+        }
+    });
+
+    return values;
+}
+
 function getValuesInputs() {
     let result = {
-        denominationEntreprise: document.getElementById("denominationEntreprise").value,
-        nomEntreprise: document.getElementById("nomEntreprise").value,
-        prenomEntreprise: document.getElementById("prenomEntreprise").value,
-        telephoneEntreprise: document.getElementById("telephoneEntreprise").value,
-        emailEntreprise: document.getElementById("emailEntreprise").value,
-        adresseEntreprise: document.getElementById("adresseEntreprise").value,
-        codePostalEntreprise: document.getElementById("codePostalEntreprise").value,
-        villeEntreprise: document.getElementById("villeEntreprise").value,
-        complementAdresseEntreprise: document.getElementById("complementAdresseEntreprise").value
+        //champ commun a toutes les offres
+        type_offre:document.getElementById("type-offre").value,
+        title: document.getElementById("titre").value,
+        enLigne:document.getElementById("slider-etat").checked  ?1 :0, 
+        codePostal: document.getElementById("code-postal").value,
+        complementAdresse: document.getElementById("complement-adresse").value,
+        voie: document.getElementById("voie").value,
+        numeroAdresse:document.getElementById("numero-adresse").value,
+        prix:document.getElementById("prix").value,
+        prix_TTC_min:document.getElementById("prix").value,
+        city: document.getElementById("ville").value,
+        description: document.getElementById("description").value,
+        resume: document.getElementById("resume").value,
+        accessibility: document.getElementById("accessibilite").value,
+        joursOuverture:document.getElementById("jours").value,
+        matin_heure_debut:document.getElementById("matin_heure_debut").value,
+        matin_heure_fin:document.getElementById("matin_heure_fin").value,
+        apres_midi_heure_debut:document.getElementById("apres_midi_heure_debut").value,
+        apres_midi_heure_fin:document.getElementById("apres_midi_heure_fin").value,
+
+        titre_image:document.getElementById("titre_image").value,
+        chemin_image:document.getElementById("chemin_image").value,
+
+        //specifique au differentes type offres
+        duration: document.getElementById("duree") ? document.getElementById("duree").value:null,
+        age: document.getElementById("age-min")? document.getElementById("age-min").value:null,
+        nbAttractions: document.getElementById("nb-attraction")? document.getElementById("nb-attraction").value:null,
+        capaciteAccueil: document.getElementById("capacite")? document.getElementById("capacite").value:null,
+        prestationIncluse: getListValues("prestation-incluse") ?getListValues("prestation-incluse") :[],
+        prestationNonIncluse: getListValues("prestation-non-incluse")? getListValues("prestation-non-incluse") : [],
+        repasServi:getListValues("repas-servi") ? getListValues("repas-servi") : [],
+        langue:getListValues("langue") ? getListValues("langue") : [],
+
+        tags: getListValues("tags") ? getListValues("tags") :[] ,
+
     };
 
-    // si l'utilisateur est une entreprise privée
-    if (document.getElementById("ribEntreprise") !== null) {
-        result.ribEntreprise = document.getElementById("ribEntreprise").value;
-        result.sirenEntreprise = document.getElementById("sirenEntreprise").value;
-    }
+    
     return result;
 }
 
@@ -141,42 +165,57 @@ function getValuesInputs() {
  */
 async function sauvegarderClique() {
     let data = getValuesInputs();
-
-    const photoFile = document.getElementById("photo-profil-input").files[0];
-
-    if (photoFile) {
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            data.photoProfil = e.target.result || ""; // base64 string, fallback to empty string if undefined
-            await sendData(data);
-        };
-        reader.readAsDataURL(photoFile);
-    } else {
-        data.photoProfil = "";
-        await sendData(data);
-    }
+    await sendData(data);
+    
 }
 
+
+function encodeFormData(data) {
+    const params = [];
+
+    for (let [key, value] of Object.entries(data)) {
+        if (Array.isArray(value)) {
+            value.forEach(v => {
+                params.push(`${encodeURIComponent(key)}[]=${encodeURIComponent(v)}`);
+            });
+        } else {
+            params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+        }
+    }
+
+    return params.join('&');
+}
+
+
 async function sendData(data) {
-    console.log(Object.entries(data).map(([k, v]) => { return k + '=' + encodeURIComponent(v); }).join('&'));
-    fetch("/api/compte/pro/update/", {
+    console.log(encodeFormData(data));
+    fetch("/api/offre/update/?id=" + id, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: Object.entries(data).map(([k, v]) => { return k + '=' + encodeURIComponent(v); }).join('&')
+        body: encodeFormData(data)
     }).then(response => {
         if (response.ok) {
+            const sauvegardeDiv = document.getElementById("sauvegarder");
+            sauvegardeDiv.style.bottom = "-100px";
+            const li = document.querySelector("ul#ajoutMultipleList_tags > li")
+            const text = li.firstChild.nodeType === 3 ? li.firstChild.textContent.trim() : '';
+            console.log(text)
+            
             return response.json();
         } else {
             throw new Error(response.json().message);
         }
     }).then(data => {
-        // TODO : afficher un message de succès
-        console.log("Sauvegarde réussie");
+        // TODO : afficher un message de succès (flash card)
+        //console.log("Sauvegarde réussie  " + data.message);
+        displayFlashCard("success",data.message)
     }).catch(error => {
-        // TODO : afficher un message d'erreur
+        // TODO : afficher un message d'erreur (flash card)
         console.error("Erreur lors de la sauvegarde", error);
+        displayFlashCard("error",error)
+        //displayFlashCard("error")
     });
 
     // relance la fonction onload de la page pour mettre à jour les données
@@ -192,4 +231,33 @@ function annulerClique(sauvegardeDiv) {
     sauvegardeDiv.style.bottom = "-100px";
     // recharge la page
     location.reload();
+}
+
+function displayFlashCard(response, message) {
+    const flashCard = document.getElementById("reponse-flash");
+    const p = document.getElementById("message-flash");
+
+    // Nettoie les classes précédentes
+    flashCard.classList.remove("success", "error");
+
+    // Applique la bonne classe
+    if (response === "success") {
+        flashCard.classList.add("success");
+    } else {
+        flashCard.classList.add("error");
+    }
+
+    // Affiche le message
+    p.textContent = message;
+
+    // Relance proprement l'animation
+    flashCard.style.display = "block";
+    flashCard.style.animation = "none";
+    flashCard.offsetHeight; // trigger reflow
+    flashCard.style.animation = null;
+
+    // Masque après 4 secondes (ou ce que tu veux)
+    setTimeout(() => {
+        flashCard.style.display = "none";
+    }, 4000);
 }

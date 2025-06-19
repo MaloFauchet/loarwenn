@@ -21,36 +21,44 @@
             </div>
             <div class="grid">
                 <div>
-                    <label class="label-input"  for="nom">Nom</label>
+                    <label class="label-input" for="nom">Nom</label>
                     <input id="nom" name="nom" type="text" required />
                 </div>
                 <div>
-                    <label class="label-input"  for="prenom">Prenom</label>
+                    <label class="label-input" for="prenom">Prenom</label>
                     <input id="prenom" name="prenom" type="text" required />
                 </div>
             </div>
 
-            <label class="label-input"  for="email">E-mail</label>
+            <label class="label-input" for="email">E-mail</label>
             <input id="email" name="email" type="email" required />
 
-            <label class="label-input"  for="telephone">Téléphone</label>
+            <label class="label-input" for="telephone">Téléphone</label>
             <input type="tel" id="telephone" name="telephone" required />
 
             <h3>Adresse</h3>
 
-            <label class="label-input"  for="adresse">Adresse</label>
-            <input type="text" id="adresse" name="adresse" required />
+            <div class="grid">
+                <div class="smaller">
+                    <label class="label-input" for="num">Numéro</label>
+                    <input type="number" id="num" name="num" required />
+                </div>
+                <div class="bigger">
+                    <label class="label-input" for="voie">Voie</label>
+                    <input type="text" id="voie" name="voie" required />
+                </div>
+            </div>
 
-            <label class="label-input"  for="complement">Complément</label>
+            <label class="label-input" for="complement">Complément</label>
             <input type="text" id="complement" name="complement" />
 
             <div class="grid">
                 <div>
-                    <label class="label-input"  for="codePostal">Code Postal</label>
+                    <label class="label-input" for="codePostal">Code Postal</label>
                     <input type="text" id="codePostal" name="codePostal" required />
                 </div>
                 <div>
-                    <label class="label-input"  for="ville">Ville</label>
+                    <label class="label-input" for="ville">Ville</label>
                     <input type="text" id="ville" name="ville" required />
                 </div>
             </div>
@@ -58,27 +66,27 @@
             <h3>Organisation</h3>
             <div class="checkbox-container">
                 <input type="checkbox" id="est_entreprise" name="est_entreprise" />
-                <label class="label-input"  class="checkbox label-input" for="est_entreprise"> Entreprise privée ? </label>
+                <label class="label-input" class="checkbox label-input" for="est_entreprise"> Entreprise privée ? </label>
             </div>
 
             <div class="option" id="entrepriseChamps" style="display: none">
-                <label class="label-input"  for="denomination">Dénomination</label>
-                <input type="text" id="denomination" name="denomination"  />
-                <label class="label-input"  for="siren">Siren</label>
-                <input type="number" id="siren" name="siren"  />
-                <label class="label-input"  for="rib">RIB</label>
-                <input type="text" id="rib" name="rib"  />
+                <label class="label-input" for="denomination">Dénomination</label>
+                <input type="text" id="denomination" name="denomination" />
+                <label class="label-input" for="siren">Siren</label>
+                <input type="number" id="siren" name="siren" />
+                <label class="label-input" for="iban">IBAN</label>
+                <input type="text" id="iban" name="iban" />
             </div>
 
             <div class="option" id="associationChamps" style="display: flex">
-                <label class="label-input"  for="raisonSociale">Raison Sociale</label>
+                <label class="label-input" for="raisonSociale">Raison Sociale</label>
                 <input type="text" id="raisonSociale" name="raisonSociale" required />
             </div>
 
             <h3>Mot de passe</h3>
-            <label class="label-input"  for="mot_de_passe">Mot de passe</label>
+            <label class="label-input" for="mot_de_passe">Mot de passe</label>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required />
-            <label class="label-input"  for="confirmation">Confirmation</label>
+            <label class="label-input" for="confirmation">Confirmation</label>
             <input type="password" id="confirmation" name="confirmation" required />
 
             <button aria-label="S'inscrire" type="submit" id="inscrire" class="disabled">S'inscrire</button>
@@ -97,19 +105,27 @@
     const entrepriseChamps = document.getElementById('entrepriseChamps');
     const associationChamps = document.getElementById('associationChamps');
 
-    
+
 
     checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
             entrepriseChamps.style.display = 'flex';
-            entrepriseChamps.querySelectorAll('input').forEach( input => {input.required = true;});
+            entrepriseChamps.querySelectorAll('input').forEach(input => {
+                input.required = true;
+            });
             associationChamps.style.display = 'none';
-            associationChamps.querySelectorAll('input').forEach( input => {input.required = false;});
+            associationChamps.querySelectorAll('input').forEach(input => {
+                input.required = false;
+            });
         } else {
             entrepriseChamps.style.display = 'none';
-            entrepriseChamps.querySelectorAll('input').forEach( input => {input.required = false;});
+            entrepriseChamps.querySelectorAll('input').forEach(input => {
+                input.required = false;
+            });
             associationChamps.style.display = 'flex';
-            associationChamps.querySelectorAll('input').forEach( input => {input.required = true;});
+            associationChamps.querySelectorAll('input').forEach(input => {
+                input.required = true;
+            });
 
         }
     });
@@ -117,16 +133,20 @@
     const motDePasse = document.getElementById('mot_de_passe');
     const confirmation = document.getElementById('confirmation');
     const submitBtn = document.getElementById('inscrire');
-    
+
     function checkInputs() {
-    console.log("Oups");
-      if (motDePasse.value === confirmation.value && motDePasse.value.trim() !== '') {
-        submitBtn.classList.remove('disabled');
-      } else {
-        submitBtn.classList.add('disabled');
-      }
+        console.log("Oups");
+        if (motDePasse.value === confirmation.value && motDePasse.value.trim() !== '') {
+            submitBtn.classList.remove('disabled');
+        } else {
+            submitBtn.classList.add('disabled');
+        }
     }
 
     motDePasse.oninput = checkInputs;
     confirmation.oninput = checkInputs;
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> main
