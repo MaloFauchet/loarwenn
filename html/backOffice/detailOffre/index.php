@@ -54,6 +54,8 @@ $langue = stringToTab($currentOffre['langue']);
 $prestationIncluses = stringToTab($currentOffre['prestation_incluses']);
 $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
 
+//$currentOffre['horaires'] = //TODO explode la string;
+
 ?>
 
 <!DOCTYPE html>
