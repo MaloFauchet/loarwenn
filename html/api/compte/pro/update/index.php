@@ -12,7 +12,6 @@ if (!isset($_SESSION['id_utilisateur'])) {
     exit();
 }
 $controller = new ProfessionnelController();
-
 $isEntreprisePrivee = $controller->estEntreprisePrivee($_SESSION['id_utilisateur']);
 
 // Vérifie les données envoyées
@@ -57,6 +56,15 @@ if (!isset($_POST['telephoneEntreprise'])) {
 }
 
 $numTelephone = $_POST['telephoneEntreprise'];
+
+// Site web
+if (!isset($_POST['siteWeb'])) {
+    http_response_code(400);
+    echo json_encode(['message' => 'Paramètre manquant :  siteWeb']);
+    exit();
+}
+
+$siteWeb = $_POST['siteWeb'];
 
 // Adresse mail
 if (!isset($_POST['emailEntreprise'])) {
@@ -150,7 +158,8 @@ if (!isset($_POST['photoProfil'])) {
 }
 
 $photoProfil = $_POST['photoProfil'];
-if ($photoProfil !== null) {
+$cheminImage = null;
+if ($photoProfil) {
     // ecrire l'image dans le dossier images
     // recupere l'extension de l'image
     $extention = explode('/', explode(';', $photoProfil)[0])[1];
@@ -159,7 +168,6 @@ if ($photoProfil !== null) {
     file_put_contents($_SERVER['DOCUMENT_ROOT'] . $cheminImage, base64_decode(explode(',', $photoProfil)[1]));
 }
 
-
 if ($isEntreprisePrivee) {
     $controller->updateProfessionnelPrive(
         $_SESSION['id_utilisateur'],
@@ -167,6 +175,7 @@ if ($isEntreprisePrivee) {
         $prenom,
         $email,
         $numTelephone,
+        $siteWeb, 
         $numeroAdresse,
         $voieEntreprise,
         $complementAdresse,
@@ -174,8 +183,7 @@ if ($isEntreprisePrivee) {
         $ville,
         $denominationEntreprise,
         $siren,
-        $rib,
-        $cheminImage
+        $rib
     );
 } else {
     $controller->updateProfessionnelPublic(
@@ -184,16 +192,15 @@ if ($isEntreprisePrivee) {
         $prenom,
         $email,
         $numTelephone,
+        $siteWeb,
         $numeroAdresse,
         $voieEntreprise,
         $complementAdresse,
         $codePostal,
         $ville,
-        $denominationEntreprise,
-        $cheminImage
+        $denominationEntreprise
     );
 }
-
 
 // redirige vers la page de modification
 // header('Location: /backOffice/profil/');

@@ -344,8 +344,8 @@ print_r($joursSemaines);
                 </div>
             </main>
         </div>
-        <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
     </div>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
 </body>
 
 </html>

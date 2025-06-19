@@ -1,6 +1,7 @@
 /**
  * Ajoute un nouvel élément à une liste d'entrées multiples pour un identifiant donné.
  */
+
 function ajouterajoutMultiple(id) {
     const input = document.getElementById('ajoutMultipleInput_' + id);
     const list = document.getElementById('ajoutMultipleList_' + id);
@@ -16,9 +17,11 @@ function ajouterajoutMultiple(id) {
     }
 }
 
-function supprimerajoutMultiple(btn) {
-    btn.parentElement.remove();
+function supprimerajoutMultiple(button) {
+    const li = button.parentElement;
+    li.remove();
 }
+
 /*
 * Sélectionne le type de l'offre
 */

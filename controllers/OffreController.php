@@ -49,6 +49,7 @@ class OffreController {
 
     
     public function ajouterOffre($post, $files) {
+        
         //valeur pour la bdd    
         $titre = trim($post['titre'] ?? '');
         $prixMin = trim($post['prixMin'] ?? '');
