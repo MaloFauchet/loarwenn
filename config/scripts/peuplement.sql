@@ -282,49 +282,38 @@ INSERT INTO type_repas_disponible (id_repas, id_offre) VALUES
 
 -- Insertion Horaires standardisés
 INSERT INTO horaire (debut, fin) VALUES
-('2025-06-12 08:00:00', '2025-06-12 12:00:00'),  -- 1: Matin
-('2025-06-12 12:00:00', '2025-06-12 14:00:00'),  -- 2: Déjeuner
-('2025-06-12 14:00:00', '2025-06-12 18:00:00'),  -- 3: Après-midi
-('2025-06-12 18:00:00', '2025-06-12 22:00:00'),  -- 4: Soirée
-('2025-06-12 10:00:00', '2025-06-12 16:00:00'),  -- 5: Journée continue
-('2025-06-12 09:00:00', '2025-06-12 13:00:00'),  -- 6: Matinée prolongée
-('2025-06-12 15:00:00', '2025-06-12 19:00:00'),  -- 7: Après-midi tard
-('2025-06-12 20:00:00', '2025-06-12 23:59:00');  -- 8: Spectacle soir tard
+('08:00:00', '12:00:00'),  -- 1: Matin
+('12:00:00', '14:00:00'),  -- 2: Déjeuner
+('14:00:00', '18:00:00'),  -- 3: Après-midi
+('18:00:00', '22:00:00'),  -- 4: Soirée
+('10:00:00', '18:00:00'),  -- 5: Journée continue
+('09:00:00', '13:00:00'),  -- 6: Matinée prolongée
+('15:00:00', '18:00:00'),  -- 7: Après-midi tard
+('20:00:00', '23:59:00'),  -- 8: Spectacle soir tard
+('19:00:00', '22:00:00');  -- 9 : Diner
 
--- Insertion Horaires - Activités
+-- Insertion Horaires
 INSERT INTO horaire_ouverture (id_horaire, id_offre) VALUES
-(1, 1), (3, 1), (5, 1),
-(1, 4), (3, 4), (5, 4),
-(1, 5), (3, 5), (5, 5),
-(1, 6), (3, 6), (5, 6),
-(1, 8), (3, 8), (5, 8),
-(1, 10), (3, 10), (5, 10),
-(1, 12), (3, 12), (5, 12),
-(1, 13), (3, 13), (5, 13),
-(1, 14), (3, 14), (5, 14),
-(1, 18), (3, 18), (5, 18),
-(1, 19), (3, 19), (5, 19),
-(1, 20), (3, 20), (5, 20);
-
--- Insertion Horaires - Visites
-INSERT INTO horaire_ouverture (id_horaire, id_offre) VALUES
-(6, 2), (7, 2),
-(6, 9), (7, 9);
-
--- Insertion Horaires - Restauration
-INSERT INTO horaire_ouverture (id_horaire, id_offre) VALUES
-(2, 3), (4, 3),
-(2, 11), (4, 11),
-(2, 17), (4, 17);
-
--- Insertion Horaires - Spectacles
-INSERT INTO horaire_ouverture (id_horaire, id_offre) VALUES
-(4, 7), (8, 7),
-(4, 15), (8, 15);
-
--- Insertion Horaires - Parc d'attraction
-INSERT INTO horaire_ouverture (id_horaire, id_offre) VALUES
-(1, 16), (3, 16), (5, 16);
+(6, 1), 
+(5, 2),
+(7, 3), (8, 3),
+(6, 4), (7, 4),
+(1, 5),
+(5, 6),
+(6, 7),
+(3, 8),
+(1, 9),
+(6, 10),
+(8, 11),
+(3, 12),
+(5, 13),
+(7, 14),
+(5, 15),
+(1, 16), (3, 16),
+(2, 17), (9, 17),
+(3, 18),
+(5, 19),
+(1, 20);
 
 -- Insertion Jour Activité / Visite
 DO $$
