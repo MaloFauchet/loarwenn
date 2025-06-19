@@ -29,12 +29,12 @@ class ProfessionnelController {
         return $this->professionnelModel->getProfessionnelParId($id);
     }
 
-    public function nouveauCompteProfessionnelPrive($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse) {
-        return $this->professionnelModel->insertProfessionnelPrive($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse);
+    public function nouveauCompteProfessionnelPrive($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse) {
+        return $this->professionnelModel->insertProfessionnelPrive($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $denomination, $siren, $rib, $motDePasse);
     }
 
-    public function nouveauCompteProfessionnelPublic($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse) {
-        return $this->professionnelModel->insertProfessionnelPublic($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse);
+    public function nouveauCompteProfessionnelPublic($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse) {
+        return $this->professionnelModel->insertProfessionnelPublic($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $raisonSociale, $motDePasse);
     }
 
     public function addOffreProPublic($post, $files) {

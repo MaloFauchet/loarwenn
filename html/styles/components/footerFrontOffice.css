@@ -1,5 +1,4 @@
 /* Footer */
-
 footer {
     display: flex;
     flex-direction: column;
@@ -35,7 +34,7 @@ footer img {
 
 }
 
-footer h6 {
+footer p {
     font-family: 'Lexendeca', sans-serif;
     font-size: 16px;
     font-weight: bold;

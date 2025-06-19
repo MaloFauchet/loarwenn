@@ -1,14 +1,9 @@
-
-
-
-    
         
-
-        
-
+        <h3 class="nameActivite">Champs liées a l'offre Activité</h3>
         
 
         <div class="champ-type-offre-row">
+
             <div class="champ-type-offre">
                 <h3>Durée</h3>
                 <label class="label-input" for="duree">Durée</label>
@@ -20,9 +15,10 @@
                 <label class="label-input" for="age">Âge</label>
                 <input id="age" name="age" type="number" required />
             </div>
-
         </div>
 
+
+        
         
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php')
@@ -33,9 +29,6 @@
                 ajoutMultiple('Prestation','Prestation non incluse',2); 
             ?>
         </div>
-       
-
-       
 
        
 
@@ -47,22 +40,11 @@
             $selectedActiviteId= $_COOKIE['selectedActiviteId'];
           
             
-
             $id_tags = $typeActiviteController->getTagIdByTypeActivite($id,$name);
             $arrayIdTags = array_column($id_tags, 'id_tag');
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
-
             
 
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-    
-    

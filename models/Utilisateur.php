@@ -9,7 +9,6 @@ class Utilisateur {
     private $nom;
     private $prenom;
 
-
     public function __construct() {
         $database = new Database();
         $this->conn = $database->getConnection();
@@ -115,12 +114,12 @@ class Utilisateur {
         
     }
 
-        public function insertMembre($nom, $prenom, $email, $telephone, $adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse)
+        public function insertMembre($nom, $prenom, $email, $telephone, $num_adresse, $voie_adresse, $complement, $codePostal, $ville, $pseudo, $motDePasse)
     {
         $sql = "
-        SELECT * FROM tripenazor.inserer_utilisateur_et_membre(
+        SELECT tripenazor.inserer_utilisateur_et_membre(
             :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
-            :adresse::TEXT, :complement::TEXT, :codePostal::TEXT,
+            :num_adresse::INT, :voie_adresse::TEXT, :complement::TEXT, :codePostal::TEXT,
             :ville::TEXT, :pseudo::TEXT, :motDePasse::TEXT)";
 
 
@@ -131,7 +130,8 @@ class Utilisateur {
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
-        $stmt->bindParam(':adresse', $adresse);
+        $stmt->bindParam(':num_adresse', $num_adresse);
+        $stmt->bindParam(':voie_adresse', $voie_adresse);
         $stmt->bindParam(':complement', $complement);
         $stmt->bindParam(':codePostal', $codePostal);
         $stmt->bindParam(':ville', $ville);

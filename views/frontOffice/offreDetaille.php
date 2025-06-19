@@ -1,12 +1,14 @@
 <?php
 // On inclut le controller ProfessionnelController
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/ProfessionnelController.php');
+
 // On instancie le controller ProfessionnelController
 $professionnelController = new ProfessionnelController();
 
 
 // On inclut le controller OffreActivité
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php');
+
 // On instancie le controller
 $offreController = new OffreController();
 
@@ -86,12 +88,14 @@ function afficherEtoile($note){
 <!-- Main-->
 <main>
     <div class="breadcrumb-container">
-        <a href="#" class="breadcrumb-back-link" onclick="history.back(); return false;">
+        <a aria-label="Retour" href="#" class="breadcrumb-back-link" onclick="history.back(); return false;">
             <img src="/images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
         </a>
         <nav class="breadcrumb">
             <ul>
-                <li><a href="/">Accueil</a></li>
+                <li>
+                    <a aria-label="Accueil" href="/">Accueil</a>
+                </li>
                 <li>Offre détaillée</li>
             </ul>
         </nav>
@@ -129,7 +133,7 @@ function afficherEtoile($note){
                     <figcaption>
                         <h4><?=$pro[($pro["denomination"] !== null) ? "denomination" : "raison_sociale"]?></h4>
                         <p><?= $pro["prenom"]; ?> <?=$pro["nom"]; ?></p>
-                        <a href="tel:<?= $pro["num_telephone"] ?>"><?= $pro["num_telephone"] ?></a>
+                        <a aria-label="Téléphone" href="tel:<?= $pro["num_telephone"] ?>"><?= $pro["num_telephone"] ?></a>
                     </figcaption>
                 </div>
                 <hr>

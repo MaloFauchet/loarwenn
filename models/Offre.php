@@ -35,6 +35,7 @@ class Offre {
     }
 
 
+   
     /**
      * @id : id de l'offre
      * Récupère une offre  par son id
@@ -150,20 +151,20 @@ class Offre {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    
-
-
-
+    //récupérer une offre par l'id de son professionel
     public function getOffreByIdProfessionnel($id_professionnel) {
-        $sql = "
-            SELECT o.*, i.chemin AS image_chemin, i.titre_image
-            FROM tripenazor.offre o
-            LEFT JOIN tripenazor.image_illustre_offre io ON io.id_image = o.id_image_couverture
-            LEFT JOIN tripenazor.image i ON i.id_image = io.id_image
-            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre AND a.id_utilisateur_prive = :id_utilisateur
-            LEFT JOIN tripenazor.pro_public_propose_offre pppo ON pppo.id_offre = o.id_offre AND pppo.id_utilisateur_public = :id_utilisateur
-            WHERE a.id_utilisateur_prive = :id_utilisateur OR pppo.id_utilisateur_public = :id_utilisateur
-        ";
+        $sql = "SELECT 
+            o.*,
+            COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public) AS id_professionnel
+            FROM tripenazor.infos_carte_offre_with_offline o
+            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+            LEFT JOIN tripenazor.pro_public_propose_offre ppp ON ppp.id_offre = o.id_offre
+            WHERE 
+                a.id_utilisateur_prive = :id_utilisateur
+                OR ppp.id_utilisateur_public = :id_utilisateur
+            "
+        
+            ;
 
         $stmt = $this->conn->prepare($sql); 
         $stmt->execute([':id_utilisateur' => $id_professionnel]);
@@ -182,6 +183,10 @@ class Offre {
 
         return '{' . implode(',', $escaped) . '}';
     }
+
+
+    //récupérer une offre par l'id de son professionel
+    
 
     public function insertOffreActivite($data)
     {
@@ -217,6 +222,8 @@ class Offre {
                 :p_complement_adresse::TEXT,
                 :p_titre_image::TEXT,
                 :p_chemin_image::TEXT,
+                :p_titre_image_secondaire::TEXT[],
+                :p_chemin_image_secondaire::TEXT[],
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
@@ -244,13 +251,14 @@ class Offre {
         $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
         $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
         $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
-
         $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
         $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
         $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
         $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_secondaire', $this->formatArrayToPostgresText($data['nomsImagesSecondaire']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_secondaire', $this->formatArrayToPostgresText($data['cheminImageSecondaire']), PDO::PARAM_STR);
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin']);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin']);
@@ -309,6 +317,8 @@ class Offre {
                 :p_complement_adresse::TEXT,
                 :p_titre_image::TEXT,
                 :p_chemin_image::TEXT,
+                :p_titre_image_secondaire::TEXT[],
+                :p_chemin_image_secondaire::TEXT[],
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
@@ -334,13 +344,14 @@ class Offre {
         $stmt->bindValue(':p_accessibilite', $data['accessibilite'], PDO::PARAM_STR);
         $stmt->bindValue(':p_type_offre', $data['type'], PDO::PARAM_STR);
         $stmt->bindValue(':p_prix_TCC_min', $data['prixMin'], PDO::PARAM_STR);
-
         $stmt->bindValue(':p_tags', $this->formatArrayToPostgresText($data['tags']), PDO::PARAM_STR);
         $stmt->bindValue(':p_voie', $data['voie'], PDO::PARAM_STR);
         $stmt->bindValue(':p_numero_adresse', $data['numero_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
         $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_secondaire', $this->formatArrayToPostgresText($data['nomsImagesSecondaire']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_secondaire', $this->formatArrayToPostgresText($data['cheminImageSecondaire']), PDO::PARAM_STR);
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
@@ -396,6 +407,8 @@ class Offre {
                 :p_complement_adresse::TEXT,
                 :p_titre_image::TEXT,
                 :p_chemin_image::TEXT,
+                :p_titre_image_secondaire::TEXT[],
+                :p_chemin_image_secondaire::TEXT[],
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
@@ -430,6 +443,8 @@ class Offre {
         $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
         $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_secondaire', $this->formatArrayToPostgresText($data['nomsImagesSecondaire']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_secondaire', $this->formatArrayToPostgresText($data['cheminImageSecondaire']), PDO::PARAM_STR);
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
@@ -487,6 +502,8 @@ class Offre {
                 :p_complement_adresse::TEXT,
                 :p_titre_image::TEXT,
                 :p_chemin_image::TEXT,
+                :p_titre_image_secondaire::TEXT[],
+                :p_chemin_image_secondaire::TEXT[],
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
@@ -522,6 +539,8 @@ class Offre {
         $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
         $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_secondaire', $this->formatArrayToPostgresText($data['nomsImagesSecondaire']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_secondaire', $this->formatArrayToPostgresText($data['cheminImageSecondaire']), PDO::PARAM_STR);
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
@@ -584,6 +603,8 @@ class Offre {
                 :p_complement_adresse::TEXT,
                 :p_titre_image::TEXT,
                 :p_chemin_image::TEXT,
+                :p_titre_image_secondaire::TEXT[],
+                :p_chemin_image_secondaire::TEXT[],
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
@@ -618,6 +639,8 @@ class Offre {
         $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
         $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_secondaire', $this->formatArrayToPostgresText($data['nomsImagesSecondaire']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_secondaire', $this->formatArrayToPostgresText($data['cheminImageSecondaire']), PDO::PARAM_STR);
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
@@ -680,6 +703,8 @@ class Offre {
                 :p_complement_adresse::TEXT,
                 :p_titre_image::TEXT,
                 :p_chemin_image::TEXT,
+                :p_titre_image_secondaire::TEXT[],
+                :p_chemin_image_secondaire::TEXT[],
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
@@ -713,6 +738,8 @@ class Offre {
         $stmt->bindValue(':p_complement_adresse', $data['complement_adresse'], PDO::PARAM_STR);
         $stmt->bindValue(':p_titre_image', $data['nomImagePrincipale'], PDO::PARAM_STR);
         $stmt->bindValue(':p_chemin_image', $data['cheminImagePrincipale'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_titre_image_secondaire', $this->formatArrayToPostgresText($data['nomsImagesSecondaire']), PDO::PARAM_STR);
+        $stmt->bindValue(':p_chemin_image_secondaire', $this->formatArrayToPostgresText($data['cheminImageSecondaire']), PDO::PARAM_STR);
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
@@ -820,6 +847,36 @@ class Offre {
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    function publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines) {
+        $sql = "
+            SELECT tripenazor.publication_offre(:idOffre, :enRelief, :aLaUne, :nbSemaines);
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idOffre', $idOffre);
+        $stmt->bindParam(':enRelief', $enRelief, PDO::PARAM_BOOL);
+        $stmt->bindParam(':aLaUne', $aLaUne, PDO::PARAM_BOOL);
+        $stmt->bindParam(':nbSemaines', $nbSemaines, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+
+
+    function dePublicationOffre($idOffre) {
+        $sql = "
+            UPDATE tripenazor.offre
+            SET en_ligne = FALSE
+            WHERE id_offre = :idOffre;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idOffre', $idOffre);
+
+        return $stmt->execute();
     }
     
 
@@ -936,5 +993,4 @@ class Offre {
     function getTags() {
         return $this->tags;
     }
-
 }

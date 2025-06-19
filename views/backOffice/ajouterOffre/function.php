@@ -1,11 +1,8 @@
 <?php
-
 function afficherTag($tags, $libelle, $id_activite) {
     echo "<h4>Tags liés à l'activité : " . htmlspecialchars($libelle) . "</h4>";
 
     echo "<input type='hidden' name='id_activite' value='" . htmlspecialchars($id_activite) . "'>";
-
-    
 
     echo "<div style='display: flex; flex-wrap: wrap; gap: 0.5em;'>";
     foreach ($tags as $index => $tag) {
@@ -16,8 +13,5 @@ function afficherTag($tags, $libelle, $id_activite) {
         echo "</label>";
     }
     echo "</div>";
-
 }
-
-
 ?>

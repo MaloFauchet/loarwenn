@@ -49,11 +49,13 @@ optClose?.addEventListener("click", function () {
     body.classList.remove("overflow-hidden");
 });
 
+// Listener sur le bouton valider.
 let optValidate = document.getElementById("otp-valider-btn");
 optValidate?.addEventListener("click", function () {
     let optModal = document.getElementById("opt-modal");
     let body = document.querySelector("body");
 
+    // Récupérer le contenu de l'input du code.
     let inputCode = document.getElementById("otp-code-input");
     if (inputCode.value.trim() === "") {
         alert("Veuillez entrer le code OTP.");

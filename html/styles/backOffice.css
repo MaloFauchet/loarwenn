@@ -120,7 +120,7 @@
 
 .page-back-office .nav-back-office {
     background-color: var(--main-color);
-    width: 20vw;
+    width: 16vw;
     min-width: 200px;
     height: 100vh;
     position: fixed;
@@ -194,6 +194,75 @@
     padding: 2em;
     padding-top: 10em;  
     min-height: 30em;
+}
+
+
+.page-back-office .status-offre {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5%;
+}
+
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: var(--check-box-unchecked);
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2em;
+  width: 2em;
+  inset: 0;
+  background-color: white;
+  border-radius: 50px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.switch input:checked + .slider {
+  background: var(--check-box-checked);
+}
+
+.switch input:focus + .slider {
+  box-shadow: 0 0 1px var(--check-box-checked);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(1.6em);
 }
 
 .offre .image-container img {
@@ -279,6 +348,87 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+}
+
+
+.modal-publication,
+.modal-depublication {
+    display: none; /* cachée par défaut */
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5); /* fond assombri */
+    justify-content: center;
+    align-items: center;
+    /* Pour centrer avec flex */
+    /*display: flex;*/
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    min-width: 300px;
+    max-width: 90vw;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content form .checkbox-container{
+    display: flex;
+    border-radius: 5px;
+    padding: 10px 15px;;
+    gap: 10px;
+    
+}
+
+.modal-content form .checkbox-container label{
+    display: flex;
+    align-items: center;
+}
+
+.modal-content form .checkbox-container input {
+    cursor: pointer;
+}
+
+.modal-content form div:has(button){
+    align-self: flex-end;
+}
+
+.modal-content form button{
+    background-color: #005CE6;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-content form button:nth-child(2){
+    background-color: var(--check-box-unchecked);
+}
+
+.modal-content form button:nth-child(2):hover{
+    background-color: #d20303;
+}
+
+.modal-content form button:hover{
+    background-color: #004bb5;
+}
+
+.modal-content div:nth-child(4){
+    display: flex;
+    border-radius: 5px;
+    padding: 10px 15px;;
+    gap: 10px;
 }
 
 

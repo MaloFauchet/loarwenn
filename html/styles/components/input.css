@@ -19,7 +19,9 @@ label + input[type="text"],
 label + input[type="email"],
 label + input[type="password"],
 label + input[type="number"],
-label + input[type="tel"] {
+label + input[type="tel"],
+label + input[type="time"]
+{
     padding: 5px 10px;
     border: 2px solid var(--input-color);
     border-radius: 1.8em;
@@ -30,11 +32,21 @@ label + input[type="tel"] {
     transition: background-position 0.8s ease-out;
 }
 
+input[type="time"]{
+    padding: 5px 30px !important;
+    font-family: 'Roboto', sans-serif
+}
+
 .checkbox-container{
     display: flex;
     flex-direction: row;
     align-items: center;
     margin: 0 0 10px 0;
+}
+
+.checkbox-container input{
+    height: 25px;
+    width: 25px;
 }
 
 .checkbox-container > input{
@@ -47,3 +59,18 @@ label + input[type="tel"] {
     align-self: auto;
     margin: 0;
 }
+
+.checkbox-container > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 0 10px;
+}
+
+.checkbox-container > div > .label-input{
+    transform: none;
+    align-self: auto;
+    margin: 0;
+}
+
+
