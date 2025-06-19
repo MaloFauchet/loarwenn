@@ -78,6 +78,7 @@
 
         <!-- Liste des Offres -->
         <article class="container-offre">
+            <div id="no-result" style="display:none;">Aucune offre ne correspond à vos critères.</div>
             <?php
                 foreach ($listeOffreView as $offre => $valueOfOffre) {
                     require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 

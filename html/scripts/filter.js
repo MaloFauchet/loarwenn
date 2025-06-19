@@ -90,6 +90,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".a-card").forEach(card => {
             card.style.display = matchCard(card) ? "" : "none";
         });
+
+        const cards = document.querySelectorAll('.a-card');
+        const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
+
+        if (visibleCards.length === 0) {
+            document.getElementById('no-result').style.display = 'flex';
+        } else {
+            document.getElementById('no-result').style.display = 'none';
+        }
     }
 
     // Gestion de "Toute catégorie"

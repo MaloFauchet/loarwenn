@@ -8,6 +8,16 @@
     width: 70%;
 }
 
+.liste-offre #no-result{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto;
+    padding: 30px 40px;
+    border: 2px solid #005CE6;
+    border-radius: 1.5em;
+}
+
 .liste-offre main {
     min-height: 100vh;
 }
