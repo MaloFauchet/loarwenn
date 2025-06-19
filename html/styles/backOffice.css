@@ -196,6 +196,10 @@
     min-height: 30em;
 }
 
+.page-back-office .titre-status{
+    display: flex;
+}
+
 
 .page-back-office .status-offre {
     display: flex;
