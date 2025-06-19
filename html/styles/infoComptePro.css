@@ -126,6 +126,7 @@ div#sauvegarder > div {
 }
 
 div#sauvegarder button {
+    width: auto!important;
     background-color: white;
     color: var(--main-color);
     font-size: 20px;
