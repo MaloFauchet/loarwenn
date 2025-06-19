@@ -317,15 +317,6 @@ function afficherEtoile($note){
                         </figure>
                     </li>
                     <li>
-                        <!-- Accessibilité -->
-                        <figure class="info-pratique">
-                            <img src="/images/icons/person-wheelchair.svg" alt="Accessibilite">
-                            <figcaption>
-                                <h3><?= $offre["accessibilite"] ?> </h3>
-                            </figcaption>
-                        </figure>
-                    </li>
-                    <li>
                         <!-- Capacité du spectacle -->
                         <figure class="info-pratique">
                             <img src="/images/icons/person-circle.svg" alt="Capacite">
