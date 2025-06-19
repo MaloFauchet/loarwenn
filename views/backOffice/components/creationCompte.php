@@ -145,8 +145,4 @@
 
     motDePasse.oninput = checkInputs;
     confirmation.oninput = checkInputs;
-<<<<<<< HEAD
 </script>
-=======
-</script>
->>>>>>> main

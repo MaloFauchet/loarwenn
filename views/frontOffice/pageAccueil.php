@@ -138,5 +138,4 @@
 <!-- TO FIX -->
 <?php //require_once("./components/footer.php") ?>
 
-
 </html>
