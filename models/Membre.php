@@ -1,6 +1,4 @@
 <?php
-
-
     class Membre extends Utilisateur {
         private $pseudo;
 
@@ -11,7 +9,6 @@
         /**
          * Setter
          */
-
         public function setPseudo($pseudo) {
             $this->pseudo = $pseudo;
         }
@@ -19,7 +16,6 @@
         /**
          * Getter
          */
-    
         public function getPseudo() {
             return $this->pseudo;
         }

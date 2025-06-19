@@ -22,7 +22,8 @@ class OffreController {
     public function getViewOffreAccueil() {
         return $this->offre->getViewOffreAccueil();
     }
-    //toString
+    
+    // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);
     }
@@ -47,11 +48,6 @@ class OffreController {
 
     
     public function ajouterOffre($post, $files) {
-        // echo "<pre>";
-        // die(print_r($files));
-        // echo "</pre>";
-        
-        
         //valeur pour la bdd    
         $titre = trim($post['titre'] ?? '');
         $prixMin = trim($post['prixMin'] ?? '');
@@ -94,11 +90,9 @@ class OffreController {
             $destination = $baseDir.$fileName;
 
             move_uploaded_file($tmpName, $destination);
-                
         }
 
         
-
         //valeur pour la bdd
         $cheminImagePrincipale = $baseDirBdd.$fileName;
         $nomImagePrincipale = $fileName;
@@ -122,7 +116,6 @@ class OffreController {
                 }
             }
         }
-
 
 
         //activite:1

@@ -54,5 +54,3 @@
         // Réinjection des cartes triées dans le DOM
         cards.forEach(card => container.appendChild(card));
     }
-
-

@@ -1,13 +1,8 @@
-
-
 <?php
-
-
 // Le paramètre donnée est un tableau de strings
 // Utiliser array_column pour récupérer les libellés, voir doc comment elle fonctionne
 // Fonction pour afficher un champ d'ajout multiple avec un label et un identifiant unique
-function ajoutMultiple($label, $label2, $id, $donnee = []) {
-    
+function ajoutMultiple($label, $label2, $id, $donnee = []) {    
     ?>
     <div>
         <!-- Titre du champ -->
@@ -16,10 +11,10 @@ function ajoutMultiple($label, $label2, $id, $donnee = []) {
         <div class="ajoutMultiple-container">
             <div class="ajoutMultiple-header">
                 <!-- Champ de saisie et bouton d'ajout -->
-                <input type="text" id="ajoutMultipleInput_<?php echo $id ?>" placeholder="<?php echo htmlspecialchars($label) ?>" />
-                <button type="button" onclick="ajouterajoutMultiple('<?php echo $id ?>')">Ajouter</button>
-
+                <input aria-label="Ajouter input" type="text" id="ajoutMultipleInput_<?php echo $id ?>" placeholder="<?php echo htmlspecialchars($label) ?>" />
+                <button aria-label="Ajouter bouton" type="button" onclick="ajouterajoutMultiple('<?php echo $id ?>')">Ajouter</button>
             </div>  
+            
             <!-- Liste des éléments ajoutés -->
             <ul class="ajoutMultiple-list" id="ajoutMultipleList_<?php echo $id ?>">
                 <?php 
@@ -28,7 +23,7 @@ function ajoutMultiple($label, $label2, $id, $donnee = []) {
                             ?>
                             <li>
                                 <?php echo htmlspecialchars($element) ?> 
-                                <button onclick="supprimerajoutMultiple(this)">✖</button>
+                                <button aria-label="Fermer" onclick="supprimerajoutMultiple(this)">✖</button>
                             <?php
                         }
                     }
@@ -36,7 +31,4 @@ function ajoutMultiple($label, $label2, $id, $donnee = []) {
             </ul>
         </div>
     </div>
-   
-    <?php
-}
-?>
+<?php } ?>

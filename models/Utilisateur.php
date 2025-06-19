@@ -9,7 +9,6 @@ class Utilisateur {
     private $nom;
     private $prenom;
 
-
     public function __construct() {
         $database = new Database();
         $this->conn = $database->getConnection();

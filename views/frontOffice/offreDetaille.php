@@ -1,26 +1,34 @@
 <?php
 // On inclut le controller ProfessionnelController
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/ProfessionnelController.php');
+
 // On instancie le controller ProfessionnelController
 $professionnelController = new ProfessionnelController();
+
 // On inclut le controller OffreActivité
 require_once($_SERVER['DOCUMENT_ROOT'] .  '/../controllers/OffreController.php');
+
 // On instancie le controller
 $offreController = new OffreController();
+
 // On récupère l'ID de l'offre à afficher
 $id = $_GET['id'] ?? null;
+
 //On récupère l'offre d'activité par son ID
 $offre = $offreController->getOffreById($id);
 $pro = $offreController->getProfessionnelByIdOffre($offre->getId());
 
 // On récupère les informations du professionnel lié à l'offre
 $info_pro = $offreController->getProfessionnelInformationsByIdOffre($offre->getId());
+
 // On récupère l'id du professionnel
 $id_pro = $info_pro['id_utilisateur'];
+
 // Si l'id du professionnel est null, on essaie de récupérer l'id du professionnel privé
 if ($id_pro === null) {
     $id_pro = $info_pro['id_utilisateur_prive'];
 }
+
 // Si c'est un professionnel public, on essaie de récupérer l'id du professionnel public
 if ($id_pro === null) {
     $id_pro = $info_pro['id_utilisateur_public'];
@@ -58,12 +66,14 @@ function afficherEtoile($note){
 <!-- Main-->
 <main>
     <div class="breadcrumb-container">
-        <a href="/index.php" class="breadcrumb-back-link">
+        <a aria-label="Retour" href="/index.php" class="breadcrumb-back-link">
             <img src="/images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
         </a>
         <nav class="breadcrumb">
             <ul>
-                <li><a href="/index.php">Accueil</a></li>
+                <li>
+                    <a aria-label="Accueil" href="/index.php">Accueil</a>
+                </li>
                 <li>Offre détaillée</li>
             </ul>
         </nav>
@@ -96,7 +106,7 @@ function afficherEtoile($note){
                     <figcaption>
                         <h4><?=$pro[($pro["denomination"] !== null) ? "denomination" : "raison_sociale"]?></h4>
                         <p><?= $pro["prenom"]; ?> <?=$pro["nom"]; ?></p>
-                        <a href="tel:<?= $pro["num_telephone"] ?>"><?= $pro["num_telephone"] ?></a>
+                        <a aria-label="Téléphone" href="tel:<?= $pro["num_telephone"] ?>"><?= $pro["num_telephone"] ?></a>
                     </figcaption>
                 </div>
                 <hr>

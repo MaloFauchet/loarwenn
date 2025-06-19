@@ -1,8 +1,4 @@
-
-
 <?php
-
-
 require_once($_SERVER['DOCUMENT_ROOT'].'/../controllers/OffreController.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -14,8 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit(0);
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>

@@ -1,6 +1,5 @@
 <?php
-function afficherEtoile($note)
-{
+function afficherEtoile($note) {
     // Affichage des étoiles en fonction de la note
     // La note est une etoile remplie si elle est supérieure ou égale à 0.8
     $etoiles = '';
