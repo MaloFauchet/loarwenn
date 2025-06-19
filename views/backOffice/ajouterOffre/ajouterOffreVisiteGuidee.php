@@ -1,5 +1,6 @@
 
 
+
 <style>
     .champ-type-offre button {
         width: 20em;
@@ -57,14 +58,10 @@
                         </label>
                     </div>
                 </div>
+
             </div>
 
         </div>
-
-        
-       
-
-       
 
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
@@ -81,14 +78,5 @@
             $tags = array_column($tags, 'libelle_tag');
 
             
-
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-   

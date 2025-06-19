@@ -33,15 +33,16 @@
 </script>
 <main>
     <section>
-
         <!-- Fil d'arianne -->
         <div class="breadcrumb-container">
-            <a href="/index.php" class="breadcrumb-back-link">
+            <a aria-label="Retour" href="/index.php" class="breadcrumb-back-link">
                 <img src="/images/icons/chevron-left.svg" alt="Retour" class="breadcrumb-back">
             </a>
             <nav class="breadcrumb">
                 <ul>
-                    <li><a href="/">Accueil</a></li>
+                    <li>
+                        <a aria-label="Accueil" href="/">Accueil</a>
+                    </li>
                     <li>Liste des offres</li>
                 </ul>
             </nav>
@@ -51,12 +52,12 @@
         <div class="search-container">
             <div class="container-search-funnel">
                 <div class="search-row">
-                    <button>
+                    <button aria-label="Rechercher">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
                             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                         </svg>
                     </button>
-                    <input type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
+                    <input aria-label="Barre de recherche" type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
                     <div class="search-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -78,6 +79,7 @@
 
         <!-- Liste des Offres -->
         <article class="container-offre">
+            <div id="no-result" style="display:none;">Aucune offre ne correspond à vos critères.</div>
             <?php
                 foreach ($listeOffreView as $offre => $valueOfOffre) {
                     require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardMobileHorizontal.php'); 
@@ -87,13 +89,13 @@
 
         <!-- Filtre et Tri -->
         <aside>
-            <button>
+            <button aria-label="Fermer filtre">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                 </svg>
             </button>
             <div>
-                <h4>Catégories</h4>
+                <p>Catégories</p>
                 <ul>
                     <li>
                         <input type="checkbox" name="AllCategories" id="AllCategories" class="categories" checked>
@@ -108,12 +110,12 @@
                         <label for="spectacle">Spectacle</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visite guidée" id="visite_guide" class="categories">
-                        <label for="visite_guide">Visite guidée</label>
+                        <input type="checkbox" name="Visite guidée" id="visite_guidee" class="categories">
+                        <label for="visite_guidee">Visite guidée</label>
                     </li>
                     <li>
-                        <input type="checkbox" name="Visite non guidée" id="visite_non_guide" class="categories">
-                        <label for="visite_non_guide">Visite non guidée</label>
+                        <input type="checkbox" name="Visite non guidée" id="visite_non_guidee" class="categories">
+                        <label for="visite_non_guidee">Visite non guidée</label>
                     </li>
                     <li>
                         <input type="checkbox" name="Activité" id="activite" class="categories">
@@ -128,12 +130,12 @@
             </div>
             <hr>
             <div>
-                <h4>Lieu</h4>
+                <p>Lieu</p>
                 <input type="search" name="Location" id="location" placeholder="Ville">
             </div>
             <hr>
             <div>
-                <h4>Jour d'ouverture</h4>
+                <p>Jour d'ouverture</p>
                 <ul>
                     <li>
                         <input type="checkbox" name="Lundi" id="Lundi" class="openDays">
@@ -167,8 +169,8 @@
             </div>
             <hr>
             <div>
-                <h4>Ouvert / Fermé</h4>
-                <div>
+                <p>Ouvert / Fermé</p>
+                <div class="filtre-ouvert-fermer-container">
                     <div>
                         <input type="radio" name="Open/Close" id="open">
                         <label for="open">Ouvert</label>
@@ -181,7 +183,7 @@
             </div>
             <hr>
             <div>
-                <h4>Prix</h4>
+                <p>Prix</p>
                 <div>
                     <input type="number" name="MinPrice" id="minPrice" placeholder="Prix minimum">
                     <input type="number" name="MaxPrice" id="maxPrice" placeholder="Prix maximum">
@@ -189,7 +191,7 @@
             </div>
             <hr>
             <div>
-                <h4>Trier par</h4>
+                <p>Trier par</p>
                 <ul>
                     <li>
                         <input type="radio" name="sort" id="sortGrowingOpinions" onclick="triCroissantNote()">
@@ -210,7 +212,7 @@
                 </ul>
             </div>
             <div>
-                <button>Réinitialiser</button>
+                <button aria-label="Réinitialiser">Réinitialiser</button>
             </div>
         </aside>
     </section>

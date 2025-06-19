@@ -1,4 +1,3 @@
-
 /**
  * Ajoute un nouvel élément à une liste d'entrées multiples pour un identifiant donné.
  */
@@ -66,9 +65,7 @@ function TypeSelectChange() {
 }
 
 
-
 // Afficher ou masquer les champs d'offre en fonction de la sélection du type d'activité
-
 function afficherElementMasque(){
     const typeSelect = document.getElementById('type-select');
     const champsOffre = document.getElementById('champs-offre');

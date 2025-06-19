@@ -1,7 +1,7 @@
 
-
        
         <h3 class="nameActivite">Champs liées a l'offre Spectacle</h3>
+
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Durée</h3>
@@ -17,12 +17,6 @@
 
             
         </div>
-
-
-
-
-       
-
 
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
@@ -41,12 +35,4 @@
             
 
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-    

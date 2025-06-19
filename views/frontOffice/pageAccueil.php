@@ -1,7 +1,4 @@
 <?php 
-     
-    /*          FAIRE LA CONNEXION     +        modifier le code juste en dessous    */ 
-
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
 
     $offreController = new OffreController();
@@ -21,42 +18,43 @@
     $listeOffreView = $offreController->getViewOffreAccueil();
     $i=0;
 
-    function dump($dataDump) {
-        echo "<pre>";
-        print_r($dataDump);
-        echo "</pre>";
-    }
-    
-
-    // dump($listeOffreView);
+    // function dump($dataDump) {
+    //     echo "<pre>";
+    //     print_r($dataDump);
+    //     echo "</pre>";
+    // }
 ?>
-
 
 <header class="front-office-main">
     <!-- Video Arriere Plan -->
     <video autoplay muted loop id="myVideo" class="video-header">
         <source src="videos/video_accueil.mp4" type="video/mp4">
+        <track src="" kind="subtitles" srclang="fr" label="Français" default>
     </video>
 
     <div>
         <!-- Navigation Bar -->
         <nav>
             <!-- Logo -->
-            <a href="/" id="logo-navbar">
+            <a aria-label="Accueil logo" href="/" id="logo-navbar">
                 <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
             </a>
             <ul class="ul-fo">
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/frontOffice/listeOffre/">Offres</a></li>
+                <li>
+                    <a aria-label="Accueil" href="/">Accueil</a>
+                </li>
+                <li>
+                    <a aria-label="Liste offre" href="/frontOffice/listeOffre/">Offres</a>
+                </li>
             </ul>
 
             <!-- Profil -->
             <?php if (isset($_SESSION['id_utilisateur'])) { ?>
             <div class="profil" id="profil-navbar">
-                <a href="">
+                <a aria-label="Profil" href="">
                     <img class="profil" src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
                 </a>
-                <a href="/scriptPHP/logout.php">
+                <a aria-label="Déconnexion" href="/scriptPHP/logout.php">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -67,7 +65,7 @@
                 </a>
             </div>
             <?php } else{?>
-            <a href="/frontOffice/connexion/" id="profil-navbar">
+            <a aria-label="Connexion" href="/frontOffice/connexion/" id="profil-navbar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                     class="bi bi-person-circle" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -79,24 +77,16 @@
         </nav>
 
         <!-- Titre -->
-        <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
-        <h2 class="discover-text-fo">Découvrez vos vacances</h2>
-
-        <!-- Barre de recherche -->
-        <!-- <div class="sample one" >
-            <input type="text" name="search" placeholder="Rechercher..." id="searchbar">
-            <button type="submit" class="btn-search" id="search-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                </svg>
-            </button>
-        </div> -->
+        <div class="title-container">
+            <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
+            <h2 class="discover-text-fo">Découvrez vos vacances</h2>
+        </div>
 
         <div class="search-container">
             <div class="container-search-funnel">
                 <div class="search-row">
                     <input type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
-                    <button class="search-icon" id="search-button">
+                    <button aria-label="Recherche" class="search-icon" id="search-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                         </svg>
@@ -107,29 +97,14 @@
     </div>
 </header>
 <main>
-    <!--
-        <h1>Récemment consultés</h1>
-        <hr>
-        <?php //  FAIRE CONNEXION     if ($connected) { ?>
-            
-            <div class="container-caroussel">
-                <div id="carousselAlreadySee">
-                    
-                    <?php /*foreach ($listeOffreConsultes as $listeOffreRecementConsultes =>$offreRecementConsultes ) { 
-                        
-                        foreach ($offreRecementConsultes as $offreRecementConsulte =>$valueOfOffre) {
-                            require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php');  
-                        }
-                    }*/ ?>
-            </div>
-        </div>!-->
-    <?php //} ?>
     <h1>Sélectionnées pour vous</h1>
     <hr>
     <div class="container-caroussel">
         <div id="carousselSelectForYou">
             <?php foreach ($listeOffreView as $offreRecommande => $valueOfOffre) {
-                require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+                if($valueOfOffre['A la une']) {
+                    require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php'); 
+                }
             }?>
         </div>
         <h1>Les nouveautés</h1>
@@ -142,16 +117,25 @@
             ?>  
         </div>
     </main>
-
-
     </div>
-</main>
+</main>  
+<script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const success = params.get('success');
+
+      if (success === '1') {
+        displayNotif("success","Votre compte a été créé.");
+      } else if (success === '0') {
+        displayNotif("error","Une erreur est survenue");
+      }
+    }
+  </script>
 
 
 
 
 <!-- TO FIX -->
 <?php //require_once("./components/footer.php") ?>
-
 
 </html>

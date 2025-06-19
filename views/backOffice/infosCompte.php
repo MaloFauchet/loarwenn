@@ -17,7 +17,6 @@ if ($data['raison_sociale'] !== null) {
     $isEntreprisePrivee = true;
 }
 
-
 // Image
 $profilePicturePath = $data['chemin'] ?? "/images/default_profil.png";
 
@@ -50,7 +49,6 @@ $voieEntreprise = ($data['voie']) ? $data['voie'] : "Test Avant Changement de BD
 $complementAdresseEntreprise = $data['complement_adresse'];
 $codePostalEntreprise = $data['code_postal'];
 $villeEntreprise = $data['nom_ville'];
-
 ?>
 
 <!DOCTYPE html>
@@ -78,8 +76,6 @@ $villeEntreprise = $data['nom_ville'];
 
             <div class="container-back-office">
                 <main class="contenu-back-office info-compte">
-
-
                     <h1>Compte</h1>
 
                     <h2>Informations personnelles</h2>
@@ -87,7 +83,7 @@ $villeEntreprise = $data['nom_ville'];
                     <div class="info-compte-container">
                         <img src="<?= $profilePicturePath ?>" alt="Photo de profil de <?= $denominationEntreprise ?>"
                             id="photo-profil">
-                        <input type="file" src="<?= $profilePicturePath ?>" alt="Photo de profil"
+                        <input aria-label="Photo de profil" type="file" src="<?= $profilePicturePath ?>" alt="Photo de profil"
                             id="photo-profil-input" accept="image/*" width="306px" height="306px">
 
                         <div>
@@ -182,8 +178,8 @@ $villeEntreprise = $data['nom_ville'];
                                     <input name="otp-code-input" type="text" id="otp-code-input"
                                         placeholder="Entrez le code OTP généré" required>
                                     <div class="container-button-modal">
-                                        <button type="button" id="otp-valider-btn">Activer</button>
-                                        <button type="button" id="otp-fermer-btn">Fermer</button>
+                                        <button aria-label="Activer" type="button" id="otp-valider-btn">Activer</button>
+                                        <button aria-label="Fermer" type="button" id="otp-fermer-btn">Fermer</button>
                                     </div>
                                 </div>
                             </div>
@@ -207,8 +203,8 @@ $villeEntreprise = $data['nom_ville'];
                 <div id="sauvegarder">
                     <p>Voulez-vous appliquer les modifications ?</p>
                     <div>
-                        <button type="button" id="annuler-btn">Annuler</button>
-                        <button type="button" id="sauvegarder-btn">Appliquer</button>
+                        <button aria-label="Annuler" type="button" id="annuler-btn">Annuler</button>
+                        <button aria-label="Appliquer" type="button" id="sauvegarder-btn">Appliquer</button>
                     </div>
                 </div>
 
@@ -221,5 +217,4 @@ $villeEntreprise = $data['nom_ville'];
     <script src="/scripts/sauvegardeInfosCompteBack.js"></script>
     <script src="/scripts/otpGestion.js"></script>
 </body>
-
 </html>

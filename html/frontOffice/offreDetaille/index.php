@@ -6,11 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <title>PACT</title>
+    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
     <link rel="stylesheet" href="/styles/offreDetaille.css">
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/headerFrontOffice.css">
     <link rel="stylesheet" href="/styles/components/footerFrontOffice.css">
-    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body class="offre-detaille-front">
 

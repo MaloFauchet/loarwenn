@@ -1,8 +1,4 @@
-
-
 <?php
-
-
 require_once($_SERVER['DOCUMENT_ROOT'].'/../controllers/OffreController.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -13,8 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit(0);
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +21,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     
 </head>
+<body>
+    <script>
+        function ajouterajoutMultiple(id) { 
+            const input = document.getElementById('ajoutMultipleInput_' + id);
+            const list = document.getElementById('ajoutMultipleList_' + id);
+            const value = input.value.trim();
+
+            if (value !== '') {
+                const li = document.createElement('li');
+                li.innerHTML = `${value} <button onclick="supprimerajoutMultiple(this)">✖</button>`;
+                list.appendChild(li);
+                input.value = '';
+            }
+            
+        }
+
+        function supprimerajoutMultiple(btn) {
+            btn.parentElement.remove();
+        }
+    </script>   
 <body>  
     
     <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/header.php'); 
@@ -34,12 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEtoile.php');
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../controllers/TypeActiviteController.php'); 
     require_once($_SERVER['DOCUMENT_ROOT'] .'/../controllers/OffreController.php'); 
-
-    
- 
-    
-    
-    
     
     ?>
     
@@ -61,20 +69,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="hidden" name="userId" value="<?= htmlspecialchars($userId) ?>">
                     <div class="formulaire">
                         <div id="type-activite-app">
-                            <h2>Choisissez le type d’offre que vous voulez créer :</h2>
-                            <select id="type-select">
-                                <option value="">-- Sélectionner --</option>
-                                <option value="1|activite">Activité</option>
-                                <option value="2|spectacle">Spectacle</option>
-                                <option value="3|visite guidee">Visite guidée</option>
-                                <option value="4|parc dattraction">Parc d'attraction</option>
-                                <option value="5|restaurant">Restaurant</option>
-                                <option value="6|visite non guidee">Visite non guidée</option>
-
-
-
-                               
-                            </select>
+                            <div class="select">
+                                <label for="type-select">Sélectionner un type d'offre : </label>
+                                <select id="type-select">
+                                    <option value="">-- Sélectionner --</option>
+                                    <option value="1|activite">Activité</option>
+                                    <option value="2|spectacle">Spectacle</option>
+                                    <option value="3|visite guidee">Visite guidée</option>
+                                    <option value="4|parc dattraction">Parc d'attraction</option>
+                                    <option value="5|restaurant">Restaurant</option>
+                                    <option value="6|visite non guidee">Visite non guidée</option>
+                                </select>
+                            </div>
 
                             <div id="champs-offre" style="display: none;margin-top:2em;">
                                 <div class="champ-type-offre-row">
@@ -94,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="champ-type-offre-row">
                                     <div class="champ-type-offre principale">
                                         <h3>Photo principale</h3>
+
                                         <label for="imagePrincipale" class="custom-file-button">Choisir une photo principale</label>
                                         <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*" hidden />
                                         <div id="previewPrincipale" class="preview-container"></div>
@@ -104,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <label for="imagesSecondaires" class="custom-file-button">Ajouter des photos secondaires</label>
                                         <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple hidden />
                                         <div id="previewSecondaires" class="preview-container"></div>
+
                                     </div>
                                 </div>
 
@@ -111,7 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <div class="champ-type-offre-row-jour">
                                     <div class="champ-type-offre">
+
                                         <h2 id="h2-jours">
+
                                             Sélectionner les jours d'ouverture
                                         </h2>
                                         <div id="jours-checkboxes" class="checkbox-container" >
@@ -214,11 +224,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <label class="label-input" for="complementAdresse">Complement Adresse</label>
                                     <input id="complementAdresse" name="complementAdresse" type="text" required />
                                 </div> 
-
-
                             </div>
 
-                            
 
                             <div id="activite-details" style="margin-top: 1em;"></div>
 
@@ -236,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     
                     <div id="champs-submit" style="display: none;">
-                        <button type="submit" class="submit-button" >Enregistrer l’offre</button>
+                        <button type="submit" class="submit-button" aria-label="Enregistrer l’offre">Enregistrer l’offre</button>
                     </div>
 
                     <script defer>
