@@ -67,7 +67,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
         </div>
         <div class="offre-content">
             <!-- Titre de l'offre -->
-            <div>
+            <div class="titre-status">
                 <h2><?php echo $offre['titre_offre']; ?></h2>
                 <div class="status-offre">
                     <label class="switch">

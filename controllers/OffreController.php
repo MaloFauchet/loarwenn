@@ -479,6 +479,7 @@ class OffreController {
         return $this->offre->getAllOffreByCategory($category);
     }
 
+    */
 
     public function publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines) {
         return $this->offre->publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines);
@@ -486,5 +487,5 @@ class OffreController {
 
     public function dePublicationOffre($idOffre) {
         return $this->offre->dePublicationOffre($idOffre);
-    }*/
+    }
 }
