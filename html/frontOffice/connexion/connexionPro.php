@@ -3,6 +3,8 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OTPController.php');
 
+
+    
     /**
      * Récupère les informations du professionnel
      * Et les creer les variables de session

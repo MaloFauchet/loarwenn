@@ -1,40 +1,8 @@
 <?php 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TagController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php';
 
-// Récupération de l'id de l'offre depuis l'URL
-$id_offre = $_GET['id_offre'];
-
-// Création des instances des contrôleurs
-$offreController = new OffreController();
-$tagController = new TagController();
-$typeActiviteController = new TypeActiviteController();
-$prestationController = new PrestationController();
-$utilisateurController = new UtilisateurController();
-
-// Récupération des informations de l'utilisateur
-$infoPro = $utilisateurController->getInfoUtilisateur($_SESSION['id_utilisateur']);
-// Récupération de l'offre par son ID
-$currentOffre = $offreController->getOffreById($id_offre);
-
-// Récupération du type, des tags et de l'id du type d'activité
-$type_activite = $currentOffre->getType();
-$id_tags = $typeActiviteController->getTagIdByTypeActivite($type_activite);
-
-// Array_column permet de mettre tous les tags dans un tableau simple sans 2 profondeur.
-$arrayIdTags = array_column($id_tags, 'id_tag');
-$tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
-$tags = array_column($tags, 'libelle_tag');
-
-// Prestation incluse ou non
-$prestationIncluse = $prestationController->getAllPrestationIncluse($id_offre);
-$arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation');
-
-$prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
-$arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
 ?>
 
 <main class="contenu-back-office">
@@ -216,3 +184,19 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
         </div>
     </article>
 </main>
+<div class="duree">
+                            <img src="/images/icons/clock.svg" alt="Horloge">
+                            <div class="input-divers">
+                                <label class="label-input" for="duree">Durée (h)</label>
+                                <input id="duree" name="duree" type="time" 
+                                value="<?php echo $currentOffre["spectacle_duree"] ?>" required />
+                            </div>
+                        </div>
+                        <div class="capactie-accueil">
+                            <img src="/images/icons/personnes.svg" alt="Capacité d'accueil">
+                            <div class="input-divers">
+                                <label class="label-input" for="capacite">Capacité d'accueil</label>
+                                <input id="capacite" name="capacite" type="number" 
+                                value="<?php echo $currentOffre["spectacle_capacite"] ?>" min="0" required />
+                            </div>
+                        </div>

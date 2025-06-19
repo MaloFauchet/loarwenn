@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/components/headerFrontOffice.css">
     <link rel="stylesheet" href="/styles/components/footerFrontOffice.css">
+    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
 </head>
 <body class="liste-offre">
 

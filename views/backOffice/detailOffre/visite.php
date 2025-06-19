@@ -1,43 +1,8 @@
 <?php 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TagController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/TypeActiviteController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/PrestationController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/LangueController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../controllers/UtilisateurController.php';
 
-// Récupération de l'id de l'offre depuis l'URL
-$id_offre = $_GET['id_offre'];
-
-// Création des instances des contrôleurs
-$offreController = new OffreController();
-$tagController = new TagController();
-$typeActiviteController = new TypeActiviteController();
-$prestationController = new PrestationController();
-$langueController = new LangueController();
-
-$utilisateurController = new UtilisateurController();
-$infoPro = $utilisateurController->getInfoUtilisateur($_SESSION['id_utilisateur']);
-
-$currentOffre = $offreController->getOffreById($id_offre);
-$langues = $langueController->getAllLangueForVisiteGuidee($currentOffre->getId());
-$langues = array_column($langues, 'libelle_langue');
-
-// Récupération du type, des tags et de l'id du type d'activité
-$type_activite = $currentOffre->getType();
-$id_tags = $typeActiviteController->getTagIdByTypeActivite($type_activite);
-
-// Array_column permet de mettre tous les tags dans un tableau simple sans 2 profondeur.
-$arrayIdTags = array_column($id_tags, 'id_tag');
-$tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
-$tags = array_column($tags, 'libelle_tag');
-
-// Prestation incluse ou non
-$prestationIncluse = $prestationController->getAllPrestationIncluse($id_offre);
-$arrayPrestationIncluse = array_column($prestationIncluse, 'libelle_prestation');
-
-$prestationNonIncluse = $prestationController->getAllPrestationNonIncluse($id_offre);
-$arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_prestation');
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
 ?>
 
 <main class="contenu-back-office">
@@ -126,83 +91,11 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 </div>
             </div>
             <div class="duree">
+<div class="duree">
                 <img src="/images/icons/clock.svg" alt="Horloge">
                 <div class="input-divers">
                     <label class="label-input" for="duree">Durée (h)</label>
-                    <input id="duree" name="duree" type="text" 
-                    value="<?php echo $currentOffre->getDuree() ?>" required />
+                    <input id="duree" name="duree" type="time"  
+                    value="<?php echo $currentOffre["visite_duree"] ?>" min="0" required />
                 </div>
             </div>
-        </div>
-
-        <div class="lieux">
-            <img src="/images/icons/geo-alt.svg" alt="Point GPS">
-            <div class="input-lieux">
-                <label class="label-input" for="lieu">Lieu</label>
-                <input id="lieu" name="lieu" type="text" 
-                value="<?php echo $currentOffre->getAdresse() ?>" required />
-            </div>
-        </div>
-
-        <div class="lieux">
-            <img src="/images/icons/geo-alt.svg" alt="Point GPS">
-            <div class="input-lieux">
-                <label class="label-input" for="ville">Ville</label>
-                <input id="ville" name="ville" type="text" 
-                value="<?php echo $currentOffre->getVille() ?>" required />
-            </div>
-        </div>
-
-        <div class="choix-options">
-            <h3>Voulez-vous prendre un option ?</h3>
-
-            <div class="checkbox-cont">
-                <div>
-                    <p>À la une : </p>
-                    <div class=".checkbox-option">
-                        <input id="a-la-une" name="a-la-une" type="checkbox" />
-                        <label class="label-input" for="a-la-une">(+20€/mois)</label>
-                    </div>
-                </div>
-                <div>
-                    <p>En relief :</p>
-                    <div class=".checkbox-option">
-                        <input id="relief" name="relief" type="checkbox" />
-                        <label class="label-input" for="relief">(+10€/mois)</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="resume">
-            <div class="input-divers">
-                <label class="label-input" for="resume">Résumé</label>
-                <textarea id="resume" name="resume" rows="4" cols="50"><?php echo $currentOffre->getResume() ?>
-                </textarea>
-            </div>
-        </div>
-
-        <div class="description">
-            <div class="input-divers">
-                <label class="label-input" for="description">Description</label>
-                <textarea id="description" name="description" rows="4" cols="50"><?php echo $currentOffre->getDescription() ?>
-                </textarea>
-            </div>
-        </div>
-
-        <div class="accessibilite">
-            <div class="input-divers">
-                <label class="label-input" for="accessibilite">accessibilite</label>
-                <textarea id="accessibilite" name="accessibilite" rows="4" cols="50"><?php echo $currentOffre->getAccessibilite() ?>
-                </textarea>
-            </div>
-        </div>
-
-        <div class="choix-divers">
-            <div class="choix-visite">
-                <?php ajoutMultiple('Langues', '', 1, $langues); ?>
-            </div>
-            <?php ajoutMultiple('Tags', '', 3, $tags); ?>
-        </div>
-    </article>
-</main>

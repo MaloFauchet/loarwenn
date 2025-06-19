@@ -4,7 +4,7 @@
     <div>
         <img src="/images/logos/logoBlue.png" alt="Logo">
         <div>
-            <h6>Pages</h6>
+            <p>Pages</p>
             <ul>
                 <li>
                     <a aria-label="Accueil" href="/">Accueil</a>
@@ -15,7 +15,7 @@
             </ul>
         </div>
         <div>
-            <h6>Besoin d'aide</h6>
+            <p>Besoin d'aide</p>
             <ul>
                 <li>
                     <a aria-label="Politique de confidentialité" href="/legal/politiqueDeConfidentialite/">Politique de confidentialité</a>

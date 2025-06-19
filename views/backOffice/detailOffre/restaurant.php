@@ -196,3 +196,8 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
         </div>
     </article>
 </main>
+
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
+?>

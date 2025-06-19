@@ -124,19 +124,26 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
                 </div>
             </div>
             <div class="duree">
+
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
+?>
+
+<div class="duree">
                 <img src="/images/icons/clock.svg" alt="Horloge">
                 <div class="input-divers">
                     <label class="label-input" for="duree">Durée (h)</label>
-                    <input id="duree" name="duree" type="text" 
-                    value="<?php echo $currentOffre->getDuree() ?>" required />
+                    <input id="duree" name="duree" type="time" 
+                    value="<?php echo $currentOffre["activite_duree"] ?>" required />
                 </div>
             </div>
             <div class="age-min">
-                <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
+                <img src="/images/icons/cake-fill.svg" alt="Horloge">
                 <div class="input-divers">
-                    <label class="label-input" for="age-min">Âge minimal</label>
-                    <input id="age-min" name="age_min" type="number" 
-                    value="<?php echo $currentOffre->getAge() ?>" min="0" required />
+                    <label class="label-input" for="age">Age minimum</label>
+                    <input id="age-min" name="age-min" type="number"  
+                    value="<?php echo $currentOffre["activite_age"] ?>" min="0" required />
                 </div>
             </div>
         </div>
@@ -219,4 +226,5 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
             <button aria-label="Appliquer" type="button" id="sauvegarder-btn">Appliquer</button>
         </div>
     </div>
-</main>
+          </main>
+            </div>

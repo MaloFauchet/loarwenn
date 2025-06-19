@@ -29,7 +29,8 @@
     <!-- Video Arriere Plan -->
     <video autoplay muted loop id="myVideo" class="video-header">
         <source src="videos/video_accueil.mp4" type="video/mp4">
-        <track src="" kind="subtitles" srclang="fr" label="Français" default>
+        <track kind="captions" src="" srclang="fr" label="Français" default>
+        Votre navigateur ne supporte pas la vidéo.
     </video>
 
     <div>
@@ -118,5 +119,24 @@
         </div>
     </main>
     </div>
-</main>
+</main>  
+<script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const success = params.get('success');
+
+      if (success === '1') {
+        alert("L'opération s'est bien déroulée !");
+      } else if (success === '0') {
+        alert("Une erreur est survenue.");
+      }
+    }
+  </script>
+
+
+
+
+<!-- TO FIX -->
+<?php //require_once("./components/footer.php") ?>
+
 </html>

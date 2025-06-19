@@ -19,7 +19,9 @@ label + input[type="text"],
 label + input[type="email"],
 label + input[type="password"],
 label + input[type="number"],
-label + input[type="tel"] {
+label + input[type="tel"],
+label + input[type="time"]
+{
     padding: 5px 10px;
     border: 2px solid var(--input-color);
     border-radius: 1.8em;
@@ -28,6 +30,11 @@ label + input[type="tel"] {
     background-color: var(--backgroud-color);
     outline: none;
     transition: background-position 0.8s ease-out;
+}
+
+input[type="time"]{
+    padding: 5px 30px !important;
+    font-family: 'Roboto', sans-serif
 }
 
 .checkbox-container{

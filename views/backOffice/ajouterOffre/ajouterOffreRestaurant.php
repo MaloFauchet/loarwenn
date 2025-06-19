@@ -1,10 +1,6 @@
-
-
-
-
         <div class="champ-type-offre">
             <h3>Carte du restaurant</h3>  
-            <input id="carteRestaurant" name="carteRestaurant" type="file" accept="image/*" required />
+            <input aria-label="Carte du restaurant" id="carteRestaurant" name="carteRestaurant" type="file" accept="image/*" required />
         </div>
 
     
@@ -23,22 +19,16 @@
 
         <div class="champ-type-offre">
             <h3>Menus</h3>
-            <button type="button" onclick="document.getElementById('menu-checkboxes').style.display = (document.getElementById('menu-checkboxes').style.display === 'none' ? 'block' : 'none');">
+            <button aria-label="Sélection menu" type="button" onclick="document.getElementById('menu-checkboxes').style.display = (document.getElementById('menu-checkboxes').style.display === 'none' ? 'block' : 'none');">
                 Sélectionner le/les type(s) de menu(s)
             </button>
             <div id="menu-checkboxes" style="display: none; margin-top: 10px;">
-                <label><input type="checkbox" name="menu[]" value="petit-dej"> Petit déjeuner</label>
-                <label><input type="checkbox" name="menu[]" value="dej"> déjeuner</label>
-                <label><input type="checkbox" name="menu[]" value="diner    "> Diner</label> 
+                <label><input aria-label="Petit déjeuner" type="checkbox" name="menu[]" value="petit-dej"> Petit déjeuner</label>
+                <label><input aria-label="Déjeuner" type="checkbox" name="menu[]" value="dej"> Déjeuner</label>
+                <label><input aria-label="Diner" type="checkbox" name="menu[]" value="diner    "> Diner</label> 
               
             </div>
         </div>
-
-        
-        
-
-
-       
 
 
         <?php
@@ -55,15 +45,8 @@
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
 
-            
 
             afficherTag($tags, $name,$selectedActiviteId);
 
 
         ?>
-   
-    
-        
-       
-        
-  

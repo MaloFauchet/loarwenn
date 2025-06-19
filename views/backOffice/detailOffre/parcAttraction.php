@@ -116,71 +116,26 @@ $arrayPrestationNonIncluse = array_column($prestationNonIncluse, 'libelle_presta
         <div class="info-divers">
             <div class="telephone">
                 <img src="/images/icons/telephone.svg" alt="Téléphone">
+
+if (!isset($_POST["type"])) {
+    $_POST["type"] = $type_activite;
+}
+?>
+
+<div class="age-min">
+                <img src="/images/icons/cake-fill.svg" alt="age">
                 <div class="input-divers">
-                    <label class="label-input" for="telephone">Téléphone</label>
-                    <input id="telephone" name="telephone" type="tel" 
-                    value="<?php echo $infoPro['num_telephone'] ?>" required />
+                    <label class="label-input" for="age-min">Age min</label>
+                    <input id="age-min" name="age-min" type="number"  
+                    value="<?php echo $currentOffre["pa_age_min"] ?>" min="0" required />
                 </div>
             </div>
-            <div class="duree">
-                <img src="/images/icons/manege.svg" alt="Horloge">
+
+            <div class="number">
+                <img src="/images/icons/clock.svg" alt="Horloge">
                 <div class="input-divers">
-                    <label class="label-input" for="duree">Nombre attraction</label>
-                    <input id="duree" name="duree" type="text" 
-                    value="<?php echo $currentOffre->getNbAttraction() ?>" required />
+                    <label class="label-input" for="nb-attraction">Nombre d'attraction</label>
+                    <input id="nb-attraction" name="nb-attraction" type="number"  
+                    value="<?php echo $currentOffre["nb_attraction"] ?>" min="0" required />
                 </div>
             </div>
-            <div class="age-min">
-                <img src="/images/icons/cake-fill.svg" alt="Gâteau d'anniversaire">
-                <div class="input-divers">
-                    <label class="label-input" for="age-min">Âge minimal</label>
-                    <input id="age-min" name="age_min" type="number" 
-                    value="<?php echo $currentOffre->getAgeMin() ?>" min="0" required />
-                </div>
-            </div>
-        </div>
-
-        <div class="lieux">
-            <img src="/images/icons/geo-alt.svg" alt="Point GPS">
-            <div class="input-lieux">
-                <label class="label-input" for="lieu">Lieu</label>
-                <input id="lieu" name="lieu" type="text" 
-                value="<?php echo $currentOffre->getAdresse() ?>" required />
-            </div>
-        </div>
-
-        <div class="lieux">
-            <img src="/images/icons/geo-alt.svg" alt="Point GPS">
-            <div class="input-lieux">
-                <label class="label-input" for="ville">Ville</label>
-                <input id="ville" name="ville" type="text" 
-                value="<?php echo $currentOffre->getVille() ?>" required />
-            </div>
-        </div>
-
-        <div class="choix-options">
-            <h3>Voulez-vous prendre un option ?</h3>
-
-            <div class="checkbox-cont">
-                <div>
-                    <p>À la une : </p>
-                    <div class=".checkbox-option">
-                        <input id="a-la-une" name="a-la-une" type="checkbox" />
-                        <label class="label-input" for="a-la-une">(+20€/mois)</label>
-                    </div>
-                </div>
-                <div>
-                    <p>En relief :</p>
-                    <div class=".checkbox-option">
-                        <input id="relief" name="relief" type="checkbox" />
-                        <label class="label-input" for="relief">(+10€/mois)</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="choix-divers">
-            <?php ajoutMultiple('Tags', '', 3, $tags); ?>
-        </div>
-    </article>
-</main>
