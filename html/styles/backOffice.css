@@ -198,6 +198,11 @@
 
 .page-back-office .titre-status{
     display: flex;
+    justify-content: space-between  ;
+}
+
+.page-back-office .titre-status h2 {
+    max-width: 70%;
 }
 
 
