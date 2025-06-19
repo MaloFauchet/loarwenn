@@ -11,7 +11,8 @@ class Professionnel extends Model{
         LEFT JOIN tripenazor.professionnel_prive on tripenazor.professionnel.id_utilisateur = tripenazor.professionnel_prive.id_utilisateur
         LEFT JOIN tripenazor.professionnel_public on tripenazor.professionnel.id_utilisateur = tripenazor.professionnel_public.id_utilisateur
         INNER JOIN tripenazor.utilisateur on tripenazor.professionnel.id_utilisateur = tripenazor.utilisateur.id_utilisateur
-        INNER JOIN tripenazor.ville on tripenazor.ville.id_ville = tripenazor.utilisateur.id_ville
+        INNER JOIN tripenazor.adresse on tripenazor.utilisateur.id_adresse = tripenazor.adresse.id_adresse
+        INNER JOIN tripenazor.ville on tripenazor.ville.id_ville = tripenazor.adresse.id_ville
         INNER JOIN tripenazor.utilisateur_represente_image on tripenazor.utilisateur_represente_image.id_utilisateur = tripenazor.utilisateur.id_utilisateur
         INNER JOIN tripenazor.image on tripenazor.image.id_image = tripenazor.utilisateur_represente_image.id_image
         WHERE tripenazor.utilisateur.id_utilisateur = :id;
@@ -175,6 +176,7 @@ class Professionnel extends Model{
         $prenom,
         $email,
         $telephone,
+        $siteWeb,
         $numeroAdresse, 
         $voieEntreprise,
         $complementAdresse,
@@ -186,11 +188,22 @@ class Professionnel extends Model{
     ) {
         // TODO : requete avec nouvelles fonctions
         $sql = "
-        SELECT * FROM tripenazor.update_professionnel_prive(
-            :id::INTEGER, :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
-            :numeroAdresse::TEXT, :voieEntreprise::TEXT, :complementAdresse::TEXT,
-            :codePostal::TEXT, :ville::TEXT, :denomination::TEXT, :siren::INTEGER, :rib::TEXT
-        )";
+        SELECT tripenazor.update_professionnel_prive(
+            :id::INT, 
+            :nom::TEXT, 
+            :prenom::TEXT, 
+            :email::TEXT, 
+            :telephone::TEXT, 
+            :denomination::TEXT, 
+            :siren::INT, 
+            :rib::TEXT, 
+            :siteWeb::TEXT,
+            :numeroAdresse::INT, 
+            :voieEntreprise::TEXT, 
+            :complementAdresse::TEXT, 
+            :ville::TEXT, 
+            :codePostal::TEXT
+        )"; 
 
         $stmt = $this->conn->prepare($sql);
 
@@ -200,14 +213,15 @@ class Professionnel extends Model{
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
-        $stmt->bindParam(':numeroAdresse', $numeroAdresse);
-        $stmt->bindParam(':voieEntreprise', $voieEntreprise);
-        $stmt->bindParam(':complementAdresse', $complementAdresse);
-        $stmt->bindParam(':codePostal', $codePostal);
-        $stmt->bindParam(':ville', $ville);
         $stmt->bindParam(':denomination', $denomination);
         $stmt->bindParam(':siren', $siren);
         $stmt->bindParam(':rib', $rib);
+        $stmt->bindParam(':siteWeb', $siteWeb);
+        $stmt->bindParam(':numeroAdresse', $numeroAdresse);
+        $stmt->bindParam(':voieEntreprise', $voieEntreprise);
+        $stmt->bindParam(':complementAdresse', $complementAdresse);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':codePostal', $codePostal);
 
         // Exécution de la requête
         return ($stmt->execute()) ? true : false;
@@ -219,6 +233,7 @@ class Professionnel extends Model{
         $prenom,
         $email,
         $telephone,
+        $siteWeb,
         $numeroAdresse, 
         $voieEntreprise,
         $complementAdresse,
@@ -228,10 +243,19 @@ class Professionnel extends Model{
     ) {
         // TODO : requete avec nouvelles fonctions
         $sql = "
-        SELECT * FROM tripenazor.update_professionnel_public(
-            :id::INTEGER, :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
-            :numeroAdresse::TEXT, :voieEntreprise::TEXT, :complementAdresse::TEXT,
-            :codePostal::TEXT, :ville::TEXT, :raisonSociale::TEXT
+        SELECT tripenazor.update_professionnel_public(
+            :id::INT, 
+            :nom::TEXT, 
+            :prenom::TEXT, 
+            :email::TEXT, 
+            :telephone::TEXT, 
+            :raisonSociale::TEXT,
+            :siteWeb::TEXT, 
+            :numeroAdresse::INT, 
+            :voieEntreprise::TEXT, 
+            :complementAdresse::TEXT,
+            :ville::TEXT, 
+            :codePostal::TEXT
         )";
 
         $stmt = $this->conn->prepare($sql);
@@ -242,6 +266,8 @@ class Professionnel extends Model{
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':raisonSociale', $raisonSociale);
+        $stmt->bindParam(':siteWeb', $siteWeb);
         $stmt->bindParam(':numeroAdresse', $numeroAdresse);
         $stmt->bindParam(':voieEntreprise', $voieEntreprise);
         $stmt->bindParam(':complementAdresse', $complementAdresse);
@@ -255,7 +281,7 @@ class Professionnel extends Model{
     public function updateImage($id, $cheminImage) {
         $sql = "
         SELECT * FROM tripenazor.update_utilisateur_image(
-            :id::INTEGER, :cheminImage::TEXT
+            :id::INT, :cheminImage::TEXT
         )";
 
         $stmt = $this->conn->prepare($sql);

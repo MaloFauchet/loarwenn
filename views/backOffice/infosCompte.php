@@ -41,34 +41,19 @@ $prenom = $data['prenom'];
 
 $telephoneEntreprise = $data['num_telephone'];
 $emailEntreprise = $data['email'];
+$lienSiteWeb = $data['lien_site_web'];
 
-$numeroAdresse = ($data['numeroAdresse']) ? $data['numeroAdresse'] : "-157";  // TODO : seulement le temps que la bdd soit mise à jour
-                                                                             // Remplacer par $data['numeroAdresse'] quand la bdd sera mise à jour
-$voieEntreprise = ($data['voie']) ? $data['voie'] : "Test Avant Changement de BDD";  // TODO : seulement en attendant que la bdd soit mise à jour
+$numeroAdresse = ($data['numero_adresse']) ? $data['numero_adresse'] : "";  
+
+$voieEntreprise = ($data['voie']) ? $data['voie'] : "";
                                                          // Remplacer par $data['voie'] quand la bdd sera mise à jour
 $complementAdresseEntreprise = $data['complement_adresse'];
 $codePostalEntreprise = $data['code_postal'];
 $villeEntreprise = $data['nom_ville'];
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PACT</title>
-    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
-    <link rel="stylesheet" href="/styles/styles.css">
-    <link rel="stylesheet" href="/styles/backOffice.css">
-    <link rel="stylesheet" href="/styles/infoComptePro.css">
-    <link rel="stylesheet" href="/styles/components/input.css">
-    <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
-</head>
-
-<body>
     <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
-
+<main> 
     <div class="page-back-office">
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
         <form onsubmit="return sauvegarderClique()" method="post">
@@ -106,6 +91,10 @@ $villeEntreprise = $data['nom_ville'];
                             <label class="label-input" for="emailEntreprise">E-MAIL *</label>
                             <input type="email" name="emailEntreprise" id="emailEntreprise"
                                 value="<?= $emailEntreprise ?>" required>
+                            
+                            <label class="label-input" for="siteWeb">Site web</label>
+                            <input type="text" name="siteWeb" id="siteWeb"
+                                value="<?= $lienSiteWeb ?>" required>
                         </div>
                     </div>
                     <div>
@@ -207,8 +196,6 @@ $villeEntreprise = $data['nom_ville'];
                         <button aria-label="Appliquer" type="button" id="sauvegarder-btn">Appliquer</button>
                     </div>
                 </div>
-
-                <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/footer.php'); ?>
             </div>
         </form>
 
@@ -216,5 +203,4 @@ $villeEntreprise = $data['nom_ville'];
 
     <script src="/scripts/sauvegardeInfosCompteBack.js"></script>
     <script src="/scripts/otpGestion.js"></script>
-</body>
-</html>
+</main> 

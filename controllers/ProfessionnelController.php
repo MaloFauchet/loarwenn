@@ -83,13 +83,71 @@ class ProfessionnelController {
     public function isProfessionnel($id) {
         return $this->professionnelModel->isProfessionnel($id);
     }
-    public function updateProfessionnelPrive($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $denomination, $siren, $rib, $cheminImage) {
-        return $this->professionnelModel->updateProfessionnelPrive($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $denomination, $siren, $rib);
+
+    public function updateProfessionnelPrive(
+        $id,
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $siteWeb,
+        $numeroAdresse,
+        $voieEntreprise,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $denomination,
+        $siren,
+        $rib
+    ) {
+        return $this->professionnelModel->updateProfessionnelPrive(
+            $id,
+            $nom,
+            $prenom,
+            $email,
+            $telephone,
+            $siteWeb,
+            $numeroAdresse,
+            $voieEntreprise,
+            $complementAdresse,
+            $codePostal,
+            $ville,
+            $denomination,
+            $siren,
+            $rib
+        );
     }
 
-    public function updateProfessionnelPublic($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $raisonSociale, $cheminImage) {
-        return $this->professionnelModel->updateProfessionnelPublic($id, $nom, $prenom, $email, $telephone, $numeroAdresse, $voieEntreprise, $complementAdresse, $codePostal, $ville, $raisonSociale);
+    public function updateProfessionnelPublic(
+        $id,
+        $nom,
+        $prenom,
+        $email,
+        $telephone,
+        $siteWeb,
+        $numeroAdresse,
+        $voieEntreprise,
+        $complementAdresse,
+        $codePostal,
+        $ville,
+        $raisonSociale
+    ) {
+        return $this->professionnelModel->updateProfessionnelPublic(
+            $id,
+            $nom,
+            $prenom,
+            $email,
+            $telephone,
+            $siteWeb,
+            $numeroAdresse,
+            $voieEntreprise,
+            $complementAdresse,
+            $codePostal,
+            $ville,
+            $raisonSociale
+        );
     }
+
 
     public function updateImage($id, $cheminImage) {
         return $this->professionnelModel->updateImage($id, $cheminImage);
