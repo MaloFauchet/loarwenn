@@ -72,12 +72,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
                 <div class="status-offre">
                     <label class="switch">
                     <?php if ($offre['en_ligne'] == 1) : ?>
-                            <input class="slider-etat" type="checkbox" checked data-id="<?=$offre['id_offre'];?>">
+                            <input aria-label="Changement d'état de l'offre" class="slider-etat" type="checkbox" checked data-id="<?=$offre['id_offre'];?>">
                             <span class="slider"></span>
                         </label>
                         <p class="status-text">En ligne</p>
                     <?php else : ?>
-                        <input class="slider-etat" type="checkbox" data-id="<?=$offre['id_offre'];?>">
+                        <input aria-label="Changement d'état de l'offre" class="slider-etat" type="checkbox" data-id="<?=$offre['id_offre'];?>">
                             <span class="slider"></span>
                         </label>
                         <p class="status-text">Hors ligne</p>
