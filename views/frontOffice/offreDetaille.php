@@ -131,7 +131,7 @@ function afficherEtoile($note){
                     <!--PP a recup dans la bdd -->
                     <img src="<?= $pro["chemin"] ?>" alt="Photo de profil pro" id="pp-pro">
                     <figcaption>
-                        <h4><?=$pro[($pro["denomination"] !== null) ? "denomination" : "raison_sociale"]?></h4>
+                        <h3><?=$pro[($pro["denomination"] !== null) ? "denomination" : "raison_sociale"]?></h3>
                         <p><?= $pro["prenom"]; ?> <?=$pro["nom"]; ?></p>
                         <a aria-label="Téléphone" href="tel:<?= $pro["num_telephone"] ?>"><?= $pro["num_telephone"] ?></a>
                     </figcaption>
