@@ -34,8 +34,6 @@ searchbar.onkeyup = () => {
     const cards = document.querySelectorAll('.a-card');
     const visibleCards = Array.from(cards).filter(card => !card.classList.contains("non-visible-search") && !card.classList.contains("non-visible-filter"));
 
-    console.log(visibleCards.length);
-
     if (visibleCards.length === 0) {
         document.getElementById('no-result').style.display = 'flex';
     } else {
