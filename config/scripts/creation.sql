@@ -2253,7 +2253,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_activite(
     p_prestations_non_incluses TEXT[],
     p_duree TIME,
     p_age INT,
-    p_apres_midi_heure_fin TIME,
 	
     p_apres_midi_heure_debut TIME DEFAULT NULL,
     p_apres_midi_heure_fin TIME DEFAULT NULL,
@@ -4170,5 +4169,3 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
-
-
