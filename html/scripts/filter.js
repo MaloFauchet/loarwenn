@@ -10,7 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const openInput = document.getElementsByName("Open/Close");
     const selectedDaysInput = Array.from(document.querySelectorAll("input[class='openDays']"));
     const today = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][new Date().getDay()];
-    const resetButton = document.querySelector(".liste-offre aside div:has(button) button")
+    const resetButton = document.querySelector(".liste-offre aside div:has(button) button");
+    const triInput = document.querySelectorAll("input[name='sort']");
+    const container = document.querySelector('.container-offre'); 
+    const cards = Array.from(container.querySelectorAll('.a-card'));
 
 
     /**
@@ -135,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Gestion du bouton de réinitialisation
     resetButton.addEventListener("click", function () {
+
         allCat.checked = true;
         otherCats.forEach(c => c.checked = false);
         locInput.value = "";
@@ -142,6 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
         maxPriceInput.value = "";
         openInput.forEach(input => input.checked = false);
         selectedDaysInput.forEach(day => day.checked = false);
+
+        // Réinitialisation de l'affichage des cartes si aucun tri n'est actif
+        triInput.forEach(input => {
+            cards.forEach(card => container.appendChild(card));
+            input.checked = false;
+        });
         updateCards();
     });
 });
