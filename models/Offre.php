@@ -814,6 +814,36 @@ class Offre {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    function publicationOffre($idOffre, $enRelief, $aLaUne, $nbSemaines) {
+        $sql = "
+            SELECT tripenazor.publication_offre(:idOffre, :enRelief, :aLaUne, :nbSemaines);
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idOffre', $idOffre);
+        $stmt->bindParam(':enRelief', $enRelief, PDO::PARAM_BOOL);
+        $stmt->bindParam(':aLaUne', $aLaUne, PDO::PARAM_BOOL);
+        $stmt->bindParam(':nbSemaines', $nbSemaines, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+
+
+    function dePublicationOffre($idOffre) {
+        $sql = "
+            UPDATE tripenazor.offre
+            SET en_ligne = FALSE
+            WHERE id_offre = :idOffre;
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idOffre', $idOffre);
+
+        return $stmt->execute();
+    }
     
 
 
