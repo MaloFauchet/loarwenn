@@ -6,18 +6,26 @@
         <div>
             <p>Pages</p>
             <ul>
-                <li><a href="/" aria-label="Accueil">Accueil</a></li>
-                <!-- <li><a href="/listeOffres/">Offres</a></li>
-                <li><a href="/cartographie/">Cartographie</a></li>
-                <li><a href="/contact/">Contact</a></li> -->
+                <li>
+                    <a aria-label="Accueil" href="/">Accueil</a>
+                </li>
+                <li>
+                    <a aria-label="Liste offre" href="/listeOffres/">Offres</a>
+                </li>
             </ul>
         </div>
         <div>
             <p>Besoin d'aide</p>
             <ul>
-                <li><a href="/legal/politiqueDeConfidentialite/" aria-label="Politique de confidentialité">Politique de confidentialité</a></li>
-                <li><a href="/legal/mentionsLegales" aria-label="Mentions légales">Mentions légales</a></li>
-                <li><a href="/legal/conditionsUtilisation/" aria-label="Conditions d'utilisations">Conditions d'utilisations</a></li>
+                <li>
+                    <a aria-label="Politique de confidentialité" href="/legal/politiqueDeConfidentialite/">Politique de confidentialité</a>
+                </li>
+                <li>
+                    <a aria-label="Mentions légales" href="/legal/mentionsLegales">Mentions légales</a>
+                </li>
+                <li>
+                    <a aria-label="Conditions d'utilisations" href="/legal/conditionsUtilisation/">Conditions d'utilisations</a>
+                </li>
             </ul>
         </div>
     </div>

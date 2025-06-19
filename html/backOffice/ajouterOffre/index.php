@@ -17,22 +17,19 @@ if (!isset($_SESSION['id_utilisateur'])) {
     <link rel="icon" type="image/png" href="/images/logos/logoBlue.png">
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="stylesheet" href="/styles/backOffice.css">
+    <link rel="stylesheet" href="/styles/ajoutBackOffice.css">
     
     <link rel="stylesheet" href="/styles/components/headerBackOffice.css">
     <link rel="stylesheet" href="/styles/components/footerBackOffice.css">
     <link rel="stylesheet" href="/styles/components/navBackOffice.css">
     <link rel="stylesheet" href="/styles/components/input.css">
-    
 </head>
 <body>
     <main>
-        
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/ajouterOffre/ajouterOffre.php'); ?>
         <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/footer.php'); ?>
-        
     </main>
-    
 </body>
 </html>

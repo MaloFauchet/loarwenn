@@ -1,4 +1,3 @@
-
 /**
  * Rajoute la navigation tactile pour le caroussel
  */
@@ -14,7 +13,6 @@ class CarousselTouchPlugin {
         window.addEventListener('touchcancel',this.endDrag.bind(this))
 
         this.caroussel = caroussel 
-
     }
     /**
      * 
@@ -72,8 +70,6 @@ class CarousselTouchPlugin {
 
 
 class Caroussel {
-
-
     /**
      * 
      * @param {HTMLElement} element 
@@ -205,7 +201,6 @@ class Caroussel {
 
             }
         })
-
     }
     /**
      * Créer la pagination du caroussel
@@ -221,17 +216,16 @@ class Caroussel {
             buttons.push(button)
         }
         this.onMove(index => {
-            let count = this.items.length -2* this.offset
-            let activeButton = buttons[Math.floor((index-this.offset)%count / this.options.slidesToScroll)]
-            
-            if (activeButton) {
-                buttons.forEach(
-                    button => button.classList.remove('caroussel-pagination-button--active')
-                )
-                activeButton.classList.add('caroussel-pagination-button--active')
+                let count = this.items.length -2* this.offset
+                let activeButton = buttons[Math.floor((index-this.offset)%count / this.options.slidesToScroll)]
+                
+                if (activeButton) {
+                    buttons.forEach(
+                        button => button.classList.remove('caroussel-pagination-button--active')
+                    )
+                    activeButton.classList.add('caroussel-pagination-button--active')
+                }
             }
-        }
-
         )
     }
 
@@ -244,6 +238,7 @@ class Caroussel {
     next(){
         this.goto(this.currentItem + this.slidesToScroll)
     }
+
     prev(){
         this.goto(this.currentItem - this.slidesToScroll)
     }
@@ -282,7 +277,6 @@ class Caroussel {
             this.goto(this.currentItem + (this.items.length - 2 *this.offset),false)
         } else if(this.currentItem >= this.items.length - this.offset ){
             this.goto(this.currentItem - (this.items.length - 2 *this.offset),false)
-
         }
 }
 
@@ -315,9 +309,3 @@ class Caroussel {
         return this.root.offsetWidth
     }
 }
-
-
-
-
-
-
