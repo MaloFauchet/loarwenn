@@ -1,4 +1,5 @@
--- Suppression des tables existantes
+
+        -- Suppression des tables existantes
 DROP SCHEMA IF EXISTS tripenazor CASCADE;
 CREATE SCHEMA tripenazor;
 SET SCHEMA 'tripenazor';
@@ -568,7 +569,7 @@ DECLARE
     result TEXT;
 BEGIN
     SELECT string_agg(
-            to_char(h.debut, 'YYYY-MM-DD HH24:MI') || ' | ' || to_char(h.fin, 'YYYY-MM-DD HH24:MI'),
+            to_char(h.debut, 'HH24:MI') || ' | ' || to_char(h.fin, 'HH24:MI'),
             ','
         )
     INTO result
@@ -594,8 +595,66 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_langue_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT langue.libelle_langue, ', ')
+    INTO result
+    FROM tripenazor.visite_guidee_disponible_en_langue vgl
+    JOIN tripenazor.langue ON langue.id_langue = vgl.id_langue
+    WHERE vgl.id_visite = o_id_offre;
 
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_repas_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT type_repas.libelle_repas, ', ')
+    INTO result
+    FROM tripenazor.type_repas
+	LEFT JOIN tripenazor.type_repas_disponible ON type_repas.id_repas = type_repas_disponible.id_repas
+    WHERE type_repas_disponible.id_offre = o_id_offre;
+       
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_prestation_incluses_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT p.libelle_prestation, ', ')
+    INTO result
+    from tripenazor.activite_inclus_prestation as ap
+	LEFT JOIN tripenazor.prestation as p ON ap.id_prestation = p.id_prestation
+    WHERE ap.id_offre = o_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_prestation_non_incluses_by_offre(o_id_offre INT)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    SELECT string_agg(DISTINCT p.libelle_prestation, ', ')
+    INTO result
+    from tripenazor.activite_non_inclus_prestation as ap
+	LEFT JOIN tripenazor.prestation as p ON ap.id_prestation = p.id_prestation
+    WHERE ap.id_offre = o_id_offre;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
 -- Vues de données
 
 
@@ -649,6 +708,57 @@ GROUP BY
     adr.complement_adresse,
     v.nom_ville,
     v.code_postal;
+
+    CREATE OR REPLACE VIEW infos_carte_offre_with_offline AS
+SELECT 
+    o.id_offre,
+    o.titre_offre,
+    o.resume,
+    o.description,
+    o.accessibilite,
+    o.date_creation,
+	o.type_offre,
+	o.prix_TTC_min,
+    o.en_ligne,
+	image.titre_image,
+	image.chemin,
+    adr.voie,
+    adr.numero_adresse,
+    adr.complement_adresse,
+    v.nom_ville,
+    v.code_postal,
+    COUNT(avis.id_avis) as nb_avis,
+    AVG(avis.note_avis) as note_avis,
+    get_tags_by_offre(o.id_offre) as tags,
+	get_jours_by_offre(o.id_offre) as jours_ouverture,
+    get_repas_by_offre(o.id_offre) as repas,
+
+    MAX(CASE WHEN op.libelle_option = 'En relief' THEN 1 ELSE 0 END)::BOOLEAN AS "En relief",
+    MAX(CASE WHEN op.libelle_option = 'A la une' THEN 1 ELSE 0 END)::BOOLEAN AS "A la une"
+
+    FROM offre o
+    LEFT JOIN option_payante_offre opo ON o.id_offre = opo.id_offre
+    LEFT JOIN option op ON opo.id_option = op.id_option
+    LEFT JOIN avis on o.id_offre = avis.id_offre
+    INNER JOIN adresse adr ON o.id_adresse=adr.id_adresse
+    INNER JOIN ville v on adr.id_ville=v.id_ville 
+    INNER JOIN image on o.id_image_couverture=image.id_image
+    GROUP BY 
+        o.id_offre,
+        o.titre_offre,
+        o.resume,
+        o.description,
+        o.accessibilite,
+        o.date_creation,
+        o.type_offre,
+        o.prix_TTC_min,
+        image.titre_image,
+        image.chemin,
+        adr.voie,
+        adr.numero_adresse,
+        adr.complement_adresse,
+        v.nom_ville,
+        v.code_postal;
 
     CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_activite(
     -- Paramètres de l'offre
@@ -3970,3 +4080,50 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+
+
+CREATE OR REPLACE FUNCTION tripenazor.publication_offre(
+    o_id_offre INT,
+    en_relief BOOLEAN,
+    a_la_une BOOLEAN,
+    nb_semaines INT
+)
+RETURNS VOID AS $$
+DECLARE
+    v_id_souscription INT;
+BEGIN
+    -- Vérification de l'existence de l'offre
+    IF NOT EXISTS (SELECT 1 FROM tripenazor.offre WHERE id_offre = o_id_offre) THEN
+        RAISE EXCEPTION 'L''offre avec l''ID % n''existe pas', o_id_offre;
+    END IF;
+
+    -- Mise à jour de l'offre
+    UPDATE tripenazor.offre
+    SET en_ligne = TRUE
+    WHERE id_offre = o_id_offre;
+
+    -- Insertion dans la table relation des souscriptions aux options
+    -- Si il y a une option en relief
+    IF en_relief = 'on' THEN
+        -- Creation d'une souscription
+        INSERT INTO tripenazor.souscription(nb_semaine) 
+        VALUES (nb_semaines)
+        RETURNING id_souscription INTO v_id_souscription;
+        INSERT INTO tripenazor.option_payante_offre(id_offre, id_option, id_souscription)
+        VALUES (o_id_offre, 1, v_id_souscription);
+    ELSEIF a_la_une = 'on' THEN
+        -- Creation d'une souscription
+        INSERT INTO tripenazor.souscription(nb_semaine) 
+        VALUES (nb_semaines)
+        RETURNING id_souscription INTO v_id_souscription;
+        -- Si il y a une option à la une
+        INSERT INTO tripenazor.option_payante_offre(id_offre, id_option, id_souscription)
+        VALUES (o_id_offre, 2, v_id_souscription);
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
