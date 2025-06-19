@@ -23,12 +23,11 @@ if (!isset($_SESSION['id_utilisateur'])) {
     require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/header.php'); ?>
     <div class="page-back-office">
         <div class="container-back-office">
-        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
+            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/components/nav.php'); ?>
             <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/pageAccueil.php');?>
         </div>
-        <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
-
     </div>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
 
     <script>
 document.addEventListener("DOMContentLoaded", function () {
