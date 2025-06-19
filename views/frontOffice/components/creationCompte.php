@@ -25,47 +25,55 @@
             </div>
             <div class="grid">
                 <div>
-                    <label class="label-input"  for="nom">Nom</label>
+                    <label class="label-input" for="nom">Nom</label>
                     <input id="nom" name="nom" type="text" required />
                 </div>
                 <div>
-                    <label class="label-input"  for="prenom">Prenom</label>
+                    <label class="label-input" for="prenom">Prenom</label>
                     <input id="prenom" name="prenom" type="text" required />
                 </div>
             </div>
 
-            <label class="label-input"  for="pseudo">Pseudo</label>
+            <label class="label-input" for="pseudo">Pseudo</label>
             <input id="pseudo" name="pseudo" type="text" required />
 
-            <label class="label-input"  for="email">E-mail</label>
+            <label class="label-input" for="email">E-mail</label>
             <input id="email" name="email" type="email" required />
 
-            <label class="label-input"  for="telephone">Téléphone</label>
+            <label class="label-input" for="telephone">Téléphone</label>
             <input type="tel" id="telephone" name="telephone" required />
 
             <h3>Adresse</h3>
 
-            <label class="label-input"  for="adresse">Adresse</label>
-            <input type="text" id="adresse" name="adresse" required />
+            <div class="grid">
+                <div class="smaller">
+                    <label class="label-input" for="num">Numéro</label>
+                    <input type="number" id="num" name="num" required />
+                </div>
+                <div class="bigger">
+                    <label class="label-input" for="voie">Voie</label>
+                    <input type="text" id="voie" name="voie" required />
+                </div>
+            </div>
 
-            <label class="label-input"  for="complement">Complément</label>
+            <label class="label-input" for="complement">Complément</label>
             <input type="text" id="complement" name="complement" />
 
             <div class="grid">
                 <div>
-                    <label class="label-input"  for="codePostal">Code Postal</label>
+                    <label class="label-input" for="codePostal">Code Postal</label>
                     <input type="text" id="codePostal" name="codePostal" required />
                 </div>
                 <div>
-                    <label class="label-input"  for="ville">Ville</label>
+                    <label class="label-input" for="ville">Ville</label>
                     <input type="text" id="ville" name="ville" required />
                 </div>
             </div>
 
             <h3>Mot de passe</h3>
-            <label class="label-input"  for="mot_de_passe">Mot de passe</label>
+            <label class="label-input" for="mot_de_passe">Mot de passe</label>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required />
-            <label class="label-input"  for="confirmation">Confirmation</label>
+            <label class="label-input" for="confirmation">Confirmation</label>
             <input type="password" id="confirmation" name="confirmation" required />
 
             <button type="submit" id="inscrire" class="disabled">S'inscrire</button>
@@ -80,20 +88,18 @@
 </main>
 
 <script>
-
     const motDePasse = document.getElementById('mot_de_passe');
     const confirmation = document.getElementById('confirmation');
     const submitBtn = document.getElementById('inscrire');
-    
+
     function checkInputs() {
-      if (motDePasse.value === confirmation.value && motDePasse.value.trim() !== '') {
-        submitBtn.classList.remove('disabled');
-      } else {
-        submitBtn.classList.add('disabled');
-      }
+        if (motDePasse.value === confirmation.value && motDePasse.value.trim() !== '') {
+            submitBtn.classList.remove('disabled');
+        } else {
+            submitBtn.classList.add('disabled');
+        }
     }
 
     motDePasse.oninput = checkInputs;
     confirmation.oninput = checkInputs;
-
 </script>

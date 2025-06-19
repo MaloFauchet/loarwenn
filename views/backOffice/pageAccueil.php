@@ -24,11 +24,6 @@ $options = $optionsController->getOption();
 // Variables pour la note et le nombre de nouveaux avis (exemple statique)
 $note = 0;
 $nbNouveauxAvis = 5;
-$nbAvis = 0;
-
-echo '<pre>';
-print_r($offres);
-echo '</pre>';
 ?>
 
 <script>
@@ -143,21 +138,23 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
             <h3>Vous allez mettre en ligne une offre</h3>
             <form id="onlineForm">
                 <input type="hidden" name="id_offre" value="<?= $offre['id_offre']; ?>">
-                <div class="checkbox-container">
-                    <label for="enRelief"><?=$options[0]['libelle_option'] ?> : <?=$options[0]['prix_s_ttc_option'] ?>€</label>
-                    <input type="checkbox" name="enRelief" id="enReliefInput">
-                </div>
-            
-                <div class="checkbox-container">
-                    <label for="enLigne"><?=$options[1]['libelle_option'] ?> : <?=$options[1]['prix_s_ttc_option'] ?>€</label>
-                    <input type="checkbox" name="aLaUne" id="enLigneInput">
-                </div>
+
+                <?php if ($_SESSION['type'] == "prive") : ?>
+                    <div class="checkbox-container">
+                        <label for="enRelief"><?=$options[0]['libelle_option'] ?> : <?=$options[0]['prix_s_ttc_option'] ?>€</label>
+                        <input type="checkbox" name="enRelief" id="enReliefInput">
+                    </div>
                 
-                <div style="display: none;">
-                    <label for="nbSemaines">Nombre de semaines de mise en ligne</label>
-                    <input type="number" name="nbSemaines" id="nbSemainesInput" min="1" max="52" value="1">
-                </div>
-                
+                    <div class="checkbox-container">
+                        <label for="enLigne"><?=$options[1]['libelle_option'] ?> : <?=$options[1]['prix_s_ttc_option'] ?>€</label>
+                        <input type="checkbox" name="aLaUne" id="enLigneInput">
+                    </div>
+                    
+                    <div style="display: none;">
+                        <label for="nbSemaines">Nombre de semaines de mise en ligne</label>
+                        <input type="number" name="nbSemaines" id="nbSemainesInput" min="1" max="52" value="1">
+                    </div>
+                <?php endif; ?>
                 <div>
                     <button type="submit">Publier</button>
                     <button type="reset">Fermer</button>
