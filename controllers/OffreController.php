@@ -12,9 +12,10 @@ class OffreController {
     public function getAllOffres() {
         return $this->offre->getAllOffre();
     }
-    
-    public function getOffreById($id_professionnel,$id_offre) {
-        return $this->offre->getOffreById($id_professionnel,$id_offre);
+
+    // Récupérer une offre activité par ID
+    public function getOffreById($id) {
+        return $this->offre->getOffreById(null, $id);
     }
     public function getOffreByIdAccueil($id) {
         return $this->offre->getOffreByIdAccueil($id);
