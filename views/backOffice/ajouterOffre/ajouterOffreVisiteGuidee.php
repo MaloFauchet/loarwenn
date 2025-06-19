@@ -1,17 +1,5 @@
 
 
-
-<style>
-    .champ-type-offre button {
-        width: 20em;
-        padding: 10px;
-        font-size: 1rem;
-        box-sizing: border-box;
-    }
-
-   
-</style>
-
         <h3 class="nameActivite">Champs liées a l'offre Visite guidé</h3>
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
@@ -58,10 +46,14 @@
                         </label>
                     </div>
                 </div>
-
             </div>
 
         </div>
+
+        
+       
+
+       
 
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
@@ -78,5 +70,14 @@
             $tags = array_column($tags, 'libelle_tag');
 
             
+
             afficherTag($tags, $name,$selectedActiviteId);
+
+
         ?>
+   
+    
+        
+       
+        
+   
