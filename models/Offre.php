@@ -22,6 +22,16 @@ class Offre {
         $this->conn = $database->getConnection();
     }
 
+    private function convertArrayToPgArray( $array) {
+        
+        if (!is_array($array) || empty($array)) {
+            return '{}';
+        }
+        return '{' . implode(',', array_map(function ($val) {
+            return '"' . addslashes($val) . '"';
+        }, $array)) . '}';
+    }
+
     public function getOffreByIdAccueil($idOffre) {
         $sql = "
             SELECT * FROM tripenazor.infos_carte_offre as o
@@ -108,8 +118,8 @@ class Offre {
 
                 -- Filtrage
                 WHERE 
-                    a.id_utilisateur_prive = :id_utilisateur
-                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
+                    (a.id_utilisateur_prive = :id_utilisateur
+                    OR ppp.id_utilisateur_public = :id_utilisateur) and o.id_offre = :id_offre;";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([

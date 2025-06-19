@@ -13,6 +13,16 @@ class OffreVisite extends Offre {
         parent::__construct();
     }
 
+    private function convertArrayToPgArray( $array) {
+        
+        if (!is_array($array) || empty($array)) {
+            return '{}';
+        }
+        return '{' . implode(',', array_map(function ($val) {
+            return '"' . addslashes($val) . '"';
+        }, $array)) . '}';
+    }
+
     /**
      * @return offreVisite (array d'OffreVisite)
      * Récupère toutes les offres d'activités
@@ -83,95 +93,216 @@ class OffreVisite extends Offre {
         $jours,
         $matin_heure_debut,
         $matin_heure_fin,
+        
+        $id_professionnel,
+        
+        $duree,
+        $langues,
+
         $apres_midi_heure_debut,
         $apres_midi_heure_fin,
-
-        $id_professionnel,
-        $prix,
-
-        $duree,
         $prix_prive,
-
-        $enRelief,
-        $aLaUne,
+        
 
     ){
         
-        $sql = "tripenazor.update_offre_activite(
-            :id_offre,
+        $sql = "select tripenazor.update_offre_visite_guidee(
+            :p_id_offre ,
             
             -- Paramètres de l'offre
-            :nom_ville,
-            :code_postal,
+            :p_nom_ville ,
+            :p_code_postal ,
 
-            :titre_offre,
-            :en_ligne,
-            :resume,
-            :description,
-            :accessibilite,
-            :type_offre,
-            :prix_TCC_min,
-            :tags,
+            :p_titre_offre ,
+            :p_en_ligne ,
+            :p_resume ,
+            :p_description ,
+            :p_accessibilite ,
+            :p_type_offre ,
+            :p_prix_TTC_min ,
+            :p_tags ,
 
             -- Adresse
-            :voie,
-            :numero_adresse,
-            :complement_adresse,
-
+            :p_voie ,
+            :p_numero_adresse ,
+            :p_complement_adresse ,
+            
             -- Image
-            :titre_image,
-            :chemin_image,
+            :p_titre_image ,
+            :p_chemin_image ,
 
             -- Jour de l'activité
-            :jours,
-            :matin_heure_debut,
-            :matin_heure_fin,
-            :apres_midi_heure_debut,
-            :apres_midi_heure_fin,
+            :p_jours ,
+            :p_matin_heure_debut ,
+            :p_matin_heure_fin ,
 
             -- Professionnel
-            :id_professionnel,
-            :prix,
+            :p_id_professionnel ,
 
             -- Paramètres spécifiques à l'activité
-            :duree,
+            :p_duree ,
+            :p_langues ,
 
-            :prix_prive
+            :p_apres_midi_heure_debut ,
+            :p_apres_midi_heure_fin ,
+            :p_prix_prive 
         )";
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(':id_offre', $id_offre);
+        // Bind parameters
+        $stmt->bindParam(':p_id_offre', $id_offre);
 
-        $stmt->bindParam(':nom_ville', $nom_ville);
-        $stmt->bindParam(':code_postal', $code_postal);
+        $stmt->bindParam(':p_nom_ville', $nom_ville);
+        $stmt->bindParam(':p_code_postal', $code_postal);
 
-        $stmt->bindParam(':titre_offre', $titre_offre);
-        $stmt->bindParam(':resume', $resume);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':accessibilite', $accessibility);
-        $stmt->bindParam(':type_offre', $type_offre);
-        $stmt->bindParam(':prix_TCC_min', $prix_TCC_min);
-        $stmt->bindParam(':tags', $tags);
+        $stmt->bindParam(':p_titre_offre', $titre_offre);
+        $stmt->bindParam(':p_en_ligne', $en_ligne);
+        $stmt->bindParam(':p_resume', $resume);
+        $stmt->bindParam(':p_description', $description);
+        $stmt->bindParam(':p_accessibilite', $accessibility);
+        $stmt->bindParam(':p_type_offre', $type_offre);
+        $stmt->bindParam(':p_prix_TTC_min', $prix_TCC_min);
+        $stmt->bindValue(':p_tags', $this->convertArrayToPgArray($tags));
+
+        $stmt->bindParam(':p_voie', $voie);
+        $stmt->bindParam(':p_numero_adresse', $numero_adresse);
+        $stmt->bindParam(':p_complement_adresse', $complement_adresse);
+
+        $stmt->bindParam(':p_titre_image', $titre_image);
+        $stmt->bindParam(':p_chemin_image', $chemin_image);
+
+        $stmt->bindValue(':p_jours', $this->convertArrayToPgArray($jours));
+        $stmt->bindParam(':p_matin_heure_debut', $matin_heure_debut);
+        $stmt->bindParam(':p_matin_heure_fin', $matin_heure_fin);
+        
+        $stmt->bindParam(':p_id_professionnel', $id_professionnel);
+        
+        $stmt->bindValue(':p_langues', $this->convertArrayToPgArray($langues));
+        $stmt->bindParam(':p_duree', $duree);
+        
+        $stmt->bindValue(':p_apres_midi_heure_debut', $apres_midi_heure_debut, $apres_midi_heure_debut === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $apres_midi_heure_fin, $apres_midi_heure_fin === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindParam(':p_prix_prive', $prix_prive);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function updateVisiteNonGuideeOffre(
+        $id_offre,
+
+        $nom_ville,
+        $code_postal,
+
+        $titre_offre,
+        $en_ligne,
+        $resume,
+        $description,
+        $accessibility,
+        $type_offre,
+        $prix_TCC_min,
+        $tags, 
+
+        $voie,
+        $numero_adresse,
+        $complement_adresse,
+
+        $titre_image,
+        $chemin_image,
+
+        $jours,
+        $matin_heure_debut,
+        $matin_heure_fin,
+        
+        $id_professionnel,
+        
+        $duree,
+
+        $apres_midi_heure_debut,
+        $apres_midi_heure_fin,
+        $prix_prive,
 
 
-        $stmt->bindParam(':voie', $voie);
-        $stmt->bindParam(':numero_adresse', $numero_adresse);
-        $stmt->bindParam(':complement_adresse', $complement_adresse);
+    ){
+        
+        $sql = "select tripenazor.update_offre_visite_non_guidee(
+            :p_id_offre ,
+            
+            -- Paramètres de l'offre
+            :p_nom_ville ,
+            :p_code_postal ,
 
-        $stmt->bindParam(':titre_image', $titre_image);
-        $stmt->bindParam(':chemin_image', $chemin_image);
+            :p_titre_offre ,
+            :p_en_ligne ,
+            :p_resume ,
+            :p_description ,
+            :p_accessibilite ,
+            :p_type_offre ,
+            :p_prix_TTC_min ,
+            :p_tags ,
 
-        $stmt->bindParam(':jours', $jours);
-        $stmt->bindParam(':matin_heure_debut', $matin_heure_debut);
-        $stmt->bindParam(':matin_heure_fin', $matin_heure_fin);
-        $stmt->bindParam(':apres_midi_heure_debut', $apres_midi_heure_debut);
-        $stmt->bindParam(':apres_midi_heure_fin', $apres_midi_heure_fin);
+            -- Adresse
+            :p_voie ,
+            :p_numero_adresse ,
+            :p_complement_adresse ,
+            
+            -- Image
+            :p_titre_image ,
+            :p_chemin_image ,
 
-        $stmt->bindParam(':id_professionnel', $id_professionnel);
-        $stmt->bindParam(':prix', $prix);
-        $stmt->bindParam(':duree', $duree);
-        $stmt->bindParam(':prix_prive', $prix_prive);
+            -- Jour de l'activité
+            :p_jours ,
+            :p_matin_heure_debut ,
+            :p_matin_heure_fin ,
+
+            -- Professionnel
+            :p_id_professionnel ,
+
+            -- Paramètres spécifiques à l'activité
+            :p_duree ,
+
+            :p_apres_midi_heure_debut ,
+            :p_apres_midi_heure_fin ,
+            :p_prix_prive
+        )";
+
+        $stmt = $this->conn->prepare($sql);
+
+        // Bind parameters
+        $stmt->bindParam(':p_id_offre', $id_offre);
+
+        $stmt->bindParam(':p_nom_ville', $nom_ville);
+        $stmt->bindParam(':p_code_postal', $code_postal);
+
+        $stmt->bindParam(':p_titre_offre', $titre_offre);
+        $stmt->bindParam(':p_en_ligne', $en_ligne);
+        $stmt->bindParam(':p_resume', $resume);
+        $stmt->bindParam(':p_description', $description);
+        $stmt->bindParam(':p_accessibilite', $accessibility);
+        $stmt->bindParam(':p_type_offre', $type_offre);
+        $stmt->bindParam(':p_prix_TTC_min', $prix_TCC_min);
+        $stmt->bindValue(':p_tags', $this->convertArrayToPgArray($tags));
+
+        $stmt->bindParam(':p_voie', $voie);
+        $stmt->bindParam(':p_numero_adresse', $numero_adresse);
+        $stmt->bindParam(':p_complement_adresse', $complement_adresse);
+
+        $stmt->bindParam(':p_titre_image', $titre_image);
+        $stmt->bindParam(':p_chemin_image', $chemin_image);
+
+        $stmt->bindValue(':p_jours', $this->convertArrayToPgArray($jours));
+        $stmt->bindParam(':p_matin_heure_debut', $matin_heure_debut);
+        $stmt->bindParam(':p_matin_heure_fin', $matin_heure_fin);
+        
+        $stmt->bindParam(':p_id_professionnel', $id_professionnel);
+        
+        $stmt->bindParam(':p_duree', $duree);
+        
+        $stmt->bindValue(':p_apres_midi_heure_debut', $apres_midi_heure_debut, $apres_midi_heure_debut === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $apres_midi_heure_fin, $apres_midi_heure_fin === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindParam(':p_prix_prive', $prix_prive);
         
         $stmt->execute();
 
