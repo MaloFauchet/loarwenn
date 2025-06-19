@@ -6,6 +6,7 @@
 
 .liste-offre .container-offre{
     width: 70%;
+    margin-left: 1vw;
 }
 
 .liste-offre #no-result{
@@ -238,6 +239,11 @@
 /* .liste-offre .a-card{
     width: 80%;
 } */
+
+.liste-offre .non-visible-search,
+.liste-offre .non-visible-filter {
+    display: none;
+}
 
 .liste-offre .card-horizontal{
     display: flex;

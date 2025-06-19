@@ -17,12 +17,28 @@ searchbar.onkeyup = () => {
         // On vérifie si le titre contient la valeur de la barre de recherche
         if (titre.includes(searchValue)) {
             // Si oui, on affiche l'offre
-            offre.style.display = "block";
+            // On supprime la classe non-visible si elle est présente
+            if (offre.classList.contains("non-visible-search")) {
+                // On supprime la classe non-visible pour afficher l'offre
+                offre.classList.remove("non-visible-search");
+            }
         } else {
             // Sinon, on cache l'offre
-            offre.style.display = "none";
+            if (!offre.classList.contains("non-visible-search")) {
+                // On ajoute la classe non-visible si elle n'est pas déjà présente
+                offre.classList.add("non-visible-search");
+            }
         }
     });
+
+    const cards = document.querySelectorAll('.a-card');
+    const visibleCards = Array.from(cards).filter(card => !card.classList.contains("non-visible-search") && !card.classList.contains("non-visible-filter"));
+
+    if (visibleCards.length === 0) {
+        document.getElementById('no-result').style.display = 'flex';
+    } else {
+        document.getElementById('no-result').style.display = 'none';
+    }
 }
 
 searchbar.onchange = searchbar.onkeyup;
