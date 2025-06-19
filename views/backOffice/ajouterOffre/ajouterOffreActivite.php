@@ -1,13 +1,3 @@
-
-
-
-    
-        
-
-        
-
-        
-
         <div class="champ-type-offre-row">
             <div class="champ-type-offre">
                 <h3>Durée</h3>
@@ -20,7 +10,6 @@
                 <label class="label-input" for="age">Âge</label>
                 <input id="age" name="age" type="number" required />
             </div>
-
         </div>
 
         
@@ -35,10 +24,6 @@
         </div>
        
 
-       
-
-       
-
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
         
@@ -47,22 +32,11 @@
             $selectedActiviteId= $_COOKIE['selectedActiviteId'];
           
             
-
             $id_tags = $typeActiviteController->getTagIdByTypeActivite($id,$name);
             $arrayIdTags = array_column($id_tags, 'id_tag');
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
-
             
 
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-    
-    

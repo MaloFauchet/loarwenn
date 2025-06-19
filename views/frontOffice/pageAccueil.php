@@ -26,7 +26,6 @@
         print_r($dataDump);
         echo "</pre>";
     }
-    
 
     // dump($listeOffreView);
 ?>
@@ -36,27 +35,29 @@
     <!-- Video Arriere Plan -->
     <video autoplay muted loop id="myVideo" class="video-header">
         <source src="videos/video_accueil.mp4" type="video/mp4">
+        <track kind="captions" src="" srclang="fr" label="Français" default>
+        Votre navigateur ne supporte pas la vidéo.
     </video>
 
     <div>
         <!-- Navigation Bar -->
         <nav>
             <!-- Logo -->
-            <a href="/" id="logo-navbar">
+            <a href="/" id="logo-navbar" aria-label="Page accueil">
                 <img src="images/logos/logoBlue.png" alt="logoBlue" height="50px" width="50px">
             </a>
             <ul class="ul-fo">
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/frontOffice/listeOffre/">Offres</a></li>
+                <li><a href="/" aria-label="Page accueil">Accueil</a></li>
+                <li><a href="/frontOffice/listeOffre/" aria-label="Page offre">Offres</a></li>
             </ul>
 
             <!-- Profil -->
             <?php if (isset($_SESSION['id_utilisateur'])) { ?>
             <div class="profil" id="profil-navbar">
-                <a href="">
+                <a href="" aria-label="Profil">
                     <img class="profil" src="<?= "/images/profils/" . $_SESSION['id_utilisateur']?>.jpg" alt="">
                 </a>
-                <a href="/scriptPHP/logout.php">
+                <a href="/scriptPHP/logout.php" aria-label="Déconnexion">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -67,7 +68,7 @@
                 </a>
             </div>
             <?php } else{?>
-            <a href="/frontOffice/connexion/" id="profil-navbar">
+            <a href="/frontOffice/connexion/" id="profil-navbar" aria-label="Connexion">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                     class="bi bi-person-circle" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -82,21 +83,11 @@
         <h2 class="welcome-text-fo">Bienvenue sur la PACT</h2>
         <h2 class="discover-text-fo">Découvrez vos vacances</h2>
 
-        <!-- Barre de recherche -->
-        <!-- <div class="sample one" >
-            <input type="text" name="search" placeholder="Rechercher..." id="searchbar">
-            <button type="submit" class="btn-search" id="search-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                </svg>
-            </button>
-        </div> -->
-
         <div class="search-container">
             <div class="container-search-funnel">
                 <div class="search-row">
                     <input type="search" name="search" placeholder="Rechercher une offre" id="searchbar">
-                    <button class="search-icon" id="search-button">
+                    <button class="search-icon" id="search-button" aria-label="Rechercher">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                         </svg>
@@ -107,23 +98,6 @@
     </div>
 </header>
 <main>
-    <!--
-        <h1>Récemment consultés</h1>
-        <hr>
-        <?php //  FAIRE CONNEXION     if ($connected) { ?>
-            
-            <div class="container-caroussel">
-                <div id="carousselAlreadySee">
-                    
-                    <?php /*foreach ($listeOffreConsultes as $listeOffreRecementConsultes =>$offreRecementConsultes ) { 
-                        
-                        foreach ($offreRecementConsultes as $offreRecementConsulte =>$valueOfOffre) {
-                            require($_SERVER['DOCUMENT_ROOT'] . '/../views/componentsGlobaux/cardVerticalCaroussel.php');  
-                        }
-                    }*/ ?>
-            </div>
-        </div>!-->
-    <?php //} ?>
     <h1>Sélectionnées pour vous</h1>
     <hr>
     <div class="container-caroussel">

@@ -1,22 +1,9 @@
-
-
-
-
-        
         <div class="champ-type-offre">
             <h3>Durée</h3>
             <label class="label-input" for="duree">Durée</label>
             <input id="duree" name="duree" type="time" required />
         </div>
 
-           
-
-           
-
-        
-       
-
-       
 
         <?php
             require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/ajouterOffre/function.php');  
@@ -32,15 +19,6 @@
             $tags = $tagController->getAllTagByIdTagActivite($arrayIdTags);
             $tags = array_column($tags, 'libelle_tag');
 
-            
 
             afficherTag($tags, $name,$selectedActiviteId);
-
-
         ?>
-   
-    
-        
-       
-        
-   
