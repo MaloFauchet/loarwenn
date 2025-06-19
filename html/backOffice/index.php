@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const modalPub = document.getElementById('modal-publication');
                     modalPub.style.display = 'flex';
                     modalPub.setAttribute('data-id', idOffre);
+                    modalPub.querySelector('input[name="id_offre"]').value = idOffre;
 
                     /**
                      * Ajout d'un ecouteur d'événement pour fermer la modale
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const modalDepub = document.getElementById('modal-depublication');
                     modalDepub.style.display = 'flex';
                     modalDepub.setAttribute('data-id', idOffre);
+                    modalDepub.querySelector('input[name="id_offre"]').value = idOffre;
 
                     /**
                      *  On clone le formulaire de publication

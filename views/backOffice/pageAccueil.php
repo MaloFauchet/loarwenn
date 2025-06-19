@@ -151,7 +151,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
                     </div>
                     
                     <div style="display: none;">
-                        <label for="nbSemaines">Nombre de semaines de mise en ligne</label>
+                        <label for="nbSemaines">Nombre de semaines d'option</label>
                         <input type="number" name="nbSemaines" id="nbSemainesInput" min="1" max="52" value="1">
                     </div>
                 <?php endif; ?>
