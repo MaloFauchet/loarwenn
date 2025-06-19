@@ -392,7 +392,7 @@ main{
 
 #searchbar {
     width: 20vw;
-    height: 6vh;
+    height: 40px;
     padding-left: 10px;
     font-size: larger;
     background-color: rgba(0, 0, 0, 0);
@@ -453,6 +453,14 @@ header a img{
     font-size: 5vh;
 }
 
+.title-container {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .discover-text-fo{
     color: #fff;
     z-index: 5;
@@ -465,12 +473,11 @@ header a img{
     position: absolute;
     z-index: -1;
     border-radius: 1em 1em 0 0;
-    bottom: 95%;
+    bottom: 96%;
     left: 5%;
     width: fit-content;
     padding: 5px 1em 1em 1em;
     font-size: 1.10em;
-    
 }
 
 .recommended > div{
@@ -552,6 +559,7 @@ header a img{
     .discover-text-fo{
         right: 20%;
     }
+
     .front-office-main ul{
         display: none;
     }
@@ -569,6 +577,15 @@ header a img{
 
     #searchbar {
         width: 50vw;
+        height: 20px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .recommended {
+        bottom: 97%;
     }
 
     #searchbar:focus {

@@ -14,7 +14,7 @@ if (!isset($_POST["type"])) {
                 </div>
             </div>
             <div class="age-min">
-                <img src="/images/icons/cake-fill.svg" alt="Horloge">
+                <img src="/images/icons/cake-fill.svg" alt="gateau d'anniversaire">
                 <div class="input-divers">
                     <label class="label-input" for="age">Age minimum</label>
                     <input id="age-min" name="age-min" type="number"  

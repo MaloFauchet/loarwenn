@@ -19,11 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors = $result['errors'];
         
     }
-} else {
-    // Pas de sortie avant ce require
-    $controller->afficherFormulaire();
 }
-
 // Vider le buffer (envoi du contenu, s'il y en a)
 ob_end_flush();
 ?>

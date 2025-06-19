@@ -362,17 +362,21 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_prive(
     p_telephone TEXT,
     p_num_adresse INT,
     p_voie_adresse TEXT,
+    p_num_adresse INT,
+    p_voie_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
     p_denomination TEXT,
     p_siren INT,
     p_iban TEXT,
+    p_iban TEXT,
     p_mot_de_passe TEXT
 )
 RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
+    v_id_adresse INTEGER;
     v_id_adresse INTEGER;
     v_id_utilisateur INTEGER;
 	v_id_image INTEGER;
@@ -393,11 +397,18 @@ BEGIN
     VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
     RETURNING id_adresse INTO v_id_adresse;
 
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
+
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
         nom, prenom, email, num_telephone, mot_de_passe, id_adresse
+        nom, prenom, email, num_telephone, mot_de_passe, id_adresse
     )
     VALUES (
+        p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
         p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
@@ -405,6 +416,8 @@ BEGIN
     -- 3. Insérer dans professionnel
 	INSERT INTO tripenazor.professionnel (id_utilisateur)
 	VALUES (v_id_utilisateur);
+    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
+    VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
     INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
     VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
 
@@ -428,6 +441,8 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
     p_telephone TEXT,
     p_num_adresse INT,
     p_voie_adresse TEXT,
+    p_num_adresse INT,
+    p_voie_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
@@ -437,6 +452,7 @@ CREATE OR REPLACE FUNCTION inserer_utilisateur_et_professionnel_public(
 RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
+    v_id_adresse INTEGER;
     v_id_adresse INTEGER;
     v_id_utilisateur INTEGER;
 	v_id_image INTEGER;
@@ -457,11 +473,18 @@ BEGIN
     VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
     RETURNING id_adresse INTO v_id_adresse;
 
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
+
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
         nom, prenom, email, num_telephone, mot_de_passe, id_adresse
+        nom, prenom, email, num_telephone, mot_de_passe, id_adresse
     )
     VALUES (
+        p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
         p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
@@ -492,6 +515,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_utilisateur_et_membre(
     p_telephone TEXT,
     p_num_adresse INT,
     p_voie_adresse TEXT,
+    p_num_adresse INT,
+    p_voie_adresse TEXT,
     p_complement TEXT,
     p_code_postal TEXT,
     p_nom_ville TEXT,
@@ -501,6 +526,7 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_utilisateur_et_membre(
 RETURNS VOID AS $$
 DECLARE
     v_id_ville INTEGER;
+    v_id_adresse INTEGER;
     v_id_adresse INTEGER;
     v_id_utilisateur INTEGER;
 	v_id_image INTEGER;
@@ -521,11 +547,18 @@ BEGIN
     VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
     RETURNING id_adresse INTO v_id_adresse;
 
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
+
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
         nom, prenom, email, num_telephone, mot_de_passe, id_adresse
+        nom, prenom, email, num_telephone, mot_de_passe, id_adresse
     )
     VALUES (
+        p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
         p_nom, p_prenom, p_email, p_telephone, p_mot_de_passe, v_id_adresse
     )
     RETURNING id_utilisateur INTO v_id_utilisateur;
@@ -810,8 +843,6 @@ SELECT
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -822,6 +853,8 @@ SELECT
     p_duree TIME,
     p_age INT,
 	
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
 	p_prix_prive FLOAT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -942,20 +975,21 @@ BEGIN
         VALUES (v_id_horaire_matin, v_id_offre);
     END IF;
 
-    
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
-    WHERE debut = p_apres_midi_heure_debut::TIME AND
-    fin = p_apres_midi_heure_fin::TIME;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+        WHERE debut = p_apres_midi_heure_debut::TIME AND
+        fin = p_apres_midi_heure_fin::TIME;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut::TIME, 
-            p_apres_midi_heure_fin::TIME
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut::TIME, 
+                p_apres_midi_heure_fin::TIME
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -1071,8 +1105,6 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_parc_attration(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -1083,6 +1115,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_parc_attration(
     p_titre_image_parc TEXT,
     p_chemin_image_parc TEXT,
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive FLOAT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -1170,7 +1204,6 @@ BEGIN
         VALUES (v_id_offre, v_id_image);
     END LOOP;
 
-
     -- Jour et horaire de l'activité
     FOREACH v_jour IN ARRAY p_jours
     LOOP
@@ -1202,19 +1235,21 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
-    WHERE debut = p_apres_midi_heure_debut::TIME AND
-    fin = p_apres_midi_heure_fin::TIME;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+        WHERE debut = p_apres_midi_heure_debut::TIME AND
+        fin = p_apres_midi_heure_fin::TIME;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut::TIME, 
-            p_apres_midi_heure_fin::TIME
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut::TIME, 
+                p_apres_midi_heure_fin::TIME
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -1299,8 +1334,6 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_restauration(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -1310,6 +1343,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_restauration(
     p_chemin_image_carte TEXT,
     p_libelle_gamme_prix TEXT,
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
 	p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -1429,19 +1464,21 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
-    WHERE debut = p_apres_midi_heure_debut::TIME AND
-    fin = p_apres_midi_heure_fin::TIME;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+        WHERE debut = p_apres_midi_heure_debut::TIME AND
+        fin = p_apres_midi_heure_fin::TIME;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut::TIME, 
-            p_apres_midi_heure_fin::TIME
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut::TIME, 
+                p_apres_midi_heure_fin::TIME
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -1538,8 +1575,6 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_spectacle(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -1547,6 +1582,9 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_spectacle(
     -- Paramètres spécifiques à l'activité
     p_duree TIME,
     p_capacite_accueil FLOAT,
+
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -1664,19 +1702,21 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
-    WHERE debut = p_apres_midi_heure_debut::TIME AND
-    fin = p_apres_midi_heure_fin::TIME;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+        WHERE debut = p_apres_midi_heure_debut::TIME AND
+        fin = p_apres_midi_heure_fin::TIME;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut::TIME, 
-            p_apres_midi_heure_fin::TIME
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut::TIME, 
+                p_apres_midi_heure_fin::TIME
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -1752,8 +1792,6 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_guidee(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -1762,6 +1800,8 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_guidee(
     p_duree TIME,
     p_langues TEXT[],
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -1881,19 +1921,21 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
-    WHERE debut = p_apres_midi_heure_debut::TIME AND
-    fin = p_apres_midi_heure_fin::TIME;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+        WHERE debut = p_apres_midi_heure_debut::TIME AND
+        fin = p_apres_midi_heure_fin::TIME;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut::TIME, 
-            p_apres_midi_heure_fin::TIME
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut::TIME, 
+                p_apres_midi_heure_fin::TIME
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -1988,14 +2030,15 @@ CREATE OR REPLACE FUNCTION tripenazor.inserer_offre_visite_non_guidee(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
 
     -- Paramètres spécifiques à l'activité
     p_duree TIME,
+
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -2113,19 +2156,21 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
-    WHERE debut = p_apres_midi_heure_debut::TIME AND
-    fin = p_apres_midi_heure_fin::TIME;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire
+        WHERE debut = p_apres_midi_heure_debut::TIME AND
+        fin = p_apres_midi_heure_fin::TIME;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut::TIME, 
-            p_apres_midi_heure_fin::TIME
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut::TIME, 
+                p_apres_midi_heure_fin::TIME
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -2232,8 +2277,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_activite(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -2244,6 +2287,8 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_activite(
     p_duree TIME,
     p_age INT,
 	
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
 	p_prix_prive FLOAT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -2267,7 +2312,7 @@ DECLARE
 	v_prestation_non_incluse TEXT;
     v_offre_activite_existante INT;
 BEGIN
-SELECT id_ville INTO v_id_ville FROM tripenazor.ville
+    SELECT id_ville INTO v_id_ville FROM tripenazor.ville
     WHERE nom_ville = p_nom_ville AND
         code_postal = p_code_postal;
 
@@ -2393,25 +2438,26 @@ SELECT id_ville INTO v_id_ville FROM tripenazor.ville
         WHERE id_horaire = v_id_horaire_matin;
     END IF;
 
-    
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
-    WHERE debut = p_apres_midi_heure_debut AND
-    fin = p_apres_midi_heure_fin;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+        WHERE debut = p_apres_midi_heure_debut AND
+        fin = p_apres_midi_heure_fin;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut, 
-            p_apres_midi_heure_fin
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut, 
+                p_apres_midi_heure_fin
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
-    ELSE
-        UPDATE tripenazor.horaire
-        SET debut = p_apres_midi_heure_debut,
-            fin = p_apres_midi_heure_fin
-        WHERE id_horaire = v_id_horaire_apres_midi;
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        ELSE
+            UPDATE tripenazor.horaire
+            SET debut = p_apres_midi_heure_debut,
+                fin = p_apres_midi_heure_fin
+            WHERE id_horaire = v_id_horaire_apres_midi;
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -2582,8 +2628,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_parc_attraction(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -2594,6 +2638,8 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_parc_attraction(
     p_titre_image_parc TEXT,
     p_chemin_image_parc TEXT,
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -2744,24 +2790,26 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
-    WHERE debut = p_apres_midi_heure_debut AND
-    fin = p_apres_midi_heure_fin;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+        WHERE debut = p_apres_midi_heure_debut AND
+        fin = p_apres_midi_heure_fin;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut, 
-            p_apres_midi_heure_fin
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut, 
+                p_apres_midi_heure_fin
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
-    ELSE
-        UPDATE tripenazor.horaire
-        SET debut = p_apres_midi_heure_debut,
-            fin = p_apres_midi_heure_fin
-        WHERE id_horaire = v_id_horaire_apres_midi;
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        ELSE
+            UPDATE tripenazor.horaire
+            SET debut = p_apres_midi_heure_debut,
+                fin = p_apres_midi_heure_fin
+            WHERE id_horaire = v_id_horaire_apres_midi;
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -2900,8 +2948,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_restaurant(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -2911,6 +2957,8 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_restaurant(
     p_chemin_image_carte TEXT,
     p_libelle_gamme_prix TEXT,
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
 	p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -3058,24 +3106,26 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
-    WHERE debut = p_apres_midi_heure_debut AND
-    fin = p_apres_midi_heure_fin;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+        WHERE debut = p_apres_midi_heure_debut AND
+        fin = p_apres_midi_heure_fin;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut, 
-            p_apres_midi_heure_fin
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut, 
+                p_apres_midi_heure_fin
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
-    ELSE
-        UPDATE tripenazor.horaire
-        SET debut = p_apres_midi_heure_debut,
-            fin = p_apres_midi_heure_fin
-        WHERE id_horaire = v_id_horaire_apres_midi;
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        ELSE
+            UPDATE tripenazor.horaire
+            SET debut = p_apres_midi_heure_debut,
+                fin = p_apres_midi_heure_fin
+            WHERE id_horaire = v_id_horaire_apres_midi;
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -3217,8 +3267,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_spectacle(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -3227,6 +3275,8 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_spectacle(
     p_duree TIME,
     p_capacite_accueil FLOAT,
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -3373,24 +3423,26 @@ SELECT id_ville INTO v_id_ville FROM tripenazor.ville
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
-    WHERE debut = p_apres_midi_heure_debut AND
-    fin = p_apres_midi_heure_fin;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+        WHERE debut = p_apres_midi_heure_debut AND
+        fin = p_apres_midi_heure_fin;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut, 
-            p_apres_midi_heure_fin
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut, 
+                p_apres_midi_heure_fin
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
-    ELSE
-        UPDATE tripenazor.horaire
-        SET debut = p_apres_midi_heure_debut,
-            fin = p_apres_midi_heure_fin
-        WHERE id_horaire = v_id_horaire_apres_midi;
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        ELSE
+            UPDATE tripenazor.horaire
+            SET debut = p_apres_midi_heure_debut,
+                fin = p_apres_midi_heure_fin
+            WHERE id_horaire = v_id_horaire_apres_midi;
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -3498,8 +3550,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_guidee(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -3508,6 +3558,8 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_guidee(
     p_duree TIME,
     p_langues TEXT[],
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -3655,24 +3707,26 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
-    WHERE debut = p_apres_midi_heure_debut AND
-    fin = p_apres_midi_heure_fin;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+        WHERE debut = p_apres_midi_heure_debut AND
+        fin = p_apres_midi_heure_fin;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut, 
-            p_apres_midi_heure_fin
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut, 
+                p_apres_midi_heure_fin
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
-    ELSE
-        UPDATE tripenazor.horaire
-        SET debut = p_apres_midi_heure_debut,
-            fin = p_apres_midi_heure_fin
-        WHERE id_horaire = v_id_horaire_apres_midi;
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        ELSE
+            UPDATE tripenazor.horaire
+            SET debut = p_apres_midi_heure_debut,
+                fin = p_apres_midi_heure_fin
+            WHERE id_horaire = v_id_horaire_apres_midi;
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -3807,8 +3861,6 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_non_guidee(
     p_jours NUMERIC[],
     p_matin_heure_debut TIME,
     p_matin_heure_fin TIME,
-    p_apres_midi_heure_debut TIME,
-    p_apres_midi_heure_fin TIME,
 
     -- Professionnel
     p_id_professionnel INT,
@@ -3816,6 +3868,8 @@ CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_non_guidee(
     -- Paramètres spécifiques à l'activité
     p_duree TIME,
 
+    p_apres_midi_heure_debut TIME DEFAULT NULL,
+    p_apres_midi_heure_fin TIME DEFAULT NULL,
     p_prix_prive INT DEFAULT NULL
 )
 RETURNS VOID AS $$
@@ -3961,24 +4015,26 @@ BEGIN
     END IF;
 
     
-    SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
-    WHERE debut = p_apres_midi_heure_debut AND
-    fin = p_apres_midi_heure_fin;
+    IF p_apres_midi_heure_debut IS NOT NULL AND p_apres_midi_heure_fin IS NOT NULL THEN
+        SELECT id_horaire INTO v_id_horaire_apres_midi FROM tripenazor.horaire 
+        WHERE debut = p_apres_midi_heure_debut AND
+        fin = p_apres_midi_heure_fin;
 
-    IF v_id_horaire_apres_midi IS NULL THEN
-        INSERT INTO tripenazor.horaire(debut, fin)
-        VALUES (
-            p_apres_midi_heure_debut, 
-            p_apres_midi_heure_fin
-        ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
+        IF v_id_horaire_apres_midi IS NULL THEN
+            INSERT INTO tripenazor.horaire(debut, fin)
+            VALUES (
+                p_apres_midi_heure_debut, 
+                p_apres_midi_heure_fin
+            ) RETURNING id_horaire INTO v_id_horaire_apres_midi;
 
-        INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
-        VALUES (v_id_horaire_apres_midi, v_id_offre);
-    ELSE
-        UPDATE tripenazor.horaire
-        SET debut = p_apres_midi_heure_debut,
-            fin = p_apres_midi_heure_fin
-        WHERE id_horaire = v_id_horaire_apres_midi;
+            INSERT INTO tripenazor.horaire_ouverture(id_horaire, id_offre)
+            VALUES (v_id_horaire_apres_midi, v_id_offre);
+        ELSE
+            UPDATE tripenazor.horaire
+            SET debut = p_apres_midi_heure_debut,
+                fin = p_apres_midi_heure_fin
+            WHERE id_horaire = v_id_horaire_apres_midi;
+        END IF;
     END IF;
 
     -- Insertion du professionnel
@@ -4146,5 +4202,4 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
-
 

@@ -2,14 +2,14 @@
     <div class="overlay"></div>
     <div class="container">
         <nav>
-            <a href="#" onclick="window.history.back()" aria-label="Retour" title="Retour" role="link">
+            <a aria-label="Retour" href="#" onclick="window.history.back()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
                     class="bi bi-chevron-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                         d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
                 </svg>
             </a>
-            <a href="/" aria-label="Fermer" title="Fermer" role="link">
+            <a aria-label="Accueil" href="/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
                     class="bi bi-x" viewBox="0 0 16 16">
                     <path
@@ -28,13 +28,13 @@
             <input id="otp" type="text" name="otp" required />
             <?php 
             if($idPro) {
-                ?><input type="hidden" name="id_pro" value="<?php echo htmlspecialchars($idPro); ?>"><?php
+                ?><input aria-label="Professionnel" type="hidden" name="id_pro" value="<?php echo htmlspecialchars($idPro); ?>"><?php
             }
             if(isset($_SESSION['messageOtp'])) {
                 ?><p style="color:red;"><?php echo htmlspecialchars($_SESSION['messageOtp']); ?></p><?php
             }
             ?>
-            <button type="submit">Valider</button>
+            <button aria-label="Valider" type="submit">Valider</button>
         </form>
     </div>
 </main>
