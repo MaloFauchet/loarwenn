@@ -50,10 +50,10 @@ $pro = $professionnelController->getProfessionnelById($offre['id_professionnel']
 
 // On récupère les informations du professionnel par son id
 // $pro = $professionnelController->getProfessionnelById($id_pro);
-echo "<pre>";
-print_r($offre);
+// echo "<pre>";
+// print_r($offre);
 // print_r($pro);
-echo "</pre>";
+// echo "</pre>";
 
 $images_str = $offre["images"];
 // On transforme la chaîne d'images en tableau
