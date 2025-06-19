@@ -10,7 +10,7 @@
                     <a aria-label="Accueil" href="/">Accueil</a>
                 </li>
                 <li>
-                    <a aria-label="Liste offre" href="/listeOffres/">Offres</a>
+                    <a aria-label="Liste offre" href="/frontOffice/listeOffre/">Offres</a>
                 </li>
             </ul>
         </div>
@@ -18,13 +18,13 @@
             <p style="color:white;">Besoin d'aide</p>
             <ul>
                 <li>
-                    <a aria-label="Politique de confidentialité" href="/legal/politiqueDeConfidentialite/">Politique de confidentialité</a>
+                    <a aria-label="Politique de confidentialité" href="">Politique de confidentialité</a>
                 </li>
                 <li>
-                    <a aria-label="Mentions légales" href="/legal/mentionsLegales">Mentions légales</a>
+                    <a aria-label="Mentions légales" href="">Mentions légales</a>
                 </li>
                 <li>
-                    <a aria-label="Conditions d'utilisations" href="/legal/conditionsUtilisation/">Conditions d'utilisations</a>
+                    <a aria-label="Conditions d'utilisations" href="">Conditions d'utilisations</a>
                 </li>
             </ul>
         </div>
