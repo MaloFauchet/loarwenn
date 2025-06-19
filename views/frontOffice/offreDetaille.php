@@ -159,7 +159,13 @@ function afficherEtoile($note){
             </div>
             <div>
                 <h3>Type d'offre</h3>
-                <p> <?= str_replace("_", " ", ucfirst($offre["type_offre"])) ?></p>
+                <p> <?php if ($offre["type_offre"] === "visite_guidee") {
+                    echo "Visite guidée";
+                } elseif ($offre["type_offre"] === "visite_non_guidee") {
+                    echo "Visite non guidée";
+                } else { ?>
+                    <?= str_replace("_", " ", ucfirst($offre["type_offre"])) ?>
+                <?php } ?></p>
             </div>
         </article>
         <hr>
