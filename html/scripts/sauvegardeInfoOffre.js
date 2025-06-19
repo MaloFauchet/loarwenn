@@ -118,6 +118,11 @@ function getListValues(id) {
 }
 
 function getValuesInputs() {
+
+    let checkboxJours = document.querySelectorAll('#jours-checkboxes input[type="checkbox"]');
+    let jours = Array.from(checkboxJours)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.id);
     let result = {
         //champ commun a toutes les offres
         type_offre:document.getElementById("type-offre").value,
@@ -133,11 +138,11 @@ function getValuesInputs() {
         description: document.getElementById("description").value,
         resume: document.getElementById("resume").value,
         accessibility: document.getElementById("accessibilite").value,
-        joursOuverture:document.getElementById("jours").value,
-        matin_heure_debut:document.getElementById("matin_heure_debut").value,
-        matin_heure_fin:document.getElementById("matin_heure_fin").value,
-        apres_midi_heure_debut:document.getElementById("apres_midi_heure_debut").value,
-        apres_midi_heure_fin:document.getElementById("apres_midi_heure_fin").value,
+        joursOuverture:jours,
+        horaire1:document.getElementById("horaire-1").value,
+        horaire2:document.getElementById("horaire-2").value,
+        horaire3:document.getElementById("horaire-3").value ? document.getElementById("horaire-3").value: null,
+        horaire4:document.getElementById("horaire-4").value ? document.getElementById("horaire-4").value:null,
 
         titre_image:document.getElementById("titre_image").value,
         chemin_image:document.getElementById("chemin_image").value,
