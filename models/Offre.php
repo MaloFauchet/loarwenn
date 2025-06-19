@@ -60,6 +60,8 @@ class Offre {
                 opa.nb_attraction AS pa_nb_attraction,
                 opa.age_min AS pa_age_min,
 
+                tripenazor.image.chemin AS restaurant_carte_image,
+				pa_i.chemin AS pa_plan_image,
                 orestau.id_gamme_prix ,
 				gp.libelle_gamme_prix AS restaurant_gamme_prix,
                 tripenazor.get_langue_by_offre(o.id_offre) AS langue,
@@ -92,8 +94,12 @@ class Offre {
                 LEFT JOIN tripenazor.offre_restauration orestau ON orestau.id_offre = o.id_offre
                 
 
-				-- gamme de prix
+				-- restaurant
                 LEFT JOIN tripenazor.gamme_prix gp ON orestau.id_gamme_prix = gp.id_gamme_prix
+				LEFT JOIN tripenazor.image ON orestau.id_image = tripenazor.image.id_image
+
+				--spectacle
+				LEFT JOIN tripenazor.image pa_i ON opa.id_image = pa_i.id_image
 
                 -- Pro linkage
                 LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
@@ -103,26 +109,22 @@ class Offre {
                 LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
                 LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
                 LEFT JOIN tripenazor.professionnel pro ON pro.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
-                LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+                LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)"
+        ;
 
-                -- Filtrage
-                WHERE 
-                    a.id_utilisateur_prive = :id_utilisateur
-                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;"
-            ;
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
         if ($id_professionnel !== null) {
             $sql = $sql . "-- Filtrage
-                WHERE 
-                    a.id_utilisateur_prive = :id_utilisateur
-                    OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
+            WHERE 
+            a.id_utilisateur_prive = :id_utilisateur
+            OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
             $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
         } else {
             $sql = $sql . "-- Filtrage
-                WHERE o.id_offre = :id_offre;";
+            WHERE o.id_offre = :id_offre;";
         }
+            
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
 
         $stmt->execute();
 

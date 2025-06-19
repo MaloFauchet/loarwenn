@@ -12,7 +12,8 @@ class Professionnel extends Model{
         LEFT JOIN tripenazor.professionnel_prive on tripenazor.professionnel.id_utilisateur = tripenazor.professionnel_prive.id_utilisateur
         LEFT JOIN tripenazor.professionnel_public on tripenazor.professionnel.id_utilisateur = tripenazor.professionnel_public.id_utilisateur
         INNER JOIN tripenazor.utilisateur on tripenazor.professionnel.id_utilisateur = tripenazor.utilisateur.id_utilisateur
-        INNER JOIN tripenazor.ville on tripenazor.ville.id_ville = tripenazor.utilisateur.id_ville
+		INNER JOIN tripenazor.adresse on tripenazor.adresse.id_adresse = tripenazor.utilisateur.id_adresse
+        INNER JOIN tripenazor.ville on tripenazor.ville.id_ville = tripenazor.adresse.id_ville
         INNER JOIN tripenazor.utilisateur_represente_image on tripenazor.utilisateur_represente_image.id_utilisateur = tripenazor.utilisateur.id_utilisateur
         INNER JOIN tripenazor.image on tripenazor.image.id_image = tripenazor.utilisateur_represente_image.id_image
         WHERE tripenazor.utilisateur.id_utilisateur = :id;
