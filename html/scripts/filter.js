@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-
     /**
      * Récupération des inputs
      */
@@ -46,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const days = openDays.split(",").map(d => d.trim().toLowerCase());
         const priceElement = card.querySelector(".item-price");
 
+        
+
         const searchTerm = locInput.value.trim().toLowerCase();
         const minPrice = parseFloat(minPriceInput.value);
         const maxPrice = parseFloat(maxPriceInput.value);
@@ -54,10 +54,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedOpenInput = Array.from(openInput).find(i => i.checked);
         const dayChecked = getSelectedDays();
 
+
         let cardPrice = NaN;
         if (priceElement) {
-            const priceText = priceElement.textContent.replace(/[^\d,.-]/g, "").replace(",", ".");
-            cardPrice = parseFloat(priceText);
+            const priceText = priceElement.textContent.trim().toLowerCase();
+
+            // Vérification si le prix est "gratuit"
+            if (priceText === "gratuit") {
+                cardPrice = 0;
+            }else{
+                const priceText = priceElement.textContent.replace(/[^\d,.-]/g, "").replace(",", ".");
+                cardPrice = parseFloat(priceText);
+            }
         }
 
         const matchType = selectedCategories.length === 0 || selectedCategories.includes(type);
