@@ -168,7 +168,7 @@
 
 .offre-detaille-front section > article:nth-of-type(2) {
     display: flex;
-    justify-content: start;
+    justify-content: space-between;
     gap: 300px;
 }
 
