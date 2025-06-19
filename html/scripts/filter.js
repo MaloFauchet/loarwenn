@@ -91,11 +91,22 @@ document.addEventListener("DOMContentLoaded", function () {
         allCat.checked = selectedCategories.length === 0;
 
         document.querySelectorAll(".a-card").forEach(card => {
+            if (matchCard(card)) {
+                if (card.classList.contains("non-visible-filter")) {
+                    card.classList.remove("non-visible-filter");
+                }
+            } else {
+                if (!card.classList.contains("non-visible-filter")) {
+                    card.classList.add("non-visible-filter");
+                }
+            }
+
+
             card.style.display = matchCard(card) ? "" : "none";
         });
 
         const cards = document.querySelectorAll('.a-card');
-        const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
+        const visibleCards = Array.from(cards).filter(card => !card.classList.contains("non-visible-search") && !card.classList.contains("non-visible-filter"));
 
         if (visibleCards.length === 0) {
             document.getElementById('no-result').style.display = 'flex';
