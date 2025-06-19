@@ -9,6 +9,8 @@
             <p>Pages</p>
             <ul>
                 <li><a href="/backOffice/" aria-label="Accueil">Accueil</a></li>
+                <li><a href="/backOffice/ajouterOffre" aria-label="Accueil">Ajouter une offre</a></li>
+                <li><a href="/backOffice/profil" aria-label="Accueil">Profil</a></li>
             </ul>
         </div>
         <div>
@@ -20,5 +22,4 @@
             </ul>
         </div>
     </div>
-    <hr>
 </footer>
