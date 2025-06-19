@@ -25,7 +25,7 @@
 /* Aside Filtre */
 .liste-offre aside{
     width: 20%;
-    margin: 6vh 6vh 0 6vh;
+    margin: 6vh 6vh 6vh;
     padding: 0 20px;
     background-color: transparent;
     box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
@@ -76,7 +76,7 @@
 .liste-offre aside div:has(button){
     display: flex;
     justify-content: center;
-    margin: 10px;
+    margin: 40px;
 }
 
 .liste-offre aside button{
@@ -235,9 +235,9 @@
 
 
 /* Liste des offres */
-.liste-offre .a-card{
+/* .liste-offre .a-card{
     width: 80%;
-}
+} */
 
 .liste-offre .card-horizontal{
     display: flex;
