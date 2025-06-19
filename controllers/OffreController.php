@@ -12,12 +12,10 @@ class OffreController {
     public function getAllOffres() {
         return $this->offre->getAllOffre();
     }
-
-    // Récupérer une offre activité par ID
-    public function getOffreById($id) {
-        return $this->offre->getOffreById($id);
+    
+    public function getOffreById($id_professionnel,$id_offre) {
+        return $this->offre->getOffreById($id_professionnel,$id_offre);
     }
-
     public function getOffreByIdAccueil($id) {
         return $this->offre->getOffreByIdAccueil($id);
     }
@@ -25,11 +23,10 @@ class OffreController {
         return $this->offre->getViewOffreAccueil();
     }
     //toString
-    
-    // Récupérer toutes les offres d'activités par ID professionnel
     public function getOffreByIdProfessionnel($id_professionnel) {
         return $this->offre->getOffreByIdProfessionnel($id_professionnel);
     }
+    
     public function AllOffreByLatest()  {
         return $this->offre->getAllOffreByLatest();
     }
@@ -465,10 +462,26 @@ class OffreController {
         }
 
 
+        
+
+        
+        /*return $this->offre->editOffre(
+            $idOffre,
+            $id_ville, 
+            $id_statut_log, 
+            $id_type_activite, 
+            $titre_offre, 
+            $note_moyenne, 
+            $nb_avis, 
+            $en_ligne, 
+            $resume, 
+            $description, 
+            $adresse_offre
+        );*/
     }
     
     
-    public function getAllOffreByCategory($category) {
+    /*public function getAllOffreByCategory($category) {
         return $this->offre->getAllOffreByCategory($category);
     }
 
@@ -479,5 +492,5 @@ class OffreController {
 
     public function dePublicationOffre($idOffre) {
         return $this->offre->dePublicationOffre($idOffre);
-    }
+    }*/
 }
