@@ -386,6 +386,14 @@ div#sauvegarder button {
     border: 2px solid #d7372b;
 }
 
+.horaires {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Roboto', sans-serif
+}
+
 /* Animation (fade-in then fade-out) */
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translate(-50%, -20px); }

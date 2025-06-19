@@ -44,6 +44,11 @@ input[type="time"]{
     margin: 0 0 10px 0;
 }
 
+.checkbox-container input{
+    height: 25px;
+    width: 25px;
+}
+
 .checkbox-container > input{
     height: 25px;
     width: 25px;
@@ -54,3 +59,18 @@ input[type="time"]{
     align-self: auto;
     margin: 0;
 }
+
+.checkbox-container > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 0 10px;
+}
+
+.checkbox-container > div > .label-input{
+    transform: none;
+    align-self: auto;
+    margin: 0;
+}
+
+

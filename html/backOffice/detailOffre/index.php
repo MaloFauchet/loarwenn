@@ -54,8 +54,18 @@ $langue = stringToTab($currentOffre['langue']);
 $prestationIncluses = stringToTab($currentOffre['prestation_incluses']);
 $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
 
-//$currentOffre['horaires'] = //TODO explode la string;
+$plageHoraire = explode(',', $currentOffre['horaires']);
+$horaire1 = strtotime(trim(explode('|', $plageHoraire[0])[0]));
+$horaire2 = strtotime(trim(explode('|', $plageHoraire[0])[1]));
+if(count($plageHoraire) > 1) {
+    $horaire3 = trim(explode('|', $plageHoraire[1])[0]);
+    $horaire4 = trim(explode('|', $plageHoraire[1])[1]);
+}
+print_r($horaire3);
+print_r($horaire4);
 
+$joursSemaines = explode(',', $currentOffre['jours_ouverture']);
+print_r($joursSemaines);
 ?>
 
 <!DOCTYPE html>
@@ -229,45 +239,72 @@ $prestationNonIncluses = stringToTab($currentOffre['prestation_non_incluses']);
                         </div>
                     </div>
 
-                    <div class="jours">
-                        <div class="input-divers">
-                            <label class="label-input" for="jours">Jours</label>
-                            <input id="jours" name="jours" type="text" 
-                            value="<?php echo $currentOffre["jours_ouverture"] ?>" required />
+                    <div class="champ-type-offre">
+                        <h3>Jours d'ouvertures</h3>
+                        <div id="jours-checkboxes" class="checkbox-container" >
+                            <div>
+                                <input type="checkbox" name="jours[]"  id="1" value="Lundi" <?=in_array("Lundi", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="1">Lundi</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="jours[]" id="2" value="Mardi" <?=in_array("Mardi", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="2">Mardi</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="jours[]" id="3" value="Mercredi" <?=in_array("Mercredi", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="3" >Mercredi</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="jours[]" id="4" value="Jeudi" <?=in_array("Jeudi", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="4">Jeudi</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="jours[]" id="5" value="Vendredi" <?=in_array("Vendredi", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="5">Vendredi</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="jours[]" id="6" value="Samedi" <?=in_array("Samedi", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="6">Samedi</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="jours[]" id="7" value="Dimanche" <?=in_array("Dimanche", $joursSemaines) ? 'checked' : '' ?>> 
+                                <label class="label-input" for="7">Dimanche</label>
+                            </div>
                         </div>
                     </div>
+                    
+                
 
-                    <div class="matin_heure_debut">
+                    <div class="horaires">
                         <div class="input-divers">
-                            <label class="label-input" for="matin_heure_debut">Horaires de début du matin </label>
-                            <input id="matin_heure_debut" name="matin_heure_debut" type="text" 
-                            value="<?php echo $currentOffre["horaires"] ?>" required />
+                            <label class="label-input" for="horaire-1">Horaire 1</label>
+                            <input id="horaire-1" name="horaire-1" type="time" 
+                            value="<?= date('H:i', $horaire1) ?>" required />
+                            
+                        </div>
+                        <div class="input-divers">
+                            <label class="label-input" for="horaire-2">Horaire 2</label>
+                            <input id="horaire-2" name="horaire-2" type="time" 
+                            value="<?= date('H:i', $horaire2) ?>" required />
                         </div>
                     </div>
+                    <?php if(isset($horaire3) && isset($horaire4)) { ?>
+                        <div class="horaires">
+                            <div class="input-divers">
+                                <label class="label-input" for="horaire-3">Horaire 3</label>
+                                <input id="horaire-3" name="horaire-3" type="time" 
+                                value="<?= date('H:i', $horaire3) ?>" required />
+                                
 
-                    <div class="matin_heure_fin">
-                        <div class="input-divers">
-                            <label class="label-input" for="matin_heure_fin">Horaires de fin du matin</label>
-                            <input id="matin_heure_fin" name="matin_heure_fin" type="text" 
-                            value="<?php echo $currentOffre["horaires"] ?>" required />
+                            </div>
+                            <div class="input-divers">
+                                <label class="label-input" for="horaire-4">Horaire 4</label>
+                                <input id="horaire-4" name="horaire-4" type="time" 
+                                value="<?= date('H:i', $horaire4) ?>" required />
                         </div>
-                    </div>
+                    <?php } ?>
 
-                    <div class="apres_midi_heure_debut">
-                        <div class="input-divers">
-                            <label class="label-input" for="apres_midi_heure_debut">Horaires de début de l'après-midi</label>
-                            <input id="apres_midi_heure_debut" name="apres_midi_heure_debut" type="text" 
-                            value="<?php echo $currentOffre["horaires"] ?>" required />
-                        </div>
-                    </div>
 
-                    <div class="apres_midi_heure_fin">
-                        <div class="input-divers">
-                            <label class="label-input" for="apres_midi_heure_fin">Horaires de fin de l'après-midi</label>
-                            <input id="apres_midi_heure_fin" name="apres_midi_heure_fin" type="text" 
-                            value="<?php echo $currentOffre["horaires"] ?>" required />
-                        </div>
-                    </div>
                     <?php if($type_activite == 'activite') {
                             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/activite.php');
                         } elseif($type_activite == 'visite_guide') {
