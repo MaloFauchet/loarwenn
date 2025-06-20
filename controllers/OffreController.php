@@ -289,7 +289,7 @@ class OffreController {
                 $tmpName = $files['imagePlan']['tmp_name'];
                 $fileName = basename($files['imagePlan']['name']);
 
-                $destination = $baseDirBdd . $fileName;
+                $destination = $baseDir . $fileName;
 
                 if (move_uploaded_file($tmpName, $destination)) {
                     $carteParc = $destination;
@@ -297,7 +297,7 @@ class OffreController {
             }
 
             //valeur pour la bdd
-            $cheminCarteParc = $destination;
+            $cheminCarteParc = $baseDirBdd.$fileName;
             $nomCarteParc = $fileName;
             
             
@@ -365,7 +365,7 @@ class OffreController {
             }
 
             //valeur pour la bdd
-            $cheminCarteRestaurant = $baseDir;
+            $cheminCarteRestaurant = $baseDirBdd.$fileName;
             $nomCarteRestaurant = $fileName;
             
             
