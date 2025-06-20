@@ -128,6 +128,7 @@ function getValuesInputs() {
         nom: document.getElementById("nom").value,
         prenom: document.getElementById("prenom").value,
         telephoneEntreprise: document.getElementById("telephoneEntreprise").value,
+        siteWeb: document.getElementById("siteWeb").value,
         emailEntreprise: document.getElementById("emailEntreprise").value,
         voieEntreprise: document.getElementById("voieEntreprise").value,
         numeroAdresse: document.getElementById("numeroAdresse").value,
@@ -152,7 +153,6 @@ async function sauvegarderClique() {
     let data = getValuesInputs();
 
     // Fonction de vérification des entrées
-    debugger;
     if (!verifyInputs(data)) {
         console.error("Les données saisies ne sont pas valides.");
         // preventDefault();
@@ -175,7 +175,6 @@ async function sauvegarderClique() {
 }
 
 async function sendData(data) {
-    // console.log(Object.entries(data).map(([k, v]) => { return k + '=' + encodeURIComponent(v); }).join('&'));
     fetch("/api/compte/pro/update/", {
         method: "POST",
         headers: {
@@ -184,14 +183,14 @@ async function sendData(data) {
         body: Object.entries(data).map(([k, v]) => { return k + '=' + encodeURIComponent(v); }).join('&')
     }).then(response => {
         if (response.ok) {
-            return response.json();
+            return response;
         } else {
             throw new Error(response.json().message);
         }
     }).then(data => {
         // TODO : afficher un message de succès
-        console.log("Sauvegarde réussie");
         alert("Vos informations ont été sauvegardées avec succès.");
+        location.reload();
     }).catch(error => {
         // TODO : afficher un message d'erreur
         alert("Erreur lors de la sauvegarde. Veuillez réessayer plus tard.");
@@ -216,7 +215,7 @@ function annulerClique(sauvegardeDiv) {
 function verifyInputs(data) {
     // Vérification des champs requis
     if (!data.denominationEntreprise || !data.nom || !data.prenom ||
-        !data.telephoneEntreprise || !data.emailEntreprise || !data.adresseEntreprise ||
+        !data.telephoneEntreprise || !data.emailEntreprise || !data.voieEntreprise || !data.numeroAdresse ||
         !data.codePostalEntreprise || !data.villeEntreprise) {
         alert("Veuillez remplir tous les champs obligatoires.");
         return false;
@@ -284,16 +283,11 @@ function verifyInputs(data) {
         return false;
     }
     
-    console.log("Vérification des entrées de professionnel privé");
     // Si l'utilisateur est une entreprise privée, vérifier le RIB et le SIREN
     if (document.getElementById("ribEntreprise") !== null) {
-        console.log("Vérification du RIB et du SIREN");
-        
-        console.log("Vérification du SIREN");
         const sirenRegex = /^[0-9]{9}$/; // SIREN doit être composé de 9 chiffres
         if (!sirenRegex.test(data.sirenEntreprise)) {
             alert("Veuillez entrer un SIREN valide (9 chiffres).");
-            console.log("SIREN invalide : " + data.sirenEntreprise);
             return false;
         }
 

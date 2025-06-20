@@ -349,7 +349,6 @@ $joursSemaines = explode(',', $currentOffre['jours_ouverture']);
                 </div>
             </main>
         </div>
-        <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
     </div>
     <script src="/scripts/sauvegardeInfoOffre.js"></script>
     <script>

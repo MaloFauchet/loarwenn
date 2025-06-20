@@ -21,26 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     
 </head>
-<body>
-    <script>
-        function ajouterajoutMultiple(id) { 
-            const input = document.getElementById('ajoutMultipleInput_' + id);
-            const list = document.getElementById('ajoutMultipleList_' + id);
-            const value = input.value.trim();
 
-            if (value !== '') {
-                const li = document.createElement('li');
-                li.innerHTML = `${value} <button onclick="supprimerajoutMultiple(this)">✖</button>`;
-                list.appendChild(li);
-                input.value = '';
-            }
-            
-        }
-
-        function supprimerajoutMultiple(btn) {
-            btn.parentElement.remove();
-        }
-    </script>   
 <body>  
     
     <?php require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/backOffice/components/header.php'); 
@@ -73,12 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <label for="type-select">Sélectionner un type d'offre : </label>
                                 <select id="type-select">
                                     <option value="">-- Sélectionner --</option>
-                                    <option value="1|activite">Activité</option>
-                                    <option value="2|spectacle">Spectacle</option>
-                                    <option value="3|visite guidee">Visite guidée</option>
-                                    <option value="4|parc dattraction">Parc d'attraction</option>
-                                    <option value="5|restaurant">Restaurant</option>
-                                    <option value="6|visite non guidee">Visite non guidée</option>
+                                    <option value="1|Activite">Activité</option>
+                                    <option value="2|Spectacle">Spectacle</option>
+                                    <option value="3|VisiteGuidee">Visite guidée</option>
+                                    <option value="4|ParcDattraction">Parc d'attraction</option>
+                                    <option value="5|Restaurant">Restaurant</option>
+                                    <option value="6|Visitenonguidee">Visite non guidée</option>
                                 </select>
                             </div>
 
@@ -102,14 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <h3>Photo principale</h3>
 
                                         <label for="imagePrincipale" class="custom-file-button">Choisir une photo principale</label>
-                                        <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*" hidden />
+                                        <input id="imagePrincipale" name="imagePrincipale" type="file" accept="image/*" hidden required />
                                         <div id="previewPrincipale" class="preview-container"></div>
                                     </div>
 
                                     <div class="champ-type-offre secondaires">
                                         <h3>Photos secondaires (4 maximum)</h3>
                                         <label for="imagesSecondaires" class="custom-file-button">Ajouter des photos secondaires</label>
-                                        <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple hidden />
+                                        <input id="imagesSecondaires" name="imagesSecondaires[]" type="file" accept="image/*" multiple hidden required />
                                         <div id="previewSecondaires" class="preview-container"></div>
 
                                     </div>
@@ -260,14 +241,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script defer>
     imagePreview();
 </script>
-
-
-    
-
-
 </body>
 </html>
-
-
-    
-

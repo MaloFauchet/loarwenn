@@ -14,8 +14,8 @@ $cleaned = preg_replace('/[^a-zA-Z]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $li
 $whitelist = [
     'Activite',
     'Spectacle',
-    'Visiteguidee',
-    'Parcdattraction',
+    'VisiteGuidee',
+    'ParcDattraction',
     'Restaurant',
     'VisiteNonGuidee'
 ];

@@ -71,6 +71,8 @@ class Offre {
                 opa.nb_attraction AS pa_nb_attraction,
                 opa.age_min AS pa_age_min,
 
+                tripenazor.image.chemin AS restaurant_carte_image,
+				pa_i.chemin AS pa_plan_image,
                 orestau.id_gamme_prix ,
 				gp.libelle_gamme_prix AS restaurant_gamme_prix,
                 tripenazor.get_langue_by_offre(o.id_offre) AS langue,
@@ -103,8 +105,12 @@ class Offre {
                 LEFT JOIN tripenazor.offre_restauration orestau ON orestau.id_offre = o.id_offre
                 
 
-				-- gamme de prix
+				-- restaurant
                 LEFT JOIN tripenazor.gamme_prix gp ON orestau.id_gamme_prix = gp.id_gamme_prix
+				LEFT JOIN tripenazor.image ON orestau.id_image = tripenazor.image.id_image
+
+				--spectacle
+				LEFT JOIN tripenazor.image pa_i ON opa.id_image = pa_i.id_image
 
                 -- Pro linkage
                 LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
@@ -114,18 +120,24 @@ class Offre {
                 LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
                 LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
                 LEFT JOIN tripenazor.professionnel pro ON pro.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
-                LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+                LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)"
+        ;
 
-                -- Filtrage
-                WHERE 
-                    (a.id_utilisateur_prive = :id_utilisateur
-                    OR ppp.id_utilisateur_public = :id_utilisateur) and o.id_offre = :id_offre;";
-
+        if ($id_professionnel !== null) {
+            $sql = $sql . "-- Filtrage
+            WHERE 
+            a.id_utilisateur_prive = :id_utilisateur
+            OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
+            $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
+        } else {
+            $sql = $sql . "-- Filtrage
+            WHERE o.id_offre = :id_offre;";
+        }
+            
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            ':id_utilisateur' => $id_professionnel,
-            ':id_offre' => $id_offre
-        ]);
+        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
+
+        $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -225,14 +237,16 @@ class Offre {
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
-                :p_apres_midi_heure_debut::TIME,
-                :p_apres_midi_heure_fin::TIME,
+                
                 :p_id_professionnel::INT,
 
                 :p_prestations_incluses::TEXT[],
                 :p_prestations_non_incluses::TEXT[],
                 :p_duree::TIME,
                 :p_age::INT,
+
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,  
                 :p_prix_prive::FLOAT    
             );
         ";
@@ -260,8 +274,8 @@ class Offre {
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin']);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin']);
-        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi']);
-        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi']);
+        $stmt->bindValue(':p_apres_midi_heure_debut', !empty($data['dateDebutApresMidi']) ? $data['dateDebutApresMidi'] : null, PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', !empty($data['dateFinApresMidi']) ? $data['dateFinApresMidi'] : null, PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_prestations_incluses', $this->formatArrayToPostgresText($data['prestation_incluse']));
         $stmt->bindValue(':p_prestations_non_incluses', $this->formatArrayToPostgresText($data['prestation_non_incluse']));
@@ -320,12 +334,14 @@ class Offre {
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
-                :p_apres_midi_heure_debut::TIME,
-                :p_apres_midi_heure_fin::TIME,
+                
                 :p_id_professionnel::INT,
 
                 :p_duree::TIME,
                 :p_capacite_accueil::FLOAT,
+
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,  
                 :p_prix_prive::INT
             );
         ";
@@ -353,8 +369,8 @@ class Offre {
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', !empty($data['dateDebutApresMidi']) ? $data['dateDebutApresMidi'] : null, PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', !empty($data['dateFinApresMidi']) ? $data['dateFinApresMidi'] : null, PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_duree', $data['duree'], PDO::PARAM_INT);
         $stmt->bindValue(':p_capacite_accueil', $data['capacite_accueil'], PDO::PARAM_INT);
@@ -410,14 +426,14 @@ class Offre {
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
-                :p_apres_midi_heure_debut::TIME,
-                :p_apres_midi_heure_fin::TIME,
+               
                 :p_id_professionnel::INT,
 
                 :p_duree::TIME,
                 :p_langues::TEXT[],
                 
-
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,  
                 :p_prix_prive::INT
     
             );
@@ -446,8 +462,8 @@ class Offre {
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', !empty($data['dateDebutApresMidi']) ? $data['dateDebutApresMidi'] : null, PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', !empty($data['dateFinApresMidi']) ? $data['dateFinApresMidi'] : null, PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 
@@ -505,8 +521,7 @@ class Offre {
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
-                :p_apres_midi_heure_debut::TIME,
-                :p_apres_midi_heure_fin::TIME,
+              
                 :p_id_professionnel::INT,
 
                 :p_nb_attractions::INT,
@@ -514,6 +529,8 @@ class Offre {
                 :p_titre_image_parc::TEXT,
                 :p_chemin_image_parc::TEXT,
             
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,  
                 :p_prix_prive::INT
                 
             );
@@ -542,8 +559,8 @@ class Offre {
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', !empty($data['dateDebutApresMidi']) ? $data['dateDebutApresMidi'] : null, PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', !empty($data['dateFinApresMidi']) ? $data['dateFinApresMidi'] : null, PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 
@@ -606,14 +623,15 @@ class Offre {
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
-                :p_apres_midi_heure_debut::TIME,
-                :p_apres_midi_heure_fin::TIME,
+                
                 :p_id_professionnel::INT,
 
                 :p_titre_image_carte::TEXT,
                 :p_chemin_image_carte::TEXT,
                 :p_libelle_gamme_prix::TEXT,
 
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,  
                 :p_prix_prive::INT
                 
             );
@@ -642,8 +660,8 @@ class Offre {
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', !empty($data['dateDebutApresMidi']) ? $data['dateDebutApresMidi'] : null, PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', !empty($data['dateFinApresMidi']) ? $data['dateFinApresMidi'] : null, PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 
@@ -706,13 +724,14 @@ class Offre {
                 :p_jours::NUMERIC[],
                 :p_matin_heure_debut::TIME,
                 :p_matin_heure_fin::TIME,
-                :p_apres_midi_heure_debut::TIME,
-                :p_apres_midi_heure_fin::TIME,
+               
                 :p_id_professionnel::INT,
 
              
                 :p_duree::TIME,
                 
+                :p_apres_midi_heure_debut::TIME,
+                :p_apres_midi_heure_fin::TIME,  
                 :p_prix_prive::INT
                 
             );
@@ -741,8 +760,8 @@ class Offre {
         $stmt->bindValue(':p_jours', $this->formatArrayToPostgresText($joursNumeriques), PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_debut', $data['dateDebutMatin'], PDO::PARAM_STR);
         $stmt->bindValue(':p_matin_heure_fin', $data['dateFinMatin'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_debut', $data['dateDebutApresMidi'], PDO::PARAM_STR);
-        $stmt->bindValue(':p_apres_midi_heure_fin', $data['dateFinApresMidi'], PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_debut', !empty($data['dateDebutApresMidi']) ? $data['dateDebutApresMidi'] : null, PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', !empty($data['dateFinApresMidi']) ? $data['dateFinApresMidi'] : null, PDO::PARAM_STR);
         $stmt->bindValue(':p_id_professionnel',$data['userId'] );
         $stmt->bindValue(':p_prix_prive', 0, PDO::PARAM_INT);
 

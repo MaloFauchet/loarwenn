@@ -4,7 +4,7 @@ footer {
     flex-direction: column;
 
     background-color: var(--main-color);
-    color: white;
+    color: white!important;
 
     padding: 4vh 20vw;
 }
