@@ -4309,24 +4309,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_public(
-    -- Général
-    p_id INT,
-    p_nom TEXT,
-    p_prenom TEXT, 
-    p_email TEXT, 
-    p_telephone TEXT,
-    p_raison_sociale TEXT,
-    p_lien_site_web TEXT,
-
-    -- Adresse
-    p_numero_adresse INT,
-    p_voie_entreprise TEXT,
-    p_complement_adresse TEXT,
-
-    -- Ville
-    p_ville TEXT, 
-    p_code_postal TEXT 
 CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_prive(
     -- Général
     p_id INT,
@@ -4434,18 +4416,12 @@ CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_public(
 )
 RETURNS VOID AS $$
 DECLARE
-    utilisateur_record RECORD;
-    professionnel_record RECORD;
-    professionnel_prive_record RECORD;
 
     adresse_record RECORD;
     ville_record RECORD;
     utilisateur_record RECORD;
     professionnel_record RECORD;
     professionnel_prive_record RECORD;
-
-    adresse_record RECORD;
-    ville_record RECORD;
 BEGIN
     -- Table utilisateur 
     SELECT * INTO utilisateur_record 
