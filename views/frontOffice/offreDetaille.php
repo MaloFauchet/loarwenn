@@ -415,7 +415,7 @@ function afficherEtoile($note){
                     <?php endforeach; ?>
                 </ul>
                 <!-- Prestation non incluses -->
-                <h3>Pestation Non Incluses</h3>
+                <h3>Prestation Non Incluses</h3>
                 <ul>
                     <?php
                         // On affiche les prestations non incluses dans l'offre
