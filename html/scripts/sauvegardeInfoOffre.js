@@ -129,7 +129,7 @@ function getValuesInputs() {
         //champ commun a toutes les offres
         type_offre:document.getElementById("type-offre").value,
         title: document.getElementById("titre").value,
-        enLigne:document.getElementById("slider-etat").checked  ?1 :0, 
+        enLigne:false, 
         codePostal: document.getElementById("code-postal").value,
         complementAdresse: document.getElementById("complement-adresse").value,
         voie: document.getElementById("voie").value,
@@ -143,9 +143,9 @@ function getValuesInputs() {
         joursOuverture:jours,
         horaire1:document.getElementById("horaire-1").value,
         horaire2:document.getElementById("horaire-2").value,
-        horaire3:document.getElementById("horaire-3")? document.getElementById("horaire-3").value: null,
+        horaire3:document.getElementById("horaire-3") ? document.getElementById("horaire-3").value: null,
         horaire4:document.getElementById("horaire-4") ? document.getElementById("horaire-4").value:null,
-
+ 
         titre_image:document.getElementById("titre_image").value,
         chemin_image:document.getElementById("chemin_image").value,
         
@@ -204,7 +204,6 @@ function encodeFormData(data) {
 
 
 async function sendData(data) {
-    console.log(encodeFormData(data));
     fetch("/api/offre/update/?id_offre=" + id, {
         method: "POST",
         headers: {
@@ -215,9 +214,6 @@ async function sendData(data) {
         if (response.ok) {
             const sauvegardeDiv = document.getElementById("sauvegarder");
             sauvegardeDiv.style.bottom = "-100px";
-            const li = document.querySelector("ul#ajoutMultipleList_tags > li")
-            const text = li.firstChild.nodeType === 3 ? li.firstChild.textContent.trim() : '';
-            console.log(text)
             
             return response.json();
         } else {
@@ -229,8 +225,8 @@ async function sendData(data) {
         displayFlashCard("success",data.message)
     }).catch(error => {
         // TODO : afficher un message d'erreur (flash card)
-        console.error("Erreur lors de la sauvegarde", "Erreur lors de l'enregistrement");
-        displayFlashCard("erroe","Erreur lors de l'enregistrement")
+        console.error("Erreur lors de la sauvegarde", "Erreur lors de l'enregistrement", error.message);
+        displayFlashCard("error","Erreur lors de l'enregistrement")
         //displayFlashCard("error")
     });
 
