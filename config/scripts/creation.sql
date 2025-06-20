@@ -4211,7 +4211,9 @@ BEGIN
         RETURNING id_souscription INTO v_id_souscription;
         INSERT INTO tripenazor.option_payante_offre(id_offre, id_option, id_souscription)
         VALUES (o_id_offre, 1, v_id_souscription);
-    ELSEIF a_la_une = 'on' THEN
+    END IF;
+
+    IF a_la_une = 'on' THEN
         -- Creation d'une souscription
         INSERT INTO tripenazor.souscription(nb_semaine) 
         VALUES (nb_semaines)
@@ -4222,6 +4224,93 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_prive(
+    -- Général
+    p_id INT,
+    p_nom TEXT,
+    p_prenom TEXT, 
+    p_email TEXT, 
+    p_telephone TEXT,
+    p_denomination TEXT,
+    p_siren INT,
+    p_iban TEXT,
+    p_lien_site_web TEXT,
+
+    -- Adresse
+    p_numero_adresse INT,
+    p_voie_entreprise TEXT,
+    p_complement_adresse TEXT,
+
+    -- Ville
+    p_ville TEXT, 
+    p_code_postal TEXT 
+)
+RETURNS VOID AS $$
+DECLARE
+    utilisateur_record RECORD;
+    professionnel_record RECORD;
+    professionnel_prive_record RECORD;
+
+    adresse_record RECORD;
+    ville_record RECORD;
+BEGIN
+    -- Table utilisateur 
+    SELECT * INTO utilisateur_record 
+    FROM tripenazor.utilisateur
+    WHERE id_utilisateur = p_id;
+
+    -- Table professionnel
+    SELECT * INTO professionnel_record
+    FROM tripenazor.professionnel
+    WHERE id_utilisateur = p_id;
+
+    -- Table adresse
+    SELECT * INTO adresse_record
+    FROM tripenazor.adresse 
+    WHERE id_adresse = utilisateur_record.id_adresse;
+
+
+    -- Utilisateur
+    UPDATE tripenazor.utilisateur 
+    SET 
+        prenom = COALESCE(p_prenom, NULL),
+        nom = COALESCE(p_nom, NULL),
+        num_telephone = COALESCE(p_telephone, NULL),
+        email = COALESCE(p_email, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Professionnel
+    UPDATE tripenazor.professionnel
+    SET 
+        lien_site_web = COALESCE(p_lien_site_web, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Professionnel privé
+    UPDATE tripenazor.professionnel_prive
+    SET 
+        denomination = COALESCE(p_denomination, NULL),
+        siren = COALESCE(p_siren, NULL),
+        iban = COALESCE(p_iban, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Adresse
+    UPDATE tripenazor.adresse 
+    SET 
+        voie = COALESCE(p_voie_entreprise, NULL),
+        numero_adresse = COALESCE(p_numero_adresse, NULL),
+        complement_adresse = COALESCE(p_complement_adresse, NULL)
+    WHERE id_adresse = adresse_record.id_adresse;
+
+    -- Ville (si liée par la table adresse)
+    UPDATE tripenazor.ville 
+    SET 
+        nom_ville = COALESCE(p_ville, NULL),
+        code_postal = COALESCE(p_code_postal, NULL)
+    WHERE id_ville = adresse_record.id_ville;
+END;
+$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_prive(
     -- Général
@@ -4330,12 +4419,12 @@ CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_public(
 )
 RETURNS VOID AS $$
 DECLARE
-    utilisateur_record RECORD;
-    professionnel_record RECORD;
-    professionnel_prive_record RECORD;
 
     adresse_record RECORD;
     ville_record RECORD;
+    utilisateur_record RECORD;
+    professionnel_record RECORD;
+    professionnel_prive_record RECORD;
 BEGIN
     -- Table utilisateur 
     SELECT * INTO utilisateur_record 

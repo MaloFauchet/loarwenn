@@ -134,7 +134,7 @@ INSERT INTO image(titre_image, chemin) VALUES
 ('Plan Parcours accrobranche', '/images/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/plan_parcours_accrobranche.jpg'),
 ('Carte Dégustation de vins', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/carte_degustation_de_vins.jpg'),
 ('Carte Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/carte_diner_gastronomique.jpg'),
-('Carte Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/carte_degustation_de_produits_locaux.jpg');
+('Carte Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/carte_degustation_de_produits_locaux.jpg'),
 
 -- Diner gastronomique
 ('Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/diner_1.jpg'),
@@ -185,7 +185,7 @@ INSERT INTO image(titre_image, chemin) VALUES
 ('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_1.jpg'),
 ('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_2.jpg'),
 ('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_3.jpg'),
-('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_4.jpg'),
+('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_4.jpg');
 
 
 
@@ -499,7 +499,59 @@ INSERT INTO image_illustre_offre (id_offre, id_image) VALUES
 (17, 17),
 (18, 18),
 (19, 19),
-(20, 20);
+(20, 20),
+
+-- diner gastro
+(11, 30),
+(11, 31),
+(11, 32),
+(11, 33),
+-- cours de yoga
+(12, 34),
+(12, 35),
+(12, 36),
+(12, 37),
+-- bateau
+(13, 38),
+(13, 39),
+(13, 40),
+(13, 41),
+-- sculpture
+(14, 42),
+(14, 43),
+(14, 44),
+(14, 45),
+-- cine
+(15, 46),
+(15, 47),
+(15, 48),
+(15, 49),
+-- accro
+(16, 50),
+(16, 51),
+(16, 52),
+(16, 53),
+-- degu local
+(17, 54),
+(17, 55),
+(17, 56),
+(17, 57),
+-- photo
+(18, 58),
+(18, 59),
+(18, 60),
+(18, 61),
+-- plongee
+(19, 62),
+(19, 63),
+(19, 64),
+(19, 65),
+-- danse
+(20, 66),
+(20, 67),
+(20, 68),
+(20, 69);
+
 
 
 -- Insertion Tag

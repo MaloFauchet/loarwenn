@@ -50,10 +50,10 @@ $pro = $professionnelController->getProfessionnelById($offre['id_professionnel']
 
 // On récupère les informations du professionnel par son id
 // $pro = $professionnelController->getProfessionnelById($id_pro);
-// echo "<pre>";
-// print_r($offre);
+//echo "<pre>";
+//print_r($offre);
 // print_r($pro);
-// echo "</pre>";
+//echo "</pre>";
 
 $images_str = $offre["images"];
 // On transforme la chaîne d'images en tableau
@@ -105,11 +105,11 @@ function afficherEtoile($note){
         <!-- Image et titre de l'offre -->
         <article>
             <figure class="offre">
-                <div class="grid-images">
-                    <img src="<?= $offre["chemin"] ?>" alt="<?= $offre["titre_image"] ?>">
+                <div class="grid-images" style="max-height: 600px;">
+                    <img src="<?= $offre["chemin"] ?>" alt="<?= $offre["titre_image"] ?>" height="200px">
                     <?php
                     // On affiche les images de l'offre
-                    for ($i = 0; $i < 4; $i++) {
+                    for ($i = 1; $i < 5; $i++) {
                         if (isset($images[$i]) && !empty($images[$i])) {
                             $image_infos = explode('|', $images[$i]);
                             ?><img src="<?= $image_infos[1] ?>" alt="<?= $image_infos[0] ?>" class="image-secondaire"><?php
@@ -415,6 +415,12 @@ function afficherEtoile($note){
                     <?php endforeach; ?>
                 </ul>
                 <!-- Prestation non incluses -->
+                <?php
+                    // On affiche les prestations non incluses dans l'offre
+                    if (empty($offre["prestation_non_incluses"])) {
+                        echo "<h3>Aucune prestation non incluse</h3>";
+                        break;
+                    } ?>
                 <h3>Prestation Non Incluses</h3>
                 <ul>
                     <?php
