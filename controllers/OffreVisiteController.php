@@ -121,12 +121,13 @@ class OffreVisiteController {
         $jours,
         $matin_heure_debut,
         $matin_heure_fin,
+        
+        $id_professionnel,
+        
+        $duree,
+        
         $apres_midi_heure_debut,
         $apres_midi_heure_fin,
-
-        $id_professionnel,
-
-        $duree,
         $prix_prive,
         ) {
         return $this->offreVisite->updateVisiteNonGuideeOffre(

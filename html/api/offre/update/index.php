@@ -126,6 +126,9 @@ try{
             $_POST["prix"]
         );
     } else if ($_POST["type_offre"] === 'parc_attraction') {
+
+        //echo json_encode($_POST);
+        //die();
         $controllerParcAttraction->updateParcAttractionOffre(
             $_GET["id_offre"],
 
@@ -149,21 +152,18 @@ try{
             $_POST["chemin_image"],
             
             $_POST["joursOuverture"],
-
             $_POST["horaire1"],
-
             $_POST["horaire2"],
 
             $_SESSION['id_utilisateur'],
             
             $_POST["nbAttractions"],
             $_POST["age"],
-            isset($_POST["titre_image_parc"]) ? $_POST["titre_image_parc"] : null,
-            isset($_POST["chemin_image_parc"]) ? $_POST["chemin_image_parc"] : null,
+            $_POST["titre_image_parc"],
+            $_POST["chemin_image_parc"],
 
             $horaire3,  
             $horaire4,
-
             isset($_POST["prix"]) ? $_POST["prix"] : null,
         );
     } else if ($_POST["type_offre"] === 'visite_guidee') {

@@ -1,11 +1,10 @@
-
-        -- Suppression des tables existantes
+-- Suppression des tables existantes
 DROP SCHEMA IF EXISTS tripenazor CASCADE;
 CREATE SCHEMA tripenazor;
 SET SCHEMA 'tripenazor';
 
 
-    -- Type Activité 
+-- Type Activité 
 CREATE TYPE type_activite AS ENUM (
   'visite_guidee',
   'visite_non_guidee',
@@ -412,7 +411,8 @@ BEGIN
 	VALUES (v_id_utilisateur);
     INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
     VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
-    
+    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
+    VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
 
     -- 4. Insérer dans image
     INSERT INTO tripenazor.image (titre_image, chemin)
@@ -526,6 +526,11 @@ BEGIN
         VALUES (p_nom_ville, p_code_postal)
         RETURNING id_ville INTO v_id_ville;
     END IF;
+
+    -- 1.5 Insérer l'adresse
+    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
+    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
+    RETURNING id_adresse INTO v_id_adresse;
 
     -- 1.5 Insérer l'adresse
     INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
@@ -999,18 +1004,36 @@ BEGIN
     -- Insert des tags
     FOREACH v_tag IN ARRAY p_tags
     LOOP
-        v_id_tag_commun = null;
-        v_id_tag = null;
+        v_id_tag := NULL;
+        v_id_tag_commun := NULL;
 
-        SELECT id_tag INTO v_id_tag FROM tripenazor.tag
+        -- Chercher le tag dans la table "tag"
+        SELECT id_tag INTO v_id_tag
+        FROM tripenazor.tag
         WHERE libelle_tag = v_tag;
 
-        IF v_id_tag IS NOT NULL THEN
-            SELECT id_tag INTO v_id_tag_commun FROM tripenazor.tag_commun
-            WHERE id_tag = v_id_tag;
+        -- Si le tag n'existe pas, on l'insère, puis on le marque comme commun
+        IF v_id_tag IS NULL THEN
+            INSERT INTO tripenazor.tag (libelle_tag)
+            VALUES (v_tag)
+            RETURNING id_tag INTO v_id_tag;
 
-            IF v_id_tag_commun IS NOT NULL THEN
-                INSERT INTO tripenazor.offre_activite_possede_tag(id_offre, id_tag)
+            INSERT INTO tripenazor.tag_commun (id_tag)
+            VALUES (v_id_tag);
+        END IF;
+
+        -- Vérifie que ce tag est bien commun
+        SELECT id_tag INTO v_id_tag_commun
+        FROM tripenazor.tag_commun
+        WHERE id_tag = v_id_tag;
+
+        -- Si c'est bien un tag commun, lier à l'offre si pas déjà lié
+        IF v_id_tag_commun IS NOT NULL THEN
+            IF NOT EXISTS (
+                SELECT 1 FROM tripenazor.offre_activite_possede_tag
+                WHERE id_offre = v_id_offre AND id_tag = v_id_tag
+            ) THEN
+                INSERT INTO tripenazor.offre_activite_possede_tag (id_offre, id_tag)
                 VALUES (v_id_offre, v_id_tag);
             END IF;
         END IF;
@@ -2734,38 +2757,29 @@ BEGIN
     END IF;
 
     -- Jour et horaire de l'activité
+    FOREACH v_jour IN ARRAY p_jours
     LOOP
-        v_id_tag := NULL;
-        v_id_tag_commun := NULL;
+        v_id_jour := NULL;
 
-        -- Chercher le tag dans la table "tag"
-        SELECT id_tag INTO v_id_tag
-        FROM tripenazor.tag
-        WHERE libelle_tag = v_tag;
+        -- Récupère l'ID du jour correspondant au libellé
+        SELECT id_jour INTO v_id_jour
+        FROM tripenazor.jour
+        WHERE libelle = v_jour;
 
-        -- Si le tag n'existe pas, on l'insère, puis on le marque comme commun
-        IF v_id_tag IS NULL THEN
-            INSERT INTO tripenazor.tag (libelle_tag)
-            VALUES (v_tag)
-            RETURNING id_tag INTO v_id_tag;
-
-            INSERT INTO tripenazor.tag_commun (id_tag)
-            VALUES (v_id_tag);
-        END IF;
-
-        -- Vérifie que ce tag est bien commun
-        SELECT id_tag INTO v_id_tag_commun
-        FROM tripenazor.tag_commun
-        WHERE id_tag = v_id_tag;
-
-        -- Si c'est bien un tag commun, lier à l'offre si pas déjà lié
-        IF v_id_tag_commun IS NOT NULL THEN
-            IF NOT EXISTS (
-                SELECT 1 FROM tripenazor.offre_parc_attraction_possede_tag
-                WHERE id_offre = v_id_offre AND id_tag = v_id_tag
+        IF v_id_jour IS NOT NULL THEN
+            -- Vérifie si l'association existe déjà
+            IF EXISTS (
+                SELECT 1 FROM tripenazor.jour_ouverture
+                WHERE id_offre = v_id_offre
             ) THEN
-                INSERT INTO tripenazor.offre_parc_attraction_possede_tag (id_offre, id_tag)
-                VALUES (v_id_offre, v_id_tag);
+                -- Mise à jour de l'ID du jour pour l'offre
+                UPDATE tripenazor.jour_ouverture
+                SET id_jour = v_id_jour
+                WHERE id_offre = v_id_offre;
+            ELSE
+                -- Sinon, insertion de la nouvelle association
+                INSERT INTO tripenazor.jour_ouverture(id_jour, id_offre)
+                VALUES (v_id_jour, v_id_offre);
             END IF;
         END IF;
     END LOOP;
@@ -3246,7 +3260,7 @@ BEGIN
                 SELECT 1 FROM tripenazor.offre_restauration_possede_tag
                 WHERE id_offre = v_id_offre AND id_tag = v_id_tag
             ) THEN
-                INSERT INTO tripenazor.offre_activite_possede_tag (id_offre, id_tag)
+                INSERT INTO tripenazor.offre_restauration_possede_tag (id_offre, id_tag)
                 VALUES (v_id_offre, v_id_tag);
             END IF;
         END IF;
@@ -3550,6 +3564,7 @@ SELECT id_ville INTO v_id_ville FROM tripenazor.ville
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION tripenazor.update_offre_visite_guidee(
     p_id_offre INT,
@@ -4104,7 +4119,7 @@ BEGIN
             AND id_utilisateur_prive = v_id_professionnel_prive;
         ELSE
             INSERT INTO tripenazor.abonnement (id_offre, id_utilisateur_prive, prix)
-            VALUES (v_id_offre, v_id_professionnel_prive, p_prix_prive);
+            VALUES (v_id_offre, v_id_professionnel_prive, p_prix_);
         END IF;
     ELSIF v_id_professionnel_public IS NOT NULL THEN
         IF EXISTS (
@@ -4172,9 +4187,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-
-
-
 CREATE OR REPLACE FUNCTION tripenazor.publication_offre(
     o_id_offre INT,
     en_relief BOOLEAN,
@@ -4216,48 +4228,185 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_prive(
+    -- Général
+    p_id INT,
+    p_nom TEXT,
+    p_prenom TEXT, 
+    p_email TEXT, 
+    p_telephone TEXT,
+    p_denomination TEXT,
+    p_siren INT,
+    p_iban TEXT,
+    p_lien_site_web TEXT,
 
+    -- Adresse
+    p_numero_adresse INT,
+    p_voie_entreprise TEXT,
+    p_complement_adresse TEXT,
 
-
-
-CREATE OR REPLACE FUNCTION tripenazor.publication_offre(
-    o_id_offre INT,
-    en_relief BOOLEAN,
-    a_la_une BOOLEAN,
-    nb_semaines INT
+    -- Ville
+    p_ville TEXT, 
+    p_code_postal TEXT 
 )
 RETURNS VOID AS $$
 DECLARE
-    v_id_souscription INT;
+    utilisateur_record RECORD;
+    professionnel_record RECORD;
+    professionnel_prive_record RECORD;
+
+    adresse_record RECORD;
+    ville_record RECORD;
 BEGIN
-    -- Vérification de l'existence de l'offre
-    IF NOT EXISTS (SELECT 1 FROM tripenazor.offre WHERE id_offre = o_id_offre) THEN
-        RAISE EXCEPTION 'L''offre avec l''ID % n''existe pas', o_id_offre;
-    END IF;
+    -- Table utilisateur 
+    SELECT * INTO utilisateur_record 
+    FROM tripenazor.utilisateur
+    WHERE id_utilisateur = p_id;
 
-    -- Mise à jour de l'offre
-    UPDATE tripenazor.offre
-    SET en_ligne = TRUE
-    WHERE id_offre = o_id_offre;
+    -- Table professionnel
+    SELECT * INTO professionnel_record
+    FROM tripenazor.professionnel
+    WHERE id_utilisateur = p_id;
 
-    -- Insertion dans la table relation des souscriptions aux options
-    -- Si il y a une option en relief
-    IF en_relief = 'on' THEN
-        -- Creation d'une souscription
-        INSERT INTO tripenazor.souscription(nb_semaine) 
-        VALUES (nb_semaines)
-        RETURNING id_souscription INTO v_id_souscription;
-        INSERT INTO tripenazor.option_payante_offre(id_offre, id_option, id_souscription)
-        VALUES (o_id_offre, 1, v_id_souscription);
-    ELSEIF a_la_une = 'on' THEN
-        -- Creation d'une souscription
-        INSERT INTO tripenazor.souscription(nb_semaine) 
-        VALUES (nb_semaines)
-        RETURNING id_souscription INTO v_id_souscription;
-        -- Si il y a une option à la une
-        INSERT INTO tripenazor.option_payante_offre(id_offre, id_option, id_souscription)
-        VALUES (o_id_offre, 2, v_id_souscription);
-    END IF;
+    -- Table adresse
+    SELECT * INTO adresse_record
+    FROM tripenazor.adresse 
+    WHERE id_adresse = utilisateur_record.id_adresse;
+
+
+    -- Utilisateur
+    UPDATE tripenazor.utilisateur 
+    SET 
+        prenom = COALESCE(p_prenom, NULL),
+        nom = COALESCE(p_nom, NULL),
+        num_telephone = COALESCE(p_telephone, NULL),
+        email = COALESCE(p_email, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Professionnel
+    UPDATE tripenazor.professionnel
+    SET 
+        lien_site_web = COALESCE(p_lien_site_web, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Professionnel privé
+    UPDATE tripenazor.professionnel_prive
+    SET 
+        denomination = COALESCE(p_denomination, NULL),
+        siren = COALESCE(p_siren, NULL),
+        iban = COALESCE(p_iban, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Adresse
+    UPDATE tripenazor.adresse 
+    SET 
+        voie = COALESCE(p_voie_entreprise, NULL),
+        numero_adresse = COALESCE(p_numero_adresse, NULL),
+        complement_adresse = COALESCE(p_complement_adresse, NULL)
+    WHERE id_adresse = adresse_record.id_adresse;
+
+    -- Ville (si liée par la table adresse)
+    UPDATE tripenazor.ville 
+    SET 
+        nom_ville = COALESCE(p_ville, NULL),
+        code_postal = COALESCE(p_code_postal, NULL)
+    WHERE id_ville = adresse_record.id_ville;
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_public(
+    -- Général
+    p_id INT,
+    p_nom TEXT,
+    p_prenom TEXT, 
+    p_email TEXT, 
+    p_telephone TEXT,
+    p_raison_sociale TEXT,
+    p_lien_site_web TEXT,
+
+    -- Adresse
+    p_numero_adresse INT,
+    p_voie_entreprise TEXT,
+    p_complement_adresse TEXT,
+
+    -- Ville
+    p_ville TEXT, 
+    p_code_postal TEXT 
+)
+RETURNS VOID AS $$
+DECLARE
+    utilisateur_record RECORD;
+    professionnel_record RECORD;
+    professionnel_prive_record RECORD;
+
+    adresse_record RECORD;
+    ville_record RECORD;
+BEGIN
+    -- Table utilisateur 
+    SELECT * INTO utilisateur_record 
+    FROM tripenazor.utilisateur
+    WHERE id_utilisateur = p_id;
+
+    -- Table professionnel
+    SELECT * INTO professionnel_record
+    FROM tripenazor.professionnel
+    WHERE id_utilisateur = p_id;
+
+    -- Table adresse
+    SELECT * INTO adresse_record
+    FROM tripenazor.adresse 
+    WHERE id_adresse = utilisateur_record.id_adresse;
+
+    -- Utilisateur
+    UPDATE tripenazor.utilisateur 
+    SET 
+        prenom = COALESCE(p_prenom, NULL),
+        nom = COALESCE(p_nom, NULL),
+        num_telephone = COALESCE(p_telephone, NULL),
+        email = COALESCE(p_email, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Professionnel
+    UPDATE tripenazor.professionnel
+    SET 
+        lien_site_web = COALESCE(p_lien_site_web, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Professionnel privé
+    UPDATE tripenazor.professionnel_public
+    SET 
+        raison_sociale = COALESCE(p_raison_sociale, NULL)
+    WHERE id_utilisateur = p_id;
+
+    -- Adresse
+    UPDATE tripenazor.adresse 
+    SET 
+        voie = COALESCE(p_voie_entreprise, NULL),
+        numero_adresse = COALESCE(p_numero_adresse, NULL),
+        complement_adresse = COALESCE(p_complement_adresse, NULL)
+    WHERE id_adresse = adresse_record.id_adresse;
+
+    -- Ville (si liée par la table adresse)
+    UPDATE tripenazor.ville 
+    SET 
+        nom_ville = COALESCE(p_ville, NULL),
+        code_postal = COALESCE(p_code_postal, NULL)
+    WHERE id_ville = adresse_record.id_ville;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_prive(
+    p_id_image INT DEFAULT NULL,
+    p_chemin_image TEXT DEFAULT NULL
+)
+RETURNS VOID AS $$
+DECLARE
+
+BEGIN
+    IF p_id_image IS NOT NULL AND p_chemin_image IS NOT NULL THEN
+        UPDATE tripenazor.image
+        SET chemin = p_chemin_image
+        WHERE id_image = p_id_image;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;

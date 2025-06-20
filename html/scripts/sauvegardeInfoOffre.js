@@ -124,6 +124,7 @@ function getValuesInputs() {
     let jours = Array.from(checkboxJours)
         .filter(checkbox => checkbox.checked)
         .map(checkbox => checkbox.id);
+        console.log("chemin:",document.getElementById("chemin_image").value);
     let result = {
         //champ commun a toutes les offres
         type_offre:document.getElementById("type-offre").value,
@@ -147,6 +148,7 @@ function getValuesInputs() {
 
         titre_image:document.getElementById("titre_image").value,
         chemin_image:document.getElementById("chemin_image").value,
+        
 
         //specifique au differentes type offres
         duration: document.getElementById("duree") ? document.getElementById("duree").value:null,
@@ -228,7 +230,7 @@ async function sendData(data) {
     }).catch(error => {
         // TODO : afficher un message d'erreur (flash card)
         console.error("Erreur lors de la sauvegarde", "Erreur lors de l'enregistrement");
-        displayFlashCard("erroe",error)
+        displayFlashCard("erroe","Erreur lors de l'enregistrement")
         //displayFlashCard("error")
     });
 

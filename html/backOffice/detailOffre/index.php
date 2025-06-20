@@ -114,7 +114,7 @@ $joursSemaines = explode(',', $currentOffre['jours_ouverture']);
                     <img src="/images/offres/velo.png" alt="Vélo">
                 </div>
                 <input type="hidden" id="titre_image" name="titre_image" value="<?= $currentOffre["titre_image"] ?>">
-                <input type="file" id="chemin_image" name="chemin_image" accept="image/*" style="display:none" value="<?= $currentOffre["chemin"] ?>">
+                <input type="hidden" id="chemin_image" name="chemin_image" accept="image/*" style="display:none" value="<?= $currentOffre["chemin"] ?>">
                 <div class="input-titre">
                     <label class="label-input" for="titre">Titre</label>
                     <input id="titre" type="text" 
