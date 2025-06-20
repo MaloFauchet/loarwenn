@@ -136,6 +136,56 @@ INSERT INTO image(titre_image, chemin) VALUES
 ('Carte Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/carte_diner_gastronomique.jpg'),
 ('Carte Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/carte_degustation_de_produits_locaux.jpg');
 
+-- Diner gastronomique
+('Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/diner_1.jpg'),
+('Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/diner_2.jpg'),
+('Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/diner_3.jpg'),
+('Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/diner_4.webp'),
+-- Cours de yoga
+('Cours de yoga en plein air', '/images/offres/75f12ee4-844f-43a5-9fa2-0ef6e3b22e93/yoga_1.jpg'),
+('Cours de yoga en plein air', '/images/offres/75f12ee4-844f-43a5-9fa2-0ef6e3b22e93/yoga_2.jpg'),
+('Cours de yoga en plein air', '/images/offres/75f12ee4-844f-43a5-9fa2-0ef6e3b22e93/yoga_3.jpg'),
+('Cours de yoga en plein air', '/images/offres/75f12ee4-844f-43a5-9fa2-0ef6e3b22e93/yoga_4.jpg'),
+-- Excursion bateau
+('Excursion en bateau', '/images/offres/61f1e16d-6e89-4532-ace1-1463c8f5a18d/bateau_1.jpg'),
+('Excursion en bateau', '/images/offres/61f1e16d-6e89-4532-ace1-1463c8f5a18d/bateau_2.jpg'),
+('Excursion en bateau', '/images/offres/61f1e16d-6e89-4532-ace1-1463c8f5a18d/bateau_3.jpg'),
+('Excursion en bateau', '/images/offres/61f1e16d-6e89-4532-ace1-1463c8f5a18d/bateau_4.webp'),
+-- Sculpture
+('Atelier sculpture', '/images/offres/9a8c861c-9df2-4719-b36f-61efbfca67a2/sculpture_1.jpg'),
+('Atelier sculpture', '/images/offres/9a8c861c-9df2-4719-b36f-61efbfca67a2/sculpture_2.jpg'),
+('Atelier sculpture', '/images/offres/9a8c861c-9df2-4719-b36f-61efbfca67a2/sculpture_3.jpg'),
+('Atelier sculpture', '/images/offres/9a8c861c-9df2-4719-b36f-61efbfca67a2/sculpture_4.webp'),
+-- Festival de cinema
+('Festival de cinéma', '/images/offres/003e3504-0c0f-408e-8264-d013f3a03a27/cine_1.jpg'),
+('Festival de cinéma', '/images/offres/003e3504-0c0f-408e-8264-d013f3a03a27/cine_2.jpg'),
+('Festival de cinéma', '/images/offres/003e3504-0c0f-408e-8264-d013f3a03a27/cine_3.jpg'),
+('Festival de cinéma', '/images/offres/003e3504-0c0f-408e-8264-d013f3a03a27/cine_4.webp'),
+-- Accrobranche
+('Parcours accrobranche', '/images/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/accro_1.jpg'),
+('Parcours accrobranche', '/images/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/accro_2.jpg'),
+('Parcours accrobranche', '/images/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/accro_3.jpg'),
+('Parcours accrobranche', '/images/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/accro_4.jpg'),
+-- Degustation
+('Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/degu_1.jpg'),
+('Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/degu_2.jpg'),
+('Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/degu_3.webp'),
+('Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/degu_4.jpg'),
+-- Initiation photo
+('Initiation à la photographie', '/images/offres/0bcba216-b6a3-44e1-a847-4984d47091d5/photo_1.webp'),
+('Initiation à la photographie', '/images/offres/0bcba216-b6a3-44e1-a847-4984d47091d5/photo_2.jpg'),
+('Initiation à la photographie', '/images/offres/0bcba216-b6a3-44e1-a847-4984d47091d5/photo_3.jpg'),
+('Initiation à la photographie', '/images/offres/0bcba216-b6a3-44e1-a847-4984d47091d5/photo_4.jpg'),
+-- Stage Plongee
+('Stage de plongée', '/images/offres/7792a9b0-2a3c-48ab-8fa2-e96ff7ce8455/plong_1.jpg'),
+('Stage de plongée', '/images/offres/7792a9b0-2a3c-48ab-8fa2-e96ff7ce8455/plong_2.jpg'),
+('Stage de plongée', '/images/offres/7792a9b0-2a3c-48ab-8fa2-e96ff7ce8455/plong_3.jpg'),
+('Stage de plongée', '/images/offres/7792a9b0-2a3c-48ab-8fa2-e96ff7ce8455/plong_4.jpg'),
+-- Cours de danse
+('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_1.jpg'),
+('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_2.jpg'),
+('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_3.jpg'),
+('Cours de danse provençale', '/images/offres/dfc60b08-27cd-4129-aeb3-77fc6eaf8133/danse_4.jpg'),
 
 
 
