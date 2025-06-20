@@ -123,18 +123,18 @@ class Offre {
                 LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)"
         ;
 
+        $stmt = $this->conn->prepare($sql);
         if ($id_professionnel !== null) {
             $sql = $sql . "-- Filtrage
             WHERE 
-            a.id_utilisateur_prive = :id_utilisateur
-            OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
+            (a.id_utilisateur_prive = :id_utilisateur
+            OR ppp.id_utilisateur_public = :id_utilisateur) and o.id_offre = :id_offre;";
             $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
         } else {
             $sql = $sql . "-- Filtrage
             WHERE o.id_offre = :id_offre;";
         }
             
-        $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
 
         $stmt->execute();
