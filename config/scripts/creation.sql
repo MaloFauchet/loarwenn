@@ -394,11 +394,6 @@ BEGIN
     VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
     RETURNING id_adresse INTO v_id_adresse;
 
-    -- 1.5 Insérer l'adresse
-    INSERT INTO tripenazor.adresse (voie, numero_adresse, complement_adresse, id_ville) 
-    VALUES (p_voie_adresse, p_num_adresse, p_complement, v_id_ville)
-    RETURNING id_adresse INTO v_id_adresse;
-
     -- 2. Insérer l'utilisateur
     INSERT INTO tripenazor.utilisateur (
         nom, prenom, email, num_telephone, mot_de_passe, id_adresse
@@ -411,8 +406,6 @@ BEGIN
     -- 3. Insérer dans professionnel
 	INSERT INTO tripenazor.professionnel (id_utilisateur)
 	VALUES (v_id_utilisateur);
-    INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
-    VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
     INSERT INTO tripenazor.professionnel_prive (id_utilisateur, denomination, siren, iban)
     VALUES (v_id_utilisateur, p_denomination, p_siren, p_iban);
 
