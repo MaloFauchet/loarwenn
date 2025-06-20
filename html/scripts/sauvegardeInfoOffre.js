@@ -129,7 +129,7 @@ function getValuesInputs() {
         //champ commun a toutes les offres
         type_offre:document.getElementById("type-offre").value,
         title: document.getElementById("titre").value,
-        enLigne:document.getElementById("slider-etat").checked  ?1 :0, 
+        enLigne:1, 
         codePostal: document.getElementById("code-postal").value,
         complementAdresse: document.getElementById("complement-adresse").value,
         voie: document.getElementById("voie").value,
