@@ -389,15 +389,37 @@ INSERT INTO statut_log (id_offre, date_mise_en_ligne, date_mise_hors_ligne) VALU
 
 -- Insertion Avis
 INSERT INTO avis (id_utilisateur, id_offre, description_avis, note_avis, titre_avis, date_avis) VALUES
--- Membre 1
-(1, 3, 'Cuisine raffinée et service impeccable. Nous avons adoré le cadre et le menu dégustation.', 5.0, 'Excellent dîner gastronomique', '2025-06-10'),
-(1, 7, 'Superbe spectacle en plein air, très bien organisé. Lumières et ambiance magique.', 4.0, 'Une belle soirée culturelle', '2025-06-08'),
-(1, 14, 'Très bonne activité pour les enfants, animateurs au top. À refaire !', 4.5, 'Parfait pour les familles', '2025-06-11'),
-(1, 5, 'Activité mal organisée, aucune explication claire. Nous avons attendu longtemps sans savoir quoi faire. Décevant.', 2.0, 'Organisation à revoir', '2025-06-11'),
--- Membre 3
-(3, 2, 'Visite guidée très instructive, guide passionné. On a appris plein de choses.', 4.5, 'Découverte enrichissante', '2025-06-09'),
-(3, 16, 'Beaucoup d’attractions, mais trop de monde l''après-midi. Prévoir tôt !', 4.0, 'Parc sympa mais bondé', '2025-06-10'),
-(3, 11, 'Cadre romantique et plats délicieux. Mention spéciale au dessert.', 5.0, 'Un dîner parfait', '2025-06-12');
+-- Offres avec 2 avis (id_offre: 1, 2, 9, 10, 11, 14, 16)
+(1, 1, 'Une balade agréable en bord de mer, bien commentée. Parfaite pour se détendre.', 4.0, 'Belle expérience côtière', '2025-06-19'),
+(3, 1, 'Un moment très reposant et instructif. Le guide était passionnant.', 4.5, 'Balade enrichissante', '2025-06-19'),
+
+(1, 2, 'Très bon moment pour découvrir l’histoire locale. Le guide était dynamique.', 4.5, 'Immersion historique', '2025-06-19'),
+(3, 2, 'Visite très bien structurée. J’ai appris beaucoup sur les monuments.', 4.0, 'Très instructif', '2025-06-18'),
+
+(1, 9, 'J’ai adoré découvrir les marchés ! Les producteurs sont adorables.', 5.0, 'Une promenade gourmande', '2025-06-17'),
+(3, 9, 'Produits délicieux et ambiance authentique. Idéal pour les familles.', 4.5, 'Saveurs locales au top', '2025-06-17'),
+
+(1, 10, 'Super circuit à vélo ! Les explications du guide étaient claires.', 4.5, 'Découverte à deux roues', '2025-06-17'),
+(3, 10, 'Facile et agréable. Les vélos étaient confortables, j’ai beaucoup aimé.', 4.0, 'Balade sans effort', '2025-06-17'),
+
+(1, 11, 'Un dîner d’exception. Chaque plat était une œuvre d’art.', 5.0, 'Gastronomie sublime', '2025-06-16'),
+(3, 11, 'Expérience culinaire mémorable. Service impeccable.', 5.0, 'Un festin parfait', '2025-06-16'),
+
+(1, 14, 'Le festival est très bien organisé, belles projections !', 4.0, 'Bon moment ciné', '2025-06-15'),
+(3, 14, 'Ambiance conviviale et films variés. Belle initiative locale.', 4.5, 'Soirée réussie', '2025-06-15'),
+
+(1, 16, 'Activité très fun ! Les parcours sont adaptés à tous les âges.', 4.0, 'Aventure en hauteur', '2025-06-14'),
+(3, 16, 'Bonne organisation et sensations fortes. Je recommande.', 4.0, 'Frissons en famille', '2025-06-14'),
+
+-- Offres avec 1 avis
+(1, 3, 'Très bonne soirée, j’ai appris plein de choses sur les vins.', 4.5, 'Dégustation conviviale', '2025-06-12'),
+(3, 5, 'Excellent moniteur, super ambiance sur le bateau.', 4.5, 'Navigation au top', '2025-06-11'),
+(1, 7, 'Une superbe ambiance pour un concert en plein air. Très relaxant.', 4.0, 'Jazz et nature', '2025-06-18'),
+(3, 12, 'Le cours de yoga était très apaisant. J’y retournerai !', 4.5, 'Sérénité face à la mer', '2025-06-16'),
+(1, 15, 'Organisation fluide et films de qualité. Bravo aux organisateurs.', 4.5, 'Festival captivant', '2025-06-13'),
+(3, 17, 'Les produits locaux étaient très savoureux. Une belle découverte.', 4.0, 'Saveurs du terroir', '2025-06-12'),
+(1, 20, 'Découverte originale des danses provençales. Très ludique.', 4.0, 'Ambiance folklorique', '2025-06-11');
+
 
 -- INSERT INTO avis_possede_image (id_avis, id_image) VALUES;
 
