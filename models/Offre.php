@@ -51,96 +51,149 @@ class Offre {
      * Récupère une offre  par son id
      * @return offre
      */
-    public function getOffreById($id_professionnel,$id_offre) {
-        $sql = "SELECT 
+    public function getOffreById($id_professionnel, $id_offre) {
+        $sql = "
+            SELECT 
                 o.*,
-
-                -- Infos spécifiques selon le type
                 ov.duree AS visite_duree,
-                
-
                 oa.duree AS activite_duree,
                 oa.age AS activite_age,
-                
-
                 os.duree AS spectacle_duree,
-                
                 os.capacite_accueil AS spectacle_capacite,
-                
-
                 opa.nb_attraction AS pa_nb_attraction,
                 opa.age_min AS pa_age_min,
-
                 tripenazor.image.chemin AS restaurant_carte_image,
-				pa_i.chemin AS pa_plan_image,
-                orestau.id_gamme_prix ,
-				gp.libelle_gamme_prix AS restaurant_gamme_prix,
+                pa_i.chemin AS pa_plan_image,
+                orestau.id_gamme_prix,
+                gp.libelle_gamme_prix AS restaurant_gamme_prix,
                 tripenazor.get_langue_by_offre(o.id_offre) AS langue,
-				tripenazor.get_prestation_incluses_by_offre(o.id_offre) as prestation_incluses,
-				tripenazor.get_prestation_non_incluses_by_offre(o.id_offre) as prestation_non_incluses,
-				
-
-
-                -- Pro info
+                tripenazor.get_prestation_incluses_by_offre(o.id_offre) as prestation_incluses,
+                tripenazor.get_prestation_non_incluses_by_offre(o.id_offre) as prestation_non_incluses,
                 COALESCE(pp.denomination, pu.raison_sociale) AS nom_societe,
                 COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public) AS id_professionnel,
                 pro.lien_site_web AS site_web,
-				pp.denomination as denomination,
-				pu.raison_sociale as raison_sociale,
+                pp.denomination as denomination,
+                pu.raison_sociale as raison_sociale,
                 util.nom AS nom_utilisateur,
                 util.prenom AS prenom,
                 util.email AS email_utilisateur,
                 util.num_telephone AS telephone_utilisateur,
-				tripenazor.get_images_by_offre(o.id_offre) as images,
-				tripenazor.get_horaires_by_offre(o.id_offre) as horaires
+                tripenazor.get_images_by_offre(o.id_offre) as images,
+                tripenazor.get_horaires_by_offre(o.id_offre) as horaires
 
-
-                FROM tripenazor.infos_carte_offre_with_offline o
-
-                -- Type spécifique
-                LEFT JOIN tripenazor.offre_visite ov ON ov.id_offre = o.id_offre
-                LEFT JOIN tripenazor.offre_activite oa ON oa.id_offre = o.id_offre
-                LEFT JOIN tripenazor.offre_spectacle os ON os.id_offre = o.id_offre
-                LEFT JOIN tripenazor.offre_parc_attraction opa ON opa.id_offre = o.id_offre
-                LEFT JOIN tripenazor.offre_restauration orestau ON orestau.id_offre = o.id_offre
-                
-
-				-- restaurant
-                LEFT JOIN tripenazor.gamme_prix gp ON orestau.id_gamme_prix = gp.id_gamme_prix
-				LEFT JOIN tripenazor.image ON orestau.id_image = tripenazor.image.id_image
-
-				--spectacle
-				LEFT JOIN tripenazor.image pa_i ON opa.id_image = pa_i.id_image
-
-                -- Pro linkage
-                LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
-                LEFT JOIN tripenazor.pro_public_propose_offre ppp ON ppp.id_offre = o.id_offre
-                LEFT JOIN tripenazor.professionnel p 
-                    ON p.id_utilisateur = a.id_utilisateur_prive OR p.id_utilisateur = ppp.id_utilisateur_public
-                LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
-                LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
-                LEFT JOIN tripenazor.professionnel pro ON pro.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
-                LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)"
-        ;
+            FROM tripenazor.infos_carte_offre_with_offline o
+            LEFT JOIN tripenazor.offre_visite ov ON ov.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_activite oa ON oa.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_spectacle os ON os.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_parc_attraction opa ON opa.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_restauration orestau ON orestau.id_offre = o.id_offre
+            LEFT JOIN tripenazor.gamme_prix gp ON orestau.id_gamme_prix = gp.id_gamme_prix
+            LEFT JOIN tripenazor.image ON orestau.id_image = tripenazor.image.id_image
+            LEFT JOIN tripenazor.image pa_i ON opa.id_image = pa_i.id_image
+            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+            LEFT JOIN tripenazor.pro_public_propose_offre ppp ON ppp.id_offre = o.id_offre
+            LEFT JOIN tripenazor.professionnel p 
+                ON p.id_utilisateur = a.id_utilisateur_prive OR p.id_utilisateur = ppp.id_utilisateur_public
+            LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+            LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+            LEFT JOIN tripenazor.professionnel pro ON pro.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+            LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+        ";
 
         if ($id_professionnel !== null) {
-            $sql = $sql . "-- Filtrage
+            $sql .= "
             WHERE 
-            a.id_utilisateur_prive = :id_utilisateur
-            OR ppp.id_utilisateur_public = :id_utilisateur and o.id_offre = :id_offre;";
-            $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
+                (a.id_utilisateur_prive = :id_utilisateur
+                OR ppp.id_utilisateur_public = :id_utilisateur)
+            AND o.id_offre = :id_offre";
         } else {
-            $sql = $sql . "-- Filtrage
-            WHERE o.id_offre = :id_offre;";
+            $sql .= " WHERE o.id_offre = :id_offre";
         }
-            
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
+        error_log('ID PROFESSIONNEL : '. $id_professionnel);
 
+        $stmt = $this->conn->prepare($sql);
+
+        if ($id_professionnel !== null) {
+            $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
+        }
+
+        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
+    public function getOffreByIdDetails($id_professionnel, $id_offre) {
+        $sql = "
+            SELECT 
+                o.*,
+                ov.duree AS visite_duree,
+                oa.duree AS activite_duree,
+                oa.age AS activite_age,
+                os.duree AS spectacle_duree,
+                os.capacite_accueil AS spectacle_capacite,
+                opa.nb_attraction AS pa_nb_attraction,
+                opa.age_min AS pa_age_min,
+                tripenazor.image.chemin AS restaurant_carte_image,
+                pa_i.chemin AS pa_plan_image,
+                orestau.id_gamme_prix,
+                gp.libelle_gamme_prix AS restaurant_gamme_prix,
+                tripenazor.get_langue_by_offre(o.id_offre) AS langue,
+                tripenazor.get_prestation_incluses_by_offre(o.id_offre) as prestation_incluses,
+                tripenazor.get_prestation_non_incluses_by_offre(o.id_offre) as prestation_non_incluses,
+                COALESCE(pp.denomination, pu.raison_sociale) AS nom_societe,
+                COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public) AS id_professionnel,
+                pro.lien_site_web AS site_web,
+                pp.denomination as denomination,
+                pu.raison_sociale as raison_sociale,
+                util.nom AS nom_utilisateur,
+                util.prenom AS prenom,
+                util.email AS email_utilisateur,
+                util.num_telephone AS telephone_utilisateur,
+                tripenazor.get_images_by_offre(o.id_offre) as images,
+                tripenazor.get_horaires_by_offre(o.id_offre) as horaires
+
+            FROM tripenazor.infos_carte_offre_with_offline o
+            LEFT JOIN tripenazor.offre_visite ov ON ov.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_activite oa ON oa.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_spectacle os ON os.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_parc_attraction opa ON opa.id_offre = o.id_offre
+            LEFT JOIN tripenazor.offre_restauration orestau ON orestau.id_offre = o.id_offre
+            LEFT JOIN tripenazor.gamme_prix gp ON orestau.id_gamme_prix = gp.id_gamme_prix
+            LEFT JOIN tripenazor.image ON orestau.id_image = tripenazor.image.id_image
+            LEFT JOIN tripenazor.image pa_i ON opa.id_image = pa_i.id_image
+            LEFT JOIN tripenazor.abonnement a ON a.id_offre = o.id_offre
+            LEFT JOIN tripenazor.pro_public_propose_offre ppp ON ppp.id_offre = o.id_offre
+            LEFT JOIN tripenazor.professionnel p 
+                ON p.id_utilisateur = a.id_utilisateur_prive OR p.id_utilisateur = ppp.id_utilisateur_public
+            LEFT JOIN tripenazor.professionnel_prive pp ON pp.id_utilisateur = p.id_utilisateur
+            LEFT JOIN tripenazor.professionnel_public pu ON pu.id_utilisateur = p.id_utilisateur
+            LEFT JOIN tripenazor.professionnel pro ON pro.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+            LEFT JOIN tripenazor.utilisateur util ON util.id_utilisateur = COALESCE(a.id_utilisateur_prive, ppp.id_utilisateur_public)
+        ";
+
+        if ($id_professionnel !== null) {
+            $sql .= "
+            WHERE 
+                (a.id_utilisateur_prive = :id_utilisateur
+                OR ppp.id_utilisateur_public = :id_utilisateur)
+            AND o.id_offre = :id_offre";
+        } else {
+            $sql .= " WHERE o.id_offre = :id_offre";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+
+        if ($id_professionnel !== null) {
+            $stmt->bindValue(':id_utilisateur', $id_professionnel, PDO::PARAM_INT);
+        }
+
+        $stmt->bindValue(':id_offre', $id_offre, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     public function getProByOffre($idOffre){
         $sql = "
