@@ -181,7 +181,6 @@ class Offre {
         } else {
             $sql .= " WHERE o.id_offre = :id_offre";
         }
-        error_log('ID PROFESSIONNEL : '. $id_professionnel);
 
         $stmt = $this->conn->prepare($sql);
 
