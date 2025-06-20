@@ -4211,7 +4211,9 @@ BEGIN
         RETURNING id_souscription INTO v_id_souscription;
         INSERT INTO tripenazor.option_payante_offre(id_offre, id_option, id_souscription)
         VALUES (o_id_offre, 1, v_id_souscription);
-    ELSEIF a_la_une = 'on' THEN
+    END IF;
+
+    IF a_la_une = 'on' THEN
         -- Creation d'une souscription
         INSERT INTO tripenazor.souscription(nb_semaine) 
         VALUES (nb_semaines)
