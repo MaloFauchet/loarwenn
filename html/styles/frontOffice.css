@@ -45,7 +45,7 @@ main{
 
 .card-horizontal .item-image {
     height: unset; /* ou 250px selon ton design */
-    width: 40%;
+    width: 30%;
     
     max-height: 50vh;
     flex-shrink: 0;
@@ -77,6 +77,27 @@ main{
 
 .item-description{
     color: #585858;
+}
+
+
+.card-horizontal .container-avis-tags{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 0 0;
+}
+
+.caroussel-item .container-avis-tags{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.item-price{
+    margin: 0.8em 0;
 }
 
 .items{
