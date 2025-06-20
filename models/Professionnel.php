@@ -77,9 +77,19 @@ class Professionnel extends Model{
     ) {
         $sql = "
         SELECT * FROM tripenazor.inserer_utilisateur_et_professionnel_prive(
-            :nom::TEXT, :prenom::TEXT, :email::TEXT, :telephone::TEXT,
-            :num_adresse::INT, :voie_adresse::TEXT, :complement::TEXT, :codePostal::TEXT, :ville::TEXT,
-            :denomination::TEXT, :siren::INTEGER, :iban::TEXT, :motDePasse::TEXT
+            :nom::TEXT, 
+            :prenom::TEXT, 
+            :email::TEXT, 
+            :telephone::TEXT,
+            :num_adresse::INT, 
+            :voie_adresse::TEXT, 
+            :complement::TEXT, 
+            :codePostal::TEXT, 
+            :ville::TEXT,
+            :denomination::TEXT, 
+            :siren::INTEGER, 
+            :iban::TEXT, 
+            :motDePasse::TEXT
         )
     ";
 
@@ -100,8 +110,7 @@ class Professionnel extends Model{
         $stmt->bindParam(':motDePasse', $motDePasse);
 
         $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return true;
     }
 
 
