@@ -17,6 +17,10 @@ class OffreController {
     public function getOffreById($id) {
         return $this->offre->getOffreById(null, $id);
     }
+    public function getOffreByIdDetails($id_professionnel, $id) {
+        return $this->offre->getOffreByIdDetails($id_professionnel, $id);
+    }
+
     public function getOffreByIdAccueil($id) {
         return $this->offre->getOffreByIdAccueil($id);
     }
