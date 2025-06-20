@@ -185,7 +185,7 @@ $villeEntreprise = $data['nom_ville'];
                             <?php } ?>
                         </div>
 
-                        <a href="/changerMotDePasse" class="modification-mdp">Modifier mon mot de passe</a>
+                        <!-- <a href="/changerMotDePasse" class="modification-mdp">Modifier mon mot de passe</a> -->
                     </div>
                 </main>
 
