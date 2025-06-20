@@ -1,22 +1,22 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] .  '/../models/OffreActivite.php');
+require_once($_SERVER['DOCUMENT_ROOT'] .  '/../models/OffreRestaurant.php');
 
-class OffreActiviteController {
+class OffreRestaurantController {
     private $offre;
 
     public function __construct() {
-        $this->offre = new OffreActivite();
+        $this->offre = new OffreRestaurant();
     }
 
-    public function updateActiviteOffre(
-        
+    public function updateRestaurantOffre(
+
         $id_offre,
 
         $nom_ville,
         $code_postal,
-        
+
         $titre_offre,
-        $enLigne,
+        $en_ligne,
         $resume,
         $description,
         $accessibility,
@@ -36,24 +36,23 @@ class OffreActiviteController {
         $matin_heure_fin,
         
         $id_professionnel,
-        
-        $prestationIncluse,
-        $prestationNonIncluse,
-        $duree,
-        $age,
-        
+
+        $titre_image_carte,
+        $chemin_image_carte,
+        $libelle_gamme_prix,
+
         $apres_midi_heure_debut,
         $apres_midi_heure_fin,
         $prix,
-        ) {
-        return $this->offre->updateActiviteOffre(
+    ) {
+        return $this->offre->updateRestaurantOffre(
             $id_offre,
 
             $nom_ville,
             $code_postal,
 
             $titre_offre,
-            $enLigne,
+            $en_ligne,
             $resume,
             $description,
             $accessibility,
@@ -73,16 +72,14 @@ class OffreActiviteController {
             $matin_heure_fin,
             
             $id_professionnel,
-            
-            $prestationIncluse,
-            $prestationNonIncluse,
-            
-            $duree ,
-            $age ,
-            
+
+            $titre_image_carte,
+            $chemin_image_carte,
+            $libelle_gamme_prix,
+
             $apres_midi_heure_debut,
             $apres_midi_heure_fin,
-            0.0,
+            $prix,
         );
     }
 

@@ -1,7 +1,18 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreActiviteController.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreVisiteController.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreSpectacleController.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreRestaurantController.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreParcAttractionController.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
 
-$controller = new OffreActiviteController();
+
+
+$controllerActivite = new OffreActiviteController();
+$controllerVisite = new OffreVisiteController();
+$controllerSpectacle = new OffreSpectacleController();
+$controllerRestaurant = new OffreRestaurantController();
+$controllerParcAttraction = new OffreParcAttractionController();
 
 
 
@@ -32,45 +43,294 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 //TODO json decode le body qui fournit un type et assigner le bon controller au bon type d'offre
 try{
 
+    $horaire3 = ($_POST["horaire3"] !== 'null' && $_POST["horaire3"] !== '') ? $_POST["horaire3"] : null;
+    $horaire4 = ($_POST["horaire4"] !== 'null' && $_POST["horaire4"] !== '') ? $_POST["horaire4"] : null;
+    if ($_POST["type_offre"] === 'activite') {
+        $controllerActivite->updateActiviteOffre(
+        $_GET["id_offre"],
+
+        $_POST["city"],
+        $_POST["codePostal"],
+
+        $_POST["title"],
+        $_POST["enLigne"] ,
+        $_POST["resume"],
+        $_POST["description"],
+        $_POST["accessibility"],
+        $_POST["type_offre"],
+        $_POST["prix_TTC_min"],
+        isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+        $_POST["voie"],
+        $_POST["numeroAdresse"],
+        $_POST["complementAdresse"],
+        
+        $_POST["titre_image"],
+        $_POST["chemin_image"],
+        
+        $_POST["joursOuverture"],
+        $_POST["horaire1"],
+        $_POST["horaire2"],
+
+        $_SESSION['id_utilisateur'],
+        //activite
+        
+        isset($_POST["prestationIncluse"]) ? $_POST["prestationIncluse"] : null,
+        isset($_POST["prestationNonIncluse"]) ? $_POST["prestationNonIncluse"] : null,
+        
+        $_POST["duration"],
+        $_POST["age"],
+        
+        $horaire3,  // corrigé ici
+        $horaire4,
+
+        $_POST["horaire3"],
+        $_POST["horaire4"],
+        $_POST["prix"],
+        );
+    } else if ($_POST["type_offre"] === 'restaurant') {
+        $controllerRestaurant->updateRestaurantOffre(
+            $_GET["id_offre"],
+
+            $_POST["city"],
+            $_POST["codePostal"],
+
+            $_POST["title"],
+            $_POST["enLigne"] ,
+            $_POST["resume"],
+            $_POST["description"],
+            $_POST["accessibility"],
+            $_POST["type_offre"],
+            $_POST["prix_TTC_min"],
+            isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+            $_POST["voie"],
+            $_POST["numeroAdresse"],
+            $_POST["complementAdresse"],
+            
+            $_POST["titre_image"],
+            $_POST["chemin_image"],
+            
+            $_POST["joursOuverture"],
+            $_POST["horaire1"],
+            $_POST["horaire2"],
+
+            $_SESSION['id_utilisateur'],
+
+            isset($_POST["titre_image_carte"]) ? $_POST["titre_image_carte"] : null,
+            isset($_POST["chemin_image_carte"]) ? $_POST["chemin_image_carte"] : null,
+            isset($_POST["libelleGammePrix"]) ? $_POST["libelleGammePrix"] : null,
+            
+            $horaire3,  
+            $horaire4,
+            $_POST["prix"]
+        );
+    } else if ($_POST["type_offre"] === 'parc_attraction') {
+
+        //echo json_encode($_POST);
+        //die();
+        $controllerParcAttraction->updateParcAttractionOffre(
+            $_GET["id_offre"],
+
+            $_POST["city"],
+            $_POST["codePostal"],
+
+            $_POST["title"],
+            $_POST["enLigne"] ,
+            $_POST["resume"],
+            $_POST["description"],
+            $_POST["accessibility"],
+            $_POST["type_offre"],
+            $_POST["prix_TTC_min"],
+            isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+            $_POST["voie"],
+            $_POST["numeroAdresse"],
+            $_POST["complementAdresse"],
+            
+            $_POST["titre_image"],
+            $_POST["chemin_image"],
+            
+            $_POST["joursOuverture"],
+            $_POST["horaire1"],
+            $_POST["horaire2"],
+
+            $_SESSION['id_utilisateur'],
+            
+            $_POST["nbAttractions"],
+            $_POST["age"],
+            $_POST["titre_image_parc"],
+            $_POST["chemin_image_parc"],
+
+            $horaire3,  
+            $horaire4,
+            isset($_POST["prix"]) ? $_POST["prix"] : null,
+        );
+    } else if ($_POST["type_offre"] === 'visite_guidee') {
+        $controllerVisite->updateVisiteOffre(
+            $_GET["id_offre"],
+
+            $_POST["city"],
+            $_POST["codePostal"],
+
+            $_POST["title"],
+            $_POST["enLigne"] ,
+            $_POST["resume"],
+            $_POST["description"],
+            $_POST["accessibility"],
+            $_POST["type_offre"],
+            $_POST["prix_TTC_min"],
+            isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+            $_POST["voie"],
+            $_POST["numeroAdresse"],
+            $_POST["complementAdresse"],
+            
+            $_POST["titre_image"],
+            $_POST["chemin_image"],
+            
+            $_POST["joursOuverture"],
+            $_POST["horaire1"],
+            $_POST["horaire2"],
+
+            $_SESSION['id_utilisateur'],
+            
+            $_POST["duration"],
+            isset($_POST["langues"]) ? $_POST["langues"] : null,
+
+            $horaire3,  
+            $horaire4,
+            isset($_POST["prix"]) ? $_POST["prix"] : null,
+        );
+    }else if ($_POST["type_offre"] === 'visite_non_guidee') {
+        # code...
+        $controllerVisite->updateVisiteNonGuideeOffre(
+            $_GET["id_offre"],
+
+            $_POST["city"],
+            $_POST["codePostal"],
+
+            $_POST["title"],
+            $_POST["enLigne"] ,
+            $_POST["resume"],
+            $_POST["description"],
+            $_POST["accessibility"],
+            $_POST["type_offre"],
+            $_POST["prix_TTC_min"],
+            isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+            $_POST["voie"],
+            $_POST["numeroAdresse"],
+            $_POST["complementAdresse"],
+            
+            $_POST["titre_image"],
+            $_POST["chemin_image"],
+            
+            $_POST["joursOuverture"],
+            $_POST["horaire1"],
+            $_POST["horaire2"],
+
+            $_SESSION['id_utilisateur'],
+
+            isset($_POST["duration"]) ? $_POST["duration"] : null,
+
+            $horaire3,
+            $horaire4,
+            isset($_POST["prix"]) ? $_POST["prix"] : null,
+        );
+    }
+    else if ($_POST["type_offre"] === 'spectacle') {
+        $controllerSpectacle->updateSpectacleOffre(
+            $_GET["id_offre"],
+
+            $_POST["city"],
+            $_POST["codePostal"],
+
+            $_POST["title"],
+            $_POST["enLigne"] ,
+            $_POST["resume"],
+            $_POST["description"],
+            $_POST["accessibility"],
+            $_POST["type_offre"],
+            $_POST["prix_TTC_min"],
+            isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+            $_POST["voie"],
+            $_POST["numeroAdresse"],
+            $_POST["complementAdresse"],
+            
+            $_POST["titre_image"],
+            $_POST["chemin_image"],
+            
+            $_POST["joursOuverture"],
+            $_POST["horaire1"],
+            $_POST["horaire2"],
+
+            $_SESSION['id_utilisateur'],
+            
+            $_POST["duration"] ,
+            $_POST["capaciteAccueil"],
+
+            
+            $horaire3,  
+            $horaire4,
+            isset($_POST["prix"]) ? $_POST["prix"] : null,
+
+        );
+    }elseif ($_POST["type_offre"] === 'restauration') {
+        $controllerRestaurant->updateRestaurantOffre(
+            $_GET["id_offre"],
+
+            $_POST["city"],
+            $_POST["codePostal"],
+
+            $_POST["title"],
+            $_POST["enLigne"] ,
+            $_POST["resume"],
+            $_POST["description"],
+            $_POST["accessibility"],
+            $_POST["type_offre"],
+            $_POST["prix_TTC_min"],
+            isset($_POST["tags"]) ? $_POST["tags"] : null,
+
+            $_POST["voie"],
+            $_POST["numeroAdresse"],
+            $_POST["complementAdresse"],
+            
+            $_POST["titre_image"],
+            $_POST["chemin_image"],
+            
+            $_POST["joursOuverture"],
+            $_POST["horaire1"],
+            $_POST["horaire2"],
+
+            $_SESSION['id_utilisateur'],
+            
+            isset($_POST["titre_image_carte"]) ? $_POST["titre_image_carte"] : null,
+            isset($_POST["chemin_image_carte"]) ? $_POST["chemin_image_carte"] : null,
+            isset($_POST["libelleGammePrix"]) ? $_POST["libelleGammePrix"] : null,
+            
+            $horaire3,  
+            $horaire4,
+            isset($_POST["prix"]) ? $_POST["prix"] : null,
+            
+        );
+    }
+    else {
+        throw new Error("Type d'offre non reconnu", 1);
+    }
+    //echo json_encode(['message' => $_POST["horaire3"]]); 
     //die(print_r($_POST));
-    $controller->updateActiviteOffre(
-    $_GET["id"],
+    /*echo json_encode([
+        'message' => $_POST,
+    ]);*/
 
-    $_POST["city"],
-    $_POST["codePostal"],
 
-    $_POST["title"],
-    $_POST["enLigne"] ,
-    $_POST["resume"],
-    $_POST["description"],
-    $_POST["accessibility"],
-    $_POST["type_offre"],
-    $_POST["prix_TTC_min"],
-    isset($_POST["tags"]) ? $_POST["tags"] : null,
-
-    $_POST["voie"],
-    $_POST["numeroAdresse"],
-    $_POST["complementAdresse"],
     
-    $_POST["titre_image"],
-    $_POST["chemin_image"],
-    
-    $_POST["joursOuverture"],
-    $_POST["matin_heure_debut"],
-    $_POST["matin_heure_fin"],
-    $_POST["apres_midi_heure_debut"],
-    $_POST["apres_midi_heure_fin"],
 
-    $_SESSION['id_utilisateur'],
-    $_POST["prix"],
-    //activite
-    
-    isset($_POST["prestationIncluse"]) ? $_POST["prestationIncluse"] : null,
-    isset($_POST["prestationNonIncluse"]) ? $_POST["prestationNonIncluse"] : null,
 
-    $_POST["duration"],
-    $_POST["age"],
-);
+
+
 }catch (Error $e) {
     http_response_code(400);
     echo json_encode(['message' => 'Erreur dans les données envoyées : ' . $e->getMessage()]);
@@ -110,9 +370,9 @@ function validateData($controller) {
 }
 
 //validateData($controller);
-/*echo json_encode([
+echo json_encode([
     'status' => 'OK',
     'message' => "Sauvegarde effectuée",
-    'info' => $_GET["id"],
+    'info' => $_GET["id_offre"],
     
-]);*/
+]);

@@ -12,6 +12,7 @@ if (!isset($_SESSION['id_utilisateur'])) {
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/inputAjoutMultiple.php');
+
 if(isset($_GET['id_offre'])) {
     $id_offre = $_GET['id_offre'];
 } else {
@@ -58,14 +59,14 @@ $plageHoraire = explode(',', $currentOffre['horaires']);
 $horaire1 = strtotime(trim(explode('|', $plageHoraire[0])[0]));
 $horaire2 = strtotime(trim(explode('|', $plageHoraire[0])[1]));
 if(count($plageHoraire) > 1) {
-    $horaire3 = trim(explode('|', $plageHoraire[1])[0]);
-    $horaire4 = trim(explode('|', $plageHoraire[1])[1]);
+    $horaire3 = strtotime(trim(explode('|', $plageHoraire[1])[0]));
+    $horaire4 = strtotime(trim(explode('|', $plageHoraire[1])[1]));
 }
-print_r($horaire3);
-print_r($horaire4);
+// Récupération des jours d'ouverture et conversion en tableau
+
 
 $joursSemaines = explode(',', $currentOffre['jours_ouverture']);
-print_r($joursSemaines);
+
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +114,7 @@ print_r($joursSemaines);
                     <img src="/images/offres/velo.png" alt="Vélo">
                 </div>
                 <input type="hidden" id="titre_image" name="titre_image" value="<?= $currentOffre["titre_image"] ?>">
-                <input type="file" id="chemin_image" name="chemin_image" accept="image/*" style="display:none" value="<?= $currentOffre["chemin"] ?>">
+                <input type="hidden" id="chemin_image" name="chemin_image" accept="image/*" style="display:none" value="<?= $currentOffre["chemin"] ?>">
                 <div class="input-titre">
                     <label class="label-input" for="titre">Titre</label>
                     <input id="titre" type="text" 
@@ -279,13 +280,13 @@ print_r($joursSemaines);
                         <div class="input-divers">
                             <label class="label-input" for="horaire-1">Horaire 1</label>
                             <input id="horaire-1" name="horaire-1" type="time" 
-                            value="<?= date('H:i', $horaire1) ?>" required />
-                            
+                            value="<?= date('H:i:s', $horaire1) ?>" required />
+
                         </div>
                         <div class="input-divers">
                             <label class="label-input" for="horaire-2">Horaire 2</label>
                             <input id="horaire-2" name="horaire-2" type="time" 
-                            value="<?= date('H:i', $horaire2) ?>" required />
+                            value="<?= date('H:i:s', $horaire2) ?>" required />
                         </div>
                     </div>
                     <?php if(isset($horaire3) && isset($horaire4)) { ?>
@@ -293,27 +294,31 @@ print_r($joursSemaines);
                             <div class="input-divers">
                                 <label class="label-input" for="horaire-3">Horaire 3</label>
                                 <input id="horaire-3" name="horaire-3" type="time" 
-                                value="<?= date('H:i', $horaire3) ?>" required />
+                                value="<?= date('H:i:s', $horaire3) ?>" required />
                                 
-
                             </div>
                             <div class="input-divers">
                                 <label class="label-input" for="horaire-4">Horaire 4</label>
                                 <input id="horaire-4" name="horaire-4" type="time" 
-                                value="<?= date('H:i', $horaire4) ?>" required />
+                                value="<?= date('H:i:s', $horaire4) ?>" required />
+                            </div>
                         </div>
                     <?php } ?>
 
 
                     <?php if($type_activite == 'activite') {
                             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/activite.php');
-                        } elseif($type_activite == 'visite_guide') {
+                        } else if($type_activite == 'visite_guidee') {
                             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/visite.php');
-                        } elseif($type_activite == 'parc_attraction') {
+                        } else if($type_activite == 'visite_non_guidee') {
+                            require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/visite.php');
+                        } else if($type_activite == 'parc_attraction') {
                             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/parcAttraction.php');
-                        } elseif($type_activite == 'spectacle') {
+                        } else if($type_activite == 'spectacle') {
                             require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/spectacle.php');
-                        } 
+                        } else if ($type_activite == 'restauration') {
+                            require_once($_SERVER['DOCUMENT_ROOT'] . '/../views/backOffice/detailOffre/restaurant.php');
+                        }
                     ?>
 
                     <div class="choix-divers">
@@ -345,26 +350,25 @@ print_r($joursSemaines);
             </main>
         </div>
     </div>
-    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/../views/backOffice/components/footer.php'); ?>
+    <script src="/scripts/sauvegardeInfoOffre.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkbox = document.querySelector('.slider-etat');
+        const statusText = document.querySelector('.status-text');
+    
+        // Fonction pour mettre à jour le texte
+        function updateStatus() {
+            statusText.textContent = checkbox.checked ? "En ligne" : "Hors ligne";
+        }
+    
+        // Met à jour au changement
+        checkbox.addEventListener('change', updateStatus);
+    
+        // Initialise au cas où
+        updateStatus();
+        
+    });
+    </script>
 </body>
 
 </html>
-<script src="/scripts/sauvegardeInfoOffre.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const checkbox = document.querySelector('.slider-etat');
-    const statusText = document.querySelector('.status-text');
-
-    // Fonction pour mettre à jour le texte
-    function updateStatus() {
-        statusText.textContent = checkbox.checked ? "En ligne" : "Hors ligne";
-    }
-
-    // Met à jour au changement
-    checkbox.addEventListener('change', updateStatus);
-
-    // Initialise au cas où
-    updateStatus();
-    
-});
-</script>

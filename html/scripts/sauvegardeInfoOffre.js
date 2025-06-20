@@ -92,6 +92,7 @@ function updateAffichageDivSauvegarde(sauvegardeDiv, estModifie) {
         }
     }
 
+    //alert()
     // si quelque chose a été modifié
     if (modificationPresente) {
         // affiche le bouton de sauvegarde et d'annulation
@@ -123,6 +124,7 @@ function getValuesInputs() {
     let jours = Array.from(checkboxJours)
         .filter(checkbox => checkbox.checked)
         .map(checkbox => checkbox.id);
+        console.log("chemin:",document.getElementById("chemin_image").value);
     let result = {
         //champ commun a toutes les offres
         type_offre:document.getElementById("type-offre").value,
@@ -141,11 +143,12 @@ function getValuesInputs() {
         joursOuverture:jours,
         horaire1:document.getElementById("horaire-1").value,
         horaire2:document.getElementById("horaire-2").value,
-        horaire3:document.getElementById("horaire-3").value ? document.getElementById("horaire-3").value: null,
-        horaire4:document.getElementById("horaire-4").value ? document.getElementById("horaire-4").value:null,
+        horaire3:document.getElementById("horaire-3")? document.getElementById("horaire-3").value: null,
+        horaire4:document.getElementById("horaire-4") ? document.getElementById("horaire-4").value:null,
 
         titre_image:document.getElementById("titre_image").value,
         chemin_image:document.getElementById("chemin_image").value,
+        
 
         //specifique au differentes type offres
         duration: document.getElementById("duree") ? document.getElementById("duree").value:null,
@@ -154,6 +157,14 @@ function getValuesInputs() {
         capaciteAccueil: document.getElementById("capacite")? document.getElementById("capacite").value:null,
         prestationIncluse: getListValues("prestation-incluse") ?getListValues("prestation-incluse") :[],
         prestationNonIncluse: getListValues("prestation-non-incluse")? getListValues("prestation-non-incluse") : [],
+
+        titre_image_carte: document.getElementById("age-min")? document.getElementById("age-min").value:null,
+        chemin_image_carte: document.getElementById("age-min")? document.getElementById("age-min").value:null,
+        libelleGammePrix: document.getElementById("gamme-prix")? document.getElementById("gamme-prix").options[document.getElementById("gamme-prix").selectedIndex].text:null,
+
+        titre_image_parc:document.getElementById("age-min")? document.getElementById("age-min").value:null,
+        chemin_image_parc:document.getElementById("age-min")? document.getElementById("age-min").value:null,
+
         repasServi:getListValues("repas-servi") ? getListValues("repas-servi") : [],
         langue:getListValues("langue") ? getListValues("langue") : [],
 
@@ -194,7 +205,7 @@ function encodeFormData(data) {
 
 async function sendData(data) {
     console.log(encodeFormData(data));
-    fetch("/api/offre/update/?id=" + id, {
+    fetch("/api/offre/update/?id_offre=" + id, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -218,8 +229,8 @@ async function sendData(data) {
         displayFlashCard("success",data.message)
     }).catch(error => {
         // TODO : afficher un message d'erreur (flash card)
-        console.error("Erreur lors de la sauvegarde", error);
-        displayFlashCard("error",error)
+        console.error("Erreur lors de la sauvegarde", "Erreur lors de l'enregistrement");
+        displayFlashCard("erroe","Erreur lors de l'enregistrement")
         //displayFlashCard("error")
     });
 

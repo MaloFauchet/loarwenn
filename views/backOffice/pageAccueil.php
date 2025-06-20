@@ -24,6 +24,8 @@ $options = $optionsController->getOption();
 // Variables pour la note et le nombre de nouveaux avis (exemple statique)
 $note = 0;
 $nbNouveauxAvis = 5;
+
+
 ?>
 
 <script>
@@ -52,7 +54,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
 <main class="contenu-back-office">
     <?php
     // Boucle sur chaque offre récupérée pour l'afficher
-    foreach ($offres as $offre) {
+    foreach ($offres as $offre) { 
+        
     ?>
     <div class="offre" style="margin-bottom: 20px;" data-id="<?= $offre['id_offre']; ?>">
         <div class="image-container">
@@ -62,6 +65,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
             </span>
 
             <!-- Image de l'offre -->
+             
             <img src="<?php echo $offre['chemin']; ?>" alt="<?php echo $offre['titre_image']; ?>">
  
         </div>
@@ -122,6 +126,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
                 </div>
                 <div>
                     <!-- Lien pour modifier l'offre -->
+                    
                     <a href="/backOffice/detailOffre?id_offre=<?php echo $offre['id_offre']; ?>" aria-label="Modification">
                         <img src="/images/icons/pensil-square.svg" alt="bouton modifier">
                     </a>

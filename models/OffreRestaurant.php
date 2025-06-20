@@ -13,6 +13,16 @@ class OffreRestaurant extends Offre {
         parent::__construct();
     }
 
+    private function convertArrayToPgArray( $array) {
+        
+        if (!is_array($array) || empty($array)) {
+            return '{}';
+        }
+        return '{' . implode(',', array_map(function ($val) {
+            return '"' . addslashes($val) . '"';
+        }, $array)) . '}';
+    }
+
     /**
      * @return offreSpectacle (array d'offreSpectacle)
      * Récupère toutes les offres de spectacle
@@ -37,7 +47,7 @@ class OffreRestaurant extends Offre {
              * Setters de la classe même
              */
             echo $value['pathImage'];
-            $restaurant->setPrix($value['prix']);
+            //$restaurant->setPrix($value['prix']);
             $restaurant->setPathImage($value['pathImage']);
 
             /**
@@ -60,7 +70,7 @@ class OffreRestaurant extends Offre {
     }
 
 
-    function updateActiviteOffre(
+    function updateRestaurantOffre(
         $id_offre,
 
         $nom_ville,
@@ -85,88 +95,102 @@ class OffreRestaurant extends Offre {
         $jours,
         $matin_heure_debut,
         $matin_heure_fin,
+        
+        $id_professionnel,
+
+        $titre_image_carte,
+        $chemin_image_carte,
+        $libelle_gamme_prix,
+
         $apres_midi_heure_debut,
         $apres_midi_heure_fin,
-
-        $id_professionnel,
         $prix,
 
     ){
         
-        $sql = "tripenazor.update_offre_activite(
-            :id_offre,
+        $sql = "select tripenazor.update_offre_restaurant(
+            :p_id_offre ,
             
             -- Paramètres de l'offre
-            :nom_ville,
-            :code_postal,
+            :p_nom_ville ,
+            :p_code_postal ,
 
-            :titre_offre,
-            :en_ligne,
-            :resume,
-            :description,
-            :accessibilite,
-            :type_offre,
-            :prix_TCC_min,
-            :tags,
+            :p_titre_offre ,
+            :p_en_ligne ,
+            :p_resume ,
+            :p_description ,
+            :p_accessibilite ,
+            
+            :p_type_offre ,
+            :p_prix_TTC_min ,
+            :p_tags ,
 
             -- Adresse
-            :voie,
-            :numero_adresse,
-            :complement_adresse,
-
+            :p_voie ,
+            :p_numero_adresse ,
+            :p_complement_adresse ,
+            
             -- Image
-            :titre_image,
-            :chemin_image,
+            :p_titre_image ,
+            :p_chemin_image ,
 
             -- Jour de l'activité
-            :jours,
-            :matin_heure_debut,
-            :matin_heure_fin,
-            :apres_midi_heure_debut,
-            :apres_midi_heure_fin,
+            :p_jours ,
+            :p_matin_heure_debut ,
+            :p_matin_heure_fin ,
 
             -- Professionnel
-            :id_professionnel,
-            :prix,
+            :p_id_professionnel ,
 
             -- Paramètres spécifiques à l'activité
+            :p_titre_image_carte ,
+            :p_chemin_image_carte ,
+            :p_libelle_gamme_prix ,
 
-            :prix_prive
+            :p_apres_midi_heure_debut ,
+            :p_apres_midi_heure_fin ,
+            :p_prix_prive 
         )";
+
+
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(':id_offre', $id_offre);
+        // Bind parameters
+        $stmt->bindParam(':p_id_offre', $id_offre);
 
-        $stmt->bindParam(':nom_ville', $nom_ville);
-        $stmt->bindParam(':code_postal', $code_postal);
+        $stmt->bindParam(':p_nom_ville', $nom_ville);
+        $stmt->bindParam(':p_code_postal', $code_postal);
 
-        $stmt->bindParam(':titre_offre', $titre_offre);
-        $stmt->bindParam(':en_ligne', $en_ligne);
-        $stmt->bindParam(':resume', $resume);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':accessibilite', $accessibility);
-        $stmt->bindParam(':type_offre', $type_offre);
-        $stmt->bindParam(':prix_TCC_min', $prix_TCC_min);
-        $stmt->bindParam(':tags', $tags);
+        $stmt->bindParam(':p_titre_offre', $titre_offre);
+        $stmt->bindParam(':p_en_ligne', $en_ligne);
+        $stmt->bindParam(':p_resume', $resume);
+        $stmt->bindParam(':p_description', $description);
+        $stmt->bindParam(':p_accessibilite', $accessibility);
+        $stmt->bindParam(':p_type_offre', $type_offre);
+        $stmt->bindParam(':p_prix_TTC_min', $prix_TCC_min);
+        $stmt->bindValue(':p_tags', $this->convertArrayToPgArray($tags));
 
+        $stmt->bindParam(':p_voie', $voie);
+        $stmt->bindParam(':p_numero_adresse', $numero_adresse);
+        $stmt->bindParam(':p_complement_adresse', $complement_adresse);
 
-        $stmt->bindParam(':voie', $voie);
-        $stmt->bindParam(':numero_adresse', $numero_adresse);
-        $stmt->bindParam(':complement_adresse', $complement_adresse);
+        $stmt->bindParam(':p_titre_image', $titre_image);
+        $stmt->bindParam(':p_chemin_image', $chemin_image);
 
-        $stmt->bindParam(':titre_image', $titre_image);
-        $stmt->bindParam(':chemin_image', $chemin_image);
+        $stmt->bindParam(':p_titre_image_carte', $titre_image_carte);
+        $stmt->bindParam(':p_chemin_image_carte', $chemin_image_carte);
+        $stmt->bindParam(':p_libelle_gamme_prix', $libelle_gamme_prix);
 
-        $stmt->bindParam(':jours', $jours);
-        $stmt->bindParam(':matin_heure_debut', $matin_heure_debut);
-        $stmt->bindParam(':matin_heure_fin', $matin_heure_fin);
-        $stmt->bindParam(':apres_midi_heure_debut', $apres_midi_heure_debut);
-        $stmt->bindParam(':apres_midi_heure_fin', $apres_midi_heure_fin);
+        $stmt->bindValue(':p_jours', $this->convertArrayToPgArray($jours));
+        $stmt->bindParam(':p_matin_heure_debut', $matin_heure_debut);
+        $stmt->bindParam(':p_matin_heure_fin', $matin_heure_fin);
 
-        $stmt->bindParam(':id_professionnel', $id_professionnel);
-        $stmt->bindParam(':prix', $prix);
-        $stmt->bindParam(':prix_prive', $prix_prive);
+        $stmt->bindParam(':p_id_professionnel', $id_professionnel);
+        
+        $stmt->bindValue(':p_apres_midi_heure_debut', $apres_midi_heure_debut, $apres_midi_heure_debut === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(':p_apres_midi_heure_fin', $apres_midi_heure_fin, $apres_midi_heure_fin === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindParam(':p_prix_prive', $prix);
 
         
         $stmt->execute();
@@ -178,46 +202,10 @@ class OffreRestaurant extends Offre {
     /**
      * ToString
      * @return string
-     */
+     
     public function __toString() {
         return "Offre Restaurant : " . $this->getTitre() . ", Prix : ". ", Accessibilité : " . $this->accessibilite;
-    }
-
-    function updateRestaurantOffre(
-        $id_offre,
-        $titre_offre,
-        $note_moyenne,
-        $en_ligne,
-        $resume,
-        $description,
-        $adresse_offre,
-        $id_ville,
-        $accessibility,
-        $enRelief,
-        $aLaUne,
-        $prestationIncluse,
-        $prestationNonIncluse,
-        $tags, 
-    ){
-        /* Fonction igor */
-        $sql = "UPDATE tripenazor.offre 
-                SET(
-                    id_ville = $id_ville,
-                    titre_offre = $titre_offre,
-                    note_moyenne = $note_moyenne,
-                    en_ligne = $en_ligne,
-                    resume = $resume,
-                    description = $description,
-                    adresse_offre = $adresse_offre
-                ) WHERE id_offre = $id_offre";
-
-        $stmt = $this->conn->prepare($sql);
-        
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
+    }*/
 
     /**
      * Setters
