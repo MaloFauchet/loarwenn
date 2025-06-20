@@ -25,13 +25,13 @@ class TypeActivite {
         $allowed_tables = ['activite', 'spectacle', 'visite', 'parc_attractions', 'restauration','visite_guidee'];
         
         $liste = [
-            'activite' => 'id_activite',
-            'spectacle' => 'id_spectacle',
-            'visite non guidee' => 'id_visite',
-            'parc dattraction' => 'id_parc_attractions',
-            'restaurant' => 'id_restaurant',
-            'visite guidee' => 'id_visite-guidee'
-        ];
+            'Activite' => 'id_activite',
+            'Spectacle' => 'id_spectacle',
+            'Visitenonguidee' => 'id_visite',
+            'ParcDattraction' => 'id_parc_attractions',
+            'Restaurant' => 'id_restaurant',
+            'VisiteGuidee' => 'id_visite-guidee'
+        ];  
 
         $id_colonne = $liste[$name_activite];
 

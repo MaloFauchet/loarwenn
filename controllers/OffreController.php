@@ -79,7 +79,7 @@ class OffreController {
 
         // Créer le dossier
         if (!is_dir($baseDir)) {
-            mkdir($baseDir, 0755, true);
+            mkdir($baseDir, 0777, true);
         }
 
         // Traitement de l'image principale

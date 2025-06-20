@@ -7,7 +7,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/../controllers/OffreController.php');
 $controller = new OffreController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+    ?> <pre> <?php
+    print_r($_FILES);
+    print_r($_POST);
+    ?>    
+    </pre>
+    <?php
     $result = $controller->ajouterOffre($_POST, $_FILES);
 
     if ($result['success']) {
