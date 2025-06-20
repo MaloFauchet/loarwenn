@@ -15,8 +15,6 @@
     align-items: center;
     margin: 40px auto;
     padding: 30px 40px;
-    border: 2px solid #005CE6;
-    border-radius: 1.5em;
 }
 
 .liste-offre main {
@@ -347,7 +345,12 @@
 .liste-offre .item-avis{
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
+}
+
+.liste-offre .item-avis > p{
+    font-size: 16px;
+    color: var(--textColor);
 }
 
 .liste-offre .item-tag {
@@ -357,7 +360,7 @@
   padding: 20px;
 }
 
-.liste-offre .item-tag > span {
+.liste-offre .item-tag > .tag-item {
   display: inline-flex;
   align-items: center;
   background-color: #CAE9FF;
@@ -368,11 +371,11 @@
   max-width: 200px;
 }
 
-.liste-offre .item-tag > span > img{
+.liste-offre .item-tag > .tag-item > img{
     margin:  1vh;
 }
 
-.liste-offre .item-tag > span > p{
+.liste-offre .item-tag > .tag-item > p{
     margin:  1vh;
 }
 
@@ -569,6 +572,11 @@
 
     .liste-offre .card-horizontal{
         margin: 50px 20px;
+    }
+
+    .item-tag .tag-item:nth-child(2),
+    .item-tag .tag-more {
+        display: none;
     }
     
 }
