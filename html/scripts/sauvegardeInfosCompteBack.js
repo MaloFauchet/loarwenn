@@ -190,6 +190,7 @@ async function sendData(data) {
     }).then(data => {
         // TODO : afficher un message de succès
         alert("Vos informations ont été sauvegardées avec succès.");
+        location.reload();
     }).catch(error => {
         // TODO : afficher un message d'erreur
         alert("Erreur lors de la sauvegarde. Veuillez réessayer plus tard.");
