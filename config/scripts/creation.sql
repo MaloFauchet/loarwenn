@@ -4311,6 +4311,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
 CREATE OR REPLACE FUNCTION tripenazor.update_professionnel_prive(
     -- Général
     p_id INT,
@@ -4434,60 +4435,12 @@ BEGIN
     SELECT * INTO professionnel_record
     FROM tripenazor.professionnel
     WHERE id_utilisateur = p_id;
-    -- Table utilisateur 
-    SELECT * INTO utilisateur_record 
-    FROM tripenazor.utilisateur
-    WHERE id_utilisateur = p_id;
-
-    -- Table professionnel
-    SELECT * INTO professionnel_record
-    FROM tripenazor.professionnel
-    WHERE id_utilisateur = p_id;
 
     -- Table adresse
     SELECT * INTO adresse_record
     FROM tripenazor.adresse 
     WHERE id_adresse = utilisateur_record.id_adresse;
-    -- Table adresse
-    SELECT * INTO adresse_record
-    FROM tripenazor.adresse 
-    WHERE id_adresse = utilisateur_record.id_adresse;
 
-    -- Utilisateur
-    UPDATE tripenazor.utilisateur 
-    SET 
-        prenom = COALESCE(p_prenom, NULL),
-        nom = COALESCE(p_nom, NULL),
-        num_telephone = COALESCE(p_telephone, NULL),
-        email = COALESCE(p_email, NULL)
-    WHERE id_utilisateur = p_id;
-
-    -- Professionnel
-    UPDATE tripenazor.professionnel
-    SET 
-        lien_site_web = COALESCE(p_lien_site_web, NULL)
-    WHERE id_utilisateur = p_id;
-
-    -- Professionnel privé
-    UPDATE tripenazor.professionnel_public
-    SET 
-        raison_sociale = COALESCE(p_raison_sociale, NULL)
-    WHERE id_utilisateur = p_id;
-
-    -- Adresse
-    UPDATE tripenazor.adresse 
-    SET 
-        voie = COALESCE(p_voie_entreprise, NULL),
-        numero_adresse = COALESCE(p_numero_adresse, NULL),
-        complement_adresse = COALESCE(p_complement_adresse, NULL)
-    WHERE id_adresse = adresse_record.id_adresse;
-
-    -- Ville (si liée par la table adresse)
-    UPDATE tripenazor.ville 
-    SET 
-        nom_ville = COALESCE(p_ville, NULL),
-        code_postal = COALESCE(p_code_postal, NULL)
-    WHERE id_ville = adresse_record.id_ville;
     -- Utilisateur
     UPDATE tripenazor.utilisateur 
     SET 
