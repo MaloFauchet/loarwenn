@@ -134,7 +134,53 @@ INSERT INTO image(titre_image, chemin) VALUES
 ('Plan Parcours accrobranche', '/images/offres/b69c01fb-8a94-4d38-8584-49f9336b1b3c/plan_parcours_accrobranche.jpg'),
 ('Carte Dégustation de vins', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/carte_degustation_de_vins.jpg'),
 ('Carte Dîner gastronomique', '/images/offres/0cfb6744-43c0-45aa-857b-6c227e8fe810/carte_diner_gastronomique.jpg'),
-('Carte Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/carte_degustation_de_produits_locaux.jpg');
+('Carte Dégustation de produits locaux', '/images/offres/980ed9bb-bd0b-4b0d-a94b-f328bc8f4d85/carte_degustation_de_produits_locaux.jpg'),
+
+-- Image Annexe offre 1 
+('Balade en bord de mer A1', '/images/offres/3d76cb4c-64dc-46aa-9fc6-355fb180f1bf/offre1-1.jpg'),
+('Balade en bord de mer A2', '/images/offres/3d76cb4c-64dc-46aa-9fc6-355fb180f1bf/offre1-2.jpg'),
+('Balade en bord de mer A3', '/images/offres/3d76cb4c-64dc-46aa-9fc6-355fb180f1bf/offre1-3.jpg'),
+-- Image Annexe offre 2
+('Visite historique A1', '/images/offres/9e780305-a5d1-4a93-bcd4-e0ec8b027f6c/offre2-1.jpg'),
+('Visite historique A2', '/images/offres/9e780305-a5d1-4a93-bcd4-e0ec8b027f6c/offre2-2.webp'),
+('Visite historique A3', '/images/offres/9e780305-a5d1-4a93-bcd4-e0ec8b027f6c/offre2-3.jpg'),
+-- Image Annexe offre 3
+('Dégustation de vins A1', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/degustation_de_vins.jpg'),
+('Dégustation de vins A2', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/degustation_de_vins.jpg'),
+('Dégustation de vins A3', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/degustation_de_vins.jpg'),
+('Dégustation de vins A4', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/degustation_de_vins.jpg'),
+('Dégustation de vins Carte', '/images/offres/a58b52ec-f634-4de6-be60-72f759f88bf4/carte-vins-rouges.jpg'),
+-- Image Annexe offre 4
+('Atelier cuisine provençale A1', '/images/offres/aa9947c6-84b7-4a2c-b28e-27eac9dd8d99/offre4-1.jpg'),
+('Atelier cuisine provençale A2', '/images/offres/aa9947c6-84b7-4a2c-b28e-27eac9dd8d99/offre4-2.jpg'),
+('Atelier cuisine provençale A3', '/images/offres/aa9947c6-84b7-4a2c-b28e-27eac9dd8d99/offre4-3.jpg'),
+-- Image Annexe offre 5
+('Cours de voile A1', '/images/offres/f6451f82-1992-478c-b99e-5cc5d21f5dfc/offre5-1.jpg'),
+('Cours de voile A2', '/images/offres/f6451f82-1992-478c-b99e-5cc5d21f5dfc/offre5-2.webp'),
+('Cours de voile A3', '/images/offres/f6451f82-1992-478c-b99e-5cc5d21f5dfc/offre5-3.webp'),
+-- Image Annexe offre 6
+('Randonnée dans l''arrière-pays A1', '/images/offres/e80df84c-cc13-43d1-9e11-02c75aa6a84e/offre6-1.jpg'),
+('Randonnée dans l''arrière-pays A2', '/images/offres/e80df84c-cc13-43d1-9e11-02c75aa6a84e/offre6-2.jpg'),
+('Randonnée dans l''arrière-pays A3', '/images/offres/e80df84c-cc13-43d1-9e11-02c75aa6a84e/offre6-3.jpg'),
+('Randonnée dans l''arrière-pays A4', '/images/offres/e80df84c-cc13-43d1-9e11-02c75aa6a84e/offre6-4.jpg'),
+-- Image Annexe offre 7
+('Concert jazz en plein air A1', '/images/offres/3fd6b07b-5a9a-4c93-bf4f-9a4c3e3785b5/offre7-1.jpg'),
+('Concert jazz en plein air A2', '/images/offres/3fd6b07b-5a9a-4c93-bf4f-9a4c3e3785b5/offre7-2.jpg'),
+('Concert jazz en plein air A3', '/images/offres/3fd6b07b-5a9a-4c93-bf4f-9a4c3e3785b5/offre7-3.jpg'),
+-- Image Annexe offre 8
+('Cours de peinture A1', '/images/offres/c6c4bc20-464c-41ff-a6d2-d69ac7faac99/offre8-1.jpg'),
+('Cours de peinture A2', '/images/offres/c6c4bc20-464c-41ff-a6d2-d69ac7faac99/offre8-2.jpg'),
+('Cours de peinture A3', '/images/offres/c6c4bc20-464c-41ff-a6d2-d69ac7faac99/offre8-3.jpg'),
+-- Image Annexe offre 9
+('Visite des marchés locaux A1', '/images/offres/22289d70-74f6-4e30-b032-5d0e179ffec6/offre9-1.jpg'),
+('Visite des marchés locaux A2', '/images/offres/22289d70-74f6-4e30-b032-5d0e179ffec6/offre9-2.jpg'),
+('Visite des marchés locaux A3', '/images/offres/22289d70-74f6-4e30-b032-5d0e179ffec6/offre9-3.jpg'),
+('Visite des marchés locaux A4', '/images/offres/22289d70-74f6-4e30-b032-5d0e179ffec6/offre9-4.jpg'),
+-- Image Annexe offre 10
+('Tour en vélo électrique A1', '/images/offres/4fcb8574-63b4-4ec9-a073-38352010a1c3/offre10-1.jpg'),
+('Tour en vélo électrique A2', '/images/offres/4fcb8574-63b4-4ec9-a073-38352010a1c3/offre10-2.jpg'),
+('Tour en vélo électrique A3', '/images/offres/4fcb8574-63b4-4ec9-a073-38352010a1c3/offre10-3.jpg'),
+('Tour en vélo électrique A4', '/images/offres/4fcb8574-63b4-4ec9-a073-38352010a1c3/offre10-4.jpg'),
 
 
 
@@ -389,15 +435,38 @@ INSERT INTO statut_log (id_offre, date_mise_en_ligne, date_mise_hors_ligne) VALU
 
 -- Insertion Avis
 INSERT INTO avis (id_utilisateur, id_offre, description_avis, note_avis, titre_avis, date_avis) VALUES
--- Membre 1
-(1, 3, 'Cuisine raffinée et service impeccable. Nous avons adoré le cadre et le menu dégustation.', 5.0, 'Excellent dîner gastronomique', '2025-06-10'),
-(1, 7, 'Superbe spectacle en plein air, très bien organisé. Lumières et ambiance magique.', 4.0, 'Une belle soirée culturelle', '2025-06-08'),
-(1, 14, 'Très bonne activité pour les enfants, animateurs au top. À refaire !', 4.5, 'Parfait pour les familles', '2025-06-11'),
-(1, 5, 'Activité mal organisée, aucune explication claire. Nous avons attendu longtemps sans savoir quoi faire. Décevant.', 2.0, 'Organisation à revoir', '2025-06-11'),
--- Membre 3
-(3, 2, 'Visite guidée très instructive, guide passionné. On a appris plein de choses.', 4.5, 'Découverte enrichissante', '2025-06-09'),
-(3, 16, 'Beaucoup d’attractions, mais trop de monde l''après-midi. Prévoir tôt !', 4.0, 'Parc sympa mais bondé', '2025-06-10'),
-(3, 11, 'Cadre romantique et plats délicieux. Mention spéciale au dessert.', 5.0, 'Un dîner parfait', '2025-06-12');
+-- Offres avec 2 avis (id_offre: 1, 2, 9, 10, 11, 14, 16)
+(1, 1, 'Une balade agréable en bord de mer, bien commentée. Parfaite pour se détendre.', 4.0, 'Belle expérience côtière', '2025-06-19'),
+(3, 1, 'Un moment très reposant et instructif. Le guide était passionnant.', 4.5, 'Balade enrichissante', '2025-06-19'),
+
+(1, 2, 'Très bon moment pour découvrir l’histoire locale. Le guide était dynamique.', 4.5, 'Immersion historique', '2025-06-19'),
+(3, 2, 'Visite très bien structurée. J’ai appris beaucoup sur les monuments.', 4.0, 'Très instructif', '2025-06-18'),
+
+(1, 9, 'J’ai adoré découvrir les marchés ! Les producteurs sont adorables.', 5.0, 'Une promenade gourmande', '2025-06-17'),
+(3, 9, 'Produits délicieux et ambiance authentique. Idéal pour les familles.', 4.5, 'Saveurs locales au top', '2025-06-17'),
+
+(1, 10, 'Super circuit à vélo ! Les explications du guide étaient claires.', 4.5, 'Découverte à deux roues', '2025-06-17'),
+(3, 10, 'Facile et agréable. Les vélos étaient confortables, j’ai beaucoup aimé.', 4.0, 'Balade sans effort', '2025-06-17'),
+
+(1, 11, 'Un dîner d’exception. Chaque plat était une œuvre d’art.', 5.0, 'Gastronomie sublime', '2025-06-16'),
+(3, 11, 'Expérience culinaire mémorable. Service impeccable.', 5.0, 'Un festin parfait', '2025-06-16'),
+
+(1, 14, 'Le festival est très bien organisé, belles projections !', 4.0, 'Bon moment ciné', '2025-06-15'),
+(3, 14, 'Ambiance conviviale et films variés. Belle initiative locale.', 4.5, 'Soirée réussie', '2025-06-15'),
+
+(1, 16, 'Activité très fun ! Les parcours sont adaptés à tous les âges.', 4.0, 'Aventure en hauteur', '2025-06-14'),
+(3, 16, 'Bonne organisation et sensations fortes. Je recommande.', 4.0, 'Frissons en famille', '2025-06-14'),
+
+-- Offres avec 1 avis
+(1, 3, 'Très bonne soirée, j’ai appris plein de choses sur les vins.', 4.5, 'Dégustation conviviale', '2025-06-12'),
+(3, 5, 'Excellent moniteur, super ambiance sur le bateau.', 4.5, 'Navigation au top', '2025-06-11'),
+(1, 7, 'Une superbe ambiance pour un concert en plein air. Très relaxant.', 4.0, 'Jazz et nature', '2025-06-18'),
+(3, 12, 'Le cours de yoga était très apaisant. J’y retournerai !', 4.5, 'Sérénité face à la mer', '2025-06-16'),
+(1, 15, 'Organisation fluide et films de qualité. Bravo aux organisateurs.', 4.5, 'Festival captivant', '2025-06-13'),
+(3, 17, 'Les produits locaux étaient très savoureux. Une belle découverte.', 4.0, 'Saveurs du terroir', '2025-06-12'),
+(1, 20, 'Découverte originale des danses provençales. Très ludique.', 4.0, 'Ambiance folklorique', '2025-06-11');
+
+
 
 -- INSERT INTO avis_possede_image (id_avis, id_image) VALUES;
 
