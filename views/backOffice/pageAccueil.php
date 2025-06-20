@@ -140,7 +140,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] .'/../views/componentsGlobaux/afficherEto
 
     <div class="modal-publication" id="modal-publication">
         <div class="modal-content">
-            <h3>Vous allez mettre en ligne une offre (2€TTC/jours)</h3>
+            <h3>Vous allez mettre en ligne une offre<?php if ($_SESSION['type'] == "prive") {echo " (2€TTC/jours)"}?></h3>
             <form id="onlineForm">
                 <input type="hidden" name="id_offre" value="<?= $offre['id_offre']; ?>">
 
